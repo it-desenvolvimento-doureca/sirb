@@ -1,0 +1,102 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12" style="height: 100%; position: absolute;">
+        <div class="col-md-12" style="padding:0px">
+          <div class="card-header" data-background-color="orange">
+            <div class="nav-tabs-navigation">
+              <div class="nav-tabs-wrapper">
+                <ul class="nav nav-tabs" style="background:black">
+                  <li>
+                    <a (click)=" backClicked()">
+                                <i class="material-icons">arrow_back</i>Voltar
+                                <div class="ripple-container"></div>
+                            </a>
+                  </li>
+                  <li>
+                    <a id="imprime">
+                                <i class="material-icons">print</i>
+                                <div class="ripple-container"></div>
+                            </a>
+                  </li>
+                  <li>
+                    <a (click)="sendmessage()">
+                                <i class="material-icons">email</i>
+                                <div class="ripple-container"></div>
+                            </a>
+                  </li>
+                  <li>
+                    <a (click)="exportexcel()" style="font-size: 20px;">
+                                <i class="fa fa-file-excel-o"></i>
+                                <div class="ripple-container"></div>
+                            </a>
+                  </li>
+                  <li>
+                    <a (click)="exportword()" style="font-size: 20px;">
+                                <i class="fa fa-file-word-o"></i>
+                                <div class="ripple-container"></div>
+                            </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <iframe [src]="fileURL" *ngIf="fileURL!=null" id="printf" type="application/pdf" width="100%" height="100%" style="overflow: auto;">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputenvio [hidden]="true" onclick="demo.showNotification('top','right','Email Enviado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Email não foi Enviado!',4)"></button>
+
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModallinhas" data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div class="modal fade" id="myModallinhas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Enviar Email
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="enviar()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nmlinha">De:</label>
+            <input type="email" class="form-control" id="nmlinha" [(ngModel)]="email_de" [ngModelOptions]="{standalone: true}" placeholder="exemplo@exemplo.pt"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="nmlinha">Para:</label>
+            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="email_para" [ngModelOptions]="{standalone: true}" placeholder="exemplo1@exemplo.pt, exemplo2@exemplo.pt"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="nmlinha">Assunto:</label>
+            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="email_assunto" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Assunto"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="nmlinha">Mensagem:</label>
+             <textarea class="form-control" rows="5" id="comment"  [(ngModel)]="email_mensagem" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success ">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

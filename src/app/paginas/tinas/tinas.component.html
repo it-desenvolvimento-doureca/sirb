@@ -1,0 +1,38 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tinas</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable (onRowDblclick)="abrir($event)" [value]="cols" dataKey="cod" [rows]="15" [paginator]="true" [pageLinks]="3" [stacked]="stacked">
+              <p-column [sortable]="true" styleclass="text-danger" field="linha" header="Linha">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']">
+                    {{car['linha']}}
+                  </div>
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="cod" header="Código. Tina"></p-column>
+              <p-column [filter]="true" styleclass="text-danger" field="obs" header="Observações"></p-column>
+              <p-column styleClass="col-button">
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/tinas/view']" [queryParams]="{ id: car.id }">
+                  <i class="material-icons">search</i>
+                  </a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
