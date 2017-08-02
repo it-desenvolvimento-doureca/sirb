@@ -1,0 +1,382 @@
+.num_existe{
+    color: red;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #002068;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin-top: -17px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.form-group .num_existe {
+    outline: none;
+  background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#D2D2D2, #D2D2D2);
+  background-size: 100% 2px, 100% 1px;
+  box-shadow: none;
+  transition-duration: 0.3s;
+  background-image: linear-gradient(#f44336, #f44336), linear-gradient(#D2D2D2, #D2D2D2);
+}
+
+.ui-dialog {
+    position: fixed;
+    padding: 0
+}
+.ui-dialog .ui-dialog-titlebar {
+    padding: .5em .75em;
+    position: relative;
+    border: 0
+}
+.ui-dialog .ui-dialog-content {
+    position: relative;
+    border: 0;
+    padding: .5em .75em;
+    background: 0;
+    overflow: auto;
+    zoom: 1
+}
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: left;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    margin: .5em 0 0 0;
+    padding: .3em 1em .5em .4em
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right
+}
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 0;
+    cursor: pointer;
+    float: right
+}
+.ui-dialog .ui-resizable-se {
+    width: 14px;
+    height: 14px;
+    right: 3px;
+    bottom: 3px
+}
+.ui-draggable .ui-dialog-titlebar {
+    cursor: move
+}
+.ui-dialog .ui-dialog-titlebar-icon {
+    text-decoration: none
+}
+.ui-dialog .ui-dialog-titlebar-close {
+    float: right;
+    padding: .125em;
+    cursor: pointer;
+    border: 1px solid transparent
+}
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: block;
+    margin: 0
+}
+.ui-dialog-footer {
+    padding: .4em 1em;
+    border-width: 1px 0 0 0;
+    text-align: left
+}
+.ui-dialog-mask {
+    position: fixed;
+    width: 100%;
+    height: 100%
+}
+.ui-confirmdialog.ui-dialog .ui-dialog-content {
+    padding: 1.5em 1em 1em 1.7em;
+}
+.ui-confirmdialog .ui-dialog-content .fa {
+    font-size: 1.5em;
+    vertical-align: middle;
+    margin-right: .5em
+}
+.ui-confirmdialog .ui-dialog-content .ui-confirmdialog-message {
+    vertical-align: middle
+}
+.ui-fluid .ui-dialog-buttonpane .ui-button {
+    width: auto
+}
+
+.table > tbody > tr > td{
+  /*  padding: 15px !important;*/
+    padding-left: 15px;
+    padding-right:15px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.table > tbody > tr > td > a{
+    color: #48535a !important;
+}
+.panel-body .table{
+    margin-bottom:  0px;
+}
+
+.table > tbody > tr > .active > a{
+    color: #0b58ff !important;
+}
+
+.active{
+    color: #0b58ff !important;
+}
+
+.panel td a{
+    width: 100%;
+    display: inline-block;
+}
+
+.table > tbody > tr > .active{
+    background-color: #d6cfcf !important;
+    
+}
+
+#accordion .panel-body{
+    padding: 0px !important;
+}
+
+.nav-tabs > li > a:active{
+    color: #fe1f1f   !important;
+}
+
+.cor_modo{
+    color: #fe1f1f   !important;
+}
+.iconspan{
+    padding-top: 18px !important;
+    padding-right: 29px !important;
+}
+
+#loginbox {
+    margin-top: 30px;
+}
+
+#loginbox > div:first-child {        
+    padding-bottom: 10px;    
+}
+
+.iconmelon {
+    display: block;
+    margin: auto;
+}
+
+#form > div {
+    margin-bottom: 25px;
+}
+
+#form > div:last-child {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.panel {    
+    background-color: rgba(255, 255, 255, 0.78)
+}
+
+.panel-body {
+    padding-top: 30px;
+    background-color: rgba(2555,255,255,.3);
+}
+
+#particles {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;                        
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: -2;
+}
+
+.iconmelon,
+.im {
+  position: relative;
+  text-align: center;
+  height: 120px;
+  display: block;
+  fill: #525151;
+}
+
+.iconmelon:after,
+.im:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ui-paginator {
+    margin:0px;
+    text-align: center;
+    padding:2px;
+}
+
+.ui-paginator.ui-paginator-top {
+    border-bottom:0px none;
+}
+
+.ui-paginator.ui-paginator-bottom {
+    border-top:0px none;
+}
+
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-pages,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev,
+.ui-paginator .ui-paginator-current {
+	display: inline-block;
+	padding: 2px 6px;
+	zoom: 1;
+	margin-left: 1px;
+	margin-right: 1px;
+	text-decoration: none;
+	outline: none;
+}
+
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev{
+    cursor: pointer;
+}
+
+.ui-paginator .ui-paginator-current,
+.ui-paginator .ui-paginator-rpp-options {
+	margin-left: 1em;
+	margin-right: 1em;
+    background-image: none;
+}
+
+.ui-paginator .ui-paginator-next .ui-icon,
+.ui-paginator .ui-paginator-prev .ui-icon,
+.ui-paginator .ui-paginator-first .ui-icon,
+.ui-paginator .ui-paginator-last .ui-icon {
+	height: auto;
+	overflow: inherit;
+}
+
+.ui-paginator .ui-paginator-jtp-select option,
+.ui-paginator .ui-paginator-rpp-options option {
+    background-image: none;
+    border:0 none;
+    box-shadow:none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 35em) {
+    .ui-paginator .ui-paginator-pages {
+        display: none;
+    }
+}
+
+
+
+/* ************************************************** */
+my-app .main-panel .main-content .card{
+    animation-duration: 750ms;
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@media (min-width: 992px){
+    .typo-line{
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category{
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+
+#map{
+    position:relative;
+    width:100%;
+    height: calc(100% - 60px);
+    margin-top: 70px;
+}
+
+.places-buttons .btn{
+    margin-bottom: 30px
+}
+
+.space-70{
+    height: 70px;
+    display: block;
+}
+
+.sidebar .nav > li.active-pro{
+   /* position: absolute;*/
+    margin-top: 50%;
+    width: 100%;
+    bottom: 10px;
+}
+@media (max-width: 991px) {
+    .sidebar .nav > li.active-pro{
+        position: relative;
+        width: 100%;
+        bottom: 10px;
+    }
+    .sidebar .nav > li.active-pro > a{
+        margin-top: 20px;
+
+    }
+}
+
+.tim-row{
+    margin-bottom: 20px;
+}
+
+.tim-typo{
+    padding-left: 25%;
+    margin-bottom: 40px;
+    position: relative;
+}
+.tim-typo .tim-note{
+    bottom: 10px;
+    color: #c0c1c2;
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 13px;
+    left: 0;
+    margin-left: 20px;
+    position: absolute;
+    width: 260px;
+}
+.tim-row{
+    padding-top: 50px;
+}
+.tim-row h3{
+    margin-top: 0;
+}
