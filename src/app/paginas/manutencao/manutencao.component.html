@@ -1,0 +1,54 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Manutenções</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable [value]="cols" dataKey="id" [rows]="15" [paginator]="true" [pageLinks]="3" [stacked]="stacked" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[15,20,30,'todos']">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Nº Manut"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo_manu" header="Tipo"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data Planea."></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="linha" header="Linha">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']">
+                    {{car['linha']}}
+                  </div>
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="turno" header="Turno">
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="estado" header="Estado">
+              </p-column>
+              <p-column styleClass="col-button">
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/manutencao/view']" [queryParams]="{ id: car.id }">
+                  <i class="material-icons">search</i>
+                  </a>
+                  <a (click)="duplicar(car.id)" style="color: black; cursor:pointer;" title="Duplicar">
+                  <i class="material-icons">content_copy</i>
+                  </a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Duplicado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+
+
+<button type="button" [hidden]="true" #waitingDialog  class="btn btn-primary" onclick="waitingDialog.show('A Duplicar Registo', {dialogSize: 'md'});"></button>
+<button type="button" [hidden]="true" #waitingDialogclose  class="btn btn-primary" onclick="waitingDialog.hide();"></button>

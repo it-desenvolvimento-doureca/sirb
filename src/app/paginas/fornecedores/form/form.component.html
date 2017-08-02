@@ -1,0 +1,69 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Ficha de Fornecedor</h4>
+            <p class="category">Complete os Dados</p>
+          </div>
+          <div class="card-content">
+            <form id="formfornecedor" (ngSubmit)="gravar()" ngNativeValidate>
+              <div class="row">
+                <div class="col-md-5">
+                  <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
+                    <label class="control-label">Código Fornecedor</label>
+                    <input type="text" class="form-control" value="{{codigo}}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div [ngClass]="data == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Data Última Alteração</label>
+                    <input type="text" class="form-control" value="{{data}}" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div [ngClass]="num_fornecedor == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <div class="form-group form-black label-floating">
+                      <label class="control-label">Número Fornecedor</label>
+                      <p-dropdown [filter]="true" [ngClass]="class_numexiste" (onChange)="resetclass($event)" [options]="fornecedores_silver" [style]="{'width':'300px'}"
+                        [(ngModel)]="num_fornecedor" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+                    <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe">Número Fornecedor já existe! </span>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Nome Fornecedor</label>
+                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="true"
+                      required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div [ngClass]="obs == '' || obs == null ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Observações</label>
+                      <textarea class="form-control" rows="5" [disabled]="!modoedicao" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}"></textarea >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit"  class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

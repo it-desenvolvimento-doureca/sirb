@@ -1,0 +1,57 @@
+<style>
+  body {
+    background: white !important;
+  }
+</style>
+<div class="container">
+
+  <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+
+    <div class="row">
+      <div class="iconmelon">
+
+        <img src="assets/img/logo.png" />
+
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title text-center">LOGIN</div>
+      </div>
+
+      <div class="panel-body">
+        <div [hidden]="erro" class="alert alert-danger" style="margin-top: 10px;">
+          <strong>Login Falhou!</strong> Username ou Pasword incorretos!!
+        </div>
+
+        <form name="form" id="form" class="form-horizontal" (ngSubmit)="login()" ngNativeValidate>
+
+          <div class="input-group" style="padding-right: 22px;">
+            <span class="input-group-addon iconspan"><i class="glyphicon glyphicon-user"></i></span>
+            <input id="user" type="text" [(ngModel)]="user" [ngModelOptions]="{standalone: true}" class="form-control" name="user" value=""
+              placeholder="Utilizador" style="margin-top: 22px;" required>
+          </div>
+
+          <div class="input-group" style="padding-right: 22px;">
+            <span class="input-group-addon iconspan"><i class="glyphicon glyphicon-lock"></i></span>
+            <input id="password" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" name="password"
+              placeholder="Password" style="margin-top: 22px;"  required>
+          </div>
+
+          <div class="form-group">
+            <!-- Button -->
+            <div class="col-sm-12 controls">
+              
+              <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-log-in"></i> Log in</button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="particles"></div>

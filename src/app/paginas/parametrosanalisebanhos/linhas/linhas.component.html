@@ -1,0 +1,70 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Linhas</h4>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12">
+              <p-dataTable [style]="{'width':'600px'}" [value]="linhas" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelectlinha($event)"
+                [paginator]="true" rows="15">
+                <p-column [style]="{'width':'30px'}" field="nome" header="Nome Linha" [filter]="true" [sortable]="true"></p-column>
+                <p-column [style]="{'width':'30px'}" field="cor" header="Cor Linha" [sortable]="true">
+                  <ng-template pTemplate="body" let-col3 let-row3="rowData ">
+                    <p-colorPicker [(ngModel)]="row3[col3.field]" [ngModelOptions]="{standalone: true}" [disabled]="true"></p-colorPicker>
+                  </ng-template>
+                </p-column>
+                <p-footer>
+                  <a (click)="showDialogToAddlinhas()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                         <i class="material-icons">add</i> Adicionar
+                        </a>
+                </p-footer>
+              </p-dataTable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas" data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div class="modal fade" id="myModallinhas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Linhas
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravarlinhas()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nmlinha">Nome Linha</label>
+            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="nome_linha" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Nome da Linha"
+              required />
+          </div>
+          <div class="form-group">
+            <label>Cor Linha</label>
+            <p-colorPicker [(ngModel)]="cor_linha" [ngModelOptions]="{standalone: true}"></p-colorPicker>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialoglinha data-dismiss="modal">Fechar</button>
+          <button type="button" (click)="apagarlinhas()" [hidden]="novalinha" class="btn btn-danger" data-dismiss="modal">Remover</button>
+          <button type="submit"  class="btn btn-success ">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

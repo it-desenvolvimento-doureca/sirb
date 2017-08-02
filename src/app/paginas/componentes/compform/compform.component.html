@@ -1,0 +1,112 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Ficha do Componente/Aditivo</h4>
+          </div>
+          <div class="card-content">
+            <form id="formComponente" (ngSubmit)="gravar()" ngNativeValidate>
+              <div class="row">
+                <div class="col-md-2">
+                  <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
+                    <label class="control-label">Código</label>
+                    <input type="text" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div [ngClass]="data == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Data Última Alteração</label>
+                    <input type="text" class="form-control" value="{{data}}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-1" style="padding: 0px; margin-left: 51px;">
+                  <div class="checkbox" style="float: none; margin-top: 0px;">
+                    <input [disabled]="!modoedicao" type="checkbox" name="componete" id="radio5" [(ngModel)]="componente_check">
+                    <label for="radio5" style="color:black">
+                                    Componente
+                        </label>
+                  </div>
+                  <div class="checkbox" style="float: none; margin-left: 0px;">
+                    <input [disabled]="!modoedicao" type="checkbox" name="distribuicao" id="radio6" [(ngModel)]="aditivo_check">
+                    <label for="radio6" style="color:black">
+                                    Aditivo
+                        </label>
+                  </div>
+                </div>
+                <div class="col-md-6" style="padding: 0px;">
+                  <div class="col-md-6" style="padding: 0px;">
+                    <div class="form-group form-black label-floating">
+                      <label style="font-size: 14px;">Unidade Medição</label>
+                      <p-dropdown [filter]="true" [options]="medidas" [style]="{'width':'179px'}" [(ngModel)]="medidas_valor" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="padding: 0px;">
+                    <div class="form-group form-black label-floating">
+                      <label style="font-size: 14px;">Unidade Adição</label>
+                      <p-dropdown [filter]="true" [options]="medidas" [style]="{'width':'179px'}" [(ngModel)]="medidas_valor_adicao" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-12" style="padding: 0px;">
+                    <div class="form-group form-black label-floating">
+                      <label style="font-size: 14px;">Fornecedor Habitual</label>
+                      <p-dropdown [filter]="true" [options]="fornecedores" [style]="{'width':'65%'}"  [(ngModel)]="id_fornecedor" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" ></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="col-md-12" style="padding: 0px;">
+                    <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Nome</label>
+                      <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        required>
+                    </div>
+                  </div>
+                  <div class="col-md-12" style="padding: 12px 0px 0px;">
+                    <div class="col-md-6" style="padding: 0px;">
+                      <div [ngClass]="cod_ref == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                        <div class="form-group form-black label-floating">
+                          <label class="control-label">Código Referência</label>
+                          <p-dropdown [filter]="true" (onChange)="cod_refe($event)" [options]="componentes_silver" [style]="{'width':'300px'}" [(ngModel)]="cod_ref"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="padding: 0px;">
+                      <div [ngClass]="nome_ref == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                        <label class="control-label">Nome Referência</label>
+                        <input type="text" class="form-control" [(ngModel)]="nome_ref" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Observações</label>
+                      <textarea class="form-control" rows="4" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

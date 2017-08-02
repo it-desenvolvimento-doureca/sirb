@@ -1,0 +1,242 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Ficha de Banho</h4>
+            <p class="category">Complete os Dados</p>
+          </div>
+          <div class="card-content">
+            <form id="formBanho" (ngSubmit)="gravar()" ngNativeValidate>
+              <div class="row">
+                <div class="col-md-2">
+                  <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
+                    <label class="control-label">Código Banho</label>
+                    <input type="text" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div [ngClass]="data == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Data Última Alteração</label>
+                    <input type="text" class="form-control" value="{{data}}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class=" form-black label-floating" style="padding-top: 11px;">
+                    <label class="pull-left" style="font-size: 14px; color:black;">Estado (Ativo?)</label>
+                    <div class="material-switch pull-left">
+                      <input id="someSwitchOptionSuccess" type="checkbox" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      <label for="someSwitchOptionSuccess" class="label-success" style="margin-left: 24px;"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group form-black label-floating">
+                    <label style="font-size: 14px;">Linha</label>
+                    <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'150px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group form-black label-floating">
+                    <label style="font-size: 14px;">Zona</label>
+                    <p-dropdown [options]="zonas" [style]="{'width':'150px'}" [(ngModel)]="zona" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Nome Banho</label>
+                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                      required>
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="form-group form-black label-floating">
+                    <label style="font-size: 14px;">Nº da Tina</label>
+                    <p-dropdown [filter]="true" [options]="tinas" [style]="{'width':'150px'}" [(ngModel)]="tinas_valor" [ngModelOptions]="{standalone: true}"
+                      (onChange)="num_tina($event)" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    <span style="font-size: 12px; padding-right: 20px;"><b>CAP(LT):</b> {{capacidade_tina}}</span>
+                    <span style="font-size: 12px;"><b>OBS. TINA:</b> {{obs_tina}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Observações</label>
+                      <textarea class="form-control" rows="1" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="col-md-12" style="text-align: center;">
+                    <p-dropdown  [disabled]="novo" (onChange)="atualizarcomp($event)" [(ngModel)]="estado_comp" [ngModelOptions]="{standalone: true}"
+                      [options]="estados" [autoWidth]="false" [style]="{'width':'15%','float': 'left'}" [required]="true"></p-dropdown>
+                    <h3> Componentes do Banho </h3>
+                  </div>
+                  <p-dataTable [value]="banhos_comp" class="componentes">
+                    <p-column field="id_componente" header="COMPONENTES">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown [filter]="true" (onChange)="atualizardados(row['pos'],$event)" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}"
+                          [options]="componentes" [autoWidth]="false" [style]="{'width':'100%'}" [hidden]="!modoedicao" [required]="true"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_comp']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="qtd" header="QTD." [style]="{'width':'50px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 100%; text-align: center;" class="form-control" [(ngModel)]="row['qtd']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="id_unidade" header="UNID." [style]="{'width':'60px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown [filter]="true" [(ngModel)]="row['id_unidade']" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
+                          [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_unidade']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="id_FORNECEDOR" header="FORNECEDOR" [style]="{'width':'150px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="fornecedores" [autoWidth]="false"
+                          [style]="{'width':'100%','height': '36px'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-corner-all" [hidden]="modoedicao">{{row['nome_FORNECEDOR']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="data_ini" header="DATA ÍNICIO" [style]="{'width':'154px'}">
+                      <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                        <p-calendar [style]="{'width':'120px','float': 'left'}" (onInput)="verificadatas(row2[col2.field],row2['pos'])" (onSelect)="verificadatas(row2[col2.field],row2['pos'])"
+                          dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="row2['data_ini']"
+                          [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">
+                          {{row2[col2.field] | date: 'yyyy-MM-dd'}}
+                          </label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="data_fim" header="DATA FIM" [style]="{'width':'154px'}">
+                      <ng-template pTemplate="body" let-col3 let-row3="rowData ">
+                        <p-calendar [style]="{'width':'120px','float': 'left'}" (onInput)="verificadatafim(row3[col3.field],row3['data_ini'])" (onSelect)="verificadatafim(row3[col3.field],row3['data_ini'])"
+                          dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="row3['data_fim']"
+                          [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row3[col3.field] | date: 'yyyy-MM-dd'}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="limite_VERDE_INF" header="LIMI. INF" [style]="{'background':'#c5e0b4','width':'81px'}">
+                      <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                        <input style="height: 100%;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_INF']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="limite_VERDE_SUP" header="LIMI. SUP" [style]="{'background':'#c5e0b4','width':'85px'}">
+                      <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_SUP']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="limite_AMARELO_INF" header="LIMI. INF" [style]="{'background':'#ffe699','width':'81px'}">
+                      <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_INF']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="limite_AMARELO_SUP" header="LIMI. SUP" [style]="{'background':'#ffe699','width':'85px'}">
+                      <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_SUP']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="obs" header="OBS">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row['obs']" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'30px'}">
+                      <ng-template pTemplate="header">
+                      </ng-template>
+                      <ng-template let-car="rowData" pTemplate="body">
+                        <a (click)="apagarlinha(car['pos'],car['id_banho_comp'],car['id_banho'])" [ngClass]="!modoedicao ? 'not-active' : null" style="color: black; cursor:pointer;"
+                          title="Eliminar">
+                          <i class="material-icons">delete</i>
+                        </a>
+                      </ng-template>
+                    </p-column>
+                    <p-footer>
+                      <a (click)="novalinha()" [ngClass]="!modoedicao ? 'not-active' : null" style="color: black; cursor:pointer; margin-left:10px;"
+                        title="Adicionar nova linha">
+                         <i class="material-icons">playlist_add</i>
+                        </a>
+                    </p-footer>
+                  </p-dataTable>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="col-md-12" style="text-align: center;">
+                    <h3> Aditivos do Banho </h3>
+                  </div>
+                  <p-dataTable [value]="banhos_aditivos">
+                    <p-column field="ID_ADITIVO" header="ADITIVOS">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown (onChange)="preenche_unidades(row['pos'],row['ID_ADITIVO'])" [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}"
+                          [options]="aditivos" [autoWidth]="false" [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_aditivo']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="ID_UNIDADE1" header="UNIDADE 1">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
+                          [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['medida1']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="ID_UNIDADE2" header="UNIDADE 2">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
+                          [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['medida2']}}</label>
+                      </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button">
+                      <ng-template pTemplate="header">
+                      </ng-template>
+                      <ng-template let-car="rowData" pTemplate="body">
+                        <a (click)="apagarlinha_aditivo(car['pos'],car['ID_BANHO_ADITIVO'],car['id_banho'])" [ngClass]="!modoedicao ? 'not-active' : null"
+                          style="color: black; cursor:pointer;" title="Eliminar">
+                          <i class="material-icons">delete</i>
+                        </a>
+                      </ng-template>
+                    </p-column>
+                    <p-footer>
+                      <a (click)="novalinha_aditivo()" [ngClass]="!modoedicao ? 'not-active' : null" style="color: black; cursor:pointer; margin-left:10px;"
+                        title="Adicionar nova linha">
+                         <i class="material-icons">playlist_add</i>
+                        </a>
+                    </p-footer>
+                  </p-dataTable>
+                </div>
+              </div>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+
+<button #dialog data-toggle="modal" [hidden]="true" data-target="#dialog_novo_componente_banho"></button>
+<button #dialogavisodata data-toggle="modal" [hidden]="true" data-target="#aviso_datas"></button>
+<button #dialogavisodatafim data-toggle="modal" [hidden]="true" data-target="#aviso_datafim"></button>

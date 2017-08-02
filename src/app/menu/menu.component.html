@@ -1,0 +1,107 @@
+<div class="logo">
+    <a [routerLink]="['/home']" class="simple-text">
+        <div class="logo-img">
+            <img src="assets/img/logo.png" />
+        </div>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <div class="nav-container">
+        <div style="margin-top:20px">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/manutencao') || router.isActive('/registo') ||router.isActive('/fornecedor') || router.isActive('/tinas')|| router.isActive('/componentes')|| router.isActive('/banhos')
+                    || router.isActive('/operacoes') || router.isActive('/linhas') || router.isActive('/unidades')|| router.isActive('/zonas')|| router.isActive('/turnos') || router.isActive('/adicoes') || router.isActive('/manutencoes')">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-list-alt ">
+                            </span>Análise de Banhos</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li data-toggle="collapse" data-target="#movi" class="collapsed" [class.active]="router.isActive('/manutencao') || router.isActive('/registo')">
+                                            <a (click)="linha()">Movimentos <span class="arrow"></span></a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="movi">
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/registo']">Análises</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/manutencao']" href="#">Manutenções</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/registopara']" href="#">Reg. Parâm. de Operação</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li data-toggle="collapse" data-target="#tabelas" class="collapsed" [class.active]="router.isActive('/fornecedor') || router.isActive('/tinas')|| router.isActive('/componentes')||router.isActive('/banhos')">
+                                            <a (click)="linha()">Tabelas <span class="arrow"></span></a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="tabelas">
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/tinas']" href="#">Tinas</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/componentes']" href="#">Componentes</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/banhos']" href="#">Banhos</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/utilizadores']" href="#">Utilizadores</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/fornecedor']" href="#">Fornecedores</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li data-toggle="collapse" data-target="#parametros" class="collapsed" [class.active]="router.isActive('/operacoes') || router.isActive('/linhas') || router.isActive('/unidades')|| router.isActive('/zonas')|| router.isActive('/turnos') || router.isActive('/adicoes') || router.isActive('/manutencoes')">
+                                            <a>Parâmetros <span class="arrow"></span></a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametros">
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/linhas']" href="#">Linhas</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/unidades']" href="#">Unidades de Medida</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/zonas']" href="#">Zonas</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/turnos']" href="#">Turnos</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/adicoes']" href="#">Tipo Adição</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/manutencoes']" href="#">Tipo Manutenção</a></li>
+                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/operacoes']" href="#">Tipo Operação</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" [routerLinkActive]="['active']">
+                        <h4 class="panel-title">
+                            <a [routerLink]="['/config']" href="#"><span class="glyphicon glyphicon-cog">
+                            </span>Configurações</a>
+                        </h4>
+                    </div>
+
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/perfil')">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
+                            </span>Conta</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li [routerLinkActive]="['active']"><a [routerLink]="['/perfil/view']" href="#">Perfil</a></li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li><a (click)="logout()">Sair</a></li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalSElLinhas" ></button>

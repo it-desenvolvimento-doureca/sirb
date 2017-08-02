@@ -1,0 +1,32 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Componentes e Aditivos de controlo</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable [value]="cols" dataKey="id" [rows]="15" [paginator]="true" [pageLinks]="3" [stacked]="stacked" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[15,20,30,'todos']">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="ID"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nome" header="Nome"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo" header="Tipo"></p-column>
+               <p-column styleClass="col-button">
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/componentes/view']" [queryParams]="{ id: car.id }">
+                  <i class="material-icons">search</i>
+                  </a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

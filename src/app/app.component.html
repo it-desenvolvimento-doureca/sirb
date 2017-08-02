@@ -1,0 +1,134 @@
+<style>
+  body {
+    background: blue;
+  }
+</style>
+<div class="wrapper" [hidden]="!isMaps('login')">
+
+  <div class="sidebar" data-color='red' data-image="" [hidden]="!isMaps('login')">
+    <app-menu></app-menu>
+    <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div>
+  </div>
+
+  <div class="main-panel" *ngIf="isMaps('login')">
+    <app-cabecalho></app-cabecalho>
+
+    <router-cmp></router-cmp>
+    <app-rodape></app-rodape>
+
+  </div>
+</div>
+<div class="scrollup"></div>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<app-login *ngIf="!isMaps('login')"></app-login>
+<script src="assets/js/initMenu.js"></script>
+
+<div id="dialog_novo_componente_banho" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Data fim do último resgisto não está preenchida!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="aviso_datas" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Atenção! Existe uma Data Fim superior ou igual à data inserida!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="aviso_datafim" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Data Fim é inferior à Data Início!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="aviso_gravar" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width: 35%">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>É necessário guardar primeiro!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal sel. Linhas-->
+<div class="modal fade" id="myModalSElLinhas" role="dialog">
+  <div class="modal-dialog"  style="width: 35%">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Selecionar Linha
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="confirmar()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group form-black label-floating">
+            <label style="font-size: 14px;">Linha</label>
+            <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'100px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
+               ></p-dropdown>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success ">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

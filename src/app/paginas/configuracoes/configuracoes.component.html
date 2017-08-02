@@ -1,0 +1,139 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red" style="padding: 0px;">
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#menu2">Perfis</a></li>
+            </ul>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <!-- PERFIS -->
+                  <div id="menu2" class="tab-pane fade in active">
+                    <div class="col-md-4">
+                      <p-dataTable [style]="{'width':'300px'}" [value]="perfis" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)"
+                        [paginator]="true" rows="15">
+                        <p-column [style]="{'width':'30px'}" field="medida" header="Perfil" [filter]="true" [sortable]="true"></p-column>
+                        <p-footer>
+                          <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                         <i class="material-icons">add</i> Adicionar
+                        </a>
+                        </p-footer>
+                      </p-dataTable>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="acidjs-css3-treeview">
+                        <ul>
+                          <li>
+                            <input type="checkbox" id="node-0" checked="checked" /><label><input type="checkbox" /><span></span></label>
+                            <label for="node-0"><b>Análise de Banhos</b></label>
+                            <ul>
+                              <li>
+                                <input type="checkbox" id="node-0-0"  /><label><input type="checkbox" /><span></span></label>
+                                <label for="node-0-0">Movimentos</label>
+                                <ul>
+                                  <li>
+                                    <input type="checkbox" id="node-0-0-0" /><label><input type="checkbox"   [(ngModel)]="node000" [ngModelOptions]="{standalone: true}"/><span></span></label>
+                                    <label for="node-0-0-0">Análises</label>
+                                    <ul>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-0-0" /><label><input type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-0-0" class="editar">Editar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-0-1" /><label><input type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-0-1" class="remover">Apagar</label>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                                <ul>
+                                  <li>
+                                    <input type="checkbox" id="node-0-0-1"/><label><input type="checkbox"   [(ngModel)]="node001" [ngModelOptions]="{standalone: true}"/><span></span></label>
+                                    <label for="node-0-0-1">Manutenções</label>
+                                    <ul>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-1-0" /><label><input [(ngModel)]="node0010" [ngModelOptions]="{standalone: true}" type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-1-0">Editar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-1-1" /><label><input [(ngModel)]="node0011" [ngModelOptions]="{standalone: true}" type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-1-1">Apagar</label>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                                <ul>
+                                  <li>
+                                    <input type="checkbox" id="node-0-0-2" /><label><input type="checkbox"  checked="checked"/><span></span></label>
+                                    <label for="node-0-0-2">Reg. Parâmetros de Operação</label>
+                                    <ul>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-2-0" /><label><input type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-2-0">Editar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node-0-0-2-1" /><label><input type="checkbox" /><span></span></label>
+                                        <label for="node-0-0-2-1">Apagar</label>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </li>
+                              <li>
+                                <input type="checkbox" id="node-0-1" /><label><input type="checkbox" /><span></span></label>
+                                <label for="node-0-1">Tinas</label>
+                                <ul>
+                                  <li>
+                                    <input type="checkbox" id="node-0-1-0" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-1-0">Componentes</label>
+                                  </li>
+                                  <li>
+                                    <input type="checkbox" id="node-0-1-1" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-1-1">Banhos</label>
+                                  </li>
+                                  <li>
+                                    <input type="checkbox" id="node-0-1-2" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-1-2">Utilizadores</label>
+                                  </li>
+                                   <li>
+                                    <input type="checkbox" id="node-0-1-2" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-1-3">Fornecedres</label>
+                                  </li>
+                                </ul>
+
+                              </li>
+                              <li>
+                                <input type="checkbox" id="node-0-2" /><label><input type="checkbox" /><span></span></label>
+                                <label for="node-0-2">Parâmetros</label>
+                                <ul>
+                                  <li>
+                                    <input type="checkbox" id="node-0-2-0" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-2-0">My Pictures</label>
+                                  </li>
+                                  <li>
+                                    <input type="checkbox" id="node-0-2-1" /><label><input type="checkbox" /><span></span></label>
+                                    <label for="node-0-2-1">Public Pictures</label>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                      <p> </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
