@@ -1,0 +1,348 @@
+<app-controlos (anteriorbt)="anterior()" (duplicarbt)="duplicar()" (seguintebt)="seguinte()" (cancelarbt)="cancelar()"
+  (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Reclamações Fornecedor</h4>
+            <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado: <b>{{texto_estado}}</b>
+              <span *ngIf="data_FECHO != null">({{getResponsavel(utz_FECHO)}} - {{data_FECHO_texto}})</span></h5>
+            <button [disabled]="novo || disimprimir" title="Imprimir" type="button" style="color: black; float:right; margin-top: -19px;"
+              class="btn btn-white btn-round btn-just-icon btPT " (click)="imprimir('reclamacao_cliente8D_PT',numero_RECLAMACAO)">
+              <i class="material-icons">print</i>
+              <div class="ripple-container"></div>
+            </button>
+            <button [disabled]="novo || disimprimir" title="Imprimir" type="button" style="color: black; float:right; margin-top: -19px; "
+              class="btn btn-white btn-round btn-just-icon btFR" (click)="imprimir('reclamacao_cliente8D_FR',numero_RECLAMACAO)">
+              <i class="material-icons">print</i>
+              <div class="ripple-container"></div>
+            </button>
+            <button [disabled]="novo || disimprimir" title="Imprimir" type="button" style="color: black; float:right; margin-top: -19px; "
+              class="btn btn-white btn-round btn-just-icon btING" (click)="imprimir('reclamacao_cliente8D_ENG',numero_RECLAMACAO)">
+              <i class="material-icons">print</i>
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+                <p-panel header="DETALHES DA RECLAMAÇÃO" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Nº Reclamação Interna:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="numero_RECLAMACAO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-6 col-lg-1">
+                      <label>Nº de Recl.:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="numero_RECLAMACAO_CLIENTE"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-2">
+                      <label style="display: -webkit-box;">Data Registo:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'55%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:38%; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_CRIA"
+                        [ngModelOptions]="{standalone: true}" type="time" class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label style="display: -webkit-box;">Data Reclamação:</label>
+                      <p-calendar [disabled]="!modoedicao"  [style]="{'height':'25px','width':'50%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_RECLAMACAO" [ngModelOptions]="{standalone: true}" [showIcon]="true"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="!modoedicao" style="width:72px; margin-left:29px; padding: 5px 4px;height: 25px;"
+                         [(ngModel)]="hora_RECLAMACAO" [ngModelOptions]="{standalone: true}"
+                        type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Utilizador de Registo:</label>
+                      <p-dropdown [filter]="true" [options]="drop_utilizadores2" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="utz_CRIA" [ngModelOptions]="{standalone: true}" [disabled]="true" [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Responsável:</label>
+                      <p-dropdown [filter]="true" [options]="drop_utilizadores2" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="utz_RESPONSAVEL" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+
+                  </div>
+                </p-panel>
+                <p-panel header="DADOS DO FORNECEDOR" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Fornecedor:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropc (onChange)="getMoradas(dropc.value.id)" [options]="drop_cliente"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="cliente"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Morada Fornecedor:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropa (onChange)="getArtigos(dropa.value.id)" [options]="drop_moradas"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="morada_CLIENTE"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_moradas.length > 0)"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Contacto do Fornecedor:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="contato_CLIENTE"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Email:</label>
+                      <input [disabled]="!modoedicao" type="email" class="form-control2" [(ngModel)]="email_CLIENTE"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <label>Telefone:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="telefone_CLIENTE"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </p-panel>
+
+                <p-panel header="DADOS DA REFERÊNCIA" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Referência:</label>
+                      <p-dropdown [filter]="true" (onChange)="alteraReferencia($event)" [options]="drop_referencia"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="referencia"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_referencia.length > 0)"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Designação:</label>
+                      <input [disabled]="!modoedicao || !(drop_referencia.length > 0)" type="text" class="form-control2"
+                        [(ngModel)]="designacao_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Data Recepção entre</label>
+                      <input [disabled]="!modoedicao || !(drop_referencia.length > 0)" type="text" class="form-control2"
+                        [(ngModel)]="designacao_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>e</label>
+                      <input [disabled]="!modoedicao || !(drop_referencia.length > 0)" type="text" class="form-control2"
+                        [(ngModel)]="designacao_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-3">
+                      <!--<label>Número Lote:</label>-->
+                      <p-selectButton [disabled]="!modoedicao" [options]="types" [style]="{'position':'absolute','top':'-1px'}"
+                        [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}">
+                      </p-selectButton>
+                      <br>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="lote"
+                        [ngModelOptions]="{standalone: true}" style="margin-top: 5px; width: 67%; float: left; border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
+                      <div class="input-group-prepend">
+                        <button [disabled]="lote == '' || lote == null || !modoedicao" title="Validar" type="button"
+                          (click)="validar()" [ngClass]="{'btn-success': errovalida == '','btn-danger': errovalida != ''}"
+                          class="btn  btn-sm" id="plus-btn" style="float: left; width: 16%; margin: 5px 0 0 0; height: 25px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
+                          <i [hidden]="validaloading || errovalida != ''" class="fa fa-check"></i>
+                          <i [hidden]="validaloading || errovalida == ''" class="fa fa-close"></i>
+                          <i [hidden]="!validaloading" class="fa fa-spinner fa-spin"></i>
+                        </button>
+                        <button [disabled]="lote == '' || lote == null" title="Consultar Lotes" type="button" (click)="consulta()"
+                          class="btn btn-sm" id="plus-btn" style="float: left; width: 16%; margin: 5px 0 0 0; height: 25px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
+                          <i class="fa fa-area-chart"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Ícons Consultas -->
+                    <div style="padding: 2px 5px 1px 10px;" class="form-group col-md-4 col-lg-2">
+                      <div class="input-group-prepend">
+                        <button (click)="verconsultaEncomendado(null,true)" [disabled]="referencia == null || referencia == ''"
+                          type="button" class="btn btn-sm" title="Encomendas" id="plus-btn1" style="padding: 0; float: left; width: 16%; margin: 25px 5px 0 0; height: 25px; ">
+                          <i class="fa fa-shopping-cart"></i>
+                        </button>
+                        <button (click)="verconsultaEnvios()" [disabled]="referencia == null || referencia == ''" type="button"
+                          class="btn btn-sm" title="Envios" id="plus-btn2" style="padding: 0; float: left; width: 16%; margin: 25px 5px 0 0; height: 25px;">
+                          <i class="fa fa-truck"></i>
+                        </button>
+                        <button (click)="verconsultaPlaneado()" [disabled]="referencia == null || referencia == ''"
+                          type="button" class="btn btn-sm" title="Planeado" id="plus-btn3" style="padding: 0; float: left; width: 16%; margin: 25px 5px 0 0; height: 25px;">
+                          <i class="fa fa-tasks"></i>
+                        </button>
+                        <button (click)="verconsultaStock(null,true)" [disabled]="referencia == null || referencia == ''"
+                          type="button" class="btn btn-sm" title="Stock" id="plus-btn4" style="padding: 0; float: left; width: 16%; margin: 25px 5px 0 0; height: 25px;">
+                          <i class="fa fa-cubes"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </p-panel>
+                <p-panel header="DETALHE DO INCIDENTE" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+
+                    <div style="padding: 3px 5px 4px 10px;" class="form-group col-md-3 col-lg-2">
+                      <label for="">Recepção:</label>
+                      <div class="ui-g-12" style="float: left;">
+                        <p-checkbox [disabled]="!modoedicao" binary="true" [(ngModel)]="devolucao" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </div>
+                    </div>
+                    <div style="padding: 3px 5px 4px 10px;" class="form-group col-md-3 col-lg-2">
+                      <label for="">Processo:</label>
+                      <div class="ui-g-12" style="float: left;">
+                        <p-checkbox [disabled]="!modoedicao" binary="true" [(ngModel)]="devolucao" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </div>
+                    </div>
+                    <div style="padding: 3px 5px 4px 10px;" class="form-group col-md-3 col-lg-2">
+                      <label for="">Cliente:</label>
+                      <div class="ui-g-12" style="float: left;">
+                        <p-checkbox [disabled]="!modoedicao" binary="true" [(ngModel)]="devolucao" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </div>
+                    </div>
+                    <div style="padding: 3px 5px 4px 10px;" class="form-group col-md-3 col-lg-2">
+                      <label for="">Outros:</label>
+                      <div class="ui-g-12" style="float: left;">
+                        <p-checkbox [disabled]="!modoedicao" binary="true" [(ngModel)]="devolucao" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </div>
+                    </div>
+                    <div style="padding: 3px 5px 4px 10px;" class="form-group col-md-3 col-lg-4">
+                      <label for="">8D FORNECDOR</label>
+
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Quantidade:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="designacao_REF"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; width: 168px;" class="form-group col-lg-2">
+                      <label>Problema Repetido?</label>
+                      <p-toggleButton [disabled]="!modoedicao" [ngModelOptions]="{standalone: true}" [(ngModel)]="problema_REPETIDO"
+                        onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'55px'}"></p-toggleButton>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-3">
+                      <label>Nº Reclamação:</label>
+                      <br>
+                      <p-dropdown [filter]="true" [options]="drop_numero_reclamacao" [style]="{'width':'100%'}"
+                        [(ngModel)]="numero_RECLAMACAO_REPETIDA" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !problema_REPETIDO"
+                        [required]="true"></p-dropdown>
+                    </div>
+                  </div>
+                </p-panel>
+                <p-panel header="DESCRIÇÃO DO INCIDENTE" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%; max-width: 100%; min-width: 100%;">
+                    <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="descricao_PROBLEMA" class="form-control2"
+                      [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
+                  </div>
+                </p-panel>
+                <p-panel header="OBSERVAÇÕES" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%; max-width: 100%; min-width: 100%;">
+                    <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="descricao_PROBLEMA" class="form-control2"
+                      [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
+                  </div>
+                </p-panel>
+                <p-panel header="DECISÃO" [toggleable]="false" [style]="{'margin-bottom':'20px','width':'50%','float':'left'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="ui-g-12" style="float: left;">
+                      <div class="ui-g-12" style="float: left;     display: contents;">
+                        <p-radioButton [disabled]="!modoedicao" name="group3" value="devolucao" label="Devolução"
+                          [(ngModel)]="responsabilidade_ATRASO3"></p-radioButton>
+                      </div><br>
+                      <div class="ui-g-12" style="float: left;">
+                        <p-radioButton [disabled]="!modoedicao" name="group3" value="aceitacao" label="Aceitação Condicional"
+                          [(ngModel)]="responsabilidade_ATRASO3"></p-radioButton>
+                      </div><br>
+                      <div class="ui-g-12" style="float: left; ">
+                        <p-radioButton [disabled]="!modoedicao" name="group3" value="seleccao" label="Seleção/Recuperação na Doureca com Cargo ao Fornecedor"
+                          [(ngModel)]="responsabilidade_ATRASO3"></p-radioButton>
+                      </div><br>
+                    </div>
+                  </div>
+                </p-panel>
+                <p-panel header="SEGUIMENTO" [toggleable]="false" [style]="{'margin-bottom':'20px','width':'50%','float':'left'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px; display: block;" class="form-group col-lg-3">
+                      <label style="float: left; margin-right: 11px; padding: 4px 0px 0px 0px;">Resposta?</label>
+                      <p-toggleButton [disabled]="!modoedicao" [ngModelOptions]="{standalone: true}" [(ngModel)]="problema_REPETIDO"
+                        onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'55px','float':'left'}"></p-toggleButton>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px; display: block;" class="form-group col-lg-3">
+                      <label style="float: left; margin-right: 11px; padding: 4px 0px 0px 0px;">Encerrada?</label>
+                      <p-toggleButton [disabled]="!modoedicao" [ngModelOptions]="{standalone: true}" [(ngModel)]="problema_REPETIDO"
+                        onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'55px','float':'left'}"></p-toggleButton>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-6">
+                      <label style="display: -webkit-box;">Data de Encerramento:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'55%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:38%; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_CRIA"
+                        [ngModelOptions]="{standalone: true}" type="time" class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+                  </div>
+                </p-panel>
+              </div>
+
+
+              <button type="button" (click)="btconcluir()" class="btn btn-success pull-left" [hidden]="novo || !modoedicao || reclamacao_ENCERRADA">Concluir</button>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
+              <button type="button" (click)="btgravar()" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true" onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <h6>{{errovalida}}</h6>
+  </div>
+</p-dialog>
+
+<p-dialog [header]="nomeficheiro" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Your
+      browser does not support the audio element.</audio>
+    <iframe *ngIf="(type == 'pdf' || type == 'txt')  && display" class="embed-responsive-item" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;"
+      [src]="srcelement" type="application/pdf" scale="aspect" frameborder="0"></iframe>
+    <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
+    <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Video
+      format or MIME type is not supported</video>
+  </div>
+</p-dialog>

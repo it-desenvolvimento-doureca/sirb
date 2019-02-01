@@ -1,0 +1,248 @@
+<div class="col-md-12">
+    <div class="col-md-12" style="padding:0px">
+      <div class="card-header" data-background-color="orange">
+        <div class="nav-tabs-navigation">
+          <div class="nav-tabs-wrapper">
+            <ul class="nav nav-tabs" style="background:black">
+              <li>
+                <p-dropdown [style]="{'width':'200px','background':'white','margin-top':'6px'}" [(ngModel)]="num_vista" [options]="config"
+                  (onChange)="configuracoes($event)" filter="true"></p-dropdown>
+              </li>
+              <li style="float: right;">
+                <a (click)="createRowData(false,true)">
+                  <i class="material-icons">autorenew</i>Atualizar
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li style="float: right;">
+                <a (click)="onBtExport()">
+                  <i class="material-icons">import_export</i>Exportar para Excel
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li style="float: right;">
+                <a (click)="imprimir()">
+                  <i class="material-icons">print</i>Imprimir
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li>
+                <a (click)="gravarState()" [class.disabled]="disGravar">
+                  <i class="material-icons">save</i>Gravar Vista
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li>
+                <a (click)="newState()" [class.disabled]="disCriar">
+                  <i class="material-icons">create_new_folder</i>Nova Vista
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li>
+                <a (click)="editState()" [class.disabled]="disEditar">
+                  <i class="material-icons">mode_edit</i>Editar Vista
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li>
+                <a (click)="restoreState()">
+                  <i class="material-icons">restore</i>Restaurar Vista
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li>
+                <a (click)="resetState()">
+                  <i class="material-icons">refresh</i>Reset Vista
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header" data-background-color="red">
+              <h4 class="title">GRID</h4>
+              <p class="category"></p>
+            </div>
+            <div class="card-content table-responsive">
+  
+            </div>
+            <div style="width: 100%;">
+  
+              <div *ngIf="showGrid">
+  
+                <div style="margin-top: 11px;margin-bottom: 19px;" class="col-md-12">
+                  <form (ngSubmit)="createRowData(false,true)" ngNativeValidate>
+  
+                    <!-- <button (click)="gridOptions.api.selectAll()">Seleccionar Tudo</button>
+                      <button (click)="gridOptions.api.deselectAll()">Remover Selecção</button>
+                       <label>
+                        <input type="checkbox" (change)="showToolPanel=$event.target.checked" /> Show Tool Panel
+                      </label>
+                      <button (click)="createRowData()">Atualizar Gráfico</button>-->
+  
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Data Preparação maior que:</b>
+                      <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaa-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                        [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="DATA_PLANEAMENTO2" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true"></p-calendar>
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Data Preparação menor que:</b>
+                      <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaaa-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                        [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="DATA_PLANEAMENTO" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true"></p-calendar>
+                    </div>
+                    <div class="col-md-3" style="padding: 0; width: 14%;">
+                      <b>Número da Semana</b>
+                      <p-multiSelect [(ngModel)]="numerosemana" [ngModelOptions]="{standalone: true}" [options]="numerosemanas" [style]="{'width':'96%','height':'27px','padding':'3px 0px 0px 7px'}"
+                        styleClass="ui-column-filter"></p-multiSelect>
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Data Prevista maior que:</b>
+                      <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaaa-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                        [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="DATA_PREVISTA2" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true"></p-calendar>
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Data Prevista menor que:</b>
+                      <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaaa-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                        [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="DATA_PREVISTA" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true"></p-calendar>
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Referência</b>
+                      <input type="text" style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                        class="form-control" [(ngModel)]="NOME_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Código Ref.</b>
+                      <input type="text" style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                        class="form-control" [(ngModel)]="COD_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%;">
+                      <b>Nome Aditivo</b>
+                      <input type="text" style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                        class="form-control" [(ngModel)]="NOME_COMPONENTE" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-md-3" style="padding: 0; width: 14%;">
+                      <b>Estado</b>
+                      <p-multiSelect [(ngModel)]="estado" [ngModelOptions]="{standalone: true}" [options]="estados" [style]="{'width':'96%','height':'27px'}"
+                        styleClass="ui-column-filter"></p-multiSelect>
+                    </div>
+                    <div class="col-md-3" style="padding: 0; width: 14%;">
+                      <b>Manutenção</b>
+                      <p-dropdown [(ngModel)]="classif" [ngModelOptions]="{standalone: true}" #dd [options]="classifs" [style]="{'width':'96%','height':'27px'}"
+                        filter="true"></p-dropdown>
+                    </div>
+                    <div class="col-md-3" style="padding: 0; width: 14%;">
+                      <b>Tipo</b>
+                      <p-dropdown [(ngModel)]="ID_TIPO_MANUTENCAO" [ngModelOptions]="{standalone: true}" #dd [options]="tipos" [style]="{'width':'96%','height':'27px'}"
+                        filter="true"></p-dropdown>
+                    </div>
+                    <div class="col-md-2" style="padding: 0; width: 14%; text-align: -webkit-right;">
+                      <button pButton type="submit" label="APLICAR" iconPos="left" style="width: 60%; height: 89%; margin-top: 20px;"></button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-1" style="width: 3%;">
+                    <p-checkbox [(ngModel)]="select_table" (onChange)="selecttable()" binary="true"></p-checkbox>
+                  </div>
+                  <div class="col-md-2">
+                    <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput" placeholder="Pesquisar..." style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                      class="form-control">
+                  </div>
+                  <div class="col-md-2">
+                    Por página:
+                    <p-dropdown [(ngModel)]="page_size" #dd [options]="paginasize" (onChange)="onPageSizeChanged($event)" filter="true"></p-dropdown>
+                  </div>
+                  <div class="col-md-7">
+                    <div>
+                      <ul class="pager" style="margin: 0px; width: 509px;">
+                        <li class="previous">
+                          <a (click)="onBtFirst()">
+                            << Primeira</a>
+                        </li>
+                        <li class="previous">
+                          <a (click)="onBtPrevious()">
+                            < Anterior</a>
+                        </li>
+                        <span style="top: 7px; position: relative;">Página
+                          <span class="value" id="lbCurrentPage">-</span> de
+                          <span class="value" id="lbTotalPages">-</span>
+                        </span>
+                        <li class="next">
+                          <a (click)="onBtLast()" [class.disabled]="ultimodisable">Última >> </a>
+                        </li>
+                        <li class="next">
+                          <a (click)="onBtNext()">Seguinte > </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <label style="position: absolute; top: 0; right: 0; color: black;">
+                      <input type="checkbox" checked (change)="showToolPanel=$event.target.checked" /> Mostrar painel de ferramentas
+                    </label>
+                  </div>
+                </div>
+  
+                <div style="clear: both;"></div>
+                <div style="padding: 4px;" class="toolbar">
+  
+                </div>
+                <div style="clear: both;"></div>
+  
+                <ag-grid-angular style="width: 100%; height: 100%; min-height: 100px;" [domLayout]="domLayout" class="ag-fresh" [gridOptions]="gridOptions"
+                  [columnDefs]="columnDefs" [showToolPanel]="showToolPanel" [rowData]="rowData" enableColResize [enableSorting]="true"
+                  enableFilter groupHeaders rowHeight="22" rowSelection="multiple" (modelUpdated)="onModelUpdated()" (cellClicked)="onCellClicked($event)"
+                  (cellDoubleClicked)="onCellDoubleClicked($event)" (cellContextMenu)="onCellContextMenu($event)" (cellValueChanged)="onCellValueChanged($event)"
+                  (cellFocused)="onCellFocused($event)" (rowSelected)="onRowSelected($event)" (selectionChanged)="onSelectionChanged()"
+                  [pagination]="true" (beforeFilterChanged)="onBeforeFilterChanged()" (afterFilterChanged)="onAfterFilterChanged()"
+                  (filterModified)="onFilterModified()" (beforeSortChanged)="onBeforeSortChanged()" (afterSortChanged)="onAfterSortChanged()"
+                  (virtualRowRemoved)="onVirtualRowRemoved($event)" (rowClicked)="onRowClicked($event)" (gridReady)="onReady($event)"
+                  (columnEverythingChanged)="onColumnEvent($event)" (columnRowGroupChanged)="onColumnEvent($event)" (columnValueChanged)="onColumnEvent($event)"
+                  (columnMoved)="onColumnEvent($event)" (columnVisible)="onColumnEvent($event)" (columnGroupOpened)="onColumnEvent($event)"
+                  [overlayLoadingTemplate]="overlayLoadingTemplate" (columnResized)="onColumnEvent($event)" (columnPinnedCountChanged)="onColumnEvent($event)"
+                  (paginationChanged)="onPaginationChanged($event)">
+                </ag-grid-angular>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="imprimirtabela" style="display: none;">
+    <table border="1" class="table table-striped imprimirtab">
+      <tr *ngFor="let x of csvData">
+        <td *ngFor="let y of x">{{ y }}</td>
+      </tr>
+    </table>
+  </div>
+  
+  <!--- popup gravar VISTA -->
+  
+  <p-dialog header="Vista Nova/Editar" [(visible)]="displayVista" [draggable]="false" modal="modal" [responsive]="true">
+    <form role="form" ngNativeValidate (ngSubmit)="saveState()">
+      <div class="col-md-12" style="text-align: center;">
+        <div class="form-group form-black label-floating">
+          <p style="font-size: 14px;">Descrição Vista</p>
+          <input type="text" [(ngModel)]="texto_vista" [ngModelOptions]="{standalone: true}" class="" id="usr" required>
+        </div>
+      </div>
+      <p-footer>
+        <div class="col-md-12" style="text-align: center; margin-top: 10px;">
+          <button type="submit" pButton icon="fa-check" label="Gravar"></button>
+          <button type="button" pButton icon="fa-close" (click)="displayVista=false" label="Cancelar"></button>
+          <button type="button" pButton icon="fa-trash" [hidden]="novo" class="ui-button-danger" (click)="remover()" label="Remover"></button>
+        </div>
+      </p-footer>
+    </form>
+  </p-dialog>

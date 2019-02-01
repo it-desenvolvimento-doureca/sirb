@@ -1,0 +1,117 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Equipamentos</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content" style="padding-top: 0;">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+                      <h5 style="margin: 0; font-weight: 450;">GERAL</h5>
+                      <hr style="margin: 0px 0 7px 0; border:2; border-top: 2px solid #d5d3d3;" />
+                      <div class="form-group col-md-9" style="padding: 0px 0 0 0;">
+                        <div class="form-group col-md-6" style="padding: 0px 18px 0 0;">
+                          <label for="id">ID:</label>
+                          <input [disabled]="!modoedicao" type="text" class="form-control" id="id" [(ngModel)]="id" [ngModelOptions]="{standalone: true}"
+                            required style="padding: 0; height: 25px;" />
+                        </div>
+                        <div class="form-group col-md-6" style="padding: 0px 18px 0 0;">
+                          <label for="stock">Stock:</label>
+                          <input [disabled]="!modoedicao" type="text" class="form-control" id="stock" [(ngModel)]="stock" [ngModelOptions]="{standalone: true}"
+                            required style="padding: 0; height: 25px;" />
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px 18px 0 0;">
+                          <label for="nome">Nome:</label>
+                          <input [disabled]="!modoedicao" type="text" class="form-control" id="nome" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+                            required style="padding: 0; height: 25px;" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px;">
+                        <input type='file' accept="image/*" #file (change)="readUrl($event)" style="display:none">
+                        <div class="img-responsive" style="text-align: -webkit-center;">
+                          <img *ngIf="url != '' && url != null" [src]="url" style="min-height: 118px; cursor: pointer; max-width: 100%; height: 100%;">
+                          <img *ngIf="url == '' || url == null" [src]="url2" style="min-height: 118px; cursor: pointer; max-width: 100%; height: 100%;">
+                        </div>
+                        <div class="cn">
+                          <div class="inner">
+                            <a *ngIf="url != '' && url != null" data-toggle="modal" data-target="#myModal" data-backdrop="false" data-keyboard="true">
+                              <i class="material-icons" style="color: white; font-size: 38px; cursor: pointer;">zoom_in</i>
+                            </a>
+                            <a (click)="file.click()">
+                              <i class="material-icons" style="color: white; font-size: 38px; cursor: pointer;">cloud_upload</i>
+                            </a>
+                            <a *ngIf="url != '' && url != null" (click)="url = ''">
+                              <i class="material-icons" style="color: white; font-size: 38px; cursor: pointer;">close</i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12 " style="padding: 0px; margin-bottom: 10px;">
+                        <h5 style="margin: 0; font-weight: 450;">RISCOS</h5>
+                        <hr style="margin: 0px 0 7px 0; border:2; border-top: 2px solid #d5d3d3;" />
+
+                        <div class="col-md-1" style="padding: 0px" *ngFor="let item of riscos">
+                          <p-checkbox name="groupname" label="{{item.label}}" value="{{item.id}}" [(ngModel)]="selectedValues"></p-checkbox>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12 " style="padding: 0px">
+                        <h5 style="margin: 0; font-weight: 450;">CATEGORIAS</h5>
+                        <hr style="margin: 0px 0 7px 0; border:2; border-top: 2px solid #d5d3d3;" />
+
+                        <p-orderList [value]="cars" [listStyle]="{'height':'250px'}" [responsive]="true" (onReorder)="onReorder($event)" dragdrop="true"
+                          dragdropScope="cars">
+                          <ng-template let-car pTemplate="item">
+                            <div class="ui-helper-clearfix" style="display: flex;">
+                              <i class="material-icons" style="float: left; margin-left: 5px; margin-top: 4px;">open_with</i>
+                              <input autocomplete="off" type="text" style="float: left; width: 100%; margin-left: 10px; margin-right: 10px; background: white; text-align: center; height: 31px; border-radius: 0.25em !important; border: 1px solid rgba(0, 0, 0, 0.15) !important;"
+                                [(ngModel)]="car.label" [ngModelOptions]="{standalone: true}">
+                              <i class="material-icons" style="float: left; margin-right: 5px; margin-top: 4px;">delete</i>
+                              <!--<div style="font-size:14px;margin:15px 5px 0 0">{{car.id}} - {{car.label}}</div>-->
+                            </div>
+                          </ng-template>
+                        </p-orderList>
+
+
+                      </div>
+
+                      <div class="col-md-12" style="text-align: center;">
+                        <button [hidden]="!modoedicao" (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                        <button [hidden]="!modoedicao" id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="background: #8080808f; padding-left: 0px;">
+  <div class="modal-dialog" style="text-align: -webkit-center;">
+    <!-- Modal content-->
+    <button type="button" class="close" data-dismiss="modal" #btfechar>
+      <span aria-hidden="true" style="color: black; font-size: 40px; position: absolute; right: 9px;">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <img *ngIf="url != '' && url != null" class="img-responsive1" style="max-width: 100%; max-height: 89vh; min-width: 50%; background: white;"
+      [src]="url">
+  </div>
+</div>
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Alterado!',4)"></button>

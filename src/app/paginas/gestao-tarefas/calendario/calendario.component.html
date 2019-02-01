@@ -1,0 +1,84 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content" id="mainpagecontent">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Calendário Tarefas</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+            <p-schedule #fc (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm' 
+              (onDayClick)="adiciona($event);" [events]="events" [header]="header" locale="es" [contentHeight]="400" locale="pt"
+              [editable]="true"></p-schedule>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-primary btn-lg" #abrirpopup data-toggle="modal" [hidden]="true" data-target="#modalcalendario" data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div style="background: #05020263;" class="modal fade" id="modalcalendario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modalcalendariocontent">
+      <!-- Modal Header -->
+      <div class="modal-header" style="text-align: center;">
+        <button type="button" class="close" data-dismiss="modal">
+          <span style="font-size: 30px;" aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Evento
+        </h4>
+        <b>{{titulo_evento}}</b>
+      </div>
+      <!-- Modal Body -->
+      <div class="" style="max-height: 80vh; overflow-y: overlay; padding: 0px 5px 0px 5px">
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Data Início</p>
+              <p-calendar [style]="{'width':'60%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                [(ngModel)]="data_inicio" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+              <input  style="width:75px; margin-left:22px; padding: 5px 4px;height: 31px;" [(ngModel)]="hora_inicio"
+                [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Prioridade</p>
+              <p-dropdown [style]="{'width':'100%'}" 
+                [required]="true"></p-dropdown>
+            </div>
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Data Limite</p>
+              <p-calendar [style]="{'width':'60%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                [(ngModel)]="data_fim" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+              <input style="width:75px; margin-left:22px; padding: 5px 4px;height: 31px;" [(ngModel)]="hora_fim"
+                [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Tempo Estimado (horas)</p>
+              <input type="text" class="form-control" id="usr">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-danger" #fecharpopup data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-success">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

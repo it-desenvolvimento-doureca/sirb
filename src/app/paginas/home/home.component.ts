@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { RelatoriosService } from "app/servicos/relatorios.service";
 import { Message } from "primeng/primeng";
+import { webUrl } from 'assets/config/webUrl';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +9,32 @@ import { Message } from "primeng/primeng";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  mod_prod: any;
   data3 = null;
   data2 = null;
   data: any;
   data1: any;
   constructor(private elementRef: ElementRef) {
 
+    if (document.getElementById("script1")) document.getElementById("script1").remove();
+    var script1 = document.createElement("script");
+    script1.setAttribute("id", "script1");
+    script1.setAttribute("src", "assets/js/jqbtk.js");
+    document.body.appendChild(script1);
+  }
+
+  ngOnInit() {
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/initMenu.js";
+    this.elementRef.nativeElement.appendChild(s);
+    this.mod_prod = webUrl.mod_pro;
+
+    if (!this.mod_prod) this.carregagraficos();
+
+  }
+
+  carregagraficos() {
     this.data = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
@@ -93,15 +114,6 @@ export class HomeComponent implements OnInit {
         "Blue"
       ]
     };
-  }
-
-  ngOnInit() {
-    var s = document.createElement("script");
-    s.type = "text/javascript";
-    s.src = "assets/js/initMenu.js";
-    this.elementRef.nativeElement.appendChild(s);
-
-
   }
 
 }

@@ -46,7 +46,16 @@ export class TinasformComponent implements OnInit {
     this.globalVar.seteditar(true);
     this.globalVar.setseguinte(true);
     this.globalVar.setanterior(true);
-    this.globalVar.setpesquisar(true);
+    this.globalVar.setatualizar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+    
+
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010apagar"));
+    this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010duplicar"));
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
@@ -86,7 +95,7 @@ export class TinasformComponent implements OnInit {
         this.linhas = [];
         this.linhas.push({ label: 'Seleccione Linha', value: "" });
         for (var x in response) {
-          this.linhas.push({ label: response[x].nome_LINHA, value: response[x].id_LINHA });
+          this.linhas.push({ label: response[x].nome_LINHA, value: response[x].id_LINHA, cor: response[x].cor });
         }
         this.linha = this.globalVar.getlinha();
         this.linhas = this.linhas.slice();
@@ -142,7 +151,7 @@ export class TinasformComponent implements OnInit {
             this.tinas_dados = response[0][0];
             for (var x in response) {
               this.codigo = response[x][0].cod_TINA;
-              this.data = new Date(response[x][0].data_ULT_MODIF).toLocaleDateString();
+              this.data = this.formatDate(response[x][0].data_ULT_MODIF);
               this.capacidade = response[x][0].capacidade;
               this.linha = response[x][0].id_LINHA;
               this.zona = response[x][0].id_ZONA;
@@ -273,6 +282,34 @@ export class TinasformComponent implements OnInit {
     let event = new MouseEvent('click', { bubbles: true });
     this.renderer.invokeElementMethod(
       element.nativeElement, 'dispatchEvent', [event]);
+  }
+
+  //só deixa introduzir numeros no código tina
+  mascara(event) {
+   /* if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode == 45) {
+      return true;
+    } else {
+      return false
+    }*/
+  }
+
+  alteracorlinha(event) {
+    if (event.value != null) {
+      this.cor_linha = this.linhas.find(item => item.value == event.value).cor;
+    }
+  }
+
+  //formatar a data para yyyy-mm-dd
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
 }

@@ -3,14 +3,54 @@
     background: blue;
   }
 </style>
+<div *ngIf="semInternet">
+  <i class="fa fa-3x fa-wifi blink" style="color:red; position: fixed; z-index: 1035"></i>
+  <i class="fa fa-3x fa-exclamation blink" style="position: fixed; z-index: 1035; color: black; left: 18px;font-size: 35px;"></i>
+</div>
 <div class="wrapper" [hidden]="!isMaps('login')">
 
   <div class="sidebar" data-color='red' data-image="" [hidden]="!isMaps('login')">
-    <app-menu></app-menu>
-    <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div>
+    <app-menu *ngIf="isMaps('login')"></app-menu>
+    <div class="sidebar-background" style="background-image: url(assets/img/sidebar-4.jpg)"></div>
   </div>
 
   <div class="main-panel" *ngIf="isMaps('login')">
+    <div id="toptexttop" class="top_text" style="color:black; position: sticky; top: 0; z-index: 1041; background: #eeeeee; -webkit-ruby-position: before; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+      <nav class="navbar navbar-transparent navbar-absolute gradient" style="padding-top: 3px; height: 100%;">
+        <div class="container-fluid" style="position: relative">
+          <div class="col-md-12">
+            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12" style=" margin: auto; padding: 0;">
+              <div style="float: left; width: 204px;">
+                <img src="assets/img/logo.png" style="max-height:42px;" />
+              </div>
+              <div class="versao" style="display: -webkit-inline-box; margin-left: 5px; margin-top: 11px; color: black;">
+                <span>
+                  <b class="hidden-xs hidden-sm " style="font-size: 13pt;">Sistema de Gestão Integrado de Informação da Doureca</b>
+                  <b class="hidden-md hidden-lg" style="font-size: 13pt;">SGIID</b>
+                  <b style="font-size: 12pt; margin-left: 25px;" id="datamomento">{{ myDate | date: 'yyyy-MM-dd' }} &nbsp;&nbsp;&nbsp; {{ myDate | date: 'HH:mm:ss' }}</b>
+                </span>
+                <span style="font-size: 7pt; margin-top: -3px;position: absolute;">
+                  ({{modulo}} - {{versao}})
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-12 utz" style=" margin: auto; text-align:right; padding: 0; right: 0; float: right;">
+              <div style="font-size: 11pt; display: -webkit-inline-box; margin-left: 5px; margin-top: 11px; color: black;">
+                <b style="vertical-align: middle;">Utilizador:</b>
+                <span style="vertical-align: middle;"> {{isnome()}}</span>
+                <a id="go-button" style="margin-top: -9px; margin-left: 12px; display: block; cursor: pointer; float: right; ">
+                  <i class="material-icons" style="font-size: 37px; color: black;">fullscreen</i>
+                </a>
+                <a class="dropdown-toggle" title="Sair" (click)="logout()" style="margin-top: -4px; margin-left: 32px; float: right; background: black; color: white; cursor: pointer; border:1px solid  white;">
+                  <i class="material-icons">close</i>
+                </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
     <app-cabecalho></app-cabecalho>
 
     <router-cmp></router-cmp>
@@ -18,7 +58,8 @@
 
   </div>
 </div>
-<div class="scrollup"></div>
+<div [hidden]="!isMaps('login')" class="scrollup"></div>
+<div [hidden]="!isMaps('login')" class="scrolldown"></div>
 <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 <app-login *ngIf="!isMaps('login')"></app-login>
 <script src="assets/js/initMenu.js"></script>
@@ -32,7 +73,7 @@
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
-        <p>Data fim do último resgisto não está preenchida!</p>
+        <p>Data fim do último resgisto para este componente não está preenchida!</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="ui-button" data-dismiss="modal">OK</button>
@@ -51,7 +92,7 @@
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
-        <p>Atenção! Existe uma Data Fim superior ou igual à data inserida!</p>
+        <p>Atenção! Existe uma Data Fim superior ou igual à data inserida para este componente!</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="ui-button" data-dismiss="modal">OK</button>
@@ -81,7 +122,7 @@
 
 
 <div id="aviso_gravar" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width: 35%">
+  <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -99,17 +140,108 @@
 </div>
 
 
+<div id="aviso_concluir_planeamento" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Existe uma ficha de Manutenção com o Registo de Operação por preencher!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aviso_concluir_planeamento2" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Para concluir o Planeamento é necessário que exista pelo menos uma ficha!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aviso_concluir_planeamento3" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Data prevista é inferior à data Planeamento!</p>
+        Na linha:
+        <b>{{teste()}}</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aviso_concluir_planeamento4" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Existe uma ficha de Construção de Banho por gravar!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aviso_concluir_planeamento5" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">AVISO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Não é possível adicionar mais fichas! Limite: 2.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ui-button" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal sel. Linhas-->
-<div class="modal fade" id="myModalSElLinhas" role="dialog">
-  <div class="modal-dialog"  style="width: 35%">
+<div *ngIf="isMaps('login')" class="modal fade" id="myModalSElLinhas" role="dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
         <h4 class="modal-title" id="myModalLabel">
           Selecionar Linha
         </h4>
@@ -119,14 +251,80 @@
         <div class="modal-body">
           <div class="form-group form-black label-floating">
             <label style="font-size: 14px;">Linha</label>
-            <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'100px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
-               ></p-dropdown>
+            <p-dropdown [options]="linhas" [style]="{'width':'100px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"></p-dropdown>
           </div>
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-success ">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal sel. Ajuda-->
+<div class="modal fade" id="myModalAjuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          <span class="glyphicon glyphicon-question-sign"></span>
+          Enviar Email
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="enviar()">
+        <!-- Modal Body -->
+        <div class="modal-body" style="max-height: 75vh; overflow-y: overlay;">
+          <div class="form-group">
+            <label for="nmlinha">Assunto:</label>
+            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="email_assunto" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Assunto"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="mensagem">Mensagem (descreva o problema):</label>
+            <p-editor id="comment" [(ngModel)]="email_mensagem" [ngModelOptions]="{standalone: true}" [style]="{'height':'24vh'}"></p-editor>
+          </div>
+          <!-- -->
+          <div class="row row-bordered">
+            <div class="col-md-12" style="padding-bottom: 0">
+              <h6 style="margin: 0px">
+                <b>Anexar Ficheiros</b>
+              </h6>
+            </div>
+          </div>
+          <div>
+            <p-fileUpload #fileInput name="myfile[]" multiple="multiple" maxFileSize="1000000" invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, "
+              invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}." invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}."
+              invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, " chooseLabel="Seleccionar" cancelLabel="Cancelar"
+              [showUploadButton]="false"></p-fileUpload>
+            <div *ngIf="uploadedFiles.length">
+              <div *ngFor="let file of uploadedFiles" class="ui-fileupload-row" style="float: left;border: 1px solid blue;">
+                <div>{{file.name}}</div>
+                <div>{{file.size}} bytes</div>
+                <div>
+                  <button icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-c fa fa-fw fa-close"></span>
+                    <span class="ui-button-text ui-c">ui-btn</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- -->
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog2 data-dismiss="modal">Fechar</button>
+          <button type="submit" [disabled]="btdisabled" class="btn btn-success ">Enviar</button>
         </div>
       </form>
     </div>

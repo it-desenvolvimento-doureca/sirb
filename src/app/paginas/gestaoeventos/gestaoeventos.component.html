@@ -1,0 +1,139 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Gestão Eventos</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12">
+                      <div class="form-group col-md-12" style="padding: 6px;">
+                        <div class="col-md-3 div_header">
+                          <b>Módulo:</b>
+                          <br> {{modulo}}
+                        </div>
+                        <div class="col-md-3 div_header">
+                          <b> Página:</b>
+                          <br> {{pagina}}
+                        </div>
+                        <div class="col-md-3 div_header">
+                          <b>Momento:</b>
+                          <br> {{momento}}
+                        </div>
+                        <div class="col-md-3 div_header">
+                          <b>Estado:</b>
+                          <br>
+                          <div class="material-switch pull-left" style="text-align: -webkit-center; width: 82%;">
+                            <input id="someSwitchOptionSuccess" type="checkbox" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}"
+                              [disabled]="!modoedicao">
+                            <label for="someSwitchOptionSuccess" class="label-success" style="margin-left: 24px;"></label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-12" style="padding: 6px;">
+                        <label for="para">Para:</label>
+                        <p-autoComplete [disabled]="!modoedicao" required="true" type="email" inputId="autocompleteinput"
+                          placeholder="exemplo@exemplo.com;" styleClass="wid100" forceSelection="true" [minLength]="1"
+                          [(ngModel)]="email_para" [suggestions]="results" [ngModelOptions]="{standalone: true}"
+                          [multiple]="true" (completeMethod)="search($event)"></p-autoComplete>
+                      </div>
+                      <div class="form-group col-md-9">
+                        <label for="assunto">Assunto:</label>
+                        <input [disabled]="!modoedicao" type="text" pDroppable="dd" (onDrop)="drop($event)" class="form-control editor_texto2"
+                          id="assunto" [(ngModel)]="email_assunto" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Assunto"
+                          required />
+                      </div>
+                      <div class="form-group col-md-3">
+                        <!-- <label for="nmlinha">Inclui Anexo:</label>
+                        <p-checkbox [disabled]="!modoedicao" [(ngModel)]="inclui_anexo" [ngModelOptions]="{standalone: true}" binary="true"></p-checkbox>-->
+                      </div>
+                      <div class="form-group col-md-9">
+                        <label for="mensagem">Mensagem:</label>
+                        <p-editor [readonly]="!modoedicao" pDroppable="dd" (onDrop)="drop1($event)" id="comment"
+                          [(ngModel)]="email_mensagem" [ngModelOptions]="{standalone: true}" [style]="{'height':'320px'}"></p-editor>
+                      </div>
+                      <div class="col-md-3 ui-widget-content">
+                        <label style="color: black">Campos Disponíveis:</label>
+                        <ul style="margin:0;padding:0" class="list-group">
+                          <li class="list-group-item" *ngFor="let m of campos" draggable="true" id="m.id"
+                            [class.disabled]="!modoedicao" pDraggable="dd" (onDragStart)="dragStart($event,m.id)"
+                            (onDragEnd)="dragEnd($event)">{{m.label}}</li>
+                        </ul>
+                      </div>
+                      <div class="form-group col-md-12" style="padding: 6px;">
+                        <label for="nmlinha">Observações:</label>
+                        <input [disabled]="!modoedicao" type="text" class="form-control" id="nmlinha" [(ngModel)]="observacoes"
+                          [ngModelOptions]="{standalone: true}" />
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button [hidden]="!modoedicao" (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button [hidden]="!modoedicao" id="testeEnvio" (click)="selectbt(2,$event)" type="submit" class="btn btn-info">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i> Testar Envio </button>
+                      <!-- <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button> -->
+                      <button [hidden]="!modoedicao" (click)="selectbt(1,$event)" id="gravar" type="submit" [disabled]="bt_disable"
+                        class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button class="btn btn-danger btn-block" #inputenvio [hidden]="true" onclick="demo.showNotification('top','right','Email Enviado com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerroenvio [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Email não foi Enviado!',4)"></button>
+
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModallinhas"
+  data-backdrop="false"></button>
+<!-- Modal Enviar-->
+<div class="modal fade" id="myModallinhas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="height: 1703px; background: #8080807a"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span style="font-size: 30px;" aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Enviao Email Teste - (Preencha os Campos Disponíveis com Dados)
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="enviar()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group col-md-6" *ngFor="let camp of campos">
+            <label for="nmlinha">{{camp.label}}</label>
+            <input type="text" class="form-control" id="{{camp.id}}" [(ngModel)]="itememail[camp.id]" [ngModelOptions]="{standalone: true}"
+              required />
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+            <button type="submit" [disabled]="bt_disable" class="btn btn-success ">Enviar</button>.
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

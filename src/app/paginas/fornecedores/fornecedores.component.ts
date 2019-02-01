@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppGlobals } from "app/menu/sidebar.metadata";
 import { GERFORNECEDORService } from "app/servicos/ger-fornecedor.service";
 import { Router } from "@angular/router";
+import { DataTable } from "primeng/primeng";
 @Component({
   selector: 'app-fornecedores',
   templateUrl: './fornecedores.component.html',
@@ -10,7 +11,7 @@ import { Router } from "@angular/router";
 export class FornecedoresComponent implements OnInit {
 
   cols: any[] = [];
-
+  @ViewChild(DataTable) dataTableComponent: DataTable;
   constructor(private GERFORNECEDORService: GERFORNECEDORService, private globalVar: AppGlobals, private router: Router) { }
 
   ngOnInit() {
@@ -22,7 +23,20 @@ export class FornecedoresComponent implements OnInit {
     this.globalVar.setanterior(false);
     this.globalVar.setcriar(true);
     this.globalVar.setduplicar(false);
+    this.globalVar.setatualizar(true);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
 
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node013editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node013criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node013apagar"));
+
+    this.preenche_tabela();
+  }
+
+  preenche_tabela() {
+    this.cols = [];
     this.GERFORNECEDORService.getAll().subscribe(
       response => {
         for (var x in response) {
@@ -37,4 +51,15 @@ export class FornecedoresComponent implements OnInit {
     this.router.navigate(['fornecedor/view'], { queryParams: { id: event.data.id } });
   }
 
+  //limpar filtro
+  reset() {
+    for (var x in this.dataTableComponent.filters) {
+      this.dataTableComponent.filters[x].value = "";
+    };
+    this.dataTableComponent.filter("", "", "");
+  }
+
+  atualizar() {
+    this.preenche_tabela();
+  }
 }

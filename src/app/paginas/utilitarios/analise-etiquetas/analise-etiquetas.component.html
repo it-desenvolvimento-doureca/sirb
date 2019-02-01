@@ -1,0 +1,132 @@
+<!--<app-controlos></app-controlos>-->
+<div class="main-content" id="mainpagecontent">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <!--<div class="card-header" data-background-color="red">
+            <h4 class="title">Parâmetros Aplicação</h4>
+            <p class="category"></p>
+          </div>-->
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <form role="form" ngNativeValidate>
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+                      <h5 style="margin: 0; ">Análise de Etiquetas</h5>
+                      <hr style="margin: 0px 0 7px 0;" />
+                      <div class="input-group col-md-12">
+                        <div class="form-group form-black label-floating">
+                          <p-dropdown class="utildropref" [filter]="true" (onChange)="leretiqueta($event)" [options]="componentes_silver"
+                            [style]="{'width':'100%','margin-top':'5px'}"></p-dropdown>
+                        </div>
+
+                      </div>
+                      <div class="col-md-12">
+                        <table class="table table-bordered table-condensed table-striped">
+                          <thead>
+                            <tr>
+                              <td style="padding: 0; width: 25%;">Nº Etiqueta</td>
+                              <td style="padding: 0; width: 25%;">Aditivo</td>
+                              <td style="padding: 0; width: 25%;">Quantidade</td>
+                              <td style="padding: 0; width: 25%;">Armazém</td>
+                              <td style="padding: 0; width: 25%;">Localização</td>
+                              <td style="padding: 0;"></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngIf="etiquetasaditivo.length == 0">
+                              <td colspan="6" style="text-align: center;">
+                                SEM DADOS...
+                              </td>
+                            </tr>
+
+                            <tr *ngFor="let etiq of etiquetasaditivo">
+                              <td>
+                                <input type="text" style=" text-align: center; " [(ngModel)]="etiq.numero"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="true">
+                              </td>
+                              <td>
+                                <input type="text" style="float: left; text-align: center;  width: 100%;" [(ngModel)]="etiq.aditivo"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="true">
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <input type="text" style="float: left; text-align: center;  width: 85%;" [(ngModel)]="etiq.qtd"
+                                    [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                                  <input [disabled]="true" type="text" style=" text-align: center;  width: 15%;"
+                                    [(ngModel)]="etiq.unicod" [ngModelOptions]="{standalone: true}">
+                                </div>
+                              </td>
+
+                              <td>
+                                <input type="text" style="float: left; text-align: center;  width: 100%;" [(ngModel)]="etiq.armazem"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="true">
+                              </td>
+                              <td>
+                                <input type="text" style="float: left; text-align: center;  width: 100%;" [(ngModel)]="etiq.EMPCOD"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="true">
+                              </td>
+                              <td style="padding: 5px 2px 5px 4px; width: 69px; height: 22px;">
+                                <button (click)="imprimir(etiq.numero)" type="button" class="ibtnDel btn btn-md btn-default "
+                                  style="margin: 0; height: 27px;width: 2px;padding: 13px 21px 6px 7px;">
+                                  <i style="font-size: 15px; top: -7px" class="material-icons">print</i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Etiqueta Impressa com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Etiqueta não foi impressa!',4)"></button>
+
+
+<button class="btn btn-primary btn-lg" #dialogAviso data-toggle="modal" [hidden]="true" data-target="#dialogAviso"
+  data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div style="background: #05020263;" class="modal fade" id="dialogAviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="dialogAvisoContent">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span style="font-size: 30px;" aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          AVISO
+        </h4>
+      </div>
+      <!-- Modal Body -->
+      <div class="" style="text-align: center; padding-bottom: 20px; padding-top: 10px;">
+        <h4>{{mensagem_aviso}}</h4>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-success" #closedialoAviso data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

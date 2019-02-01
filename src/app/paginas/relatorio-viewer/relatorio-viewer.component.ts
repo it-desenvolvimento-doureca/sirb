@@ -13,6 +13,7 @@ import 'assets/js/demo.js'
   styleUrls: ['./relatorio-viewer.component.css']
 })
 export class RelatorioViewerComponent implements OnInit {
+  bt_disable: boolean;
   relatorio: any;
   id: any;
   email_mensagem: any;
@@ -43,17 +44,16 @@ export class RelatorioViewerComponent implements OnInit {
       });
 
     this.filename = new Date().toLocaleString().replace(/\D/g, '');
-    this.RelatoriosService.downloadPDF("pdf", this.filename, this.id,this.relatorio).subscribe(
+    this.RelatoriosService.downloadPDF("pdf", this.filename, this.id, this.relatorio).subscribe(
       (res) => {
         this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);
       }
-
     );
   }
 
   exportexcel() {
-    this.RelatoriosService.downloadPDF("xlsx", this.filename, this.id,this.relatorio).subscribe(
+    this.RelatoriosService.downloadPDF("xlsx", this.filename, this.id, this.relatorio).subscribe(
       (res) => {
         this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);
@@ -65,7 +65,7 @@ export class RelatorioViewerComponent implements OnInit {
   }
 
   exportword() {
-    this.RelatoriosService.downloadPDF("docx", this.filename, this.id,this.relatorio).subscribe(
+    this.RelatoriosService.downloadPDF("docx", this.filename, this.id, this.relatorio).subscribe(
       (res) => {
         this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);
@@ -94,12 +94,15 @@ export class RelatorioViewerComponent implements OnInit {
     email.assunto = this.email_assunto;
     email.mensagem = this.email_mensagem;
     email.nome_FICHEIRO = this.filename;
+    this.bt_disable = true;
     this.EmailService.enviarEmail(email).subscribe(
       res => {
+        this.bt_disable = false;
         this.simular(this.inputenvio);
         this.simular(this.closedialog);
       }, error => {
         this.simular(this.inputerro);
+        this.bt_disable = false;
       });
   }
 

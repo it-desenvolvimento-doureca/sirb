@@ -1,0 +1,74 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Departamentos</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+              <p-column [style]="{'width':'70px'}" field="descricao" header="Nome Departamento" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'90px'}" field="nome_op" header="Responsável" [filter]="true" [sortable]="true"></p-column>
+              <p-footer>
+                <a [class.disabled]="!criar" (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;"
+                  title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+<!-- Modal TipoAdicaos-->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Departamentos
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+        <!-- Modal Body -->
+        <div class="modal-body" style="display: -webkit-box;">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="TipoAdicao">Nome Departamento</label>
+              <input type="text" [disabled]="!modoedicao" class="form-control" id="TipoAdicao" [(ngModel)]="descricao"
+                [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group col-md-12">
+              <label for="tipoop">Responsável</label>
+              <p-dropdown [filter]="true" [options]="utilizadores" [disabled]="!modoedicao" [style]="{'width':'100%'}"
+                [(ngModel)]="utilizadores_id" [ngModelOptions]="{standalone: true}"></p-dropdown>
+            </div>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button type="button" (click)="apagardeparts()" [hidden]="novo || !criar" class="btn btn-danger"
+            data-dismiss="modal">Remover</button>
+          <button type="submit" class="btn btn-success " [hidden]="!modoedicao">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

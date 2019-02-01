@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl"; 
+import { webUrl } from 'assets/config/webUrl';
 import { AB_DIC_TIPO_OPERACAO } from "app/entidades/AB_DIC_TIPO_OPERACAO";
 
 @Injectable()
 export class ABDICTIPOOPERACAOService {
-handleError: any;
+  handleError: any;
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
@@ -18,10 +18,10 @@ handleError: any;
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll(): Observable<AB_DIC_TIPO_OPERACAO[]> {
+  getAll(classif): Observable<AB_DIC_TIPO_OPERACAO[]> {
     const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_OPERACAO';
     return this.http
-      .get(url)
+      .post(url, JSON.stringify(classif), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

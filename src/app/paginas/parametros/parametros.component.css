@@ -1,0 +1,7 @@
+.disabled {
+    pointer-events: none;
+}
+
+.form-control {
+    height: 31px;
+}

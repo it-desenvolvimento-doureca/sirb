@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_DIC_BANHO_COMPONENTE } from "app/entidades/AB_DIC_BANHO_COMPONENTE";
 
@@ -20,14 +20,21 @@ export class ABDICBANHOCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getbyid_banho(id): Observable<AB_DIC_BANHO_COMPONENTE[]> {
+  getbyid_banho(id,data): Observable<AB_DIC_BANHO_COMPONENTE[]> {
     const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHO_COMPONENTEbyid_banho/' + id;
+    return this.http
+      .post(url,data, { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyid_banhoall(id): Observable<AB_DIC_BANHO_COMPONENTE[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHO_COMPONENTEbyid_banhoall/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
-
   getbyid_banho_comp(id): Observable<AB_DIC_BANHO_COMPONENTE[]> {
     const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHO_COMPONENTEbyid_banho_comp/' + id;
     return this.http

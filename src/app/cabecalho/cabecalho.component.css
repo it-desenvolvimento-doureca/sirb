@@ -1,0 +1,31 @@
+.slider, .carousel {
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.slider {
+    background: none !important;
+    margin-bottom: -11px
+}
+
+.carousel-control .fa-angle-left, .carousel-control .fa-angle-right {
+    position: absolute;
+    top: 50%;
+    font-size: 2em;
+    z-index: 5;
+    display: inline-block;
+}
+
+.carousel-control {
+    background-color: transparent;
+    background-image: none !important;
+}
+
+.carousel-control:hover, .carousel-control:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent !important;
+    background-image: none !important;
+    outline: 0;
+}
+

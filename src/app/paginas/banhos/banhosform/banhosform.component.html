@@ -11,7 +11,7 @@
           <div class="card-content">
             <form id="formBanho" (ngSubmit)="gravar()" ngNativeValidate>
               <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">Código Banho</label>
                     <input type="text" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}" disabled>
@@ -32,40 +32,81 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Linha</label>
-                    <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'150px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    <p-dropdown [style.background]="cor_linha" class="droplinha" (onChange)="carregatinas(t.value)" #t [options]="linhas" [style]="{'width':'150px'}"
+                      [(ngModel)]="linha" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true">
+                      <ng-template let-car pTemplate="item">
+                        <div class="ui-helper-clearfix" [style.background]="car.cor" style="position: relative;height: 25px;">
+                          {{car.label}}
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                 </div>
+                <div class="col-md-2">
+                  <div class=" form-black label-floating" style="padding-top: 11px;">
+                    <label class="pull-left" style="font-size: 14px; color:black;">Valor Célula HULL</label>
+                    <div class="material-switch pull-left">
+                      <input id="someSwitchOptionSuccess2" type="checkbox" [(ngModel)]="celula" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      <label for="someSwitchOptionSuccess2" class="label-success" style="margin-left: 24px;"></label>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-md-3">
-                  <div class="form-group form-black label-floating">
-                    <label style="font-size: 14px;">Zona</label>
-                    <p-dropdown [options]="zonas" [style]="{'width':'150px'}" [(ngModel)]="zona" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                  <div class=" form-black label-floating" style="padding-top: 11px; float: right;">
+                    <label class="pull-left" style="font-size: 14px; color:black;">Manutenções de Reposição</label>
+                    <div class="material-switch pull-left">
+                      <input id="someSwitchOptionSuccess3" type="checkbox" [(ngModel)]="manutencaoreposicao" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao">
+                      <label for="someSwitchOptionSuccess3" class="label-success" style="margin-left: 24px;"></label>
+                    </div>
                   </div>
                 </div>
+
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Nome Banho</label>
                     <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
                       required>
                   </div>
                 </div>
-                <div class="col-md-7">
-                  <div class="form-group form-black label-floating">
-                    <label style="font-size: 14px;">Nº da Tina</label>
-                    <p-dropdown [filter]="true" [options]="tinas" [style]="{'width':'150px'}" [(ngModel)]="tinas_valor" [ngModelOptions]="{standalone: true}"
-                      (onChange)="num_tina($event)" [disabled]="!modoedicao" [required]="true"></p-dropdown>
-                    <span style="font-size: 12px; padding-right: 20px;"><b>CAP(LT):</b> {{capacidade_tina}}</span>
-                    <span style="font-size: 12px;"><b>OBS. TINA:</b> {{obs_tina}}</span>
+                <div class="col-md-6"  style="margin-top: -16px;">
+                  <div style="float: left; margin-right: 10px;">
+                    <div class="form-group form-black label-floating">
+                      <label style="font-size: 14px; margin-bottom: 0px;">Nº Tina</label> <br>
+                      <p-dropdown [filter]="true" [options]="tinas" [style]="{'width':'100px'}" [(ngModel)]="tinas_valor" [ngModelOptions]="{standalone: true}"
+                        (onChange)="num_tina($event)" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                      <span style="font-size: 12px; padding-right: 20px;">
+                        <b>CAP(LT):</b> {{capacidade_tina}}</span>
+                      <span style="font-size: 12px;">
+                        <b>OBS. TINA:</b> {{obs_tina}}</span>
+                    </div>
+                  </div>
+                  <div style="margin-top: -5px;">
+                    <div class="form-group form-black label-floating" style="float: left;">
+                      <label style="font-size: 14px; margin-bottom: 0px;">Zona</label><br>
+                      <p-dropdown [options]="zonas" [style]="{'width':'150px'}" [(ngModel)]="zona" [ngModelOptions]="{standalone: true}" [disabled]="true"></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class=" form-black label-floating" style="padding-top: 11px; float: right;">
+                    <label class="pull-left" style="font-size: 14px; color:black;">Manutenções não Programadas</label>
+                    <div class="material-switch pull-left">
+                      <input id="someSwitchOptionSuccess4" type="checkbox" [(ngModel)]="manutencoesnaoprogramadas" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao">
+                      <label for="someSwitchOptionSuccess4" class="label-success" style="margin-left: 24px;"></label>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group">
                     <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                       <label class="control-label">Observações</label>
@@ -73,91 +114,102 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="form-group form-black label-floating">
+                      <label for="para" class="control-label">Enviar Para:</label>
+                      <p-autoComplete [disabled]="!modoedicao" required="true" type="email" inputId="autocompleteinput" placeholder="exemplo@exemplo.com;"
+                        styleClass="wid100" forceSelection="true" [minLength]="1" [(ngModel)]="email_para" [suggestions]="results"
+                        [ngModelOptions]="{standalone: true}" [multiple]="true" (completeMethod)="search($event)"></p-autoComplete>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="col-md-12" style="text-align: center;">
-                    <p-dropdown  [disabled]="novo" (onChange)="atualizarcomp($event)" [(ngModel)]="estado_comp" [ngModelOptions]="{standalone: true}"
+                    <p-dropdown [disabled]="novo" (onChange)="atualizarcomp($event)" [(ngModel)]="estado_comp" [ngModelOptions]="{standalone: true}"
                       [options]="estados" [autoWidth]="false" [style]="{'width':'15%','float': 'left'}" [required]="true"></p-dropdown>
                     <h3> Componentes do Banho </h3>
                   </div>
-                  <p-dataTable [value]="banhos_comp" class="componentes">
-                    <p-column field="id_componente" header="COMPONENTES">
+                  <p-dataTable [value]="banhos_comp" class="componentes" class="tabcomp" [ngClass]="!modoedicao ? 'tabcomp2' : null">
+                    <p-column field="id_componente" header="COMPONENTES" [style]="{'width':'18%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown [filter]="true" (onChange)="atualizardados(row['pos'],$event)" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}"
                           [options]="componentes" [autoWidth]="false" [style]="{'width':'100%'}" [hidden]="!modoedicao" [required]="true"></p-dropdown>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_comp']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="qtd" header="QTD." [style]="{'width':'50px'}">
+                  <!--  <p-column field="qtd" header="QTD." [style]="{'width':'4%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
-                        <input type="text" style="height: 100%; text-align: center;" class="form-control" [(ngModel)]="row['qtd']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input type="text" style="height: 31.2px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['qtd']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
-                    </p-column>
-                    <p-column field="id_unidade" header="UNID." [style]="{'width':'60px'}">
+                    </p-column>-->
+                    <p-column field="id_unidade" header="UNID." [style]="{'width':'5%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown [filter]="true" [(ngModel)]="row['id_unidade']" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
                           [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_unidade']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="id_FORNECEDOR" header="FORNECEDOR" [style]="{'width':'150px'}">
+                    <p-column field="id_FORNECEDOR" header="FORNECEDOR" [style]="{'width':'18%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="fornecedores" [autoWidth]="false"
-                          [style]="{'width':'100%','height': '36px'}" [hidden]="!modoedicao"></p-dropdown>
-                        <label class="ng-tns-c3-11 ui-dropdown-label ui-corner-all" [hidden]="modoedicao">{{row['nome_FORNECEDOR']}}</label>
+                          [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
+                        <label class="ng-tns-c3-11 ui-dropdown-label ui-corner-all" style="background: white; width: 100%; border-radius: 0.25em;border: 1px solid rgba(0, 0, 0, 0.15);"
+                          [hidden]="modoedicao">{{row['nome_FORNECEDOR']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="data_ini" header="DATA ÍNICIO" [style]="{'width':'154px'}">
+                    <p-column field="data_ini" header="DATA ÍNICIO" [style]="{'width':'11%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col2 let-row2="rowData ">
-                        <p-calendar [style]="{'width':'120px','float': 'left'}" (onInput)="verificadatas(row2[col2.field],row2['pos'])" (onSelect)="verificadatas(row2[col2.field],row2['pos'])"
+                        <p-calendar [style]="{'width':'110px'}" (onInput)="verificadatas(row2[col2.field],row2['pos'],row2['id_componente'])" (onSelect)="verificadatas(row2[col2.field],row2['pos'],row2['id_componente'])"
                           dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="row2['data_ini']"
                           [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">
                           {{row2[col2.field] | date: 'yyyy-MM-dd'}}
-                          </label>
+                        </label>
                       </ng-template>
                     </p-column>
-                    <p-column field="data_fim" header="DATA FIM" [style]="{'width':'154px'}">
+                    <p-column field="data_fim" header="DATA FIM" [style]="{'width':'11%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col3 let-row3="rowData ">
-                        <p-calendar [style]="{'width':'120px','float': 'left'}" (onInput)="verificadatafim(row3[col3.field],row3['data_ini'])" (onSelect)="verificadatafim(row3[col3.field],row3['data_ini'])"
+                        <p-calendar [style]="{'width':'110px'}" (onInput)="verificadatafim(row3[col3.field],row3['data_ini'])" (onSelect)="verificadatafim(row3[col3.field],row3['data_ini'])"
                           dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="row3['data_fim']"
                           [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row3[col3.field] | date: 'yyyy-MM-dd'}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="limite_VERDE_INF" header="LIMI. INF" [style]="{'background':'#c5e0b4','width':'81px'}">
+                    <p-column field="limite_VERDE_INF" header="LIMI. INF" [style]="{'background':'#c5e0b4','width':'4%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col2 let-row2="rowData ">
-                        <input style="height: 100%;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_INF']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input style="height: 31.2px; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_INF']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
-                    <p-column field="limite_VERDE_SUP" header="LIMI. SUP" [style]="{'background':'#c5e0b4','width':'85px'}">
+                    <p-column field="limite_VERDE_SUP" header="LIMI. SUP" [style]="{'background':'#c5e0b4','width':'4%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col2 let-row2="rowData ">
-                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_SUP']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input style="height: 31.2px; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_VERDE_SUP']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
-                    <p-column field="limite_AMARELO_INF" header="LIMI. INF" [style]="{'background':'#ffe699','width':'81px'}">
+                    <p-column field="limite_AMARELO_INF" header="LIMI. INF" [style]="{'background':'#ffe699','width':'4%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col2 let-row2="rowData ">
-                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_INF']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input style="height: 31.2px; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_INF']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
-                    <p-column field="limite_AMARELO_SUP" header="LIMI. SUP" [style]="{'background':'#ffe699','width':'85px'}">
+                    <p-column field="limite_AMARELO_SUP" header="LIMI. SUP" [style]="{'background':'#ffe699','width':'4%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col2 let-row2="rowData ">
-                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_SUP']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input style="height: 31.2px; text-align: center;" type="text" class="form-control" [(ngModel)]="row2['limite_AMARELO_SUP']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
-                    <p-column field="obs" header="OBS">
+                    <p-column field="obs" header="OBS" [style]="{'font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
-                        <input style="height: 100%; text-align: center;" type="text" class="form-control" [(ngModel)]="row['obs']" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao">
+                        <input style="height: 31.2px; text-align: center; background: white;" type="text" class="form-control" [(ngModel)]="row['obs']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
-                    <p-column styleClass="col-button" [style]="{'width':'30px'}">
+                    <p-column styleClass="col-button" [style]="{'width':'30px','font-size': '2%'}">
                       <ng-template pTemplate="header">
                       </ng-template>
                       <ng-template let-car="rowData" pTemplate="body">
@@ -170,40 +222,128 @@
                     <p-footer>
                       <a (click)="novalinha()" [ngClass]="!modoedicao ? 'not-active' : null" style="color: black; cursor:pointer; margin-left:10px;"
                         title="Adicionar nova linha">
-                         <i class="material-icons">playlist_add</i>
-                        </a>
+                        <i class="material-icons">playlist_add</i>
+                      </a>
                     </p-footer>
                   </p-dataTable>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <div class="col-md-12" style="text-align: center;">
-                    <h3> Aditivos do Banho </h3>
+                  <div class="col-md-12" style="text-align: center; padding: 0;">
+                    <h3 style="background: white;"> Aditivos do Banho </h3>
                   </div>
-                  <p-dataTable [value]="banhos_aditivos">
-                    <p-column field="ID_ADITIVO" header="ADITIVOS">
+                  <p-dataTable class="tabelabanhosaditivos" [value]="banhos_aditivos">
+                    <p-header>
+                      <!-- Qantidades Reposição -->
+                      <div style="display: inline-flex;">
+                        <div style="width: 48.6%;float: left;text-align: -webkit-right; padding: 20px 17px 0 0px;">
+                          <b>Quantidade Reposição (Unidade 1):</b>
+                        </div>
+                        <div style="width: 31%; float: left;">
+                          <table class="table table-bordered tabeladoses">
+                            <thead>
+                              <tr>
+                                <th colspan="5">
+                                  <b>Doses de Reposição</b>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="DOSE1"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Dose 1" [disabled]="!modoedicao">
+                                </td>
+                                <td>
+                                  <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="DOSE2"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Dose 2"  [disabled]="!modoedicao">
+                                </td>
+                                <td>
+                                  <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="DOSE3"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Dose 3"  [disabled]="!modoedicao">
+                                </td>
+                                <td>
+                                  <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="DOSE4"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Dose 4"  [disabled]="!modoedicao">
+                                </td>
+                                <td>
+                                  <input type="text" style="height: 31.2px; text-align: center; background: white;" class="form-control" [(ngModel)]="DOSE5"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Dose 5"  [disabled]="!modoedicao">
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- -->
+                    </p-header>
+                    <p-column field="ID_ADITIVO" header="ADITIVOS" [style]="{'width':'17%','font-size': '12px'}">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown (onChange)="preenche_unidades(row['pos'],row['ID_ADITIVO'])" [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}"
                           [options]="aditivos" [autoWidth]="false" [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['nome_aditivo']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="ID_UNIDADE1" header="UNIDADE 1">
+                    <p-column field="qtd" header="QTD. CONSTRUÇÃO" [style]="{'width':'10%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['quantidade_DEFEITO']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="ID_UNIDADE1" [style]="{'width':'10%','font-size': '12px'}" header="UNIDADE 1">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
                           [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['medida1']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column field="ID_UNIDADE2" header="UNIDADE 2">
+                    <p-column field="ID_UNIDADE2" [style]="{'width':'10%','font-size': '12px'}" header="UNIDADE 2">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-dropdown [filter]="true" [(ngModel)]="row[col.field]" [ngModelOptions]="{standalone: true}" [options]="medidas" [autoWidth]="false"
                           [style]="{'width':'100%'}" [hidden]="!modoedicao"></p-dropdown>
                         <label class="ng-tns-c3-11 ui-dropdown-label ui-inputtext ui-corner-all" [hidden]="modoedicao">{{row['medida2']}}</label>
                       </ng-template>
                     </p-column>
-                    <p-column styleClass="col-button">
+                    <!-- DOSES -->
+                    <p-column field="qtd" header="DOSE 1" [style]="{'width':'6%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['valor_DOSE1']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="qtd" header="DOSE 2" [style]="{'width':'6%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['valor_DOSE2']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="qtd" header="DOSE 3" [style]="{'width':'6%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['valor_DOSE3']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="qtd" header="DOSE 4" [style]="{'width':'6%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['valor_DOSE4']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="qtd" header="DOSE 5" [style]="{'width':'6%','font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input type="text" style="height: 31px; text-align: center; background: white;" class="form-control" [(ngModel)]="row['valor_DOSE5']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                      </ng-template>
+                    </p-column>
+
+                    <!-- DOSES FIM -->
+                    <p-column [style]="{'width':'16%','font-size': '12px'}" field="manutencoesnaoprogramadas" header="UTILIZA NAS MANUTENÇÕES NÃO PROGRAMADAS">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-checkbox [disabled]="!modoedicao" [(ngModel)]="row[col.field]" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'4%'}">
                       <ng-template pTemplate="header">
                       </ng-template>
                       <ng-template let-car="rowData" pTemplate="body">
@@ -216,8 +356,8 @@
                     <p-footer>
                       <a (click)="novalinha_aditivo()" [ngClass]="!modoedicao ? 'not-active' : null" style="color: black; cursor:pointer; margin-left:10px;"
                         title="Adicionar nova linha">
-                         <i class="material-icons">playlist_add</i>
-                        </a>
+                        <i class="material-icons">playlist_add</i>
+                      </a>
                     </p-footer>
                   </p-dataTable>
                 </div>

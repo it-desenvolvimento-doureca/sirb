@@ -15,4 +15,10 @@ export class AB_MOV_ANALISE {
     utz_ANULACAO: number;
     data_ANULACAO: Date;
     inativo: boolean;
+    estado: string;
+    utz_VALIDA: number;
+    data_VALIDA: Date;
+    cor_LIMITES: string;
+    planeada: boolean;
+    mensagem: string;
 }

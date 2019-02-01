@@ -1,0 +1,127 @@
+<!--<app-controlos></app-controlos>-->
+<div class="main-content" id="mainpagecontent">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <!--<div class="card-header" data-background-color="red">
+            <h4 class="title">Parâmetros Aplicação</h4>
+            <p class="category"></p>
+          </div>-->
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+                      <h5 style="margin: 0; ">Correção de Quantidades de Etiquetas</h5>
+                      <hr style="margin: 0px 0 7px 0;" />
+                      <div class="input-group col-md-4">
+
+                        <p-dropdown [style.background]="cor_linha" (onChange)="alteracorlinha($event)" [options]="linhas" [style]="{'width':'92px','height': '44px','float': 'left'}"
+                          [(ngModel)]="linha" [ngModelOptions]="{standalone: true}" [required]="true">
+                          <ng-template let-car pTemplate="item">
+                            <div class="ui-helper-clearfix" [style.background]="car.value.cor" style="position: relative;height: 25px;">
+                              {{car.label}}
+                            </div>
+                          </ng-template>
+                        </p-dropdown>
+
+                        <input (keyup.enter)="leretiqueta()" (keypress)="_keyPress($event)" type="text" id="fake-file-input-name" [(ngModel)]="numetiqueta"
+                          [ngModelOptions]="{standalone: true}" placeholder="Número Etiqueta" style="float: left;border: 1px solid #b8babf38; width: 78%;padding: 10px; box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);">
+                        <span class="input-group-btn" style="padding: 0px; float: left">
+                          <button (click)="leretiqueta()" style="color: black; background: #1313131a; border-radius: 0 14px 14px 0 ; border: 1px solid #b8babf38; padding: 10px 3px 6px 11px;"
+                            type="button" class="btn btn-default" title="Ler Etiqueta" id="fake-file-button-upload">
+                            <span style="font-size: 21px;" class="glyphicon glyphicon-upload"></span>
+                          </button>
+                        </span>
+                      </div>
+                      <div class="col-md-12">
+                        <table class="table table-bordered table-condensed">
+                          <thead>
+                            <tr>
+                              <td style="padding: 0; width: 33%;">Nº Etiqueta</td>
+                              <td style="padding: 0; width: 33%;">Quant. Exist</td>
+                              <td style="padding: 0; width: 33%;">Quant. final em Stock</td>
+                              <td style="padding: 0;"></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let etiq of etiquetasaditivo">
+                              <td>
+                                <input (keypress)="_keyPress($event)" type="text" style=" text-align: center; height: 31px;" [(ngModel)]="etiq.numero" [ngModelOptions]="{standalone: true}"
+                                  [disabled]="true">
+                              </td>
+                              <td>
+                                <input (keypress)="_keyPress($event)" type="text" style="float: left; text-align: center; height: 31px; width: 85%;" [(ngModel)]="etiq.qtd"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                <input [disabled]="true" type="text" style=" text-align: center; height: 31px; width: 15%;" [(ngModel)]="etiq.UNISTO" [ngModelOptions]="{standalone: true}">
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <input (input)="atualizaQUANT(etiq.id)" (keypress)="_keyPress($event)" type="text" style="float: left; text-align: center; height: 31px; width: 85%;"
+                                    [(ngModel)]="etiq.quant_FINAL" [ngModelOptions]="{standalone: true}" [disabled]="false"
+                                    required>
+                                  <input [disabled]="true" type="text" style=" text-align: center; height: 31px; width: 15%;" [(ngModel)]="etiq.UNISTO" [ngModelOptions]="{standalone: true}">
+                                </div>
+                              </td>
+                              <td style="padding: 0px 4px 0px 0px; width: 69px; height: 22px;">
+                                <button (click)="apagaretiquetaaditivo(etiq.id)" type="button" class="ibtnDel btn btn-md btn-danger " style="margin: 0; height: 27px;width: 2px;padding: 13px 21px 6px 7px;">
+                                  <i style="font-size: 15px; top: -7px" class="material-icons">delete</i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button [hidden]="etiquetasaditivo.length == 0" id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Etiquetas Atualizadas com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registos não foram Adicionados!',4)"></button>
+
+
+<button class="btn btn-primary btn-lg" #dialogAviso data-toggle="modal" [hidden]="true" data-target="#dialogAviso" data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div style="background: #05020263;" class="modal fade" id="dialogAviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="dialogAvisoContent">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span style="font-size: 30px;" aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          AVISO
+        </h4>
+      </div>
+      <!-- Modal Body -->
+      <div class="" style="text-align: center; padding-bottom: 20px; padding-top: 10px;">
+        <h4>{{mensagem_aviso}}</h4>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-success" #closedialoAviso data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

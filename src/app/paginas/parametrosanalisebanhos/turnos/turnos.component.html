@@ -1,14 +1,14 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos ></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="red">
-            <h4 class="title">turnos</h4>
+            <h4 class="title">Turnos</h4>
           </div>
           <div class="card-content">
-            <p-dataTable [style]="{'width':'300px'}" [value]="turnos" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)"
+            <p-dataTable [style]="{'width':'300px'}" [value]="turnos" selectionMode="single" (onRowSelect)="onRowSelect($event)"
               [paginator]="true" rows="15">
               <p-column [style]="{'width':'30px'}" field="nome" header="Nome turno" [filter]="true" [sortable]="true"></p-column>
               <p-footer>

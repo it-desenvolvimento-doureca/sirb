@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import { AB_DIC_TIPO_ADICAO } from "app/entidades/AB_DIC_TIPO_ADICAO";
 
 @Injectable()
@@ -18,10 +18,10 @@ export class ABDICTIPOADICAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll(): Observable<AB_DIC_TIPO_ADICAO[]> {
+  getAll(classif): Observable<AB_DIC_TIPO_ADICAO[]> {
     const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_ADICAO';
     return this.http
-      .get(url)
+      .post(url, JSON.stringify(classif), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

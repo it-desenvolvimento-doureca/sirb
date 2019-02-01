@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_MOV_ANALISE } from "app/entidades/AB_MOV_ANALISE";
 import { AppGlobals } from "app/menu/sidebar.metadata";
@@ -29,10 +29,18 @@ export class ABMOVANALISEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll2(): Observable<AB_MOV_ANALISE[]> {
-    const url = webUrl.host + '/rest/sirb/getallAB_MOV_ANALISE/' + this.globalVar.getlinha();
+  getAll2(data): Observable<AB_MOV_ANALISE[]> {
+    const url = webUrl.host + '/rest/sirb/getallAB_MOV_ANALISE/0';
     return this.http
-      .get(url)
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getAllmanu(idbanho, data): Observable<AB_MOV_ANALISE[]> {
+    const url = webUrl.host + '/rest/sirb/getallAB_MOV_ANALISEmanu/0/' + idbanho;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
@@ -44,9 +52,25 @@ export class ABMOVANALISEService {
       .then(res => res)
       .catch(this.handleError);
   }
-  
+
+  getbyid_banho(id, inicio, fim, id_analise): Observable<AB_MOV_ANALISE[]> {
+    const url = webUrl.host + '/rest/sirb/getallAB_MOV_ANALISEidbanho/' + id + '/' + inicio + '/' + fim + '/' + id_analise;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyid_banho_comp(id, inicio, fim, data): Observable<AB_MOV_ANALISE[]> {
+    const url = webUrl.host + '/rest/sirb/getallAB_MOV_ANALISEidbanho_comp/' + id + '/' + inicio + '/' + fim;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getbyID(id): Observable<AB_MOV_ANALISE[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISEbyid/' + id + '/' + this.globalVar.getlinha();
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISEbyid/' + id + '/0';
     return this.http
       .get(url)
       .map(this.extractData)

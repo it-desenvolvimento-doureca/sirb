@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AB_DIC_ZONA } from "app/entidades/AB_DIC_ZONA";
 import { ABDICZONAService } from "app/servicos/ab-dic-zona.service";
+import { AppGlobals } from "app/menu/sidebar.metadata";
 
 @Component({
   selector: 'app-zonas',
@@ -18,11 +19,22 @@ export class ZonasComponent implements OnInit {
 
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
-  constructor(private ABDICZONAService: ABDICZONAService, private renderer: Renderer) { }
+  constructor(private globalVar: AppGlobals, private ABDICZONAService: ABDICZONAService, private renderer: Renderer) { }
   ngOnInit() {
+    this.globalVar.setapagar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setvoltar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setseguinte(false);
+    this.globalVar.setanterior(false);
+    this.globalVar.setatualizar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+    this.globalVar.setcriar(false);
     this.listar_zonas();
   }
-  
+
   //abre popup para adicionar zona
   showDialogToAdd() {
     this.novo = true;
@@ -37,7 +49,7 @@ export class ZonasComponent implements OnInit {
   gravarzonas() {
     var UNIDADE_zona = new AB_DIC_ZONA;
     UNIDADE_zona.nome_ZONA = this.valor_zona;
-     UNIDADE_zona.inativo = false;
+    UNIDADE_zona.inativo = false;
     if (this.novo) {
       this.ABDICZONAService.create(UNIDADE_zona).subscribe(response => {
         this.listar_zonas();
@@ -79,9 +91,9 @@ export class ZonasComponent implements OnInit {
     UNIDADE_zona.utz_ANULACAO = JSON.parse(localStorage.getItem('userapp'))["id"];
     UNIDADE_zona.data_ANULACAO = new Date();
 
-      this.ABDICZONAService.update(UNIDADE_zona).then(() => {
-        this.listar_zonas();
-      });
+    this.ABDICZONAService.update(UNIDADE_zona).then(() => {
+      this.listar_zonas();
+    });
   }
 
 

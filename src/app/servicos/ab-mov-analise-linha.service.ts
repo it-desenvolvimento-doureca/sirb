@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_MOV_ANALISE_LINHA } from "app/entidades/AB_MOV_ANALISE_LINHA";
 
@@ -29,17 +29,33 @@ export class ABMOVANALISELINHAService {
   }
 
   getbyid(id): Observable<AB_MOV_ANALISE_LINHA[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid/'+id;
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
-  
-  getbyid_analise(id): Observable<AB_MOV_ANALISE_LINHA[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid_analise/'+id;
+
+  getbyid_analise(id_analise, id): Observable<AB_MOV_ANALISE_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid_analise/' + id_analise + '/' + id;
     return this.http
       .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyid_analise_comp(id, data, id_banho): Observable<AB_MOV_ANALISE_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid_analise_comp/' + id + '/' + id_banho;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyid_analise_comp2(id, data, id_banho): Observable<AB_MOV_ANALISE_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_ANALISE_LINHAbyid_analise_comp2/' + id + '/' + id_banho;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

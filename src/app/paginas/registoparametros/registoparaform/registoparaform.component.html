@@ -1,11 +1,15 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos  (apagarbt)="apagar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" data-background-color="red">
+          <div class="card-header" style="height: 54px;" data-background-color="red">
             <h4 class="title">Registos dos Parâmetros de Operação</h4>
+            <button [disabled]="novo || disimprimir" title="Imprimir" type="button" style="color: black; float:right; margin-top: -19px; background-color: #ccc1c1;" class="btn btn-white btn-round btn-just-icon"
+              (click)="imprimir('registo_parametros',id)">
+                <i class="material-icons">print</i><div class="ripple-container"></div>
+              </button>
           </div>
           <div class="card-content">
             <form id="formPara" (ngSubmit)="gravar()" ngNativeValidate>
@@ -45,8 +49,14 @@
                  <div class="col-md-2">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Linha</label>
-                    <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'150px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    <p-dropdown [style.background]="cor_linha" class="droplinha" [options]="linhas" [style]="{'width':'150px'}"
+                    [(ngModel)]="linha" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true">
+                    <ng-template let-car pTemplate="item">
+                      <div class="ui-helper-clearfix" [style.background]="car.cor" style="position: relative;height: 25px;">
+                        {{car.label}}
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -87,7 +97,7 @@
                       <div class="radio">
                         <input [disabled]="!modoedicao" type="radio" name="radio1" id="radio2" value="p" [(ngModel)]="decisao"  required>
                         <label for="radio2">
-                                    Para a Produção
+                                    Parar a Produção
                         </label>
                       </div>
                     </div>
@@ -208,3 +218,4 @@
 <button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
 <button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
 <button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>

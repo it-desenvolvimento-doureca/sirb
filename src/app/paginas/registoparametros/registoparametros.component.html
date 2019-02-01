@@ -1,4 +1,4 @@
-<app-controlos></app-controlos>
+<app-controlos (atualiza)="atualizar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -10,17 +10,29 @@
           </div>
           <div class="card-content table-responsive">
 
-            <p-dataTable [value]="cols" dataKey="id" [rows]="15" [paginator]="true" [pageLinks]="3" [stacked]="stacked" (onRowDblclick)="abrir($event)"
-              [rowsPerPageOptions]="[15,20,30,'todos']">
+            <p-dataTable [emptyMessage]="mensagemtabela"  [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']" #dt>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="ID"></p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data"></p-column>
-              <p-column [sortable]="true" styleclass="text-danger" field="estado" header="Estado">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="decisao" header="Decisão">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span [style.color]="car['cor']">{{car[col.field]}}</span>
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" styleclass="text-danger" field="estado" header="Estado" filterMatchMode="contains">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="estados" [(ngModel)]="estado" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)"
+                    styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
               </p-column>
               <p-column styleClass="col-button">
                 <ng-template pTemplate="header">
+                  <a (click)="reset()" style="color: black; float: left; cursor: pointer;">
+                    <i class="fa fa-eraser" aria-hidden="true"> Limpar</i>
+                    <div class="ripple-container"></div>
+                  </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
-                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/registopara/view']" [queryParams]="{ id: car.id }">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/registopara/view']" [queryParams]="{ id: car.id,estado:car.estado }">
                   <i class="material-icons">search</i>
                   </a>
                 </ng-template>

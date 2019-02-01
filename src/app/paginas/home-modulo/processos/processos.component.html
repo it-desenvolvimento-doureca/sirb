@@ -1,0 +1,239 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header" data-background-color="gray">
+            <h4 class="title">Tarefas</h4>
+            <a class="btn icon-btn btn-default" [routerLink]="['/teste2']" style="background: white; color: black; position: absolute; top: -26px; right: 20px;">
+              <span style="color: black;" class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Criar</a>
+          </div>
+          <div class="card-content table-responsive">
+            <p-dataTable class="tabelahometarefas" [style]="{'min-height':'100px'}" (onRowDblclick)="abrir($event)"
+              [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'8%'}" [sortable]="true" [filter]="true" styleclass="text-danger" field="id"
+                header="#"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data Início"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="estado" header="Estado"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="accao" header="Acção"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="prioridade" header="Prioridade"></p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <div class="card">
+          <div class="card-header" data-background-color="gray">
+            <h4 class="title">Vista Rápida</h4>
+          </div>
+          <div class="card-content table-responsive">
+            <div class="col-md-4">
+              <p-chart type="doughnut" [data]="data" width="200px" height="200px"></p-chart>
+            </div>
+
+            <div class="col-md-8" style="padding-top: 15px;">
+              <div class="px-1">
+                <ul class="list-inline list-inline-pipe text-center p-1 border-bottom-grey border-bottom-lighten-3">
+                  <li style="width:100%;">Responsável Projeto:
+                    <span class="text-muted">Margaret Govan</span>
+                  </li>
+                  <li>Data Início:
+                    <span class="text-muted">01/05/2018</span>
+                  </li>
+                  <li>Data Fim:
+                    <span class="text-muted">01/06/2018</span>
+                  </li>
+                </ul>
+              </div>
+              <!-- project-info -->
+              <div id="project-info" class="card-body row">
+                <div class="project-info-count col-lg-4 col-md-12">
+                  <div class="project-info-icon">
+                    <h3>12</h3>
+                    <div class="project-info-sub-icon">
+                      <span class="fa fa-user"></span>
+                    </div>
+                  </div>
+                  <div class="project-info-text pt-1">
+                    <h6>Utilizadores</h6>
+                  </div>
+                </div>
+                <div class="project-info-count col-lg-4 col-md-12">
+                  <div class="project-info-icon">
+                    <h3>5</h3>
+                    <div class="project-info-sub-icon">
+                      <span class="fa fa-calendar"></span>
+                    </div>
+                  </div>
+                  <div class="project-info-text pt-1">
+                    <h6>Tarefas</h6>
+                  </div>
+                </div>
+                <div class="project-info-count col-lg-4 col-md-12">
+                  <div class="project-info-icon">
+                    <h3>4</h3>
+                    <div class="project-info-sub-icon">
+                      <span class="fa fa-bug"></span>
+                    </div>
+                  </div>
+                  <div class="project-info-text pt-1">
+                    <h6>Tarefas Realizadas</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
+                <span style="cursor: pointer;" (click)="TarefasShow()" [ngClass]="{'active': activeTarefas}">Tarefas</span>
+                <span>/</span>
+                <span style="cursor: pointer;" (click)="TimelineShow()" [ngClass]="{'active': activeTimeline}">Timeline</span>
+              </div>
+              <!-- TIMELINE -->
+              <div class="row py-2" *ngIf="activeTimeline">
+                <div class="col-lg-12 col-md-12">
+
+                  <div class="container" style="width: 100%;">
+                    <div id="timeline">
+                      <div class="row timeline-movement timeline-movement-top">
+                        <div class="timeline-badge timeline-filter-movement">
+                          <a href="#">
+                            <span class="glyphicon glyphicon-time"></span>
+                          </a>
+                        </div>
+                      </div>
+
+                      <div class="row timeline-movement" *ngFor="let item of timeline">
+                        <div class="timeline-badge" style="padding: 7px 0 0 0;">
+                          <span class="timeline-balloon-date-day">{{item.dia}}</span>
+                          <br>
+                          <span class="timeline-balloon-date-month">{{item.mes}}</span>
+                        </div>
+
+                        <div class="col-sm-6  timeline-item" *ngFor="let item2 of item.dados">
+                          <div class="row">
+                            <div class="col-sm-11" [ngClass]="item2.class=='debits'? 'col-sm-offset-1':''">
+                              <div class="timeline-panel " [ngClass]="item2.class">
+                                <ul class="timeline-panel-ul">
+                                  <li>
+                                    <span class="importo">{{item2.utilizador}}</span>
+                                  </li>
+                                  <li>
+                                    <span class="causale">{{item2.texto}} </span>
+                                  </li>
+                                  <li>
+                                    <p style="margin: 0;">
+                                      <small class="text-muted">
+                                        <i class="glyphicon glyphicon-time"></i> {{item2.hora}}</small>
+                                    </p>
+                                  </li>
+                                </ul>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAREFAS -->
+              <div class="row py-2" *ngIf="activeTarefas">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="optionsCheckboxes" checked>
+                          </label>
+                        </div>
+                      </td>
+                      <td>Sign contract for "What are conference organizers afraid of?"</td>
+                      <td class="td-actions text-right">
+                        <button type="button"  title="Edit Task" class="btn btn-primary btn-simple btn-xs">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button"  title="Remove" class="btn btn-danger btn-simple btn-xs">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="optionsCheckboxes">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
+                      <td class="td-actions text-right">
+                        <button type="button"  title="Edit Task" class="btn btn-primary btn-simple btn-xs">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button"  title="Remove" class="btn btn-danger btn-simple btn-xs">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="optionsCheckboxes">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain
+                        swept through
+                        metro Detroit
+                      </td>
+                      <td class="td-actions text-right">
+                        <button type="button"  title="Edit Task" class="btn btn-primary btn-simple btn-xs">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button"  title="Remove" class="btn btn-danger btn-simple btn-xs">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="optionsCheckboxes" checked>
+                          </label>
+                        </div>
+                      </td>
+                      <td>Create 4 Invisible User Experiences you Never Knew About</td>
+                      <td class="td-actions text-right">
+                        <button type="button"  title="Edit Task" class="btn btn-primary btn-simple btn-xs">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button"  title="Remove" class="btn btn-danger btn-simple btn-xs">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

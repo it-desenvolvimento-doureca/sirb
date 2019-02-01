@@ -10,10 +10,11 @@
           <div class="card-content">
             <form id="formComponente" (ngSubmit)="gravar()" ngNativeValidate>
               <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">Código</label>
-                    <input type="text" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}" disabled>
+                    <input type="text" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}"
+                      disabled>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -26,37 +27,44 @@
                   <div class="checkbox" style="float: none; margin-top: 0px;">
                     <input [disabled]="!modoedicao" type="checkbox" name="componete" id="radio5" [(ngModel)]="componente_check">
                     <label for="radio5" style="color:black">
-                                    Componente
-                        </label>
+                      Componente
+                    </label>
                   </div>
                   <div class="checkbox" style="float: none; margin-left: 0px;">
                     <input [disabled]="!modoedicao" type="checkbox" name="distribuicao" id="radio6" [(ngModel)]="aditivo_check">
                     <label for="radio6" style="color:black">
-                                    Aditivo
-                        </label>
+                      Aditivo
+                    </label>
                   </div>
                 </div>
-                <div class="col-md-6" style="padding: 0px;">
-                  <div class="col-md-6" style="padding: 0px;">
+                <div class="col-md-7" style="padding: 0px;">
+                  <div class="col-md-4" style="padding: 0px; width: 32%;">
                     <div class="form-group form-black label-floating">
-                      <label style="font-size: 14px;">Unidade Medição</label>
-                      <p-dropdown [filter]="true" [options]="medidas" [style]="{'width':'179px'}" [(ngModel)]="medidas_valor" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                      <label style="font-size: 14px; ">Unidade Medição</label>
+                      <p-dropdown [filter]="true" [options]="medidas" [style]="{'width':'100px'}" [(ngModel)]="medidas_valor"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
                   </div>
-                  <div class="col-md-6" style="padding: 0px;">
+                  <div class="col-md-4" style="padding: 0px; width: 31%;">
                     <div class="form-group form-black label-floating">
                       <label style="font-size: 14px;">Unidade Adição</label>
-                      <p-dropdown [filter]="true" [options]="medidas" [style]="{'width':'179px'}" [(ngModel)]="medidas_valor_adicao" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                      <p-dropdown [filter]="true" #medida_uni [options]="medidas" [style]="{'width':'100px'}"
+                        [(ngModel)]="medidas_valor_adicao" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true"></p-dropdown>
                     </div>
                   </div>
-                  <div class="col-md-12" style="padding: 0px;">
+                  <div class="col-md-4" style="padding: 0px; width: 37%;">
                     <div class="form-group form-black label-floating">
-                      <label style="font-size: 14px;">Fornecedor Habitual</label>
-                      <p-dropdown [filter]="true" [options]="fornecedores" [style]="{'width':'65%'}"  [(ngModel)]="id_fornecedor" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao" ></p-dropdown>
+                      <label style="font-size: 14px;">Unidade de Consumo de Stock</label>
+                      <input type="text" style="width: 20%" [(ngModel)]="medidas_consumo" [ngModelOptions]="{standalone: true}"
+                        [disabled]="true">
                     </div>
+                  </div>
+                  <div class="checkbox col-md-1" style="float: none; margin-left: 14px;">
+                    <input [disabled]="!modoedicao" type="checkbox" name="cisterna" id="radio7" [(ngModel)]="cisterna_check">
+                    <label for="radio7" style="color:black">
+                      Cisterna
+                    </label>
                   </div>
                 </div>
               </div>
@@ -65,8 +73,8 @@
                   <div class="col-md-12" style="padding: 0px;">
                     <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                       <label class="control-label">Nome</label>
-                      <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                        required>
+                      <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" required>
                     </div>
                   </div>
                   <div class="col-md-12" style="padding: 12px 0px 0px;">
@@ -74,28 +82,75 @@
                       <div [ngClass]="cod_ref == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                         <div class="form-group form-black label-floating">
                           <label class="control-label">Código Referência</label>
-                          <p-dropdown [filter]="true" (onChange)="cod_refe($event)" [options]="componentes_silver" [style]="{'width':'300px'}" [(ngModel)]="cod_ref"
-                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                          <p-dropdown [filter]="true" (onChange)="cod_refe($event)" [options]="componentes_silver"
+                            [style]="{'width':'98%','margin-top':'5px'}" [(ngModel)]="cod_ref" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao"></p-dropdown>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6" style="padding: 0px;">
                       <div [ngClass]="nome_ref == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                         <label class="control-label">Nome Referência</label>
-                        <input type="text" class="form-control" [(ngModel)]="nome_ref" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                        <input type="text" class="form-control" [(ngModel)]="nome_ref" [ngModelOptions]="{standalone: true}"
+                          [disabled]="true">
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-6" style="padding-top: 0px;margin-top: -16px; margin-bottom: 8px;">
+                  <div class="form-group form-black label-floating">
+                    <label style="font-size: 12px; min-width: 126px;">Fornecedor Habitual</label>
+                    <br>
+                    <p-dropdown [filter]="true" [options]="fornecedores" [style]="{'width':'100%'}" [(ngModel)]="id_fornecedor"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div [ngClass]="fator_multiplicacao == null ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label" style="font-weight: 600;">Factor Multiplicação Água</label>
+                    <input type="text" class="form-control" [(ngModel)]="fator_multiplicacao" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div [ngClass]="fator_conversao == null ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label" style="font-weight: 600;">Factor de
+                      Conversão/Densidade({{medidas_consumo}} -> {{medida_uni.label}})</label>
+                    <input type="text" class="form-control" [(ngModel)]="fator_conversao" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao">
+                  </div>
+                </div>
+                <div *ngIf="cisterna_check" class="col-md-12" style="padding-left: 15px;">
+                  <div class="col-md-6" style="padding: 0px;">
+                    <div [ngClass]="cod_ref_substituta == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <div class="form-group form-black label-floating">
+                        <label class="control-label">Código Referência Substituta</label>
+                        <p-dropdown [filter]="true" (onChange)="cod_refesubstituta($event)" [options]="componentes_silver"
+                          [style]="{'width':'98%','margin-top':'5px'}" [(ngModel)]="cod_ref_substituta"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="padding: 0px;">
+                    <div [ngClass]="nome_ref_substituta == null ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Nome Referência Substituta</label>
+                      <input type="text" class="form-control" [(ngModel)]="nome_ref_substituta" [ngModelOptions]="{standalone: true}"
+                        [disabled]="true">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" style="padding-left: 15px;">
                   <div class="form-group">
                     <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                      <label class="control-label">Observações</label>
-                      <textarea class="form-control" rows="4" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                      <label style="top: -28px;" class="control-label">Observações</label>
+                      <textarea class="form-control" style="padding: 2px;" rows="4" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao"></textarea>
                     </div>
                   </div>
                 </div>
               </div>
+
               <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>

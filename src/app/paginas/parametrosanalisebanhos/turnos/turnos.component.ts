@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { ABDICTURNOService } from "app/servicos/ab-dic-turno.service";
 import { AB_DIC_TURNO } from "app/entidades/AB_DIC_TURNO";
+import { AppGlobals } from "app/menu/sidebar.metadata";
 
 @Component({
   selector: 'app-turnos',
@@ -18,8 +19,19 @@ export class TurnosComponent implements OnInit {
 
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
-  constructor(private ABDICTURNOService: ABDICTURNOService, private renderer: Renderer) { }
+  constructor(private globalVar: AppGlobals, private ABDICTURNOService: ABDICTURNOService, private renderer: Renderer) { }
   ngOnInit() {
+    this.globalVar.setapagar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setvoltar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setseguinte(false);
+    this.globalVar.setanterior(false);
+    this.globalVar.setatualizar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+    this.globalVar.setcriar(false);
     this.listar_turnos();
   }
 

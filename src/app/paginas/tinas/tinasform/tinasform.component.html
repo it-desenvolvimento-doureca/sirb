@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()"  (seguintebt)="seguinte()"  (apagarbt)="apagar()"></app-controlos>
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -12,37 +12,44 @@
             <form id="formTina" (ngSubmit)="gravar()" ngNativeValidate>
               <div class="row">
                 <div class="col-md-3">
-                  <div [ngClass]="codigo == '' ? 'is-empty' : null"  class="form-group form-black label-floating ">
+                  <div [ngClass]="codigo == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">Código Tina</label>
-                    <input type="text"  mask='000-000' class="form-control"  [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" required>
+                    <input type="text" (keypress)="mascara($event)" class="form-control" [(ngModel)]="codigo" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" required>
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div [ngClass]="data == '' ? 'is-empty' : null"  class="form-group form-black label-floating">
+                  <div [ngClass]="data == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Data Última Alteração</label>
-                    <input type="text" class="form-control" value="{{data}}"disabled>
+                    <input type="text" class="form-control" value="{{data}}" disabled>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Linha</label>
-                    <p-dropdown [options]="linhas" [style]="{'width':'150px'}" [style.background]="cor_linha" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    <p-dropdown [options]="linhas" (onChange)="alteracorlinha($event)" class="droplinha" [style]="{'width':'150px'}" [style.background]="cor_linha" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" [required]="true">
+                      <ng-template let-car pTemplate="item">
+                        <div class="ui-helper-clearfix" [style.background]="car.cor" style="position: relative;height: 25px;">
+                          {{car.label}}
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Zona</label>
-                    <p-dropdown [options]="zonas" [style]="{'width':'150px'}" [(ngModel)]="zona" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" ></p-dropdown>
+                    <p-dropdown [options]="zonas" [style]="{'width':'150px'}" [(ngModel)]="zona" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <div [ngClass]="capacidade == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                  <div [ngClass]="capacidade == null ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Capacidade Tina (L)</label>
-                    <input type="number" class="form-control"  [(ngModel)]="capacidade" [ngModelOptions]="{standalone: true}"   [disabled]="!modoedicao">
+                    <input type="number" class="form-control" [(ngModel)]="capacidade" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                      required>
                   </div>
                 </div>
               </div>
@@ -51,13 +58,13 @@
                   <div class="form-group">
                     <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                       <label class="control-label">Observações</label>
-                      <textarea class="form-control" rows="5"  [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                      <textarea class="form-control" rows="5" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                     </div>
                   </div>
                 </div>
               </div>
-               <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
-              <button type="submit"  class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>
             </form>
           </div>
@@ -70,4 +77,3 @@
 <button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
 <button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
 <button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
- 

@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -8,7 +8,7 @@
             <h4 class="title">Unidades de Medida</h4>
           </div>
           <div class="card-content">
-            <p-dataTable [style]="{'width':'300px'}" [value]="medidas" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)"
+            <p-dataTable [style]="{'width':'300px'}" [value]="medidas" selectionMode="single" (onRowSelect)="onRowSelect($event)"
               [paginator]="true" rows="15">
               <p-column [style]="{'width':'30px'}" field="medida" header="Unidades de Medida" [filter]="true" [sortable]="true"></p-column>
               <p-footer>

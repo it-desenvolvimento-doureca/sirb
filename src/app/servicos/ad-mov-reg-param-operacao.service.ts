@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AD_MOV_REG_PARAM_OPERACAO } from "app/entidades/AD_MOV_REG_PARAM_OPERACAO";
 
@@ -14,13 +14,13 @@ export class ADMOVREGPARAMOPERACAOService {
 
   create(data: AD_MOV_REG_PARAM_OPERACAO) {
     return this.http
-      .post(webUrl.host + '/rest/sirb/createAD_MOV_REG_PARAM_OPERACAO', JSON.stringify(data), { headers: this.headers })
+      .post(webUrl.host + '/rest/sirb/createAB_MOV_REG_PARAM_OPERACAO', JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
   getAll(): Observable<AD_MOV_REG_PARAM_OPERACAO[]> {
-    const url = webUrl.host + '/rest/sirb/getAD_MOV_REG_PARAM_OPERACAO';
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_REG_PARAM_OPERACAO';
     return this.http
       .get(url)
       .map(this.extractData)
@@ -28,18 +28,16 @@ export class ADMOVREGPARAMOPERACAOService {
   }
 
   getbyID(id): Observable<AD_MOV_REG_PARAM_OPERACAO[]> {
-    const url = webUrl.host + '/rest/sirb/getAD_MOV_REG_PARAM_OPERACAObyid/' + id + '';
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_REG_PARAM_OPERACAObyid/' + id + '';
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-
-
   delete(id) {
     return this.http
-      .delete(webUrl.host + '/rest/sirb/deleteAD_MOV_REG_PARAM_OPERACAO/' + id + '')
+      .delete(webUrl.host + '/rest/sirb/deleteAB_MOV_REG_PARAM_OPERACAO/' + id + '')
       .toPromise()
       .then(res => res)
       .catch(this.handleError);
@@ -47,7 +45,7 @@ export class ADMOVREGPARAMOPERACAOService {
 
   update(data: AD_MOV_REG_PARAM_OPERACAO) {
     return this.http
-      .put(webUrl.host + '/rest/sirb/updateAD_MOV_REG_PARAM_OPERACAO', JSON.stringify(data), { headers: this.headers })
+      .put(webUrl.host + '/rest/sirb/updateAB_MOV_REG_PARAM_OPERACAO', JSON.stringify(data), { headers: this.headers })
       .toPromise()
       .then(res => res.json().data)
       .catch(this.handleError);

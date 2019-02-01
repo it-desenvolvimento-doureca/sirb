@@ -12,6 +12,8 @@ import { GERUTILIZADORESService } from "app/servicos/ger-utilizadores.service";
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
+  pass_jasper: string;
+  user_jasper: string;
 
   i: any;
   utilizador: any = [];
@@ -22,6 +24,8 @@ export class PerfilComponent implements OnInit {
   login = "";
   id_utl;
   email = "";
+  telefone = "";
+  area = "";
   password = null;
   num_existe = false;
   class_numexiste = "";
@@ -40,9 +44,13 @@ export class PerfilComponent implements OnInit {
     this.globalVar.setapagar(false);
     this.globalVar.setcriar(false);
     this.globalVar.seteditar(true);
-    this.globalVar.setvoltar(true);
-    this.globalVar.setpesquisar(false);
+    this.globalVar.setdisEditar(false);
+    this.globalVar.setvoltar(false);
+    this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
@@ -54,6 +62,8 @@ export class PerfilComponent implements OnInit {
       this.novo = false;
       this.id_utl = 0;
       this.email = "";
+      this.telefone = "";
+      this.area = "";
       this.password = 0;
     }
 
@@ -62,7 +72,7 @@ export class PerfilComponent implements OnInit {
         this.globalVar.setseguinte(false);
         this.globalVar.setanterior(false);
         this.globalVar.setapagar(false);
-        this.globalVar.setcriar(true);
+        //this.globalVar.setcriar(true);
         this.modoedicao = true;
 
       } else {
@@ -70,24 +80,33 @@ export class PerfilComponent implements OnInit {
       }
     }
 
-        this.GERUTILIZADORESService.getbyID(this.user).subscribe(
-        response => {
-          var count = Object.keys(response).length;
-          //se existir utilizadores com o id
-          if (count > 0) {
-            this.utilizadores_dados = response[0];
-            for (var x in response) {
-              this.id_utl = response[x].id_UTILIZADOR;
-              this.nome = response[x].nome_UTILIZADOR;
-              this.email = response[x].email;
-              this.password = response[x].password;
-              this.login = response[x].login;
+    this.GERUTILIZADORESService.getbyID(this.user).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        //se existir utilizadores com o id
+        if (count > 0) {
+          this.utilizadores_dados = response[0];
+          for (var x in response) {
+            this.id_utl = response[x].id_UTILIZADOR;
+            this.nome = response[x].nome_UTILIZADOR;
+            this.email = response[x].email;
+            this.telefone = response[x].telefone;
+            this.area = response[x].area;
+            this.password = atob(response[x].password);
+            this.login = response[x].login;
+            this.user_jasper = response[x].user_JASPER;
+            if (response[x].pass_JASPER != null) {
+              this.pass_jasper = atob(response[x].pass_JASPER);
+            } else {
+              this.pass_jasper = "";
             }
-          } else {
-            this.router.navigate(['home']);
+
           }
-        },
-        error => { console.log(error); });
+        } else {
+          this.router.navigate(['home']);
+        }
+      },
+      error => { console.log(error); });
   }
 
 
@@ -110,8 +129,12 @@ export class PerfilComponent implements OnInit {
     utilizador = this.utilizadores_dados;
     utilizador.nome_UTILIZADOR = this.nome;
     utilizador.login = this.login;
-    utilizador.password = this.password;
+    utilizador.password = btoa(this.password);
     utilizador.email = this.email;
+    utilizador.telefone = this.telefone;
+    utilizador.area = this.area;
+    utilizador.user_JASPER = this.user_jasper;
+    utilizador.pass_JASPER = btoa(this.pass_jasper);
 
     //verifica se existe utilizadro com o mesmo login
     this.GERUTILIZADORESService.verifica_login(id, this.login).subscribe(

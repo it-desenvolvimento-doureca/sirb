@@ -1,0 +1,60 @@
+<app-controlos ></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Ficheiros de Análise</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'300px'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+              <p-column [style]="{'width':'30px'}" field="nome" header="Descrição" [filter]="true" [sortable]="true"></p-column>
+              <p-footer>
+                <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                         <i class="material-icons">add</i> Adicionar
+                        </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm" data-backdrop="false"></button>
+
+<!-- Modal dados-->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Ficheiros de Análise
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <input type="text" class="form-control" id="descricao" [(ngModel)]="descricao" [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição"
+              required />
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+          <button type="submit" class="btn btn-success ">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

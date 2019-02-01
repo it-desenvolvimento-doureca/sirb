@@ -1,110 +1,160 @@
 <div class="col-md-12  hidden-xs">
-        <div class="card-header" data-background-color="orange">
-            <div class="nav-tabs-navigation">
-                <div class="nav-tabs-wrapper">
-                    <ul [hidden]="showGreeting" class="nav nav-tabs" style="background:black">
-                        <li [hidden]="!voltar">
-                            <a (click)=" backClicked()">
-                                <i class="material-icons">arrow_back</i>Voltar
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!criar">
-                            <a (click)="novo()" [ngClass]="modo == 'novo' ? 'cor_modo' : null">
-                                <i class="material-icons">create_new_folder</i>Novo
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!pesquisar" style="float: right;">
-                            <a>
-                                    <i class="material-icons">search</i>Pesquisar
-                                    <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!editar">
-                            <a (click)="edita()" [ngClass]="modo == 'edit' ? 'cor_modo' : null">
-                                <i class="material-icons">mode_edit</i>Editar
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!duplica">
-                            <a (click)="duplicar()" >
-                                <i class="material-icons">content_copy</i>Duplicar
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!apagar" style="float: right;">
-                            <a (click)="apagar_func()">
-                                <i class="material-icons">delete</i>Apagar
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!anterior" style="left:20%">
-                             <a (click)="anterior_func()">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!seguinte" style="left:20%">
-                            <a (click)="seguinte_func()">
-                                <i class="material-icons">keyboard_arrow_right</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="card-header" data-background-color="orange">
+        <div class="nav-tabs-navigation">
+            <div class="nav-tabs-wrapper">
+                <ul [hidden]="showGreeting" class="nav nav-tabs" style="background:black">
+                    <li [hidden]="!voltar">
+                        <a (click)=" backClicked()">
+                            <i class="material-icons">arrow_back</i>Voltar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disCriar" [hidden]="!criar">
+                        <a (click)="novo()" [ngClass]="modo == 'novo' ? 'cor_modo' : null">
+                            <i class="material-icons">create_new_folder</i>Novo
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!pesquisar" style="float: right;">
+                        <a (click)="atualizar()">
+                            <i class="material-icons">refresh</i>Atualizar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disEditar" [hidden]="!editar">
+                        <button id="editarclick1" (click)="editarclick(false)" [hidden]="true"></button>
+                        <button id="editarclickhidde" (click)="editarclickhidde()" [hidden]="true"></button>
+                        <button id="editarclick5" (click)="editarclick(true)" [hidden]="true"></button>
+                        <a (click)="edita()" [ngClass]="modo == 'edit' ? 'cor_modo' : null">
+                            <i class="material-icons">mode_edit</i>Editar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disValidar" [hidden]="!validar">
+                        <button id="btvalidartrue" (click)="validarclick(true)" [hidden]="true"></button>
+                        <button id="btvalidarfalse" (click)="validarclick(false)" [hidden]="true"></button>
+                        <a (click)="valida()">
+                            <i class="material-icons">check</i>Validar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!historico">
+                        <a (click)="historico_f()">
+                            Histórico
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disDuplicar" [hidden]="!duplica">
+                        <a (click)="duplicar()">
+                            <i class="material-icons">content_copy</i>Duplicar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!cancela">
+                        <button id="cancelaclick" (click)="cancelarclick()" [hidden]="true"></button>
+                        <a (click)="cancelar()">
+                            <i class="material-icons">cancel</i>Cancelar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disApagar" [hidden]="!apagar" style="float: right;">
+                        <a (click)="apagar_func()">
+                            <i class="material-icons">delete</i>Apagar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disCriarmanutencao" [hidden]="!criarmanutencao">
+                        <a (click)="novomanute()" [ngClass]="modo == 'novo' ? 'cor_modo' : null">
+                            <i class="material-icons">create_new_folder</i>Nova Manutenção
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!anterior" style="display: inline-block; position: fixed; right: 52%;">
+                        <a (click)="anterior_func()">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!seguinte" style="display: inline-block; position: fixed; right: 49%;">
+                        <a (click)="seguinte_func()">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="col-md-12 hidden-lg hidden-md  hidden-sm" style="margin-bottom: 20px;">
-        <div class="card-header" data-background-color="orange">
-            <div class="nav-tabs-navigation">
-                <div class="nav-tabs-wrapper">
-                    <ul [hidden]="showGreeting" class="nav nav-tabs " style="background:black; padding:0px">
-                        <li [hidden]="!voltar">
-                            <a (click)=" backClicked()">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">arrow_back</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!criar">
-                            <a (click)="novo()" [ngClass]="modo == 'novo' ? 'cor_modo' : null">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">create_new_folder</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!pesquisar">
-                            <a>
-                                    <i class="material-icons" style="margin: -1px -6px 0 0;">search</i>
-                                    <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!editar">
-                            <a (click)="edita()" [ngClass]="modo == 'edit' ? 'cor_modo' : null">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">mode_edit</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!apagar">
-                              <a (click)="apagar_func()">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">delete</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!anterior">
-                              <a (click)="anterior_func()">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">keyboard_arrow_left</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li [hidden]="!seguinte">
-                            <a (click)="seguinte_func()">
-                                <i class="material-icons" style="margin: -1px -6px 0 0;">keyboard_arrow_right</i>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+</div>
+<div class="col-md-12 hidden-lg hidden-md  hidden-sm" style="margin-bottom: 20px;">
+    <div class="card-header" data-background-color="orange">
+        <div class="nav-tabs-navigation">
+            <div class="nav-tabs-wrapper">
+                <ul [hidden]="showGreeting" class="nav nav-tabs " style="background:black; padding:0px">
+                    <li [hidden]="!voltar">
+                        <a (click)=" backClicked()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">arrow_back</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disCriar" [hidden]="!criar">
+                        <a (click)="novo()" [ngClass]="modo == 'novo' ? 'cor_modo' : null">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">create_new_folder</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!pesquisar">
+                        <a (click)="atualizar()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">refresh</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disEditar" [hidden]="!editar">
+                        <a (click)="edita()" [ngClass]="modo == 'edit' ? 'cor_modo' : null">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">mode_edit</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disValidar" [hidden]="!validar">
+                        <button id="btvalidartrue" (click)="validarclick(true)" [hidden]="true"></button>
+                        <button id="btvalidarfalse" (click)="validarclick(false)" [hidden]="true"></button>
+                        <a (click)="valida()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">check</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!historico">
+                        <a (click)="historico_f()">
+                            Histórico
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disDuplicar" [hidden]="!duplica">
+                        <a (click)="duplicar()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">content_copy</i>Duplicar
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [class.disabled]="disApagar" [hidden]="!apagar">
+                        <a (click)="apagar_func()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">delete</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!anterior">
+                        <a (click)="anterior_func()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">keyboard_arrow_left</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li [hidden]="!seguinte">
+                        <a (click)="seguinte_func()">
+                            <i class="material-icons" style="margin: -1px -6px 0 0;">keyboard_arrow_right</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>

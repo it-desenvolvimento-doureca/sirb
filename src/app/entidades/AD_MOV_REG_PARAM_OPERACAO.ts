@@ -19,7 +19,7 @@ export class AD_MOV_REG_PARAM_OPERACAO {
     utz_ANULACAO: number;
     data_ANULACAO: Date;
     data_ULT_IMPRES: Date;
-    utz_ANULUTZ_ULT_IMPRESACAO: number;
+    utz_ULT_IMPRES: number;
     inativo: boolean;
     impresso: boolean;
 

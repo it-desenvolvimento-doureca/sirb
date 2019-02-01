@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -14,24 +14,40 @@
                 <div class="col-md-5">
                   <div [ngClass]="id_utl == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">ID Utilizador</label>
-                    <input type="text" class="form-control" [(ngModel)]="id_utl" [ngModelOptions]="{standalone: true}" disabled>
+                    <input type="text" class="form-control" [(ngModel)]="id_utl" [ngModelOptions]="{standalone: true}"
+                      disabled>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div [ngClass]="login == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Login</label>
-                    <input [ngClass]="class_numexiste" type="text" class="form-control" (change)="resetclass()" [(ngModel)]="login" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" required>
-                    <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe">Nome para Login não se encontra disponível! </span>
+                    <input [ngClass]="class_numexiste" type="text" class="form-control" (change)="resetclass()"
+                      [(ngModel)]="login" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                    <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe">Nome para Login
+                      não se encontra disponível! </span>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Nome Utilizador</label>
-                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                      required>
+                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Utilizador Jasper</label>
+                    <input type="text" class="form-control" [(ngModel)]="user_jasper" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                    <label class="control-label">Password Jasper</label>
+                    <input type="password" class="form-control" [(ngModel)]="pass_jasper" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao">
                   </div>
                 </div>
               </div>
@@ -39,16 +55,36 @@
                 <div class="col-md-4">
                   <div [ngClass]="password == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Password</label>
-                    <input type="password" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                      required>
+                    <input type="password" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" required>
                   </div>
                 </div>
                 <div class="col-md-8">
                   <div class="form-group">
                     <div [ngClass]="email == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                       <label class="control-label">Email</label>
-                      <input type="email" class="form-control" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                        required>
+                      <input type="email" class="form-control" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div [ngClass]="telefone == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Telefone</label>
+                      <input type="telefone" class="form-control" [(ngModel)]="telefone" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div [ngClass]="area == '' ? 'is-empty' : null" class="form-group form-black label-floating">
+                      <label class="control-label">Área</label>
+                      <input type="area" class="form-control" [(ngModel)]="area" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" required>
                     </div>
                   </div>
                 </div>

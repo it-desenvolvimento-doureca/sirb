@@ -27,5 +27,5 @@ export class AB_MOV_MANUTENCAO_CAB {
     data_PREPARACAO: Date;
     hora_PREPARACAO: string;
     utz_PREPARACAO: number;
-
+    doseador: string;
 }

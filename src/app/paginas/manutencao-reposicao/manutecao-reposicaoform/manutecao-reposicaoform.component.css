@@ -1,0 +1,37 @@
+#container .col-md-6>label {
+    width: 46%;
+    /*height: 17px;*/
+    margin-top: 4px;
+}
+
+#container .col-md-12>label {
+    width: 23%;
+    /*  height: 17px;*/
+    margin-top: 4px;
+}
+
+#container .col-md-6>input {
+    width: 50%;
+}
+
+#container .col-md-12>input {
+    width: 75%;
+}
+
+#container .col-md-12>textarea {
+    width: 75%;
+    /*  border: 1px solid rgb(169, 169, 169) !important;*/
+}
+
+.adititable th {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.adititable tr {
+    font-size: 13px;
+}
+
+.ui-dropdown-label {
+    padding-top: 4px !important;
+}

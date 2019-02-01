@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl"; 
+import { webUrl } from 'assets/config/webUrl'; 
 import { AB_DIC_TURNO } from "app/entidades/AB_DIC_TURNO";
 
 @Injectable()
