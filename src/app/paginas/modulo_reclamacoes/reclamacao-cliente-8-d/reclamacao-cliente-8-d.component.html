@@ -577,10 +577,10 @@
                             </p-column>
                             <p-column [style]="{'width':'105px'}" [editable]="false" field="descricao" header="">
                               <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
-                                <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro" (click)="showDialog(car.type, car.src,car.name,car.datatype)">
+                                <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro" (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
-                                <a class="btn btn-primary btn-xs" title="Download" (click)="download(car.name,car.src,car.datatype)"
+                                <a class="btn btn-primary btn-xs" title="Download" (click)="download(car.name,car.src,car.datatype,car.ficheiro)"
                                   target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
@@ -1172,11 +1172,11 @@
                                 <span *ngIf="fileselectinput[file.id] != null">{{fileselectinput[file.id].name}}
                                 </span>
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" *ngIf="fileselectinput[file.id] != null"
-                                  type="button" class="btn btn-default btn-xs" title="Ver Ficheiro" (click)="showDialog(fileselectinput[file.id].type, fileselectinput[file.id].src,fileselectinput[file.id].name,fileselectinput[file.id].datatype)">
+                                  type="button" class="btn btn-default btn-xs" title="Ver Ficheiro" (click)="showDialog(fileselectinput[file.id].type, fileselectinput[file.id].src,fileselectinput[file.id].name,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" *ngIf="fileselectinput[file.id] != null"
-                                  class="btn btn-primary btn-xs" title="Download" (click)="download(fileselectinput[file.id].name,fileselectinput[file.id].src,fileselectinput[file.id].datatype)"
+                                  class="btn btn-primary btn-xs" title="Download" (click)="download(fileselectinput[file.id].name,fileselectinput[file.id].src,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro)"
                                   target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
@@ -1629,7 +1629,7 @@
                               </select>
                             </ng-template>
                           </p-column>
-                          <p-column [editable]="true" field="area"  [style]="{'width':'85px'}" header="ÁREA">
+                          <p-column [editable]="true" field="area" [style]="{'width':'85px'}" header="ÁREA">
                             <ng-template let-col let-car="rowData" pTemplate="editor">
                               <input [disabled]="!modoedicao ||  car['id'] != null" [(ngModel)]="car['area']"
                                 [ngModelOptions]="{standalone: true}" class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
@@ -2021,8 +2021,12 @@
     <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
       autoplay="" controls="">Your
       browser does not support the audio element.</audio>
-    <iframe *ngIf="(type == 'pdf' || type == 'txt')  && display" class="embed-responsive-item" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;"
+    <iframe *ngIf="( type == 'txt')  && display" class="embed-responsive-item" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;"
       [src]="srcelement" type="application/pdf" scale="aspect" frameborder="0"></iframe>
+    <div *ngIf="(type == 'pdf' )  && display" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;">
+      <object *ngIf="(type == 'pdf' )  && display" class="embed-responsive-item" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;"
+        [data]="srcelement" type="application/pdf" scale="aspect" frameborder="0"></object>
+    </div>
     <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
     <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
       autoplay="" controls="">Video

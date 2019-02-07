@@ -309,7 +309,7 @@ export class PaginatarefaComponent implements OnInit {
           for (var x in response) {
             if (response[x].id_FICHEIRO == null) {
               this.uploadedFiles.push({
-                data: response[x],
+                data: response[x], ficheiro: response[x].ficheiro,
                 id: response[x].id, name: response[x].nome,
                 src: response[x].caminho, type: response[x].tipo, datatype: response[x].datatype, size: response[x].tamanho, descricao: response[x].descricao
               });
@@ -438,6 +438,7 @@ export class PaginatarefaComponent implements OnInit {
         ficheiros.datatype = this.uploadedFiles[x].datatype;
         ficheiros.tamanho = this.uploadedFiles[x].size;
         ficheiros.descricao = this.uploadedFiles[x].descricao;
+        ficheiros.ficheiro = this.uploadedFiles[x].ficheiro;
 
         ficheiros.data_ULT_MODIF = new Date();
         ficheiros.utz_ULT_MODIF = this.user;
@@ -485,7 +486,7 @@ export class PaginatarefaComponent implements OnInit {
   }
 
   gravarTabelaFicheiros2(ficheiros, count, total, id, encaminhado) {
-    this.RCMOVRECLAMACAOFICHEIROSService.update(ficheiros).then(
+    this.RCMOVRECLAMACAOFICHEIROSService.update(ficheiros).subscribe(
       res => {
         var logs = new GT_LOGS;
         logs.id_TAREFA = this.id_tarefa;
@@ -740,16 +741,27 @@ export class PaginatarefaComponent implements OnInit {
 
   //FICHEIROS
 
-  showDialog(type, srcelement, nomeficheiro, datatype) {
-    this.srcelement = webUrl.link + srcelement;
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+    this.srcelement = "";
     if (type == "pdf" || type == 'txt') {
-      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement)
-    }
+      if (ficheiro == null) {
 
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+      } else {
+        /*var blob = new Blob([ficheiro], { type: datatype });
+        var blobUrl = URL.createObjectURL(blob);*/
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+      }
+    }
+    if (ficheiro == null) {
+      this.srcelement = webUrl.link + srcelement;
+    } else {
+      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+    }
     if (type == "excel" || type == "word") {
-      this.download(nomeficheiro, srcelement, datatype)
+      this.download(nomeficheiro, srcelement, datatype, ficheiro)
     } else if (type == "msg") {
-      this.downloadTXT(nomeficheiro, srcelement)
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro)
     }
     else {
       this.nomeficheiro = nomeficheiro;
@@ -759,36 +771,53 @@ export class PaginatarefaComponent implements OnInit {
 
   }
 
-  download(nome, filename, datatype) {
-    this.UploadService.download("report", filename, datatype).subscribe(
-      (res) => {
-        /*var fileURL: any = URL.createObjectURL(res);
-        fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-        var myWindow = window.open(fileURL, "", "width=200,height=100");*/
-        // myWindow.close();
-        FileSaver.saveAs(res, nome);
-      }, error => {
-        this.simular(this.inputerroficheiro);
-        console.log(error);
-      }
+  download(nome, filename, datatype, ficheiro) {
+    if (ficheiro == null) {
+      this.UploadService.download("report", filename, datatype).subscribe(
+        (res) => {
+          FileSaver.saveAs(res, nome);
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        }
+      );
+    } else {
 
-    );
+      const downloadLink = document.createElement("a");
+
+      downloadLink.href = ficheiro;
+      downloadLink.download = nome;
+      downloadLink.click();
+    }
   }
 
-  downloadTXT(nomeficheiro, filename) {
-    this.UploadService.downloadTXT(filename).subscribe(
-      (res) => {
-        var fileURL = URL.createObjectURL(res);
-        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL)
-        this.nomeficheiro = nomeficheiro;
-        this.type = 'txt';
-        this.display = true;
-      }, error => {
-        this.simular(this.inputerroficheiro);
-        console.log(error);
-      }
 
-    );
+  downloadTXT(nomeficheiro, filename, ficheiro) {
+    if (ficheiro == null) {
+      this.UploadService.downloadTXT(filename).subscribe(
+        (res) => {
+          var fileURL = URL.createObjectURL(res);
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          this.nomeficheiro = nomeficheiro;
+          this.type = 'txt';
+          this.display = true;
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        });
+    } else {
+      this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
+        (res) => {
+          var fileURL = URL.createObjectURL(res);
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          this.nomeficheiro = nomeficheiro;
+          this.type = 'txt';
+          this.display = true;
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        });
+    }
   }
 
   removeFile(file: File, uploader: FileUpload) {
@@ -844,10 +873,20 @@ export class PaginatarefaComponent implements OnInit {
 
       var nome = this.formatDate2() + x;
 
-      this.fileupoad(file, nome, event, type, x);
+      this.filetoBASE64(file, nome, event, type, x)
       x++;
     }
 
+  }
+
+  filetoBASE64(file, nome, event, type, x) {
+    var myReader: FileReader = new FileReader();
+    myReader.onloadend = (event2: Event) => {
+      // you can perform an action with readed data here
+      this.fileupoad(file, nome, event, type, x, myReader.result);
+    }
+
+    myReader.readAsDataURL(file);
   }
 
   //formatar a data para yyyymmddhhmmsss
@@ -866,55 +905,55 @@ export class PaginatarefaComponent implements OnInit {
     return year + month + day + hour + min + mill;
   }
 
-  fileupoad(file, nome, event, type, x) {
-    this.UploadService.fileChange(file, nome).subscribe(result => {
-      var tipo = file.name.split(".");
-      this.uploadedFiles.push({ id: null, name: file.name, datatype: file.type, src: nome + '.' + tipo[1], type: type, size: file.size, descricao: this.filedescricao[x] });
-      this.uploadedFiles = this.uploadedFiles.slice();
-      if (this.campo_x + 1 == event.files.length) {
-        this.fileInput.files = [];
-        this.filedescricao = [];
-        this.fileInput.progress = 0;
-      }
-      this.campo_x++;
-    },
-      error => {
-        if (this.campo_x + 1 == event.files.length) {
-          this.fileInput.files = [];
-          this.filedescricao = [];
-          this.fileInput.progress = 0;
-        }
-        this.campo_x++;
-        console.log(error);
-      });
+  fileupoad(file, nome, event, type, x, ficheiro) {
+    // this.UploadService.fileChange(file, nome).subscribe(result => {
+    var tipo = file.name.split(".");
+    this.uploadedFiles.push({ ficheiro: ficheiro, id: null, name: file.name, datatype: file.type, src: nome + '.' + tipo[1], type: type, size: file.size, descricao: this.filedescricao[x] });
+    this.uploadedFiles = this.uploadedFiles.slice();
+    if (this.campo_x + 1 == event.files.length) {
+      this.fileInput.files = [];
+      this.filedescricao = [];
+      this.fileInput.progress = 0;
+    }
+    this.campo_x++;
+    /*  },
+        error => {
+          if (this.campo_x + 1 == event.files.length) {
+            this.fileInput.files = [];
+            this.filedescricao = [];
+            this.fileInput.progress = 0;
+          }
+          this.campo_x++;
+          console.log(error);
+        });*/
   }
 
   removerficheiro(index) {
     var tab = this.uploadedFiles[index];
     if (tab.id == null) {
-      this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
-        (res) => {
+      /*  this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
+          (res) => {*/
+      var logs = new GT_LOGS;
+      logs.id_TAREFA = this.id_tarefa;
+      logs.utz_CRIA = this.user;
+      logs.data_CRIA = new Date();
+      logs.descricao = "Ficheiro " + tab.nome + " ( " + ((tab.descricao == null) ? "" : tab.descricao) + ") removido.";
+      this.criaLogs(logs);
+      /*});*/
+      this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
+    } else {
+      this.RCMOVRECLAMACAOFICHEIROSService.delete(tab.id).then(
+        res => {
+          //alterar ficheiro de pasta
+          /* this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
+             (res) => {*/
           var logs = new GT_LOGS;
           logs.id_TAREFA = this.id_tarefa;
           logs.utz_CRIA = this.user;
           logs.data_CRIA = new Date();
           logs.descricao = "Ficheiro " + tab.nome + " ( " + ((tab.descricao == null) ? "" : tab.descricao) + ") removido.";
           this.criaLogs(logs);
-        });
-      this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
-    } else {
-      this.RCMOVRECLAMACAOFICHEIROSService.delete(tab.id).then(
-        res => {
-          //alterar ficheiro de pasta
-          this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
-            (res) => {
-              var logs = new GT_LOGS;
-              logs.id_TAREFA = this.id_tarefa;
-              logs.utz_CRIA = this.user;
-              logs.data_CRIA = new Date();
-              logs.descricao = "Ficheiro " + tab.nome + " ( " + ((tab.descricao == null) ? "" : tab.descricao) + ") removido.";
-              this.criaLogs(logs);
-            });
+          /* });*/
           this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
         },
         error => { console.log(error); this.simular(this.inputerro); });

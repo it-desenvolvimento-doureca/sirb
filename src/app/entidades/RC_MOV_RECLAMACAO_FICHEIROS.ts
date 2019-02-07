@@ -14,5 +14,6 @@ export class RC_MOV_RECLAMACAO_FICHEIROS {
 	checked: boolean;
 	datatype: string;
 	id_TAREFA: string;
+	ficheiro: string;
 
 }

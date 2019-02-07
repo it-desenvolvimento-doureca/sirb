@@ -84,6 +84,18 @@ export class UploadService {
       });
   }
 
+  downloadFileMSGBASE64(filename, ficheiro): any {
+    const url = webUrl.host + '/rest/sirb/downloadFileMSGBASE64/' + filename;
+    var data = [{ filename: filename }];
+    return this.http.post(url, JSON.stringify(ficheiro), { headers: this.headers2,responseType: ResponseContentType.Blob }).map(
+      (res) => {
+
+        return new Blob([res.blob()], { type: 'text/html' });
+
+
+      });
+  }
+
   alterarlocalizacaoFicheiro(format, filename, datatype): any {
     const url = webUrl.host + '/rest/sirb/alterarlocalizacaoFicheiro/' + format + '/' + filename;
     var data = [{ filename: filename }];

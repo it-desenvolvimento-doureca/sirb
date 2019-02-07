@@ -54,8 +54,7 @@ export class RCMOVRECLAMACAOFICHEIROSService {
   update(data: RC_MOV_RECLAMACAO_FICHEIROS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateRC_MOV_RECLAMACAO_FICHEIROS', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 
