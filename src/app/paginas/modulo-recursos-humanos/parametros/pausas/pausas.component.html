@@ -1,0 +1,75 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Pausas</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single"
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="25"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+
+              <p-column [style]="{'width':'30px'}" field="descricaoTipo" header="Tipo Pausa" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="descricao" header="Pausa" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+<!-- Modal dados-->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Pausa
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group col-md-6">
+            <label for="tipo_PAUSA">Tipo Pausa</label>
+            <p-dropdown [options]="tipos_PAUSA" [style]="{'width':'100%'}" [(ngModel)]="tipo_PAUSA"
+              [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="id_PAUSA">Pausa</label>
+            <p-dropdown (onChange)="alterarpausa($event)" [options]="pausas_SILVER" [style]="{'width':'100%'}"
+              [(ngModel)]="id_PAUSA" [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button [disabled]="!acesso_apagar" type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger"
+            data-dismiss="modal">Remover</button>
+          <button type="submit" class="btn btn-success ">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

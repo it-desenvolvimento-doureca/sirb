@@ -42,3 +42,15 @@
     background: inherit;
     left: 20px;
 }
+
+.tabeladoses th{
+    padding: 0;
+    text-align: center;
+}
+.tabeladoses td{
+    padding: 0px 3px 0 3px;
+}
+
+.tabeladoses input{
+    margin-bottom: 0px;
+}

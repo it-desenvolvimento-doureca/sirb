@@ -1,0 +1,287 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tarefas</h4>
+          </div>
+          <div class="card-content">
+            <form id="formBanho" (ngSubmit)="gravar()" ngNativeValidate>
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                  <a href="#detalhe" aria-controls="detalhe" role="tab" data-toggle="tab">Detalhes</a>
+                </li>
+                <li role="presentation">
+                  <a href="#listatarefa" aria-controls="listatarefa" role="tab" data-toggle="tab">Lista de Tarefas</a>
+                </li>
+                <li role="presentation">
+                  <a href="#utilizadores" aria-controls="utilizadores" role="tab" data-toggle="tab">Utilizadores</a>
+                </li>
+                <li role="presentation">
+                  <a href="#ficheiro" aria-controls="ficheiro" role="tab" data-toggle="tab">Ficheiros</a>
+                </li>
+                <li role="presentation">
+                  <a href="#mensagens" aria-controls="mensagens" role="tab" data-toggle="tab">Mensagens</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <!--*************Detalhes****************-->
+                <div role="tabpanel" class="tab-pane active" id="detalhe">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Estado</p>
+                        <p-dropdown [style]="{'width':'100%'}" [options]="estados" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                          [required]="true"></p-dropdown>
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Data Início</p>
+                        <p-calendar [style]="{'width':'94%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                          [(ngModel)]="data" [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Prioridade</p>
+                        <p-dropdown [style]="{'width':'100%'}" [options]="prioridades" [(ngModel)]="prioridade" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Data Limite</p>
+                        <p-calendar [style]="{'width':'94%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                          [(ngModel)]="data" [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Tempo Estimado (horas)</p>
+                        <input type="text" class="form-control" id="usr">
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <p style="font-size: 14px;">Progresso</p>
+                        <p-progressBar [value]="progresso"></p-progressBar>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <div>
+                          <p style="font-size: 14px;">Observações</p>
+                          <textarea class="form-control1" rows="3" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--*************Lista de Tarefa****************-->
+                <div role="tabpanel" class="tab-pane" id="listatarefa">
+                  <div class="row row-bordered">
+                    <div class="col-md-11" style="padding-bottom: 0">
+                      <h4 style="margin: 0px">
+                        <button (click)="adicionar()" type="button" class="add_task cqpim_button cqpim_small_button font-white bg-green op rounded_2 cqpim_tooltip"
+                          title="Adicionar" style="padding: 1px 6px; ">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                      </h4>
+                    </div>
+                  </div>
+                  <div *ngIf="listatarefas.length" class="listatarefas">
+                    <div *ngFor="let tarefa of listatarefas" class="dd-milestone">
+                      <div class="col-md-12 dd-milestone-title" style="padding: 0;">
+                        <div class="col-md-1" style="padding-left: 6px;     padding-bottom: 0;">
+                          <p-toggleButton (onChange)="handleChange($event)" [(ngModel)]="tarefa.estado" [ngModelOptions]="{standalone: true}" onLabel="Concluída"
+                            offLabel="Por Concluir" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+                        </div>
+
+                        <div class="col-md-7" style="padding-left: 6px;">
+                          <span class=" ms-title">{{tarefa.titulo}}</span>
+                          <span class=" ms-title" style="font-size: 10px; top: -7px;">{{tarefa.user}}</span>
+                        </div>
+                        <div class="col-md-3 dd-milestone-info" style="padding-top: 14px; text-align: -webkit-right">
+                          <strong>Start Date:</strong> {{tarefa.data_ini}}
+                          <strong>Deadline:</strong> {{tarefa.data_fim}}
+                        </div>
+                        <div class="col-md-1 dd-milestone-actions">
+                          <button type="button" class="edit-milestone cqpim_button cqpim_small_button font-white bg-amber op rounded_2 cqpim_tooltip"
+                            title="Editar">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" class="delete_stage_conf cqpim_button cqpim_small_button font-white bg-red op rounded_2 cqpim_tooltip"
+                            title="Eliminar">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                        <div class="col-md-12 dd-milestone-title" style="padding-top: 0; padding-bottom: 0; padding-left: 124px; top: -9px;">
+                          <strong>Observações:</strong>
+                          {{tarefa.obs}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--*************FICHEIROS****************-->
+                <div role="tabpanel" class="tab-pane" id="ficheiro">
+                  <div>
+                    <p-fileUpload #fileInput name="myfile[]" customUpload="true" (uploadHandler)="onUpload($event)" multiple="multiple" maxFileSize="1000000"
+                      invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, " invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}."
+                      invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}." invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, "
+                      chooseLabel="Selecionar" uploadLabel="Carregar" cancelLabel="Cancelar"></p-fileUpload>
+                    <div *ngIf="uploadedFiles.length">
+                      <div *ngFor="let file of uploadedFiles" class="ui-fileupload-row" style="float: left;border: 1px solid blue;">
+                        <div>{{file.name}}</div>
+                        <div>{{file.size}} bytes</div>
+                        <div>
+                          <button icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                            <span class="ui-button-icon-left ui-c fa fa-fw fa-close"></span>
+                            <span class="ui-button-text ui-c">ui-btn</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--*************Utilizadores****************-->
+                <div role="tabpanel" class="tab-pane" id="utilizadores">
+                  <p-dataTable scrollable="true" scrollHeight="250px" [value]="utilizadores" class="tabelauser">
+                    <p-column field="nome" [filter]="true" header="Nome" [style]="{'width':'80%','font-size': '12px'}">
+                    </p-column>
+                    <p-column [style]="{'width':'10%','font-size': '12px'}" field="atribuido" header="Atribuir a">
+                      <ng-template pTemplate="filter" let-col>
+                        <p-checkbox [disabled]="!modoedicao" (click)="check()"  [(ngModel)]="checkvalue" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-checkbox [disabled]="!modoedicao" [(ngModel)]="row[col.field]" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </ng-template>
+                    </p-column>
+                    <p-column [style]="{'width':'10%','font-size': '12px'}" field="editar" header="Editar">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <p-checkbox [disabled]="!modoedicao" [(ngModel)]="row[col.field]" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </ng-template>
+                    </p-column>
+                  </p-dataTable>
+
+                </div>
+
+
+                <!--*************Mensagens****************-->
+                <div role="tabpanel" class="tab-pane" id="mensagens">
+                  <div class="row">
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="comments-logout">
+                        <ul *ngIf="comentarios.length" class="media-list">
+                          <li *ngFor="let message of comentarios" class="media">
+                            <a [ngClass]="{'pull-right': message.id == this.user, 'pull-left': message.id != this.user}">
+                              <div class="circle">{{message.letra}}</div>
+                            </a>
+                            <div class="media-body">
+                              <div class="well well-lg" style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 1px; width: 100%;">
+                                <h5 class="media-heading text-uppercase reviews">{{message.utilizador}}</h5>
+                                <h6 class="media-date text-uppercase reviews">{{message.data}}</h6>
+                                <p class="media-comment" style="word-wrap: break-word;">
+                                  {{message.mensagem}}
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <form class="form-horizontal" (ngSubmit)="addmessage()" ngNativeValidate>
+                    <div class="form-group">
+                      <div class="col-sm-10">
+                        <textarea style="overflow:hidden" [(ngModel)]="mensagem" [ngModelOptions]="{standalone: true}" class="form-control1" name="addComment"
+                          id="addComment" rows="5" required></textarea>
+                      </div>
+                      <div class="col-sm-2">
+                        <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment">
+                          <span class="glyphicon glyphicon-send"></span> Adicionar Comentário</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+
+
+  <button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas" data-backdrop="false"></button>
+  <!-- Modal -->
+  <div style="padding-top: 20px; background: #80808073;" class="modal fade" id="myModallinhas" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+      <div class="modal-dialog vertical-align-top">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+              <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Novo Item</h4>
+          </div>
+          <form id="fromitem" (ngSubmit)="gravaritem()" ngNativeValidate>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group form-black label-floating">
+                    <p style="font-size: 14px;">Estado</p>
+                    <p-dropdown [style]="{'width':'100%'}" [options]="estados" [(ngModel)]="estado2" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group form-black label-floating">
+                    <p style="font-size: 14px;">Data Início</p>
+                    <p-calendar required [style]="{'width':'94%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                      [(ngModel)]="datain_item" [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group form-black label-floating">
+                    <p style="font-size: 14px;">Data Limite</p>
+                    <p-calendar required [style]="{'width':'94%'}" [minDate]="datain_item" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                      yearRange="2000:2070" [(ngModel)]="datafim_item" [ngModelOptions]="{standalone: true}" [showIcon]="true"
+                      [hidden]="!modoedicao"></p-calendar>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div>
+                      <p style="font-size: 14px;">Observações</p>
+                      <textarea class="form-control1" rows="3" [(ngModel)]="obs_item" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" #closedialoglinha class="btn btn-default" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Gravar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

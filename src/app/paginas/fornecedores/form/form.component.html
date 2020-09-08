@@ -29,17 +29,16 @@
                   <div [ngClass]="num_fornecedor == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <div class="form-group form-black label-floating">
                       <label class="control-label">Número Fornecedor</label>
-                      <p-dropdown [filter]="true" [ngClass]="class_numexiste" (onChange)="resetclass($event)" [options]="fornecedores_silver" [style]="{'width':'300px'}"
+                      <p-dropdown [filter]="true" [ngClass]="class_numexiste" (onChange)="resetclass($event)" [options]="fornecedores_silver" [style]="{'width':'300px','margin-top':'8px'}"
                         [(ngModel)]="num_fornecedor" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
                     <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe">Número Fornecedor já existe! </span>
                   </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" style="padding-left: 30px;">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
                     <label class="control-label">Nome Fornecedor</label>
-                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="true"
-                      required>
+                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
                   </div>
                 </div>
               </div>

@@ -1,20 +1,205 @@
-<div class="logo">
+<div class="logo" style="display: none;">
     <a [routerLink]="['/home']" class="simple-text">
         <div class="logo-img">
             <img src="assets/img/logo.png" />
         </div>
     </a>
 </div>
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper" style="padding-bottom: 20px;">
     <div class="nav-container">
-        <div style="margin-top:20px">
-            <div class="panel-group" id="accordion">
+        <div style="margin-top:5px">
+            <div class="panel-group" id="accordion" style="margin-bottom: 1px;">
+
+                <!-- MENU Planos Ação -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/manutencao') || router.isActive('/registo') ||router.isActive('/fornecedor') || router.isActive('/tinas')|| router.isActive('/componentes')|| router.isActive('/banhos')
-                    || router.isActive('/operacoes') || router.isActive('/linhas') || router.isActive('/unidades')|| router.isActive('/zonas')|| router.isActive('/turnos') || router.isActive('/adicoes') || router.isActive('/manutencoes')">
+                    <div class="panel-heading"
+                        [class.active]="router.isActive('planosacao',true) || router.isActive('ambitos',true)">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-list-alt ">
-                            </span>Análise de Banhos</a>
+                            <a id="node155" data-toggle="collapse" data-parent="#accordion" href="#collapsePlanosAcao">
+                                <span class="fa fa-list-ul" style="margin-right: 12px;">
+                                </span>Planos de Ação</a>
+                        </h4>
+                    </div>
+                    <div id="collapsePlanosAcao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+
+                                <tr>
+                                    <td>
+                                        <li id="node15511" data-toggle="collapse" data-target="#PlanosAcao"
+                                            class="collapsed" [routerLink]="['/planosacao']"
+                                            [ngClass]="{ 'active':  router.isActive('/planosacao',true) }">
+                                            <a>Planos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node15512" data-toggle="collapse" data-target="#ListaAcoes"
+                                            class="collapsed" [routerLink]="['/listaacoes']"
+                                            [ngClass]="{ 'active':  router.isActive('/listaacoes',true) }">
+                                            <a>Lista de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node15510" data-toggle="collapse" data-target="#parametrosPlanosAcao"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active':  router.isActive('/ambitos',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosPlanosAcao">
+                                            <li id="node155101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ambitos']">
+                                                <a>Âmbitos</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!---->
+                <!-- MENU ANÁLISES GESTÃO -->
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/analisesjasper',true)">
+                        <h4 class="panel-title">
+                            <a id="node2" data-toggle="collapse" data-parent="#accordion" href="#collapsesanalises">
+                                <span class="glyphicon glyphicon-stats">
+                                </span>Análises de Gestão</a>
+                        </h4>
+                    </div>
+                    <div id="collapsesanalises" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node21" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analisesjasper']">Análises Jasper</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENU Comercial -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [class.active]="router.isActive('/planosacaoComercial',false) || router.isActive('/analiseencomendas',false) ||
+                        router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
+                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true)">
+                        <h4 class="panel-title">
+                            <a id="node158" data-toggle="collapse" data-parent="#accordion" href="#collapseComercial">
+                                <span class="fa fa-shopping-cart" style="margin-right: 12px;">
+                                </span>Comercial</a>
+                        </h4>
+                    </div>
+                    <div id="collapseComercial" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1581" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoComercial']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1582" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analiseencomendas']">Análise Encomendas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1583" data-toggle="collapse"
+                                            data-target="#parametroscapacidade_linha" class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
+                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametroscapacidade_linha">
+                                            <li id="node15830" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_oem']">
+                                                <a>OEM</a>
+                                            </li>
+                                            <li id="node15831" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_veiculos']">
+                                                <a>Veículos</a>
+                                            </li>
+                                            <li id="node15832" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_programas']">
+                                                <a>Programas</a>
+                                            </li>
+                                            <li id="node15833" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_fabricas']">
+                                                <a>Fábricas</a>
+                                            </li>
+                                            <li id="node15834" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_projetos']">
+                                                <a>Projetos</a>
+                                            </li>
+                                            <li id="node15835" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_limites_encomendas']">
+                                                <a>Limites Encomendas</a>
+                                            </li>
+                                            <!--<li id="node724_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/funcionarios_p']">
+                                                <a>Funcionários</a>
+                                            </li>
+                                            <li id="node721_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/estadosfuncionarios_p']">
+                                                <a>Estados Funcionários</a>
+                                            </li>
+                                            <li id="node722_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_p']">
+                                                <a>Sectores</a>
+                                            </li>
+                                            <li id="node723_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/turnosrecursos_p']">
+                                                <a>Turnos</a>
+                                            </li>
+                                            <li id="node725_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/cacifos_p']">
+                                                <a>Cacifos</a>
+                                            </li>
+                                            <li id="node726_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposcacifos_p']">
+                                                <a>Tipos de Cacifo</a>
+                                            </li>
+                                            <li id="node727_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/pausas_p']">
+                                                <a>Pausas</a>
+                                            </li>-->
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MENU BANHOS -->
+                <div class="panel panel-default">
+                    <div (click)="abrirdashboard()" class="panel-heading"
+                        [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_engenharia',true) || router.isActive('/planosacaoengenaria',false) || router.isActive('/alertasePrioridades',false) ||  router.isActive('/registo',true) ||router.isActive('/fornecedor',true) || router.isActive('/tinas',true)|| router.isActive('/componentes',true)|| router.isActive('/banhos',true)
+                    || router.isActive('/gestaobanhos_relatorios',true) || router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true) || router.isActive('/operacoes',true)|| router.isActive('/homegestaobanhos',true) || router.isActive('/linhas',true) || router.isActive('/unidades',true)|| router.isActive('/zonas',true)|| router.isActive('/turnos',true) || router.isActive('/adicoes',true) || router.isActive('/manutencoes',true) || router.isActive('/registopara',true)  || router.isActive('/manutencaonaoprogramada',true) || router.isActive('/manutencaoreposicao',true) || router.isActive('/construcaobanhos',true) }">
+                        <h4 class="panel-title">
+                            <a id="node0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <span class="glyphicon glyphicon-list-alt ">
+                                </span>Engenharia de Processos</a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse">
@@ -22,43 +207,204 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <li data-toggle="collapse" data-target="#movi" class="collapsed" [class.active]="router.isActive('/manutencao') || router.isActive('/registo')">
-                                            <a (click)="linha()">Movimentos <span class="arrow"></span></a>
+                                        <li id="node00" (click)="linha()" data-toggle="collapse" data-target="#movi"
+                                            class="collapsed"
+                                            [ngClass]="{'active': router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true) || router.isActive('/manutencao',true) || router.isActive('/registopara',true)  || router.isActive('/construcaobanhos',true) ||  router.isActive('/manutencaonaoprogramada',true) || router.isActive('/manutencaoreposicao',true) || router.isActive('/registo',true)}">
+                                            <a>Gestão de Banhos
+                                                <span class="arrow"></span>
+                                            </a>
                                         </li>
                                         <ul class="sub-menu collapse" id="movi">
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/registo']">Análises</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/manutencao']" href="#">Manutenções</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/registopara']" href="#">Reg. Parâm. de Operação</a></li>
+                                            <li id="node000" [routerLinkActive]="['active']"
+                                                [routerLink]="['/registo']">
+                                                <a>Análises</a>
+                                            </li>
+                                            <li id="node001" [routerLinkActive]="['active']"
+                                                [routerLink]="['/manutencao']">
+                                                <a>Manutenções Planeadas</a>
+                                            </li>
+                                            <li id="node004" [routerLinkActive]="['active']"
+                                                [routerLink]="['/manutencaonaoprogramada']">
+                                                <a>Manut. não Programadas</a>
+                                            </li>
+                                            <li id="node005" [routerLinkActive]="['active']"
+                                                [routerLink]="['/manutencaoreposicao']">
+                                                <a>Manut. de Reposição</a>
+                                            </li>
+                                            <li id="node003" [routerLinkActive]="['active']"
+                                                [routerLink]="['/construcaobanhos']">
+                                                <a>Construção Banho</a>
+                                            </li>
+                                            <li id="node002" [routerLinkActive]="['active']"
+                                                [routerLink]="['/registopara']">
+                                                <a>Reg. Parâm. de Operação</a>
+                                            </li>
                                         </ul>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <li data-toggle="collapse" data-target="#tabelas" class="collapsed" [class.active]="router.isActive('/fornecedor') || router.isActive('/tinas')|| router.isActive('/componentes')||router.isActive('/banhos')">
-                                            <a (click)="linha()">Tabelas <span class="arrow"></span></a>
+                                        <li id="node0251" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analise_rejeicoes_engenharia']">Análise de Rejeições</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node08" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/alertasePrioridades']">Alertas e Prioridades</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node07" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoengenaria']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node03" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/gestaobanhos_relatorios']">Relatórios de Gestão</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node05" data-toggle="collapse" data-target="#analiseconsumos"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/analiseconsumos',true)}">
+                                            <a>Consultas
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="analiseconsumos">
+                                            <li id="node051" [routerLinkActive]="['active']"
+                                                [routerLink]="['/analiseconsumos']">
+                                                <a>Análise de Consumos</a>
+                                            </li>
+                                            <li id="node052" [routerLinkActive]="['active']"
+                                                [routerLink]="['/analiseconsumosetiquetas']">
+                                                <a>Análise Cons. Etiquetas</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node01" data-toggle="collapse" data-target="#tabelas" class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/fornecedor',true) || router.isActive('/tinas',true)|| router.isActive('/componentes',true)||router.isActive('/banhos',true)}">
+                                            <a (click)="linha()">Tabelas
+                                                <span class="arrow"></span>
+                                            </a>
                                         </li>
                                         <ul class="sub-menu collapse" id="tabelas">
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/tinas']" href="#">Tinas</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/componentes']" href="#">Componentes</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/banhos']" href="#">Banhos</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/utilizadores']" href="#">Utilizadores</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/fornecedor']" href="#">Fornecedores</a></li>
+                                            <li id="node010" [routerLinkActive]="['active']" [routerLink]="['/tinas']">
+                                                <a>Tinas</a>
+                                            </li>
+                                            <li id="node011" [routerLinkActive]="['active']"
+                                                [routerLink]="['/componentes']">
+                                                <a>Componentes</a>
+                                            </li>
+                                            <li id="node012" [routerLinkActive]="['active']" [routerLink]="['/banhos']">
+                                                <a>Banhos</a>
+                                            </li>
+                                            <li id="node013" [routerLinkActive]="['active']"
+                                                [routerLink]="['/fornecedor']">
+                                                <a>Fornecedores</a>
+                                            </li>
                                         </ul>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <li data-toggle="collapse" data-target="#parametros" class="collapsed" [class.active]="router.isActive('/operacoes') || router.isActive('/linhas') || router.isActive('/unidades')|| router.isActive('/zonas')|| router.isActive('/turnos') || router.isActive('/adicoes') || router.isActive('/manutencoes')">
-                                            <a>Parâmetros <span class="arrow"></span></a>
+                                        <li id="node02" data-toggle="collapse" data-target="#parametros"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/operacoes',true) || router.isActive('/linhas',true) || router.isActive('/unidades',true)|| router.isActive('/zonas',true)|| router.isActive('/turnos',true) || router.isActive('/adicoes',true) || router.isActive('/manutencoes',true)}">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
                                         </li>
                                         <ul class="sub-menu collapse" id="parametros">
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/linhas']" href="#">Linhas</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/unidades']" href="#">Unidades de Medida</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/zonas']" href="#">Zonas</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/turnos']" href="#">Turnos</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/adicoes']" href="#">Tipo Adição</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/manutencoes']" href="#">Tipo Manutenção</a></li>
-                                            <li [routerLinkActive]="['active']"><a [routerLink]="['/operacoes']" href="#">Tipo Operação</a></li>
+                                            <li id="node020" [routerLinkActive]="['active']" [routerLink]="['/linhas']">
+                                                <a>Linhas</a>
+                                            </li>
+                                            <li id="node021" [routerLinkActive]="['active']"
+                                                [routerLink]="['/unidades']">
+                                                <a>Unidades de Medida</a>
+                                            </li>
+                                            <li id="node022" [routerLinkActive]="['active']" [routerLink]="['/zonas']">
+                                                <a>Zonas</a>
+                                            </li>
+                                            <li id="node023" [routerLinkActive]="['active']" [routerLink]="['/turnos']">
+                                                <a>Turnos</a>
+                                            </li>
+                                            <li id="node024" [routerLinkActive]="['active']"
+                                                [routerLink]="['/adicoes']">
+                                                <a>Tipo Adição</a>
+                                            </li>
+                                            <li id="node025" [routerLinkActive]="['active']"
+                                                [routerLink]="['/manutencoes']">
+                                                <a>Tipo Manutenção</a>
+                                            </li>
+                                            <li id="node026" [routerLinkActive]="['active']"
+                                                [routerLink]="['/operacoes']">
+                                                <a>Tipo Operação</a>
+                                            </li>
+                                            <li id="node027" [routerLinkActive]="['active']"
+                                                [routerLink]="['/armazens']">
+                                                <a>Armazéns</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node06" data-toggle="collapse" data-target="#utilitarios"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/correcaoquantidades',true) || router.isActive('/analiseetiquetas',true) || router.isActive('/ficheirosmanutencoes',true) }">
+                                            <a>Utilitários
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="utilitarios">
+                                            <li id="node060" [routerLinkActive]="['active']"
+                                                [routerLink]="['/correcaoquantidades']">
+                                                <a>Correção de Quant. Etiq.</a>
+                                            </li>
+                                            <li id="node061" [routerLinkActive]="['active']"
+                                                [routerLink]="['/analiseetiquetas']">
+                                                <a>Análise de Etiquetas</a>
+                                            </li>
+                                            <li id="node062" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ficheirosmanutencoes']">
+                                                <a>Ficheiros Interface</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node3" data-toggle="collapse" data-target="#collapseLMEP"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true)  }">
+                                            <a>Gestão LMEP
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="collapseLMEP">
+                                            <li id="node31" [routerLinkActive]="['active']" [routerLink]="['/grid']">
+                                                <a>Reg. Produção (GRID)</a>
+                                            </li>
+                                            <li id="node33" [routerLinkActive]="['active']"
+                                                [routerLink]="['/cartelas']">
+                                                <a>Cartelas (GRID)</a>
+                                            </li>
+                                            <li id="node32" [routerLinkActive]="['active']"
+                                                [routerLink]="['/lmep_relatorios']">
+                                                <a>Relatórios de Gestão</a>
+                                            </li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -66,42 +412,879 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" [routerLinkActive]="['active']">
-                        <h4 class="panel-title">
-                            <a [routerLink]="['/config']" href="#"><span class="glyphicon glyphicon-cog">
-                            </span>Configurações</a>
-                        </h4>
-                    </div>
 
-                </div>
+
+
+
+                <!-- MENU Financeira -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/perfil')">
+                    <div class="panel-heading"
+                        [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
+                    || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/tipos_documento',true) ">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
-                            </span>Conta</a>
+                            <a id="node160" data-toggle="collapse" data-parent="#accordion" href="#collapseFinanceira">
+                                <span class="fa fa-line-chart" style="margin-right: 12px;">
+                                </span>Financeira</a>
                         </h4>
                     </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
+                    <div id="collapseFinanceira" class="panel-collapse collapse">
                         <div class="panel-body">
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <li [routerLinkActive]="['active']"><a [routerLink]="['/perfil/view']" href="#">Perfil</a></li>
+                                        <li id="node1601" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoFinanceira']">Plano de Ações</a>
+                                        </li>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <li><a (click)="logout()">Sair</a></li>
+                                        <li id="node1603" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analise_dividas']">Análise de Dívidas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1609" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/seguimento_faturacao']">Seguimento Faturação</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node7_18" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/controloassiduidade_financeira']">Recursos Humanos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1602" data-toggle="collapse" data-target="#parametrosrecursos"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true) || router.isActive('/tipos_documento',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosrecursos">
+                                            <li id="node724" [routerLinkActive]="['active']"
+                                                [routerLink]="['/funcionarios']">
+                                                <a>Funcionários</a>
+                                            </li>
+                                            <li id="node721" [routerLinkActive]="['active']"
+                                                [routerLink]="['/estadosfuncionarios']">
+                                                <a>Estados Funcionários</a>
+                                            </li>
+                                            <li id="node722" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores']">
+                                                <a>Sectores</a>
+                                            </li>
+                                            <li id="node723" [routerLinkActive]="['active']"
+                                                [routerLink]="['/turnosrecursos']">
+                                                <a>Turnos</a>
+                                            </li>
+                                            <li id="node725" [routerLinkActive]="['active']"
+                                                [routerLink]="['/cacifos']">
+                                                <a>Cacifos</a>
+                                            </li>
+                                            <li id="node726" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposcacifos']">
+                                                <a>Tipos de Cacifo</a>
+                                            </li>
+                                            <li id="node727" [routerLinkActive]="['active']" [routerLink]="['/pausas']">
+                                                <a>Pausas</a>
+                                            </li>
+                                            <li id="node828" [routerLinkActive]="['active']"
+                                                [routerLink]="['/objetivos_faturacao']">
+                                                <a>Objetivos Faturação</a>
+                                            </li>
+                                            <li id="node829" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipos_documento']">
+                                                <a>Tipos de Documento</a>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
+
+                <!-- MENU Injecao -->
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoinjecao',false)">
+                        <h4 class="panel-title">
+                            <a id="node157" data-toggle="collapse" data-parent="#accordion" href="#collapseInjecao">
+                                <span class="fa fa-industry" style="margin-right: 12px;">
+                                </span>Injeção</a>
+                        </h4>
+                    </div>
+                    <div id="collapseInjecao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1571" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoinjecao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MENU Logística -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [class.active]=" router.isActive('/pedidosdaproducao',true) || router.isActive('planosacaologistica',true) || router.isActive('objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true)">
+                        <h4 class="panel-title">
+                            <a id="node100" data-toggle="collapse" data-parent="#accordion" href="#collapseLogistica">
+                                <span class="fa fa-truck" style="margin-right: 12px;">
+                                </span>Logística</a>
+                        </h4>
+                    </div>
+                    <div id="collapseLogistica" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1011" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaologistica']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node8" data-toggle="collapse" data-target="#stocks" class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/pedidosdaproducao',true)  }">
+                                            <a>Stocks
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="stocks">
+                                            <li id="node81" [routerLinkActive]="['active']"
+                                                [routerLink]="['/pedidosdaproducao']">
+                                                <a title="Pedidos da Produção">Pedidos da Produção</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1010" data-toggle="collapse"
+                                            data-target="#parametros_cumprimento_fornecedor" class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametros_cumprimento_fornecedor">
+                                            <li id="node10101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/objetivos_cumprimento_fornecedor']">
+                                                <a title="Objetivos Cumprimento Fornecedores">Obj. Cump.
+                                                    Fornecedores</a>
+                                            </li>
+                                            <li id="node10102" [routerLinkActive]="['active']"
+                                                [routerLink]="['/objetivos_cumprimento_cliente']">
+                                                <a title="Objetivos Cumprimento Fornecedores">Obj. Cump.
+                                                    Clientes</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MENU Manutencao -->
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/planosacaomanutencao',false)">
+                        <h4 class="panel-title">
+                            <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
+                                <span class="fa fa-wrench" style="margin-right: 12px;">
+                                </span>Manutenção</a>
+                        </h4>
+                    </div>
+                    <div id="collapseManutencao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1561" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaomanutencao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MENU Produção -->
+                <div class="panel panel-default">
+                    <div (click)="abrirproducao()" class="panel-heading"
+                        [class.active]="router.isActive('/producao_oem',true) || router.isActive('/producao_veiculos',true) || router.isActive('/producao_projetos',true) || 
+                        router.isActive('/producao_fabricas',true) || router.isActive('/producao_programas',true) ||router.isActive('analiseencomendas_p',true)  ||router.isActive('gestao_barras',true)   
+                        || router.isActive('planosacaoproducao',true) || router.isActive('objetivos_planos',true) || router.isActive('/producao/amostras',true) || router.isActive('/producao/barras_alerta',true) || router.isActive('/producao/producoes_prioritarias',true) || router.isActive('/producao/revisoes_prioritarias',true) 
+                        || router.isActive('capacidade_linha',true) || router.isActive('/producao/planeamento',true) || router.isActive('/producao/analise_rejeicoes',true) 
+                        || router.isActive('/producao',true) || router.isActive('/controloassiduidade_producao',true) || router.isActive('/pausas_p',true) || router.isActive('/tiposcacifos_p',true) || router.isActive('/cacifos_p',true) || router.isActive('/estadosfuncionarios_p',true) || router.isActive('/sectores_p',true) 
+                        || router.isActive('/turnosrecursos_p',true) || router.isActive('/funcionarios_p',true) || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
+                        || router.isActive('/semanas_analise',true) || router.isActive('/planeamento_producao',true) || router.isActive('/planeamento_analises',true)
+                        || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) ">
+                        <h4 class="panel-title">
+                            <a id="node9" data-toggle="collapse" data-parent="#accordion" href="#collapseProducao">
+                                <span class="fa fa-building-o" style="margin-right: 12px;">
+                                </span>Produção</a>
+                        </h4>
+                    </div>
+                    <div id="collapseProducao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node91" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/analise_rejeicoes']">Análise de Rejeições</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node92" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/planeamento']">Planeamento de Barras</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node93" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/amostras']">Amostras</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node94" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/barras_alerta']">Barras em Alerta</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node95" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/revisoes_prioritarias']">Revisões
+                                                Prioritárias</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node96" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/producao/producoes_prioritarias']">Produções
+                                                Prioritárias</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node97" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoproducao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node990" data-toggle="collapse" data-target="#planeamentoproducao"
+                                            [ngClass]="{ 'active': router.isActive('/planeamento_producao',true) || router.isActive('/planeamento_analises',true)}">
+                                            <a>Planos Produção <span class="arrow"></span></a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="planeamentoproducao">
+                                            <li id="node99" [routerLinkActive]="['active']"
+                                                [routerLink]="['/planeamento_producao']">
+                                                <a>Planos</a>
+                                            </li>
+
+                                            <li id="node991" [routerLinkActive]="['active']"
+                                                [routerLink]="['/planeamento_analises']">
+                                                <a>Análises</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node911" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/gestao_barras']">Gestão de Barras</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node98" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analiseencomendas_p']">Análise Encomendas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node7_10" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/controloassiduidade_producao']">Recursos Humanos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node9210" data-toggle="collapse" data-target="#parametrosproducao"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': 
+                                            router.isActive('/producao_oem',true) || router.isActive('/producao_veiculos',true) || router.isActive('/producao_projetos',true) || 
+                                            router.isActive('/producao_fabricas',true) || router.isActive('/producao_programas',true) || 
+                                            router.isActive('/tipologia_ensaio',true) || 
+                                            router.isActive('/capacidade_linha',true) ||  router.isActive('/objetivos_planos',true) ||  router.isActive('/sectores_analise',true) 
+                                            || router.isActive('/estadosfuncionarios_p',true)|| router.isActive('/pausas_p',true)  || router.isActive('/tiposcacifos_p',true)|| router.isActive('/cacifos_p',true)  || router.isActive('/sectores_p',true) 
+                                            || router.isActive('/turnosrecursos_p',true) 
+                                            || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
+                                            || router.isActive('/semanas_analise',true) || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true)}">
+
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosproducao">
+                                            <li id="node92101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/capacidade_linha']">
+                                                <a>Capacidade da Linha</a>
+                                            </li>
+
+                                            <li id="node92102" [routerLinkActive]="['active']"
+                                                [routerLink]="['/objetivos_planos']">
+                                                <a>Objetivos</a>
+                                            </li>
+
+                                            <li id="node92103" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_analise']">
+                                                <a>Sectores de Análise</a>
+                                            </li>
+                                            <li id="node92104" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipologia_ensaio']">
+                                                <a>Tipologia de Ensaio</a>
+                                            </li>
+
+                                            <li id="node92109" [routerLinkActive]="['active']"
+                                                [routerLink]="['/producao_oem']">
+                                                <a>OEM</a>
+                                            </li>
+                                            <li id="node92105" [routerLinkActive]="['active']"
+                                                [routerLink]="['/producao_veiculos']">
+                                                <a>Veículos</a>
+                                            </li>
+                                            <li id="node92106" [routerLinkActive]="['active']"
+                                                [routerLink]="['/producao_programas']">
+                                                <a>Programas</a>
+                                            </li>
+                                            <li id="node92107" [routerLinkActive]="['active']"
+                                                [routerLink]="['/producao_fabricas']">
+                                                <a>Fábricas</a>
+                                            </li>
+                                            <li id="node92108" [routerLinkActive]="['active']"
+                                                [routerLink]="['/producao_projetos']">
+                                                <a>Projetos</a>
+                                            </li>
+                                            <li id="node921010" [routerLinkActive]="['active']"
+                                                [routerLink]="['/limites_encomendas']">
+                                                <a>Limites Encomendas</a>
+                                            </li>
+                                            <li id="node724_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/funcionarios_p']">
+                                                <a>Funcionários</a>
+                                            </li>
+                                            <li id="node721_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/estadosfuncionarios_p']">
+                                                <a>Estados Funcionários</a>
+                                            </li>
+                                            <li id="node722_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_p']">
+                                                <a>Sectores</a>
+                                            </li>
+                                            <li id="node723_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/turnosrecursos_p']">
+                                                <a>Turnos</a>
+                                            </li>
+                                            <li id="node725_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/cacifos_p']">
+                                                <a>Cacifos</a>
+                                            </li>
+                                            <li id="node726_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposcacifos_p']">
+                                                <a>Tipos de Cacifo</a>
+                                            </li>
+                                            <li id="node727_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/pausas_p']">
+                                                <a>Pausas</a>
+                                            </li>
+                                            <li id="node9211" [routerLinkActive]="['active']"
+                                                [routerLink]="['/dias_producao']">
+                                                <a>Dias Produção/Semana</a>
+                                            </li>
+                                            <li id="node9212" [routerLinkActive]="['active']"
+                                                [routerLink]="['/capacidade_acabamento']">
+                                                <a>Capacidade/Acabamento</a>
+                                            </li>
+                                            <li id="node9213" [routerLinkActive]="['active']"
+                                                [routerLink]="['/capacidade_racks']">
+                                                <a>Capacidade Racks</a>
+                                            </li>
+                                            <li id="node9214" [routerLinkActive]="['active']"
+                                                [routerLink]="['/semanas_analise']">
+                                                <a>Nº Semanas Análise</a>
+                                            </li>
+                                            <li id="node9215" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_agregadores']">
+                                                <a>Sectores Agregadores</a>
+                                            </li>
+                                            <li id="node9216" [routerLinkActive]="['active']"
+                                                [routerLink]="['/validacoes_bastidores']">
+                                                <a>Validações Bastidores</a>
+                                            </li>
+
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENU Projetos -->
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoProjetos',false)">
+                        <h4 class="panel-title">
+                            <a id="node159" data-toggle="collapse" data-parent="#accordion" href="#collapseProjetos">
+                                <span class="fa fa-industry" style="margin-right: 12px;">
+                                </span>Projetos</a>
+                        </h4>
+                    </div>
+                    <div id="collapseProjetos" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1591" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoProjetos']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MENU RECLAMAÇÕES-->
+                <!---->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_qualidade',true) || router.isActive('/seguranca_trabalho',true) || router.isActive('/reclamacoes_relatorios',true) || router.isActive('/reclamacoesfornecedores',true) || router.isActive('/reclamacoesclientes',true) || router.isActive('/temposresposta',true) 
+                        || router.isActive('/planosacaoqualidade',false) || router.isActive('/rejeicoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) || router.isActive('/tiposocorrencia',true)  || router.isActive('/tipos_ocorrencia',true)||  router.isActive('/tiposnaodetecao',true) }">
+                        <h4 class="panel-title">
+                            <a id="node5" data-toggle="collapse" data-parent="#accordion" href="#collapsereclamacoes">
+                                <span class="glyphicon glyphicon-list-alt ">
+                                </span>Qualidade</a>
+                        </h4>
+                    </div>
+                    <div id="collapsereclamacoes" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node50" data-toggle="collapse" data-target="#movi3" class="collapsed"
+                                            [ngClass]="{'active':router.isActive('/reclamacoesclientes',true) || router.isActive('/reclamacoesfornecedores',true) }">
+                                            <a>Reclamações
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="movi3">
+                                            <li id="node500" [routerLinkActive]="['active']"
+                                                [routerLink]="['/reclamacoesclientes']">
+                                                <a>Clientes</a>
+                                            </li>
+                                            <li id="node501" [routerLinkActive]="['active']"
+                                                [routerLink]="['/reclamacoesfornecedores']">
+                                                <a>Fornecedores</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node56" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analise_rejeicoes_qualidade']">Análise de Rejeições</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node53" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/reclamacoes_relatorios']">Relatórios de Gestão</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node54" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosacaoqualidade']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node23" data-toggle="collapse" data-target="#movide500"
+                                            class="collapsed"
+                                            [ngClass]="{'active':router.isActive('/seguranca_trabalho',true)  }">
+                                            <a>Segurança no Trabalho
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="movide500">
+                                            <li id="node231" [routerLinkActive]="['active']"
+                                                [routerLink]="['/seguranca_trabalho']">
+                                                <a>Relatórios de Ocorrências</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <!--<tr>
+                                    <td>
+                                        <li id="node55" data-toggle="collapse" data-target="#rrrclam" class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/analiseconsumos',true)}">
+                                            <a>Consultas
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="rrrclam">
+                                            <li id="node551" [routerLinkActive]="['active']" [routerLink]="['/analiseconsumos']">
+                                                <a>Análise de Consumos</a>
+                                            </li>
+                                            <li id="node552" [routerLinkActive]="['active']" [routerLink]="['/analiseconsumosetiquetas']">
+                                                <a>Análise Cons. Etiquetas</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>-->
+                                <tr>
+                                    <td>
+                                        <li id="node52" data-toggle="collapse" data-target="#parametrosrecl"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true) ||  router.isActive('/tiposocorrencia',true) ||  router.isActive('/tiposnaodetecao',true) || router.isActive('/temposresposta',true) || router.isActive('/rejeicoes',true) || router.isActive('/accoesreclamacoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosrecl">
+                                            <li id="node520" [routerLinkActive]="['active']"
+                                                [routerLink]="['/rejeicoes']">
+                                                <a>Rejeições</a>
+                                            </li>
+                                            <li id="node521" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposreclamacoes']">
+                                                <a>Tipos de Reclamações</a>
+                                            </li>
+                                            <li id="node522" [routerLinkActive]="['active']"
+                                                [routerLink]="['/grausimportancia']">
+                                                <a>Graus de Importância</a>
+                                            </li>
+                                            <li id="node523" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposdefeito']">
+                                                <a>Tipos de Defeito</a>
+                                            </li>
+                                            <li id="node524" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ficheirosanalise']">
+                                                <a>Ficheiros de Análise</a>
+                                            </li>
+                                            <li id="node525" [routerLinkActive]="['active']"
+                                                [routerLink]="['/temposresposta']">
+                                                <a>Tempos de Resposta</a>
+                                            </li>
+                                            <li id="node526" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposocorrencia']">
+                                                <a>Tipos de Ocorrência Recl.</a>
+                                            </li>
+                                            <li id="node527" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tiposnaodetecao']">
+                                                <a>Tipos Não Deteção</a>
+                                            </li>
+                                            <li id="node528" [routerLinkActive]="['active']"
+                                                [routerLink]="['/classificacao']">
+                                                <a>Classificação</a>
+                                            </li>
+                                            <li id="node529" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipologia']">
+                                                <a>Tipologia</a>
+                                            </li>
+                                            <li id="node23101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipos_ocorrencia']">
+                                                <a>Tipo de Ocorrência Seg.</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <!-- MENU TAREFAS -->
+                <div class="panel panel-default">
+                    <div (click)="abrirdashboardTarefas()" class="panel-heading"
+                        [class.active]="router.isActive('/tarefas',true) ||  router.isActive('/dictarefas',true) || router.isActive('/dictiposacao',true)">
+                        <h4 class="panel-title">
+                            <a id="node6" data-toggle="collapse" data-parent="#accordion" href="#collapseTarefas">
+                                <span class="glyphicon glyphicon-tasks">
+                                </span>Tarefas</a>
+                        </h4>
+                    </div>
+                    <div id="collapseConf" id="collapseTarefas" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <!--<tr>
+                                    <td>
+                                        <li id="1node6" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/teste2']">Minhas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="1node6">
+                                            <a [routerLink]="['/teste1']">Todas</a>
+                                        </li>
+                                    </td>
+                                </tr>-->
+                                <tr>
+                                    <td>
+                                        <li id="node62" data-toggle="collapse" data-target="#parametrostarefas"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active':  router.isActive('/dictarefas',true) || router.isActive('/dictiposacao',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrostarefas">
+                                            <li id="node621" [routerLinkActive]="['active']"
+                                                [routerLink]="['/dictarefas']">
+                                                <a>Tarefas</a>
+                                            </li>
+                                            <li id="node622" [routerLinkActive]="['active']"
+                                                [routerLink]="['/dictiposacao']">
+                                                <a>Tipos de Ação</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- MENU CONFIGURAÇÕES -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [ngClass]="{ 'active': router.isActive('/utilizadores',true) || router.isActive('/config',true) || router.isActive('/parametros',true) || router.isActive('/eventos',true)
+                    || router.isActive('/grupos',true) || router.isActive('/seccoes',true) || router.isActive('/departamentos',true) || router.isActive('/locais',true) || router.isActive('/feriados',true) }">
+                        <h4 class="panel-title">
+                            <a id="node1" data-toggle="collapse" data-parent="#accordion" href="#collapseConf">
+                                <span class="glyphicon glyphicon-cog ">
+                                </span>Configurações</a>
+                        </h4>
+                    </div>
+                    <div id="collapseConf" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node10" [routerLinkActive]="['active']"
+                                            [routerLink]="['/utilizadores']">
+                                            <a>Utilizadores</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11" [routerLinkActive]="['active']" [routerLink]="['/config']">
+                                            <a>Perfis</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node12" [routerLinkActive]="['active']" [routerLink]="['/parametros']">
+                                            <a>Parâmetros Aplicação</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node13" [routerLinkActive]="['active']" [routerLink]="['/eventos']">
+                                            <a>Eventos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node16" [routerLinkActive]="['active']"
+                                            [routerLink]="['/eventosprogramados']">
+                                            <a>Eventos Programados</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node14" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/configjasper']">Análises Gestão (Jasper)</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node15" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/parametrosraks']">Cartelas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node17" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/departamentos']">Departamentos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node18" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/seccoes']">Secções</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node19" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/grupos']">Grupos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node191" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/locais']">Locais</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1101" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/feriados']">Feriados</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENU CONTA -->
+                <div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/perfil',true)">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                <span class="glyphicon glyphicon-user">
+                                </span>Conta</a>
+                        </h4>
+                    </div>
+                    <div id="collapseConf" id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/perfil/view']">Perfil</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li>
+                                            <a (click)="logout()">Sair</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a style="cursor: pointer" (click)="abreAjuda()">
+                                <span class="glyphicon glyphicon-question-sign">
+                                </span>Pedidos de Assistências</a>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a style="cursor: pointer" (click)="abreSugestoes()">
+                                <span class="glyphicon glyphicon-inbox">
+                                </span>Sugestões de Melhoria</a>
+                        </h4>
+                    </div>
+                </div>
+                <!--<div class="panel panel-default">
+                    <div class="panel-heading" [class.active]="router.isActive('/teste1',true)">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapsestats">
+                                <span class="glyphicon glyphicon-stats">
+                                </span>Demo</a>
+                        </h4>
+                    </div>
+                    <div id="collapsestats" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/grid']">Tabela (GRID)</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>-->
             </div>
         </div>
     </div>
 </div>
 
-<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalSElLinhas" ></button>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true"
+    data-target="#myModalSElLinhas"></button>
+
+<button class="btn btn-primary btn-lg" #dialog2 data-toggle="modal" [hidden]="true"
+    data-target="#myModalAjuda"></button>

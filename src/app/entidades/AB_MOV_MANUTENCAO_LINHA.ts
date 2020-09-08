@@ -8,4 +8,10 @@ export class AB_MOV_MANUTENCAO_LINHA {
     valor2: string;
     hora_PREVISTA: string;
     obs_PLANEAMENTO: string;
+    stock: number;
+    cod_REF: string;
+    nome_REF: string;
+    stkunit: string;
+    valor_AGUA: number;
+    liecod: string;
 }

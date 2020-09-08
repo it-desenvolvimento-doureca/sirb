@@ -1,0 +1,37 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Análises</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'30px'}" field="id" header="Nº Análise" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'35px'}" field="data" header="Data Análise" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'35px'}" field="semana" header="Semana" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'35px'}" field="plano1" header="Plano Linha 1" [filter]="true"
+                [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'30px'}" field="plano2" header="Plano Linha 2" [filter]="true"
+                [sortable]="true">
+              </p-column>
+
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

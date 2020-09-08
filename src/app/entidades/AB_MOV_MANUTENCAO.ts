@@ -17,6 +17,7 @@ export class AB_MOV_MANUTENCAO {
     utz_ULT_IMPRES: number;
     data_ULT_IMPRES: Date;
     impresso: boolean;
+    classif: string;
 
 }
  

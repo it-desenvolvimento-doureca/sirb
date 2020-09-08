@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_DIC_COMPONENTE } from "app/entidades/AB_DIC_COMPONENTE";
 
@@ -31,17 +31,97 @@ export class ABDICCOMPONENTEService {
   }
 
   getAll(tipo): Observable<AB_DIC_COMPONENTE[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_COMPONENTE/'+tipo;
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_COMPONENTE/' + tipo;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-   getComponentes(){
+  getComponentes() {
     const url = webUrl.host + '/rest/sirb/getComponentes';
     return this.http
       .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getFamilias() {
+    const url = webUrl.host + '/rest/sirb/getFamilias';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getDefeitos() {
+    const url = webUrl.host + '/rest/sirb/getDefeitos';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getComponentesdoSGIID() {
+    const url = webUrl.host + '/rest/sirb/getComponentesDOSGIID';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getComponentesTodos() {
+    const url = webUrl.host + '/rest/sirb/getComponentesTodos';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getComponentesProducao() {
+    const url = webUrl.host + '/rest/sirb/getComponentesProducao';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getReferencias() {
+    const url = webUrl.host + '/rest/sirb/getReferencias';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getClientes() {
+    const url = webUrl.host + '/rest/sirb/getClientes';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getMoradas(clicod) {
+    const url = webUrl.host + '/rest/sirb/getMoradas/' + clicod;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+
+  }
+
+  getComponentesdoCliente(clicod, etsnum) {
+    const url = webUrl.host + '/rest/sirb/getComponentesdoCliente/' + clicod + '/' + etsnum;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getEtiquetas(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/getEtiquetas', data, { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

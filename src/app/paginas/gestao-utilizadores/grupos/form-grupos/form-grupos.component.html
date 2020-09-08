@@ -1,0 +1,49 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Grupo</h4>
+          </div>
+          <div class="card-content">
+            <form (ngSubmit)="gravar()" ngNativeValidate>
+              <div class="form-group col-md-12" style="padding: 6px;">
+                <label for="obs1">Nome Grupo:</label>
+                <input [disabled]="!modoedicao" type="text"  autocomplete="off" class="form-control2" id="obs1" [(ngModel)]="descricao"
+                  required [ngModelOptions]="{standalone: true}" />
+              </div>
+              <div class="col-md-12">
+                <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget($event)" (onMoveToSource)="onMoveToSource($event)"
+                  [source]="sourceUtilizador" [showTargetControls]="false" [showSourceControls]="false" [target]="targetUtilizador"
+                  sourceHeader="Utilizadores" targetHeader="Utilizadores no Grupo" [responsive]="true" filterBy="nome"
+                  dragdrop="true" filterBy="nome" sourceFilterPlaceholder="Pesquisar pelo Utilizador"
+                  targetFilterPlaceholder="Pesquisar pelo perfil" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-car pTemplate="item">
+
+                    {{car.nome}}
+
+                  </ng-template>
+                </p-pickList>
+              </div>
+
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+
+
+
+</div>

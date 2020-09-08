@@ -1,0 +1,31 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Grupos</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [sortable]="true" [filter]="true" [style]="{'width':'90%'}" styleclass="text-danger" field="nome"
+                header="Grupo"></p-column>
+              <p-column styleClass="col-button" [style]="{'width':'10%'}">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/grupos/view']"
+                    [queryParams]="{ id: car.id }">
+                    <i class="material-icons">search</i>
+                  </a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

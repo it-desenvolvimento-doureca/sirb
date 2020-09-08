@@ -22,12 +22,107 @@ export class AppGlobals {
   editar: boolean = false;
   apagar: boolean = false;
   criar: boolean = false;
+  criarmanutencao: boolean = false;
   voltar: boolean = false;
   seguinte: boolean = false;
   anterior: boolean = false;
+  historico: boolean = false;
   menu_edi: boolean = false;
-  pesquisar: boolean = false;
+  atualizar: boolean = false;
   duplicar: boolean = false;
+  disCriar: boolean = true;
+  disApagar: boolean = true;
+  disDuplicar: boolean = true;
+  disValidar: boolean = true;
+  disEditar: boolean = true;
+  mensagemlinhas: string = "";
+  disCriarmanutencao: boolean = true;
+  filtros = [];
+
+  setfiltros(var_item, filtro) {
+    if (var_item == "lista_dividas_sorttabela") {
+
+      if (filtro == "limpar") {
+        this.filtros[var_item] = [];
+      } else {
+
+        if (this.filtros[var_item]) {
+          var index = this.filtros[var_item].findIndex(item => item.field == filtro.field);
+
+          if (index != -1) {
+            this.filtros[var_item].splice(index, 1)
+            this.filtros[var_item].push({ field: filtro.field, order: filtro.order });
+          } else {
+            this.filtros[var_item].push({ field: filtro.field, order: filtro.order });
+          }
+
+        } else {
+          this.filtros[var_item] = [];
+          this.filtros[var_item].push({ field: filtro.field, order: filtro.order });
+        }
+      }
+
+    } else {
+      this.filtros[var_item] = filtro;
+    }
+  }
+
+  getfiltros(var_item) {
+    return this.filtros[var_item];
+  }
+
+  setMensagem(var_Mensagem) {
+    this.mensagemlinhas = var_Mensagem;
+  }
+
+  getMensagem() {
+    return this.mensagemlinhas;
+  }
+  setdisEditar(var_disEditar) {
+    this.disEditar = var_disEditar;
+  }
+
+  getdisValidar() {
+    return this.disValidar;
+  }
+  setdisValidar(var_disValidar) {
+    this.disValidar = var_disValidar;
+  }
+  getdisEditar() {
+    return this.disEditar;
+  }
+
+  setdisDuplicar(var_disDuplicar) {
+    this.disDuplicar = var_disDuplicar;
+  }
+
+  getdisDuplicar() {
+    return this.disDuplicar;
+  }
+
+  setdisApagar(var_disApagar) {
+    this.disApagar = var_disApagar;
+  }
+
+  getdisApagar() {
+    return this.disApagar;
+  }
+
+  setdisCriar(var_disCriar) {
+    this.disCriar = var_disCriar;
+  }
+
+  getdisCriar() {
+    return this.disCriar;
+  }
+
+  setdisCriarmanutencao(var_disCriarmanutencao) {
+    this.disCriarmanutencao = var_disCriarmanutencao;
+  }
+
+  getdisCriarmanutencao() {
+    return this.disCriarmanutencao;
+  }
 
   setlinha(var_linhar) {
     this.id_linha = var_linhar;
@@ -45,12 +140,12 @@ export class AppGlobals {
     return this.duplicar;
   }
 
-  setpesquisar(var_pesquisar) {
-    this.pesquisar = var_pesquisar;
+  setatualizar(var_atualizar) {
+    this.atualizar = var_atualizar;
   }
 
-  getpesquisar() {
-    return this.pesquisar;
+  getatualizar() {
+    return this.atualizar;
   }
   setmenu_edi(var_menu_edi) {
     this.voltar = var_menu_edi;
@@ -80,8 +175,17 @@ export class AppGlobals {
   setcriar(var_criar) {
     this.criar = var_criar;
   }
+
   getcriar() {
     return this.criar;
+  }
+
+  setcriarmanutencao(var_criarmanutencao) {
+    this.criarmanutencao = var_criarmanutencao;
+  }
+
+  getcriarmanutencao() {
+    return this.criarmanutencao;
   }
 
   setleitura(var_leitura) {
@@ -94,7 +198,7 @@ export class AppGlobals {
   seteditar(var_alterar) {
     this.editar = var_alterar;
   }
-  getleditar() {
+  geteditar() {
     return this.editar;
   }
 
@@ -103,5 +207,12 @@ export class AppGlobals {
   }
   getapagar() {
     return this.apagar;
+  }
+
+  sethistorico(var_historico) {
+    this.historico = var_historico;
+  }
+  gethistorico() {
+    return this.historico;
   }
 }

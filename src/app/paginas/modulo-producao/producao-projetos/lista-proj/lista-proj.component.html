@@ -1,0 +1,27 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header"  data-background-color="red">
+            <h4 class="title">Projetos</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column field="id" header="Nº Projeto" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column field="programa" header="Programa" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column field="oem" header="OEM" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column field="veiculo" header="Veículo " [filter]="true" [sortable]="true">
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

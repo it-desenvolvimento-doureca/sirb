@@ -1,0 +1,80 @@
+.table .thead-light {
+    color: #495057;
+    background-color: #e9ecef;
+    border: 2px solid #5b5757;
+}
+
+.table .thead-light2 {
+    color: #495057;
+    background-color: #e9ecef;
+}
+
+.table .thead-light3 {
+    color: #495057;
+    background-color: #e9ecef;
+    border-right: 2px solid #5b5757;
+}
+
+.table {
+    border: 2px solid #5b5757;
+}
+
+.table th,
+td {
+    padding: 5px 2px !important;
+    max-width: 21px;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table .valores {
+    text-align: right;
+}
+
+.table-bordered>tbody>tr>td,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>td,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th {
+    border: 1px solid #3c3c3c !important;
+    color: black;
+}
+
+.table .verde {
+    background: rgba(0, 128, 0, 0.41);
+}
+
+.table .none {
+    background: none;
+}
+
+.table .amarelo {
+    background: rgba(255, 255, 0, 0.62);
+}
+
+.table .vermelho {
+    background: rgba(239, 19, 19, 0.58);
+}
+
+.div_header {
+    border: 1px solid #a5a5a5;
+    text-align: center;
+    background: rgba(75, 74, 74, 0.04);
+    height: 64px;
+}
+
+.breadcrumb.brand-primary {
+    background-color: white;
+    margin: -8px 12px -7px 12px;
+}
+
+.breadcrumb.brand-primary a {
+    color: black;
+}
+
+.breadcrumb.brand-primary li.active {
+    color: #eee;
+}

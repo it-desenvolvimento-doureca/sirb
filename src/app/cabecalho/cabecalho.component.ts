@@ -17,12 +17,16 @@ interface IBreadcrumb {
     styleUrls: ['./cabecalho.component.css']
 })
 export class CabecalhoComponent implements OnInit {
+    hora: string;
 
     private listTitles: any[];
     location: Location;
     currentpage = "";
     modo = '';
     nome;
+    value;
+    versao = "versão 1.0.1";
+
 
     public breadcrumbs: IBreadcrumb[];
 
@@ -32,10 +36,20 @@ export class CabecalhoComponent implements OnInit {
     }
 
     ngOnInit() {
+        /*var date = new Date(),
+            locale = "pt-PT",
+            month = date.toLocaleString(locale, { weekday: "long" }) + ", " + date.toLocaleString(locale, { day: "numeric" }) + " de " + date.toLocaleString(locale, { month: "long" })
+                + " de " + date.toLocaleString(locale, { year: "numeric" });
+        this.value = month.toLocaleUpperCase();
+        setInterval(() => {         //replaced function() by ()=>
+             var hora= new Date();
+             this.hora = hora.toLocaleTimeString();
+         }, 1000);
+ */
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
         if (localStorage.getItem("userapp")) {
-        this.nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
+            this.nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
         }
         //subscribe to the NavigationEnd event
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
@@ -44,7 +58,10 @@ export class CabecalhoComponent implements OnInit {
             this.breadcrumbs = this.getBreadcrumbs(root);
         });
 
+
     }
+
+
 
     getTitle() {
 
@@ -85,8 +102,14 @@ export class CabecalhoComponent implements OnInit {
 
 
     logout() {
-        localStorage.clear();
+        //localStorage.clear();
+        localStorage.removeItem('acessos');
+        localStorage.removeItem('userapp');
+        localStorage.removeItem('time_sgiid');
         this.router.navigate(['login']);
+        /*setTimeout(() => {
+            location.reload(true);
+        }, 50);*/
     }
 
 

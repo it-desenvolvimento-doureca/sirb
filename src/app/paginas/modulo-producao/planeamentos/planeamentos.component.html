@@ -1,0 +1,50 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header"  data-background-color="red">
+            <h4 class="title">Planeamentos de Barras</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'25px'}" field="id_PLANEAMENTO" header="Nº Planeamento" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'35px'}" field="data_registo" header="Data Registo" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'21px'}" field="ano" header="Ano" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="semana" header="Semana" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'50px'}" [sortable]="true" [filter]="true" styleclass="text-danger"
+                field="linha" header="Linha">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="linhas" [(ngModel)]="linha" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true)" styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']">
+                    {{car['linha']}}
+                  </div>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="estados" [(ngModel)]="estado" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true)" styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  {{car['estado']}}
+                </ng-template>
+              </p-column>
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

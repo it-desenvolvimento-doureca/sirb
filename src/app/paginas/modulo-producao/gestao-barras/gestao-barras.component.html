@@ -1,0 +1,460 @@
+<form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()" ngNativeValidate>
+  <div class="col-md-12  hidden-xs">
+    <div class="card-header" data-background-color="orange">
+      <div class="nav-tabs-navigation">
+        <div class="nav-tabs-wrapper">
+          <ul class="nav nav-tabs" style="background:black">
+            <li [hidden]="!btvoltar" style="float: right;">
+              <a (click)=" backClicked()">
+                <i class="material-icons">arrow_back</i>Voltar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <!--li [class.disabled]="disCriar" [hidden]="!btcriar">
+              <a (click)="criar_novo()" [ngClass]="(novo) ? 'cor_modo' : null">
+                <i class="material-icons">note_add</i>Criar
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+            <li [class.disabled]="disEditar" [hidden]="!bteditar">
+              <a (click)="edita()" [ngClass]="(modoedicao) ? 'cor_modo' : null">
+                <i class="material-icons">mode_edit</i>Editar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+
+            <li [class.disabled]="disGravar" [hidden]="!btGravar">
+              <input type="submit" #gravarbtc hidden />
+              <a (click)="gravarbtc.click(); ">
+                <i class="material-icons">save</i>Gravar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <li [class.disabled]="acesso_duplicar" [hidden]="!btDuplicar">
+              <a (click)="duplicar()">
+                <i class="material-icons">content_copy</i>Duplicar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <li [class.disabled]="disCriar" [hidden]="!btAdicionarlinha">
+              <a (click)="adicionarlinha(null)">
+                <i class="material-icons">note_add</i>Adicionar Referência
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+
+
+            <li [class.disabled]="disCancelar" [hidden]="!btCancelar">
+              <a (click)="Cancelar()">
+                <i class="material-icons">close</i>Cancelar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+
+            <!--li [class.disabled]="disFechar" [hidden]="!btFechar">
+              <a (click)="Fechar()">
+                <i class="material-icons">check_circle_outline</i>Fechar
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+
+            <!--li [class.disabled]="disAnular" [hidden]="!btAnular">
+              <a (click)="Anular()">
+                <i class="material-icons">delete</i>Anular
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+              <h4 style="position: absolute;" class="title">Gestão de Barras </h4>
+              <div style="float: right; margin-top: -14px; color: black;">
+                {{datamodif}} {{horamodif}} <br>
+                {{user_modif}}
+              </div>
+              <div style=" float: right; margin-top: -14px; color: black; font-weight: bold; margin-right: 10px;">
+                Data última alteração:
+              </div>
+            </div>
+            <div class=" card-content">
+
+              <div class="container-fluid" style="padding: 0;">
+
+                <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+                  <p-dataTable dataKey="id" #tabeladados [value]="barras" [(selection)]="selected_barra"
+                    [paginator]="true" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                    [rows]="25" [rowsPerPageOptions]="[25,50,100,'todos']"
+                    class="tabela_gestao_barras cab_tabela_gestao_barras" id="id_tabela_gestao_barras">
+                    <p-column *ngIf="modoedicao" [style]="{'width':'22px'}" selectionMode="single"></p-column>
+                    <p-column field="ref_BASTIDOR" header="Referência Bastidores" [filter]="true"
+                      [style]="{'width':'100px'}">
+                    </p-column>
+
+                    <p-column field="id_linha" header="Linha" [style]="{'width':'80px'}">
+                      <ng-template let-col="rowData" let-index="rowIndex" pTemplate="body">
+                        <p-dropdown [style.background]="col.cor_linha" appendTo="body"
+                          (onChange)="alteracorlinha($event,col.id); linhas_update(col.id)" [options]="linhas"
+                          class="drop_gestao_barras" [style]="{'width':'100%','height':'25px','border':'none'}"
+                          [(ngModel)]="col.id_linha" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                          <ng-template let-car pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                              {{car.label}}
+                            </div>
+                          </ng-template>
+                        </p-dropdown>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="plano_BASTIDOR" header="Plano de Bastidores (Nº rack / carga)"
+                      [style]="{'width':'92px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <input [disabled]="!modoedicao" type="text" class="form-control2" style="text-align: center;"
+                          (change)="linhas_update(car.id)" [(ngModel)]="car.plano_BASTIDOR"
+                          [ngModelOptions]="{standalone: true}">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="quant_TOTAL_BAST" header="Quant. Total de Bastidores" [style]="{'width':'68px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <input [disabled]="!modoedicao" type="number" class="form-control2" style="text-align: center;"
+                          (change)="linhas_update(car.id)" [(ngModel)]="car.quant_TOTAL_BAST"
+                          [ngModelOptions]="{standalone: true}">
+                      </ng-template>
+                    </p-column>
+                    <p-column field="quant_BAST_MONTADOS" header="Quant. de Bastidores Montados"
+                      [style]="{'width':'68px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <input [disabled]="!modoedicao" type="number" class="form-control2" style="text-align: center;"
+                          (change)="linhas_update(car.id)" [(ngModel)]="car.quant_BAST_MONTADOS"
+                          [ngModelOptions]="{standalone: true}">
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Quant. de Bastidores Desmontados"
+                      [style]="{'border-right': '2px solid white','width':'90px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <input [disabled]="!modoedicao" type="number" class="form-control2" style="text-align: center;"
+                          (change)="linhas_update(car.id)" [(ngModel)]="car.quant_BAST_DESMONTADOS"
+                          [ngModelOptions]="{standalone: true}">
+                      </ng-template>
+                    </p-column>
+                    <p-column header="NºPeças / Bastidor" [style]="{'width':'66px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <input [disabled]="!modoedicao" type="text" class="form-control2" style="text-align: center;"
+                            (change)="linhas_update(car.id)" [(ngModel)]="ref.n_PECAS_BASTIDOR"
+                            [ngModelOptions]="{standalone: true}">
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="NºPeças / Rack" [style]="{'width':'68px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <input [disabled]="!modoedicao" type="text" class="form-control2" style="text-align: center;"
+                            (change)="linhas_update(car.id)" [(ngModel)]="ref.n_PECAS_RACK"
+                            [ngModelOptions]="{standalone: true}">
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Rouba Correntes" [style]="{'width':'65px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.rouba_CORRENTES"
+                            (change)="linhas_update(car.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Bastidor Linha Nova" [style]="{'width':'65px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.bastidor_LINHA_NOVA"
+                            (change)="linhas_update(car.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Peça Tipo" [style]="{'width':'50px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.peca_TIPO"
+                            (change)="linhas_update(car.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Referência Peças Cromada" [style]="{'width':'125px'}" field="filtro_refs"
+                      [filter]="true">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index"
+                          [style.border]="(ref.existe_REF)?'2px dotted #e74b4b':''">
+                          <p-autoComplete *ngIf="modoedicao" [(ngModel)]="ref.referencia_campo"
+                            [suggestions]="ref.filteredreferencias" class="autocompleseguranca"
+                            [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                            emptyMessage="Sem Resultados..." appendTo="body" [disabled]="!modoedicao"
+                            (onUnselect)="filteronUnselect($event,car.id,index_ref); linhas_update(car.id)"
+                            (onSelect)="filterSelect($event,car.id,index_ref); linhas_update(car.id)"
+                            [ngModelOptions]="{standalone: true}"
+                            (completeMethod)="filterRef($event,car.id,index_ref); linhas_update(car.id)" field="label"
+                            placeholder="Pesquisar.." [minLength]="1">
+                          </p-autoComplete>
+                          <input *ngIf="!modoedicao" [disabled]="true" type="text" class="form-control2"
+                            [(ngModel)]="ref.referencia" [ngModelOptions]="{standalone: true}">
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Designação da Peça">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <input [disabled]="true" type="text" class="form-control2" title="{{ref.design_REFERENCIA}}"
+                            [(ngModel)]="ref.design_REFERENCIA" [ngModelOptions]="{standalone: true}">
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Observações">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <input [disabled]="!modoedicao" type="text" class="form-control2"
+                            (change)="linhas_update(car.id)" [(ngModel)]="ref.observacoes"
+                            [ngModelOptions]="{standalone: true}">
+                        </tr>
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Validação Bastidor" [style]="{'width':'80px'}">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index"
+                          [style.background]="ref.cor_estado" title="{{getDescricao(ref.validacao_BASTIDOR)}}">
+                          <p-dropdown [style.background]="none" appendTo="body"
+                            (onChange)="alteracorestado($event,car.id,index_ref);linhas_update(car.id)"
+                            [options]="estados" class="drop_gestao_barras"
+                            [style]="{'width':'100%','height':'25px','border':'none'}"
+                            [(ngModel)]="ref.validacao_BASTIDOR" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao" [required]="true">
+                            <ng-template let-car pTemplate="item">
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                {{car.label}} - {{getDescricao(car.value)}}
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+                        </tr>
+                      </ng-template>
+                    </p-column>
+
+                    <p-column [style]="{'width':'38px'}" styleClass="col-button">
+                      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                        <tr *ngFor="let ref of car['referencias']; let index_ref = index">
+                          <button style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;" type="button"
+                            class="btn btn-danger btn-xs" [disabled]="!modoedicao && !acesso_apagar"
+                            title="Apagar Referência" (click)="removerlinha(car.id,index_ref)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </tr>
+                      </ng-template>
+                    </p-column>
+
+                  </p-dataTable>
+                  <!--table class="tg tabela_gestao_barras">
+                    <tr>
+                      <td class="tg-0pky"></td>
+                      <td class="tg-9rbh">Referência Bastidores<br>
+                        <input style="font-weight: 100; height: 19px; color: black;" #myInput_func type="text"
+                          class="form-control2" (input)="filterItem(myInput_func.value)" /></td>
+                      <td class="tg-9rbh" style="width: 78px;">Linha</td>
+                      <td class="tg-9rbh">Plano de Bastidores (nºrack/carga)</td>
+                      <td class="tg-9rbh">Quantidade Total de Bastidores</td>
+                      <td class="tg-9rbh">Quantidade de Bastidores Montados</td>
+                      <td class="tg-9rbh">Quantidade de Bastidores Desmontados</td>
+                      <td class="tg-9rbh">NºPeças / Bastidor</td>
+                      <td class="tg-9rbh">NºPeças / Rack</td>
+                      <td class="tg-9rbh">Rouba Correntes</td>
+                      <td class="tg-9rbh">Bastidor Linha Nova</td>
+                      <td class="tg-9rbh">Peça Tipo</td>
+                      <td class="tg-9rbh">Referência Peças Cromada</td>
+                      <td class="tg-9rbh">Designação da Peça</td>
+                      <td class="tg-9rbh">Observações</td>
+                      <td class="tg-9rbh">Validação Bastidor</td>
+                      <td class="tg-0pky"></td>
+                    </tr>
+                    <tr>
+                      <td class="tg-0pky" colspan="17" *ngIf="loadingData">A Carregar...</td>
+                    </tr>
+                    <tr>
+                      <td class="tg-0pky" colspan="17" *ngIf="!loadingData && barras.length == 0">Sem Dados...</td>
+                    </tr>
+                    <ng-container *ngFor="let col of barras; let index_barra = index">
+                      <tr *ngFor="let ref of col.referencias; let index_ref = index " [style.background]="col.cor_fundo"
+                        [ngClass]="(col.referencias.length == index_ref +1)?'borderbottomgestao' :''">
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky">
+                          <p-radioButton (onClick)="selectlinha()" name="group_barra" value="{{index_barra}}"
+                            [disabled]="!modoedicao" [(ngModel)]="selected_barra">
+                          </p-radioButton>
+                        </td>
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky">
+                          {{col.ref_BASTIDOR}}</td>
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky">
+                          <p-dropdown [style.background]="col.cor_linha" appendTo="body"
+                            (onChange)="alteracorlinha($event,index_barra); linhas_update(col.id)" [options]="linhas"
+                            class="drop_gestao_barras" [style]="{'width':'100%','height':'25px','border':'none'}"
+                            [(ngModel)]="col.id_linha" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                            [required]="true">
+                            <ng-template let-car pTemplate="item">
+                              <div class="ui-helper-clearfix" [style.background]="car.value.cor"
+                                style="position: relative;height: 25px;">
+                                {{car.label}}
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+                        </td>
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky"><input
+                            [disabled]="!modoedicao" type="text" class="form-control2" (change)="linhas_update(col.id)"
+                            [(ngModel)]="col.plano_BASTIDOR" [ngModelOptions]="{standalone: true}"></td>
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky"><input
+                            [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="col.quant_TOTAL_BAST"
+                            [ngModelOptions]="{standalone: true}"></td>
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky"><input
+                            [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="col.quant_BAST_MONTADOS"
+                            [ngModelOptions]="{standalone: true}"></td>
+
+                        <td *ngIf="index_ref == 0" [attr.rowspan]="col.referencias.length" class="tg-0pky"><input
+                            [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="col.quant_BAST_DESMONTADOS"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <!-- REFERENCIAS
+
+
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="text" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="ref.n_PECAS_BASTIDOR"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="text" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="ref.n_PECAS_RACK"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+
+                        <td class="tg-0pky">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.rouba_CORRENTES"
+                            (change)="linhas_update(col.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </td>
+
+                        <td class="tg-0pky">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.bastidor_LINHA_NOVA"
+                            (change)="linhas_update(col.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </td>
+
+                        <td class="tg-0pky">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="ref.peca_TIPO"
+                            (change)="linhas_update(col.id)" [ngModelOptions]="{standalone: true}" binary="true">
+                          </p-checkbox>
+                        </td>
+
+                        <td class="tg-0pky">
+                          <p-autoComplete [(ngModel)]="ref.referencia_campo" [suggestions]="ref.filteredreferencias"
+                            class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
+                            forceSelection="true" emptyMessage="Sem Resultados..." appendTo="body"
+                            [disabled]="!modoedicao"
+                            (onUnselect)="filteronUnselect($event,index_barra,index_ref); linhas_update(col.id)"
+                            (onSelect)="filterSelect($event,index_barra,index_ref); linhas_update(col.id)"
+                            [ngModelOptions]="{standalone: true}"
+                            (completeMethod)="filterRef($event,index_barra,index_ref); linhas_update(col.id)"
+                            field="label" placeholder="Pesquisar..." [minLength]="1">
+                          </p-autoComplete>
+                        </td>
+
+                        <td class="tg-0pky">
+                          <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="ref.design_REFERENCIA"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="text" class="form-control2"
+                            (change)="linhas_update(col.id)" [(ngModel)]="ref.observacoes"
+                            [ngModelOptions]="{standalone: true}"></td>
+
+                        <td class="tg-0pky" [style.background]="ref.cor_estado">
+                          <p-dropdown [style.background]="none" appendTo="body"
+                            (onChange)="alteracorestado($event,index_barra,index_ref);linhas_update(col.id)"
+                            [options]="estados" class="drop_gestao_barras"
+                            [style]="{'width':'100%','height':'25px','border':'none'}"
+                            [(ngModel)]="ref.validacao_BASTIDOR" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao" [required]="true">
+                          </p-dropdown>
+                        </td>
+                        <td class="tg-0pky">
+                          <button style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;" type="button"
+                            class="btn btn-danger btn-xs" [disabled]="!modoedicao && !acesso_apagar"
+                            title="Apagar Referência" (click)="removerlinha(index_barra,index_ref)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </td>
+
+
+
+                      </tr>
+                    </ng-container>
+                  </table-->
+                </div>
+
+
+
+              </div>
+              <div class="clearfix"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputarsemalteracoes [hidden]="true"
+  onclick="demo.showNotification('top','right','Não Existem Alterações!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+
+
+<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
+  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
+  [modal]="true">
+  <div class="container">
+    <div class="row">
+      <div id="loading">
+        <ul class="bokeh">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-dialog>

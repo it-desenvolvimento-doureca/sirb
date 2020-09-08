@@ -1,0 +1,12 @@
+.breadcrumb.brand-primary {
+    background-color: white;
+    margin: -8px 12px -7px 12px;
+}
+
+.breadcrumb.brand-primary a {
+    color: black;
+}
+
+.breadcrumb.brand-primary li.active {
+    color: #eee;
+}

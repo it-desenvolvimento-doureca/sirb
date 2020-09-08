@@ -1,0 +1,45 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Objetivos Cumprimento Clientes</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content" style="padding-top: 0;">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+
+                      <div class="form-group col-md-12" style="padding: 0px 18px 0 0;">
+                        <label for="objetivo" style="width: 30%;"> % Objetivo:</label>
+                        <input type="number" step="0.01" class="form-control2" id="objetivo" [(ngModel)]="objetivo"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                    </div>
+
+                    <div class="col-md-12" style="text-align: center;">
+                      <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

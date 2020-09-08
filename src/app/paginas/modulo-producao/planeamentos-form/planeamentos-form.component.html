@@ -1,0 +1,238 @@
+<app-controlos (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Planeamento de Barras</h4>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div style="display: inline-block;">
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+
+                    <!--<div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-8">
+                      <label style="display: -webkit-box;">Data Registo:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'150px'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:150px; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="hora_CRIA" [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
+                      <label>Estado:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado_texto" required
+                        [ngModelOptions]="{standalone: true}">
+                    </div>-->
+
+                    <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4 ">
+                      <label>Ano:</label><br>
+                      <p-dropdown (onChange)="alteraSemana($event)" [options]="anos" class="droplinha"
+                        [style]="{'width':'185px','height':'25px'}" [(ngModel)]="ano"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true">
+                      </p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4">
+                      <label>Semana:</label><br>
+                      <p-dropdown (onChange)="alteraSemana($event)" [options]="semanas" class="droplinha"
+                        [style]="{'width':'185px','height':'25px'}" [(ngModel)]="semana"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true">
+                      </p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px; width: 200px;" class="form-group col-md-4 ">
+
+                      <label style="font-size: 14px;">Linha:</label><br>
+                      <p-dropdown [style.background]="cor_linha" (onChange)="alteracorlinha($event)" [options]="linhas"
+                        class="droplinha" [style]="{'width':'185px','height':'25px'}" [(ngModel)]="linha"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true">
+                        <ng-template let-car pTemplate="item">
+                          <div class="ui-helper-clearfix" [style.background]="car.value.cor"
+                            style="position: relative;height: 25px;">
+                            {{car.label}}
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
+
+                    </div>
+
+                  </div>
+
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+                    <table class="tg">
+                      <tr>
+                        <th class="tg-0pky"></th>
+                        <th class="tg-wfll" colspan="4">BARRAS PLANEADAS</th>
+                        <th class="tg-wfll" colspan="4">BARRAS PRODUZIDAS DAS<br>PLANEADAS</th>
+                        <th class="tg-wfll" colspan="4">TOTAL DE BARRAS PRODUZIDAS</th>
+                        <th class="tg-6it1" colspan="4">BARRAS INTRODUZIDAS NA LINHA</th>
+                      </tr>
+                      <tr>
+                        <td class="tg-9rbh">Data</td>
+                        <td class="tg-gy6f">Turno 1</td>
+                        <td class="tg-gy6f">Turno 2</td>
+                        <td class="tg-gy6f">Turno 3</td>
+                        <td class="tg-gy6f">TOTAL</td>
+                        <td class="tg-gy6f">Turno 1</td>
+                        <td class="tg-gy6f">Turno 2</td>
+                        <td class="tg-gy6f">Turno 3</td>
+                        <td class="tg-gy6f">TOTAL</td>
+                        <td class="tg-gy6f">Turno 1</td>
+                        <td class="tg-gy6f">Turno 2</td>
+                        <td class="tg-gy6f">Turno 3</td>
+                        <td class="tg-gy6f">TOTAL</td>
+                        <td class="tg-yw59">Turno 1</td>
+                        <td class="tg-yw59">Turno 2</td>
+                        <td class="tg-yw59">Turno 3</td>
+                        <td class="tg-yw59">TOTAL</td>
+                      </tr>
+                      <tr *ngFor="let col of dados_linha">
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.data + col.data_dia}}</td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.planeadas_TURNO_1"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.planeadas_TURNO_2"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.planeadas_TURNO_3"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <!--TOTAL-->
+                        <td class="tg-llyw">{{col.planeadas_TURNO_1 + col.planeadas_TURNO_2 + col.planeadas_TURNO_3 }}
+                        </td>
+
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.prod_PLANEADAS_TURNO_1"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.prod_PLANEADAS_TURNO_2"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.prod_PLANEADAS_TURNO_3"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <!--TOTAL-->
+                        <td class="tg-llyw">
+                          {{col.prod_PLANEADAS_TURNO_1 + col.prod_PLANEADAS_TURNO_2 + col.prod_PLANEADAS_TURNO_3}}</td>
+
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_PROD_TURNO_1"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_PROD_TURNO_2"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_PROD_TURNO_3"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <!--TOTAL-->
+                        <td class="tg-llyw">
+                          {{col.barras_PROD_TURNO_1 + col.barras_PROD_TURNO_2 + col.barras_PROD_TURNO_3}}</td>
+
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_INTROD_TURNO_1"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_INTROD_TURNO_2"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!modoedicao" type="number" class="form-control2"
+                            (change)="atualizatotais()" [(ngModel)]="col.barras_INTROD_TURNO_3"
+                            [ngModelOptions]="{standalone: true}"></td>
+                        <!--TOTAL-->
+                        <td class="tg-llyw">
+                          {{col.barras_INTROD_TURNO_1 + col.barras_INTROD_TURNO_2 + col.barras_INTROD_TURNO_3}}
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td class="tg-wfll">TOTAL</td>
+                        <td class="tg-llyw">{{total}}</td>
+                        <td class="tg-llyw">{{total1}}</td>
+                        <td class="tg-llyw">{{total2}}</td>
+                        <td class="tg-llyw">{{total3}}</td>
+                        <td class="tg-llyw">{{total4}}</td>
+                        <td class="tg-llyw">{{total5}}</td>
+                        <td class="tg-llyw">{{total6}}</td>
+                        <td class="tg-llyw">{{total7}}</td>
+                        <td class="tg-llyw">{{total8}}</td>
+                        <td class="tg-llyw">{{total9}}</td>
+                        <td class="tg-llyw">{{total10}}</td>
+                        <td class="tg-llyw">{{total11}}</td>
+                        <td class="tg-llyw">{{total12}}</td>
+                        <td class="tg-llyw">{{total13}}</td>
+                        <td class="tg-llyw">{{total14}}</td>
+                        <td class="tg-llyw">{{total15}}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+
+                </div>
+
+
+
+              </div>
+
+
+
+
+
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" width="700" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar" [modal]="true">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
+</p-dialog>

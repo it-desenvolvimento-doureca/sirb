@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AB_DIC_UNIDADE_MEDIDA } from "app/entidades/AB_DIC_UNIDADE_MEDIDA";
 import { ABUNIDADADEMEDIDAService } from "app/servicos/ab-unidade-medida.service";
+import { AppGlobals } from "app/menu/sidebar.metadata";
 
 @Component({
   selector: 'app-unidadesmedida',
@@ -16,9 +17,21 @@ export class UnidadesmedidaComponent implements OnInit {
   selectedCar: AB_DIC_UNIDADE_MEDIDA;
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
-  constructor(private ABUNIDADADEMEDIDAService: ABUNIDADADEMEDIDAService, private renderer: Renderer) { }
+  constructor(private globalVar: AppGlobals, private ABUNIDADADEMEDIDAService: ABUNIDADADEMEDIDAService, private renderer: Renderer) { }
 
   ngOnInit() {
+
+    this.globalVar.setapagar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setvoltar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setseguinte(false);
+    this.globalVar.setanterior(false);
+    this.globalVar.setatualizar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+    this.globalVar.setcriar(false);
     this.listar_medidas();
   }
 

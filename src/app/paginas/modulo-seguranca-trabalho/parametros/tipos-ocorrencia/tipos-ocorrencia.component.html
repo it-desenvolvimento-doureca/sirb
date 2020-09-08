@@ -1,0 +1,83 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tipo de Ocorrência Segurança</h4>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12">
+              <p-dataTable [style]="{'width':'100%'}" [value]="tipos" selectionMode="single"
+                (onRowSelect)="onRowSelectlinha($event)" [paginator]="true" [rows]="15">
+                <p-column [style]="{'width':'30px'}" field="nome" header="Descrição" [filter]="true" [sortable]="true">
+                </p-column>
+                <p-column [style]="{'width':'30px'}" field="grau" header="Grau de Gravidade" [sortable]="true">
+                </p-column>
+                <p-column [style]="{'width':'30px'}" field="cor" header="Cor" [sortable]="true">
+                  <ng-template pTemplate="body" let-col3 let-row3="rowData ">
+                    <div [style.background]="row3[col3.field]">
+                      &nbsp;
+                    </div>
+                  </ng-template>
+                </p-column>
+              </p-dataTable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas"
+  data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div class="modal fade" id="myModallinhas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Tipos de Ocorrência
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravarlinhas()">
+        <!-- Modal Body -->
+        <div class="modal-body col-md-12" style="height: 50vh; overflow-y: auto;">
+          <div class="col-md-12">
+            <div class="form-group col-md-4">
+              <label for="nmlinha">Descrição</label>
+              <input type="text" class="form-control2" id="nmlinha" [(ngModel)]="nome_tipo" disabled
+                [ngModelOptions]="{standalone: true}" required />
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="nmlinha11">Grau</label>
+              <input type="text" class="form-control2" id="nmlinha11" [(ngModel)]="grau"
+                [ngModelOptions]="{standalone: true}" required />
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Cor Linha</label><br>
+              <p-colorPicker [style]="{'height': '25px','display': 'flex'}" [(ngModel)]="cor_linha"
+                [ngModelOptions]="{standalone: true}">
+              </p-colorPicker>
+            </div>
+          </div>
+
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialoglinha data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success ">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

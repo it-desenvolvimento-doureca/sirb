@@ -1,0 +1,129 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header"  data-background-color="red">
+            <h4 class="title">Planos de Ação</h4>
+          </div>
+          <div class="card-content">
+            <div
+              style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+              class="form-group col-md-12 col-lg-12">
+              <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+                <div class="table-row-column col-md-2" style="padding-left: 16px;">
+                  <p-checkbox [(ngModel)]="FastResponse" [ngModelOptions]="{standalone: true}" label="FastResponse"
+                    binary="true">
+                  </p-checkbox>
+                </div>
+                <div class="table-row-column col-md-2" style="padding-left: 16px;">
+                  <p-checkbox [(ngModel)]="acoes_em_ATRASO" [ngModelOptions]="{standalone: true}"
+                    label="Ações em atraso" binary="true">
+                  </p-checkbox>
+                </div>
+                <div class="table-row-column col-md-2">
+                  <button type="submit" class="btn btn-success "
+                    style="margin: -5px 0 0 39px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                </div>
+              </form>
+            </div>
+
+
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']" expandableRows="true" [expandedRows]="lista_expand">
+              <p-column [style]="{'width':'6px','padding':'0'}" expander="true" styleClass="col-icon">
+                <ng-template pTemplate="filter" let-col>
+                  <button *ngIf="lista_expand.length == 0 || lista_expand.length == null" pButton type="button"
+                    (click)="listartudo()" icon="fa-eye" style="margin-bottom: 12px;" label=" "></button>
+                  <button *ngIf="lista_expand.length > 0" pButton type="button" (click)="listartudo()"
+                    style="margin-bottom: 12px;" icon="fa-eye-slash" label=" "></button>
+                </ng-template>
+              </p-column>
+              <!--<p-column [style]="{'width':'25px'}" [sortable]="true" [filter]="true" styleclass="text-danger"
+                field="linha" header="Linha">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="linhas" [(ngModel)]="linha" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true)" styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']">
+                    {{car['linha']}}
+                  </div>
+                </ng-template>
+              </p-column>-->
+              <p-column [style]="{'width':'20px'}" field="id" header="Nº" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'25px'}" field="data_registo" header="Data Criação" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano"
+                [filter]="true" [sortable]="true">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
+                    {{car['data_objetivo']}}
+                  </div>
+                </ng-template>
+              </p-column>
+
+              <p-column [style]="{'width':'30px'}" field="ambito" header="Âmbito" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'60px'}" field="origem" header="Origem" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'25px'}" field="utilizador" header="Responsável do Plano" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'50px'}" field="descricao" header="Descrição" [filter]="true"
+                [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [options]="estados" [(ngModel)]="estado_filtro" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true,'in')" styleClass="ui-column-filter">
+                  </p-multiSelect>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  {{car['estado']}}
+                </ng-template>
+              </p-column>
+
+
+              <ng-template let-car pTemplate="rowexpansion">
+                <div class="ui-grid ui-grid-responsive ui-fluid">
+                  <table class="tg">
+                    <tr>
+                      <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
+                      <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
+                      <th class="tg-wfll">Ação</th>
+                      <th class="tg-wfll">Descrição</th>
+                      <th class="tg-wfll" style="width: 100px;">FastResponse</th>
+                      <th class="tg-wfll" style="width: 110px;">Prioridade</th>
+                      <th class="tg-wfll" style="width: 168px;">Estado</th>
+                    </tr>
+                    <tr *ngFor="let col of car.filho">
+                      <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
+                        [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">
+                        <i *ngIf="col.FastResponse == false" class="material-icons"
+                          style="color: red; font-size: 20px;">close</i>
+                        <i *ngIf="col.FastResponse == true" class="material-icons"
+                          style="color: green; font-size: 20px;">check</i>
+                      </td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </ng-template>
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

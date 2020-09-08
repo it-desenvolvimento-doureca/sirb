@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -9,9 +9,12 @@
           </div>
           <div class="card-content">
             <div class="col-md-12">
-              <p-dataTable [style]="{'width':'600px'}" [value]="linhas" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelectlinha($event)"
-                [paginator]="true" rows="15">
+              <p-dataTable [style]="{'width':'100%'}" [value]="linhas" selectionMode="single" (onRowSelect)="onRowSelectlinha($event)"
+                [paginator]="true" [rows]="15">
                 <p-column [style]="{'width':'30px'}" field="nome" header="Nome Linha" [filter]="true" [sortable]="true"></p-column>
+                <p-column [style]="{'width':'30px'}" field="seccao" header="Seccção" [sortable]="true"></p-column>
+                <p-column [style]="{'width':'30px'}" field="subseccao" header="Sub-Seccção" [sortable]="true"></p-column>
+                <p-column [style]="{'width':'30px'}" field="ref_COMPOSTO" header="Referência Composto" [sortable]="true"></p-column>
                 <p-column [style]="{'width':'30px'}" field="cor" header="Cor Linha" [sortable]="true">
                   <ng-template pTemplate="body" let-col3 let-row3="rowData ">
                     <p-colorPicker [(ngModel)]="row3[col3.field]" [ngModelOptions]="{standalone: true}" [disabled]="true"></p-colorPicker>
@@ -19,8 +22,8 @@
                 </p-column>
                 <p-footer>
                   <a (click)="showDialogToAddlinhas()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
-                         <i class="material-icons">add</i> Adicionar
-                        </a>
+                    <i class="material-icons">add</i> Adicionar
+                  </a>
                 </p-footer>
               </p-dataTable>
             </div>
@@ -30,7 +33,8 @@
     </div>
   </div>
 </div>
-<button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas" data-backdrop="false"></button>
+<button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas"
+  data-backdrop="false"></button>
 <!-- Modal Linhas-->
 <div class="modal fade" id="myModallinhas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -38,31 +42,96 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
         <h4 class="modal-title" id="myModalLabel">
           Linhas
         </h4>
       </div>
       <form role="form" ngNativeValidate (ngSubmit)="gravarlinhas()">
         <!-- Modal Body -->
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="nmlinha">Nome Linha</label>
-            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="nome_linha" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Nome da Linha"
-              required />
+        <div class="modal-body col-md-12" style="height: 77vh; overflow-y: auto;">
+          <div class="col-md-6">
+            <div class="form-group col-md-6" style="padding: 0px;">
+              <label for="nmlinha">Nome Linha</label>
+              <input type="text" class="form-control" id="nmlinha11" [(ngModel)]="nome_linha" [ngModelOptions]="{standalone: true}"
+                placeholder="Introduza o Nome da Linha" required />
+            </div>
+            <div class="form-group col-md-6" style="padding: 0px 0px 0px 10px;">
+              <label for="nmlinha1">Código Secção</label>
+              <input type="text" class="form-control" id="nmlinha1" [(ngModel)]="seccao" [ngModelOptions]="{standalone: true}"
+                placeholder="Introduza o Código da Secção" />
+            </div>
+            <div class="form-group col-md-6" style="padding: 0px;">
+              <label for="nmlinha2">Código Sub-Secção</label>
+              <input type="text" class="form-control" id="nmlinha2" [(ngModel)]="subseccao" [ngModelOptions]="{standalone: true}"
+                placeholder="Introduza o Códido da Sub-Secção" />
+            </div>
+            <div class="form-group col-md-6" style="padding:0px 0px 0px 10px;">
+              <label for="nmlinha3">Referência Composto</label>
+              <input type="text" class="form-control" id="nmlinha3" [(ngModel)]="ref_COMPOSTO" [ngModelOptions]="{standalone: true}"
+                placeholder="Introduza a Referência Composto" />
+            </div>
+            <div class="form-group">
+              <label for="nmlinha4">Pasta</label>
+              <input type="text" class="form-control" id="nmlinha4" [(ngModel)]="pasta" [ngModelOptions]="{standalone: true}"
+                placeholder="C:/pasta/ ou 111.111.11.11/pasta/" />
+            </div>
+            <div class="form-group col-md-4" style="padding: 0px;">
+              <label for="nmlinha5">Utilizador</label>
+              <input type="text" class="form-control" id="nmlinha5" autocomplete="nope" [(ngModel)]="utilizador"
+                [ngModelOptions]="{standalone: true}" placeholder="Introduza o Utilizador" />
+            </div>
+            <div class="form-group col-md-4" style="padding: 0px 0px 0px 10px;">
+              <label for="nmlinha6">Password</label>
+              <input type="password" class="form-control" id="nmlinha6" autocomplete="new-password" [(ngModel)]="senha"
+                [ngModelOptions]="{standalone: true}" placeholder="Introduza a Password" />
+            </div>
+            <div class="form-group col-md-4" style="padding: 0px 0px 0px 10px;">
+              <label for="nmlinha6">Domínio</label>
+              <input type="text" class="form-control" id="nmlinha7" [(ngModel)]="dominio" [ngModelOptions]="{standalone: true}"
+                placeholder="Introduza o Domínio" />
+            </div>
+            <div class="form-group">
+              <label>Cor Linha</label>
+              <p-colorPicker [(ngModel)]="cor_linha" [ngModelOptions]="{standalone: true}"></p-colorPicker>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Cor Linha</label>
-            <p-colorPicker [(ngModel)]="cor_linha" [ngModelOptions]="{standalone: true}"></p-colorPicker>
+          <div class="col-md-6" style="max-height: 70vh; overflow-y: -webkit-paged-y;">
+            <p-dataTable [style]="{'width':'100%'}" [value]="linhasof" styleClass="tabelaPostos">
+              <p-column field="data_ini" header="DATA ÍNICIO">
+                <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                  <p-calendar [style]="{'width': '85%','float': 'left'}" (onInput)="verificadatas(row2[col2.field])"
+                    (onSelect)="verificadatas(row2[col2.field],row2['pos'])" dateFormat="yy-mm-dd" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="2000:2060" [(ngModel)]="row2['data']" [ngModelOptions]="{standalone: true}"
+                    [showIcon]="true"></p-calendar>
+                </ng-template>
+              </p-column>
+              <p-column field="of_NUM" header="Número OF">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <input type="text" class="form-control2" [(ngModel)]="car['of_NUM']" [ngModelOptions]="{standalone: true}"
+                    placeholder="Número OF" appendTo="body" style="height: 32px; width: 100%; padding: 0 0 0 9px;" />
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'5%'}" styleClass="col-button">
+                <ng-template let-linhaof="rowData" pTemplate="body">
+                  <button type="button" class="ui-button-danger" pButton (click)="eliminar(linhaof)" icon="fa-trash"></button>
+                </ng-template>
+              </p-column>
+              <p-footer>
+                <a (click)="adicionar_linha()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
           </div>
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialoglinha data-dismiss="modal">Fechar</button>
-          <button type="button" (click)="apagarlinhas()" [hidden]="novalinha" class="btn btn-danger" data-dismiss="modal">Remover</button>
-          <button type="submit"  class="btn btn-success ">Gravar</button>
+          <button type="button" (click)="apagarlinhas()" [hidden]="novalinha" class="btn btn-danger">Remover</button>
+          <button type="submit" class="btn btn-success ">Gravar</button>
         </div>
       </form>
     </div>

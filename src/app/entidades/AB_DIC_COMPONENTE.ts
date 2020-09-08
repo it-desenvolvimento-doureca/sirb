@@ -15,4 +15,11 @@ export class AB_DIC_COMPONENTE {
     id_UNIDADE_ADITIVO: number;
     id_FORNECEDOR: number
     tipo: string;
+    obrigatorio: string;
+    unisto: string;
+    factor_MULTIPLICACAO_AGUA: number;
+    factor_CONVERSAO: number;
+    cisterna: boolean;
+    cod_REF_SUBSTITUTA: string;
+    nome_REF_SUBSTITUTA: string;
 }

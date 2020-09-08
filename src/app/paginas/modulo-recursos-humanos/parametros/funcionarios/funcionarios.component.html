@@ -1,0 +1,166 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Funcionários</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [loading]="loadingtabelafuncionarios" class="tabelalistatarefas tabelafuncionarios"
+              [style]="{'min-height':'100px'}" [value]="tabelafuncionarios" dataKey="id" [rows]="25" [paginator]="true"
+              [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'70px'}" [sortable]="true" [filter]="true" field="numero_op"
+                header="Nº Doureca">
+              </p-column>
+              <p-column [style]="{'width':'70px'}" [sortable]="true" [filter]="true" field="numero" header="Nº">
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="empresa" header="Empresa">
+              </p-column>
+              <p-column [style]="{'width':'79px'}" [sortable]="true" [filter]="true" field="data_admissao"
+                header="Data Admissão"></p-column>
+              <p-column [style]="{'width':'79px'}" [sortable]="true" [filter]="true" field="data_demissao"
+                header="Data Demissão"></p-column>
+              <p-column [style]="{'width':'56px'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+              </p-column>
+
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="regista_PONTO"
+                header="Regista Ponto">
+                <ng-template let-col let-car="rowData" pTemplate="body" let-index="rowIndex">
+                  <span [hidden]="car['editar']"
+                    class="ui-cell-data">{{ (car['regista_PONTO']) ? "Sim" : "Não" }}</span>
+                  <p-checkbox binary="true" [hidden]="!car['editar']" [(ngModel)]="car['regista_PONTO']"
+                    appendTo="body">
+                  </p-checkbox>
+                </ng-template>
+              </p-column>
+
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                header="Responsável"></p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="sector_texto" header="Sector">
+                <ng-template let-col let-car="rowData" pTemplate="body" let-index="rowIndex">
+                  <span [hidden]="car['editar']" class="ui-cell-data">{{car['sector_texto'] }}</span>
+                  <p-dropdown (onChange)="alterarSector(car['numero'],$event)" [hidden]="!car['editar']"
+                    [(ngModel)]="car['sector']" [options]="sectores" [style]="{'height':'25px','width':'100%'}"
+                    required="true" appendTo="body"></p-dropdown>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="turno_texto" header="Turno">
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="chefe_texto" header="Chefe">
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="cacifo" header="Nº Cacifo">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span class="ui-cell-data">{{car['cacifo'] }}</span>
+                  <a (click)="adicionarCacifo(car['numero']);" style="padding: 3px 0px 0px 10px;"
+                    [hidden]="!car['editar']" class="btn btn-success"><span
+                      class="glyphicon glyphicon-refresh"></span></a>
+                  <a [class.disabled]="acesso_editar" (click)="removerCacifo(car['numero'])"
+                    style="padding: 3px 0px 0px 10px;" [hidden]="!car['editar']" class="btn btn-danger"><span
+                      class="glyphicon glyphicon-remove"></span></a>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'79px'}" [sortable]="true" [filter]="true" field="data_inicio_situacao"
+                header="Data ínicio Situação">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span [hidden]="car['editar']"
+                    class="ui-cell-data">{{car['data_inicio_situacao']| date: 'yyyy-MM-dd' }}</span>
+                  <p-calendar [hidden]="!car['editar']" [style]="{'height':'25px'}" dateFormat="yy-mm-dd"
+                    placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                    [(ngModel)]="car[col.field]" [ngModelOptions]="{standalone: true}"></p-calendar>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'79px'}" [sortable]="true" [filter]="true" field="data_fim_situacao"
+                header="Data Fim Situação">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span [hidden]="car['editar']"
+                    class="ui-cell-data">{{car['data_fim_situacao'] | date: 'yyyy-MM-dd' }}</span>
+                  <p-calendar [hidden]="!car['editar']" [style]="{'height':'25px'}" dateFormat="yy-mm-dd"
+                    placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                    [(ngModel)]="car[col.field]" [ngModelOptions]="{standalone: true}"></p-calendar>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="estado_texto" header="Estado">
+                <ng-template let-col let-car="rowData" pTemplate="body" let-index="rowIndex">
+                  <span [hidden]="car['editar']" class="ui-cell-data">{{car['estado_texto'] }}</span>
+                  <p-dropdown (onChange)="alterarEstado(car['numero'],$event)" [hidden]="!car['editar']"
+                    [(ngModel)]="car['estado']" [options]="estados" [style]="{'height':'25px','width':'100%'}"
+                    required="true" appendTo="body"></p-dropdown>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'79px'}" [sortable]="true" [filter]="true" field="data_prevista_retorno"
+                header="Data Prevista Retorno">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span [hidden]="car['editar']"
+                    class="ui-cell-data">{{car['data_prevista_retorno']| date: 'yyyy-MM-dd' }}</span>
+                  <p-calendar [hidden]="!car['editar']" [style]="{'height':'25px'}" dateFormat="yy-mm-dd"
+                    placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                    [(ngModel)]="car[col.field]" [ngModelOptions]="{standalone: true}"></p-calendar>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'40px'}" field="numero" header="">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <a [class.disabled]="acesso_editar" style="padding: 4px 0 4px 9px;margin: 0;"
+                    (click)="car['editar'] = true" [hidden]="car['editar']" class="btn btn-warning"><span
+                      class="glyphicon glyphicon-pencil"></span> </a>
+                  <a (click)=" gravardados(car['numero']);" style="padding: 4px 0 4px 9px; margin: 0;"
+                    [hidden]="!car['editar']" class="btn btn-success"><span
+                      class="glyphicon glyphicon-floppy-disk"></span></a>
+                  <a [class.disabled]="acesso_editar" (click)="car['editar'] = false; atualizarlinha(car['numero'])"
+                    style="padding: 4px 0 4px 9px; margin: 6px 0px 0px 0px;" [hidden]="!car['editar']"
+                    class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal dados-->
+<p-dialog header="Turnos" [responsive]="true" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialog" [modal]="true">
+  <!-- Modal Body -->
+  <div class="modal-body">
+    {{mensagem}}
+  </div>
+
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="dialog = false">Fechar</button>
+  </p-footer>
+</p-dialog>
+
+
+<!-- Modal dados-->
+<p-dialog header="Cacifos" [responsive]="true" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialogCacifos" [modal]="true">
+  <!-- Modal Body -->
+  <div class="modal-body">
+    <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single"
+      (onRowSelect)="onRowSelectCacifo($event)" [paginator]="true" [rows]="15">
+      <p-column [style]="{'width':'30px'}" field="codigo" header="Código" [filter]="true" [sortable]="true">
+      </p-column>
+      <p-column [style]="{'width':'30px'}" field="tipo_UTILIZADOR" header="Tipo Utilizador" [filter]="true"
+        [sortable]="true"></p-column>
+      <p-column [style]="{'width':'30px'}" field="nome_LOCAL" header="Local" [filter]="true" [sortable]="true">
+      </p-column>
+      <p-column [style]="{'width':'30px'}" field="nome_UTILIZADOR" header="Utilizador" [filter]="true"
+        [sortable]="true"></p-column>
+    </p-dataTable>
+  </div>
+
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="dialogCacifos = false">Fechar</button>
+  </p-footer>
+</p-dialog>

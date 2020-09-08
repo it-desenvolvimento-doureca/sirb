@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_DIC_BANHO } from "app/entidades/AB_DIC_BANHO";
 import { AppGlobals } from "app/menu/sidebar.metadata";
@@ -9,9 +9,9 @@ import { AppGlobals } from "app/menu/sidebar.metadata";
 @Injectable()
 export class ABDICBANHOService {
   handleError: any;
-  
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
-  constructor(private http: Http,private globalVar: AppGlobals) { }
+  constructor(private http: Http, private globalVar: AppGlobals) { }
 
   create(data: AB_DIC_BANHO) {
     return this.http
@@ -30,7 +30,7 @@ export class ABDICBANHOService {
   }
 
   getAllLINHA() {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHOLINHA/' + this.globalVar.getlinha();
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHOLINHA/0';
     return this.http
       .get(url)
       .map(this.extractData)
@@ -38,7 +38,24 @@ export class ABDICBANHOService {
   }
 
   getAllLINHAbylinha(id) {
-    const url = webUrl.host + '/rest/sirb/getAllLINHAbylinha/' + id + '/' + this.globalVar.getlinha();
+    const url = webUrl.host + '/rest/sirb/getAllLINHAbylinha/' + id + '/0';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getAllLINHAbylinhatodos(id) {
+    const url = webUrl.host + '/rest/sirb/getAllLINHAbylinhatodos/' + id + '/0';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+  getAllLINHAbylinha_tipo(id, tipo) {
+    const url = webUrl.host + '/rest/sirb/getAllLINHAbylinha_tipo/' + id + '/0/' + tipo;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -46,7 +63,7 @@ export class ABDICBANHOService {
   }
 
   getbyID(id): Observable<AB_DIC_BANHO[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHOyid_banho/' + id + '/' + this.globalVar.getlinha();
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_BANHOyid_banho/' + id + '/0';
     return this.http
       .get(url)
       .map(this.extractData)

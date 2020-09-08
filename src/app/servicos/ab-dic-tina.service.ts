@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_DIC_TINA } from "app/entidades/AB_DIC_TINA";
 import { AppGlobals } from "app/menu/sidebar.metadata";
@@ -29,9 +29,8 @@ export class ABDICTINAService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll2(): Observable<AB_DIC_TINA[]> {
-    console.log(this.globalVar.getlinha())
-    const url = webUrl.host + '/rest/sirb/getallAB_DIC_TINA/' + this.globalVar.getlinha();
+  getAll2(idbanho): Observable<AB_DIC_TINA[]> {
+    const url = webUrl.host + '/rest/sirb/getallAB_DIC_TINA/'+idbanho;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -39,7 +38,7 @@ export class ABDICTINAService {
   }
 
   getbyID(id): Observable<AB_DIC_TINA[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_TINAvbyid_tina/' + id + '/' + this.globalVar.getlinha();
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_TINAvbyid_tina/' + id + '/0';
     return this.http
       .get(url)
       .map(this.extractData)

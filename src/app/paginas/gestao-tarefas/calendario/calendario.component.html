@@ -1,0 +1,171 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content" id="mainpagecontent">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Calendário Tarefas</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+            <!-- <p-schedule #fc (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm' 
+              (onDayClick)="adiciona($event);" [events]="events" [header]="header" locale="es" [contentHeight]="400" locale="pt"
+              [editable]="true"></p-schedule>-->
+            <p-schedule (onEventMouseout)="eventrender2('op')" (onEventMouseover)="eventrender($event,'op')" #fc
+              (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm'
+              [events]="events" [options]="calOptions" locale="es" [contentHeight]="400" locale="pt" [editable]="true">
+            </p-schedule>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<p-overlayPanel appendTo="body" #op>
+  <label>{{popOverTitle}}</label>
+</p-overlayPanel>-->
+
+<button class="btn btn-primary btn-lg" #abrirpopup data-toggle="modal" [hidden]="true" data-target="#modalcalendario"
+  data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div style="background: #05020263;" class="modal fade" id="modalcalendario" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modalcalendariocontent">
+      <!-- Modal Header -->
+      <div class="modal-header" style="text-align: center;">
+        <button type="button" class="close" data-dismiss="modal">
+          <span style="font-size: 30px;" aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Evento - <b>{{titulo_evento}}</b>
+        </h4>
+      </div>
+      <!-- Modal Body -->
+      <div class="" style="max-height: 80vh; overflow-y: overlay; padding: 0px 5px 0px 5px">
+        <div class="col-md-12">
+          <div *ngIf="!feriado" class="container-fluid" style="padding: 0;">
+
+            <div style="display: inline-block;">
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Tarefa:</label>
+                <a href="{{caminho_tarefa}}">{{nome_tarefa}}</a>
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Origem:</label>
+                <!-- <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
+                  [ngModelOptions]="{standalone: true}" style="">-->
+
+                <a href="{{caminho_origem}}">{{origem}}</a>
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Utilizador Origem:</label>
+                <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="utz_origem"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Data/Hora Atribuição:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="data_atribuicao"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Atribuído a:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="atribuido"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Encaminhado para:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="encaminhado"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Prioridade:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="prioridade"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Prazo Conclusão:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="prazo_conclusao"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Data/Hora Conclusão:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2"
+                  [(ngModel)]="data_encaminhado" [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                <label>Estado:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Cliente:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="cliente"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Referência:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="referencia"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                <label>Observações Origem:</label>
+                <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="observacoes"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Conclusão (%):</label>
+                <input [disabled]="!modoedicao" min="0" max="100" [disabled]="true" type="number"
+                  class="form-control2 enabled" [(ngModel)]="percentagem_conclusao"
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                <label>Tempo Gasto (H):</label>
+                <input [disabled]="!modoedicao" min="0" [disabled]="true" type="number" step="0.01"
+                  class="form-control2 enabled" [(ngModel)]="tempo_gasto" [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                <label>Descrição das Ações Efetuadas:</label>
+                <textarea [disabled]="!modoedicao" rows="6" pInputTextarea [(ngModel)]="descricao"
+                  class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+                  style="height: auto; width: 100%;"></textarea>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="feriado" class="container-fluid" style="padding: 0;">
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+              <label>Data:</label>
+              <input required="true" [disabled]="true" type="text" class="form-control2" [(ngModel)]="data_atribuicao"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <label>Descrição:</label>
+              <textarea [disabled]="!modoedicao" rows="6" pInputTextarea [(ngModel)]="descricao"
+                class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+                style="height: auto; width: 100%;"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!--<div style="text-align: center;">
+          <button type="button" class="btn btn-danger" #fecharpopup data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-success">GUARDAR</button>
+        </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

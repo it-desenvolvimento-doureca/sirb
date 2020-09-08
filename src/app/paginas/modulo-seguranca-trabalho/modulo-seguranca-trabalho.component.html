@@ -1,0 +1,41 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header"  data-background-color="red">
+            <h4 class="title">Relatórios de Ocorrências</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" (onRowDblclick)="abrir($event)"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'21px'}" field="n_relatorio" header="Nº Relatório" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'21px'}" field="data_registo" header="Data Registo" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'21px'}" field="tipo" header="Tipo de Ocorrência" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="numero" header="Nº Funcionário" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'60px'}" field="nome" header="Nome Funcionário" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="data_ocorrencia" header="Data/Hora da Ocorrência"
+                [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="local" header="Local" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
+              </p-column>
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="main-content">
+
+  <ol *ngIf="dashb.length > 1" class="breadcrumb brand-primary">
+    <li *ngFor="let d of dashb">
+      <a routerLink="{{d.link}}" [ngClass]="d.ativo ? 'active' : ''">{{d.titulo}}</a>
+    </li>
+  </ol>
+
+  <div class="form-group col-md-12" style="padding: 12px;">
+    <form (ngSubmit)="atualizar()" ngNativeValidate>
+      <div class="col-md-2 div_header">
+        <b>Linha:</b>
+        <br>
+        <p-dropdown (onChange)="preenche_banhos($event)" [options]="linhas" [style.background]="cor_linha" class="droplinha"
+          [style]="{'width':'150px'}" [(ngModel)]="linha_combo" [ngModelOptions]="{standalone: true}" styleClass="ui-column-filter">
+          <ng-template let-car pTemplate="item">
+            <div class="ui-helper-clearfix" [style.background]="car.value.cor" style="position: relative;height: 25px;">
+              {{car.label}}
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="col-md-2 div_header">
+        <b> Banho:</b>
+        <br>
+        <p-dropdown [required]="true" [options]="banhos" scrollHeight="150px" [(ngModel)]="banho_combo"
+          [ngModelOptions]="{standalone: true}" [style]="{'width':'100%'}" styleClass="ui-column-filter" filter="true">
+          <ng-template let-car pTemplate="item">
+            <span [style.color]="car.font_cor">
+              {{car.label}}
+            </span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="col-md-3 div_header">
+        <b>Data Ínicio:</b>
+        <br>
+        <p-calendar dateFormat="yy-mm-dd" placeholder="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+          yearRange="2000:2050" [(ngModel)]="data_ini" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+      </div>
+      <div class="col-md-3 div_header">
+        <b>Data Fim:</b>
+        <br>
+        <p-calendar dateFormat="yy-mm-dd" placeholder="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+          yearRange="2000:2050" [(ngModel)]="data_fim" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+      </div>
+      <div class="col-md-2 div_header">
+        <button pButton type="submit" label="ATUALIZAR" icon="fa-refresh" iconPos="left" style="width: 60%; height: 89%; margin-top: 3px;"></button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- ********************************************************** -->
+  <div *ngIf="rows_show == 0" class="col-md-12" style="height: 100%;">
+    <div class="col-md-12" style="padding:0px; text-align: -webkit-center; background: #e7e7e7; border: 1px dotted #777777;">
+      <h4>SEM DADOS PARA MOSTRAR</h4>
+    </div>
+  </div>
+  <div *ngIf="rows_show > 0" class="col-md-12" style="height: 100%;">
+    <div class="col-md-12" style="padding:0px; ">
+      <div class="card-header" data-background-color="orange">
+        <div class="nav-tabs-navigation">
+          <div class="nav-tabs-wrapper">
+            <ul class="nav nav-tabs" style="background:black">
+              <li>
+              </li>
+              <li style="display: inline-block; position: absolute; padding-left: 43%; z-index: 2;">
+                <a (click)="anterior()">
+                  <i class="material-icons">keyboard_arrow_left</i>
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+              <li style="padding-left: 52%;">
+                <a (click)="seguinte()">
+                  <i class="material-icons">keyboard_arrow_right</i>
+                  <div class="ripple-container"></div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ********************************************************** -->
+
+  <div class="container-fluid">
+    <div *ngIf="rows_show > 0" class="row">
+
+      <div class="col-md-12">
+        <div class="card" style="margin: 13px 0;">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Registo Análises - Histórico</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12" style="float: none;">
+              <b style="margin-left: 10px;">Linha: </b>{{linha}}
+              <span (click)="IrPara('banhos',banho_combo.id)" style="cursor: pointer;">
+                <b style="margin-left: 10px;">Banho: </b>{{banho}}</span>
+              <b style="margin-left: 10px;">Tina: </b>{{tina}}
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered" style="font-size: 13px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th [ngStyle]="{ width: width + '%'}">
+                      <b>Componentes</b>
+                    </th>
+                    <th [ngStyle]="{ width: width + '%'}" *ngFor="let c of cabecalho">
+                      <b>
+                        {{c.dia}}
+                        <br>{{c.data}}
+                        <!--<br> {{c.hora}}-->
+                      </b>
+                      <br>
+                      <span *ngIf="c.id != null" (click)="IrPara('registo',c.id)" style="cursor: pointer;">Análise:{{c.id}}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dados of corpo">
+                    <td class="thead-light2">{{dados.componente}} ({{dados.medida}})</td>
+                    <td class="valores" *ngFor="let b of dados.valores" [ngClass]="true ? b.cor : null">{{b.valor}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="float:right;">
+                {{inicio}}-{{rows_show}} de {{total_rows}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="card" style="margin: 13px 0;">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Registo Manutenções - Histórico</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12" style="float: none;">
+              <b style="margin-left: 10px;">Linha: </b>{{linha}}
+              <span (click)="IrPara('banhos',banho_combo.id)" style="cursor: pointer;">
+                <b style="margin-left: 10px;">Banho: </b>{{banho}}</span>
+              <b style="margin-left: 10px;">Tina: </b>{{tina}}
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered" style="font-size: 13px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th [ngStyle]="{ width: width + '%'}">
+                      <b>Aditivos</b>
+                    </th>
+                    <th [ngStyle]="{ width: width + '%'}" *ngFor="let c of cabecalho_manutencao">
+                      <b>
+                        {{c.dia}}
+                        <br>{{c.data}}
+                        <!-- <br> {{c.hora}}-->
+                      </b>
+                      <br>
+                      <span *ngIf="c.id != null" (click)="IrPara('manutencao',c.id_manu)" style="cursor: pointer;">Manut.:
+                        {{c.id_manu}}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dados of corpo_manu">
+                    <td class="thead-light2">{{dados.componente}}</td>
+                    <td class="valores" *ngFor="let b of dados.valores" [ngClass]="true ? b.cor : null">{{b.valor}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="float:right;">
+                {{inicio}}-{{rows_show}} de {{total_rows}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--****************************** graficos *************************************-->
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="card" style="margin: 13px 0;">
+              <div class="card-header" data-background-color="red">
+                <h4 class="title">Registo Análises - Histórico</h4>
+                <p class="category"></p>
+              </div>
+              <div class="card-content">
+                <div class="col-md-12">
+                  <p-chart type="line" [height]="90" [options]="options" [data]="data1"></p-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="card" style="margin: 13px 0;">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Registo Manutenções - Histórico</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12">
+              <p-chart type="line" [height]="90" [options]="options" [data]="data_manu"></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

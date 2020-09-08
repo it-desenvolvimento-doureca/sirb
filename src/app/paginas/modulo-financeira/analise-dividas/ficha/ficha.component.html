@@ -1,0 +1,751 @@
+<div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disCriar" [hidden]="!btcriar">
+            <a (click)="novaAcao()">
+              <i class="material-icons">note_add</i>Nova Ação
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disEditar" [hidden]="!bteditar">
+            <a (click)="edita()" [ngClass]="(modoedicao && !novo) ? 'cor_modo' : null">
+              <i class="material-icons">mode_edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <!--<li [class.disabled]="disFechar" [hidden]="!btfechar">
+            <a (click)="fechar()">
+              <i class="material-icons">close</i>Fechar
+              <div class="ripple-container"></div>
+            </a>
+          </li>-->
+          <li [class.disabled]="disAcordo" [hidden]="!btAcordo">
+            <a (click)="Acordo()">
+              <i class="material-icons">verified_user</i>Acordo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disAcordo" [hidden]="!btAcordo || !removerAcordo">
+            <a (click)="RemoverAcordo()">
+              <i class="material-icons">verified_user</i>Remov. Acordo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disEnviarAcao" [hidden]="!btEnviarAcao">
+            <a (click)="EnviarAcao()" title="Enviar Ação KAM c/ Lista de Dívidas selecionadas">
+              <i class="material-icons">email</i>Enviar Ação KAM
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disgerarAviso" [hidden]="!btgerarAviso">
+            <a (click)="gerarAviso()" title="Gerar Aviso Pagam. (dos docs selecionados)">
+              <i class="material-icons">assignment</i>Gerar Aviso Pagam.<div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disExportar" [hidden]="!btexportar">
+            <a (click)="exportar()">
+              <i class="material-icons">save_alt</i>Exportar<div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disBloquear" [hidden]="!btbloquear" style="float: right;">
+            <a (click)="bloquear()" *ngIf="!bloqueado">
+              <i class="fa fa-lock" aria-hidden="true"
+                style="font-size: 24px; top: 9px; position: absolute; left: -10px;"></i>Bloquear<div
+                class="ripple-container"></div>
+            </a>
+            <a (click)="desbloquear()" *ngIf="bloqueado">
+              <i class="fa fa-unlock-alt" aria-hidden="true"
+                style="font-size: 24px; top: 9px; position: absolute; left: -10px;"></i>Desbloquear<div
+                class="ripple-container">
+              </div>
+            </a>
+          </li>
+
+          <li [hidden]="!btanterior">
+            <a (click)="anterior()">
+              <i class="material-icons">arrow_back</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!btseguinte">
+            <a (click)="seguinte()">
+              <i class="material-icons">arrow_forward</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Análise de Dívidas - Ficha</h4>
+          </div>
+          <div class="card-content">
+            <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button (click)="ativobt='1';" style="padding: 12px;" [class.ativobt]="ativobt == '1'" type="button"
+                  id="stars" class="btn " href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                    aria-hidden="true"></span>
+                  <div class="hidden-xs" style="display: contents;">Ações (Actions)</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button (click)="ativobt='2';" style="padding: 12px;" [class.ativobt]="ativobt == '2'" type="button"
+                  id="favorites" class="btn" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                    aria-hidden="true"></span>
+                  <div class="hidden-xs" style="display: contents;">Lista de Documentos (Documents list)</div>
+                </button>
+              </div>
+            </div>
+            <div class="well" style="display: flex; padding: 0;">
+              <div class="tab-content" style="width: 100%; padding: 0;">
+                <div class="tab-pane fade in active" id="tab1">
+                  <form #form id="formReclama" ngNativeValidate (ngSubmit)="gravardados_contactos()">
+                    <table class="col-md-12 cab_cliente table-bordered" style="border: 2px solid #777;">
+                      <th class="cab_h" style="width: 120px;">KAM</th>
+                      <th class="cab_h" style="width: 24%;">Cliente (Customer)</th>
+                      <th class="cab_h" colspan="1" style="width: 15%;">Contactos (Contacts)</th>
+                      <th class="cab_h" colspan="3" style="text-align: right; padding-right: 12px; width: 50%;">
+                        <div class="ui-group-buttons" *ngIf="modoedicao">
+                          <input type="submit" hidden #btsubmit>
+                          <a (click)="btsubmit.click()" class="btn btn-success" role="button"
+                            style="margin: 0; padding: 2px 0px 2px 16px;">
+                            <span class="glyphicon glyphicon-floppy-disk"></span></a>
+                          <div class="or"></div>
+                          <a (click)="backview()" class="btn btn-danger" role="button"
+                            style="margin: 0; padding: 2px 4px 2px 9px;">
+                            <span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                      </th>
+                      <tbody>
+                        <tr>
+                          <td rowspan="2">
+                            {{kam}}
+                          </td>
+                          <td>
+                            <b>Nº:</b> {{numero_cliente}}
+                          </td>
+                          <td>
+                            <label>Função:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="funcao_1" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td>
+                            <label>Nome:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="nome_1" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td>
+                            <label>Email:</label>
+                            <input type="email" class="form-control2" [(ngModel)]="email_1" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td style="width: 15%;">
+                            <label>Tlm:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="tlm_1" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <b>Nome:</b> {{nome}}
+                          </td>
+                          <td>
+                            <label>Função:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="funcao_2" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td>
+                            <label>Nome:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="nome_2" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td>
+                            <label>Email:</label>
+                            <input type="email" class="form-control2" [(ngModel)]="email_2" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                          <td>
+                            <label>Tlm:</label>
+                            <input type=" text" class="form-control2" [(ngModel)]="tlm_2" [disabled]="!modoedicao"
+                              [ngModelOptions]="{standalone: true}" placeholder="" />
+                          </td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+                  </form>
+
+
+                  <table class="col-md-12 cab_valores  table-bordered" style="margin-top: 4px;">
+                    <tbody>
+                      <tr style="border: 2px solid #777;">
+                        <td class="col-md-2 cab_t">TOTAL EM CURSO:<br> CURRENT: </td>
+                        <td class="col-md-2 cab_v">{{total_divida | number: '1.2-2'}} € </td>
+                        <td class="col-md-2 cab_t">TOTAL VENCIDO:<br> TOTAL DUE </td>
+                        <td class="col-md-2 cab_v">{{total_divida_vencida | number: '1.2-2'}} €</td>
+                        <td class="col-md-2 cab_t">ACORDO FINANCEIRO:<br>FINANCING AGREEMENT: </td>
+                        <td class="col-md-2 cab_v">{{valor_acordo | number: '1.2-2'}} € </td>
+                        <td class="col-md-2 cab_t">PRAZO MÉDIO PAGAMENTOS:<br>AVERAGE PAYMENT
+                          PERIOD:<br>(Last 6 months) </td>
+                        <td class="col-md-2 cab_v">{{prazo_medio_pagamentos}} </td>
+                        <td class="col-md-2 cab_t">PRAZO MÉDIO ATRASO:<br>AVERAGE PAYMENT
+                          DELAY:<br>(Last 6 months) </td>
+                        <td class="col-md-2 cab_v">{{prazo_medio_atraso}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+
+                    <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                      <button (click)="ativolista='1';"
+                        style="padding: 6px; background: black !important; color: white; text-transform: none;"
+                        [class.ativobt]="ativolista == '1'" type="button" id="stars1" class="btn " href="#tablista1"
+                        data-toggle="tab">
+                        <div class="hidden-xs text_ative"
+                          style="display: contents; font-weight: 700; font-size: 11px !important;">
+                          Gestão da
+                          Relação com o Cliente (Customer
+                          Relationship Manager)</div>
+                      </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                      <button (click)="ativolista='2';"
+                        style="padding: 6px; background: black !important; color: white; text-transform: none;"
+                        [class.ativobt]="ativolista == '2'" type="button" id="favorites1" class="btn" href="#tablista2"
+                        data-toggle="tab">
+                        <div class="hidden-xs text_ative"
+                          style="display: contents;  font-weight: 700; font-size: 11px !important; ">Histórico
+                          (Historic)</div>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="well" style="display: flex; padding: 0;">
+                    <div class="tab-content" style="width: 100%; padding: 0;">
+                      <div class="tab-pane fade in active" id="tablista1">
+
+                        <div class="col-md-12" style="padding: 0;">
+                          <p-dataTable [emptyMessage]="mensagemtabela_acoes" [style]="{'min-height':'300px'}"
+                            (onRowDblclick)="abrir($event)" [value]="tabela_acoes" dataKey="id"
+                            [(selection)]="selected_acoes" class="tabela_analise_dividas">
+
+
+                            <p-column [style]="{'width':'16px'}" selectionMode="single">
+                              <ng-template let-col let-car="rowData" pTemplate="header"></ng-template>
+                            </p-column>
+
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_acao"
+                              header="Data Ação" [style]="{'width':'40px'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="utilizador"
+                              header="Utilizador" [style]="{'width':'50px'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="descricao"
+                              header="Descrição da Ação" [style]="{'width':'90px'}">
+                              <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span pTooltip="{{car['descricao']}}"
+                                  style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;">{{car[col.field]}}</span>
+                              </ng-template>
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="contacto"
+                              header="Contacto" [style]="{'width':'65px'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="origem"
+                              header="Origem" [style]="{'width':'80px'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nome_ficheiro"
+                              header="Anexo/Documento" [style]="{'width':'55px'}">
+                              <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                                <span
+                                  style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;"
+                                  title="{{car[col.field]}}">{{car[col.field]}}</span>
+                              </ng-template>
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger"
+                              field="alerta_data_hora" header="Alerta (Data/Hora)" [style]="{'width':'55px'}">
+                            </p-column>
+                            <p-column [style]="{'width':'59px'}" header="Ação Anexo" field="ficheiro">
+                              <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                                <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
+                                  style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;"
+                                  *ngIf="car.nome_ficheiro != null"
+                                  (click)="showDialog(car.type, null,car.nome_ficheiro,car.datatype,car.ficheiro)">
+                                  <i class="glyphicon glyphicon-zoom-in"></i>
+                                </button>
+                                <a class="btn btn-primary btn-xs" title="Download" *ngIf="car.nome_ficheiro != null"
+                                  (click)="download(car.nome_ficheiro,null,car.datatype,car.ficheiro)" target="_blank"
+                                  style="padding: 1px 0px 1px 9px; margin: 0;">
+                                  <i class="glyphicon glyphicon-download"></i>
+                                </a>
+                                <button style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;" type="button"
+                                  *ngIf="car.nome_ficheiro != null" class="btn btn-danger btn-xs"
+                                  [disabled]="!modoedicao || (car.apagarficheiros) " title="Apagar"
+                                  (click)="removerficheirotabela(index)">
+                                  <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                              </ng-template>
+                            </p-column>
+                          </p-dataTable>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade in" id="tablista2">
+                        <div class="col-md-12" style="padding: 0;">
+                          <p-dataTable [emptyMessage]="mensagemtabela_historico" [style]="{'min-height':'300px'}"
+                            [value]="tabela_historico" dataKey="id" class="tabela_analise_dividas">
+
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data"
+                              header="Data" [style]="{'width':'25%'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="utilizador"
+                              header="Utilizador" [style]="{'width':'25%'}">
+                            </p-column>
+                            <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="descricao"
+                              header="Descrição" [style]="{'width':'50%'}">
+                            </p-column>
+
+                          </p-dataTable>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="tab-pane fade in" id="tab2">
+                  <div class="col-md-12" style="padding: 0;">
+
+                    <p-dataTable [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}"
+                      [value]="tabela_documentos" dataKey="numero_documento" class="tabela_analise_dividas">
+                      <p-header>
+                        <tr style="width: 100%; display: table;">
+                          <td style="width: 436px; padding-left: 7px !important;">
+                            <p-radioButton (onClick)="selectt_d('T')" name="groupname" value="T"
+                              [(ngModel)]="selected_d"></p-radioButton>Selecionar Todos<br>
+                            <p-radioButton (onClick)="selectt_d('V')" name="groupname" value="V"
+                              [(ngModel)]="selected_d"></p-radioButton>Selecionar Vencidos
+                          </td>
+                          <td style="border-right: 1px solid; text-align: right; width: 90px;">
+                            <span style="margin-right: 5px; font-weight: 700;">TOTAIS: </span>
+                          </td>
+                          <td style="border-right: 1px solid; width: 106px; text-align: right;">
+                            {{totaltabela_1 | number: '1.2-2'}} €</td>
+                          <td style="border-right: 1px solid; width: 106px; text-align: right;">
+                            {{totaltabela_2 | number: '1.2-2'}} €</td>
+                          <td style="border-right: 1px solid; width: 106px; text-align: right;">
+                            {{totaltabela_3 | number: '1.2-2'}} €</td>
+                          <td style="border-right: 1px solid; width: 106px; text-align: right;">
+                            {{totaltabela_4 | number: '1.2-2'}} €</td>
+                          <td style="border-right: 1px solid; width: 106px; text-align: right;">
+                            {{totaltabela_5 | number: '1.2-2'}} €</td>
+                          <td style=" width: 106px;  text-align: right;">{{totaltabela_6 | number: '1.2-2'}} €</td>
+                        </tr>
+
+                      </p-header>
+                      <p-column [sortable]="true" [style]="{'width':'16px'}" field="checked">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <p-checkbox name="groupROW" [value]="car"
+                            (onChange)="Changeselected_documentos($event,car);car.checked = $event;"
+                            [(ngModel)]="selected_documentos">
+                          </p-checkbox>
+                          <!--[disabled]="(removerAcordo && car.id_ACORDO == null) || (selected_documentos.length > 0 && !removerAcordo && car.id_ACORDO != null)"-->
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="numero_documento"
+                        header="Nº Doc." [style]="{'width':'80px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Nº Doc.<br>Doc. Number
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_documento"
+                        header="Data Venc." [style]="{'width':'80px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Data Doc.<br>Doc. Date
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_vencimento"
+                        header="Data Venc." [style]="{'width':'80px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Data Venc.<br>Due Date
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="dias_mora"
+                        header="Dias Mora" [style]="{'width':'89px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Dias Mora<br>Ageing Days
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nao_vencido"
+                        header="NÃO VENCIDO TOTAL UNDUE" [style]="{'width':'73px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Total Não Vencido <br>Total Undue
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="menos_31_dias"
+                        header="< 31 Dias < 31 Days" [style]="{'width':'70px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">
+                          0 a 30 Dias <br>
+                          0 to 30 Days</ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="entre_31_60"
+                        header="31 a 60 Dias 31 to 60 Days" [style]="{'width':'70px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">31 a 60 Dias <br> 31 to 60 Days
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="entre_62_90"
+                        header="61 a 90 Dias 61 to 90 Days" [style]="{'width':'70px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">61 a 90 Dias <br> 61 to 90 Days
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="maior_91_dias"
+                        header="> 91 Dias > 91 Days" [style]="{'width':'70px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">> 91 Dias <br> > 91 Days
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="acordo"
+                        header="ACORDO FINANCIAMENTO" [style]="{'width':'70px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="header">Acordo Financ.<br>Financing Agree
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="text-align: right; display: block; padding-right: 6px;"
+                            [style.color]="( 0  > car[col.field])? 'red' : ''">{{car[col.field] | number: '1.2-2'}}
+                            € </span>
+                        </ng-template>
+                      </p-column>
+
+                    </p-dataTable>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button class="btn btn-danger btn-block" #inputenvio [hidden]="true"
+  onclick="demo.showNotification('top','right','Email Enviado com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerroenvio [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Email não foi Enviado!',4)"></button>
+
+
+
+<p-dialog [header]="nomeficheiro" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="display" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Your
+      browser does not support the audio element.</audio>
+    <iframe *ngIf="(type == 'pdf' || type == 'txt')  && display" class="embed-responsive-item"
+      style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [src]="srcelement" type="application/pdf"
+      scale="aspect" frameborder="0"></iframe>
+    <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
+    <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Video
+      format or MIME type is not supported</video>
+  </div>
+</p-dialog>
+
+
+
+<p-dialog header="REGISTO DE NOVA AÇÃO" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  styleClass="dialog_index2" [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama1" role="form" ngNativeValidate (ngSubmit)="gravardados()">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="form-group col-md-4">
+        <label for="data_CRIA" style="width: 121px; text-align: right;">Data Ação:</label>
+        <p-calendar [style]="{'height':'25px','width':'50%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+          [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="dados.data_CRIA"
+          [ngModelOptions]="{standalone: true}" [showIcon]="true" [disabled]="true">
+        </p-calendar>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="contacto" style="width: 70px; text-align: right;">Contacto:</label>
+        <input type="text" class="form-control2" id="contacto" [(ngModel)]="dados.contacto"
+          [disabled]="!modoedicao && !novo" style="width: calc(100% - 75px);" [ngModelOptions]="{standalone: true}"
+          placeholder="" [required]="true" />
+      </div>
+
+      <div class="form-group col-md-5 col-lg-5">
+        <label>Gera Alerta:</label>
+        <p-calendar [disabled]="!modoedicao && !novo" [style]="{'height':'25px','width':'50%'}" dateFormat="yy-mm-dd"
+          placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+          [(ngModel)]="alerta_data" [ngModelOptions]="{standalone: true}" [showIcon]="true">
+        </p-calendar>
+        <input [disabled]="!modoedicao && !novo" style="width:31%; margin-left:29px; padding: 5px 4px;height: 25px;"
+          [(ngModel)]="alerta_hora" [ngModelOptions]="{standalone: true}" type="time"
+          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="nome_utilizador" style="width: 121px; text-align: right;">Utilizador:</label>
+        <input type="text" class="form-control2" id="nome_utilizador" [(ngModel)]="nome_utilizador"
+          [ngModelOptions]="{standalone: true}" placeholder="" [disabled]="true" />
+      </div>
+      <div class="form-group col-md-8">
+        <label for="origem" style="width: 70px; text-align: right;">Origem:</label>
+        <input type="text" class="form-control2" id="origem" [(ngModel)]="dados.origem"
+          style="width: calc(100% - 75px);" [ngModelOptions]="{standalone: true}" placeholder="" disabled="true" />
+      </div>
+      <div class="form-group col-md-7">
+        <label for="descricao" style="width: 121px; text-align: right;">Descrição da Ação:</label>
+        <textarea [disabled]="!modoedicao && !novo" pInputTextarea [(ngModel)]="dados.descricao" class="form-control2"
+          [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
+      </div>
+      <div class="form-group col-md-5">
+        <label for="anexo" style="width: 70px; text-align: right;">Anexo:</label>
+        <span *ngIf="dados.ficheiro != null">{{dados.nome_FICHEIRO}}
+        </span>
+        <!--<button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" *ngIf="dados.ficheiro != null" type="button"
+          class="btn btn-default btn-xs" title="Ver Ficheiro"
+          (click)="showDialog(dados.type_FICHEIRO, null,dados.nome_FICHEIRO,dados.datatype_FICHEIRO,dados.ficheiro)">
+          <i class="glyphicon glyphicon-zoom-in"></i>
+        </button>-->
+        <a style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" *ngIf="dados.ficheiro != null"
+          class="btn btn-primary btn-xs" title="Download"
+          (click)="download(dados.nome_FICHEIRO,null,dados.datatype_FICHEIRO,dados.ficheiro)" target="_blank"
+          style="padding: 3px 0px 3px 12px; margin: 0;">
+          <i class="glyphicon glyphicon-download"></i>
+        </a>
+        <button *ngIf="dados.ficheiro != null" style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
+          class="btn btn-danger btn-xs" [disabled]="!modoedicao && !novo" title="Apagar" (click)="removerficheiro()">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <div class="file-upload-wrapper" style="width: 100%;" id="files">
+          <div class="form-group fileinput color">
+            <input type="file" (change)="fileChange($event)" [disabled]="!modoedicao && !novo">
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <p-footer>
+      <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+        (click)="dialognovo = false">Fechar</button>
+      <!--<button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+        [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>-->
+      <button [disabled]="!modoedicao && !novo" style="float: right; margin-right: 17px;" type="submit"
+        class="btn btn-success ">Gravar</button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="500"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar"
+  [modal]="true" styleClass="dialog_index2">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
+</p-dialog>
+
+
+
+<p-dialog appendTo="body" header="ENVIAR AÇÃO KAM C/ LISTA DE DÍVIDAS SELECIONADAS" [(visible)]="display_envia_kam"
+  [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width':'80%','overflow':'auto'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [modal]="true"
+  styleClass="dialog_index2">
+  <form role="form" ngNativeValidate (ngSubmit)="enviaremail(1)">
+    <div>
+      <div class="col-md-12 col-lg-12">
+        <div class="row">
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label>Para:</label>
+            <input required="true" type="email" class="form-control2" [(ngModel)]="email_para" style="width: 100%;"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label>Assunto:</label>
+            <input required="true" type="text" class="form-control2" [(ngModel)]="email_assunto" style="width: 100%;"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label>Mensagem:</label>
+            <p-editor *ngIf="display_envia_kam" [(ngModel)]="mensagem_email" [ngModelOptions]="{standalone: true}"
+              [style]="{'height':'200px'}">
+            </p-editor>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" class="btn btn-default" (click)="display_envia_kam = false"
+        data-dismiss="modal">Fechar</button>
+      <button type="submit" class="btn btn-success " [disabled]="bt_disable">Enviar</button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+
+
+<p-dialog appendTo="body" header="GERAR AVISO PAGAM. (DOS DOCS SELECIONADOS)" [(visible)]="display_envia_contacto"
+  [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width':'80%','overflow':'auto'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [modal]="true"
+  styleClass="dialog_index">
+  <form role="form" ngNativeValidate (ngSubmit)="enviaremail(2)">
+    <div>
+      <div class="col-md-12 col-lg-12">
+        <div class="row">
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label style="width: 100%;">Para:</label>
+            <div style="padding-left: 0;" class="form-group col-md-12 col-lg-12">
+              <div class="col-md-6" style="padding-left: 0;">
+                <label style="width: 100%;">{{nome_1}}</label>
+              </div>
+              <div class="col-md-6" style="padding-right: 0;">
+                <label style="width: 100%;">{{nome_2}}</label>
+              </div>
+            </div>
+            <div class="col-md-6" style="padding-left: 0;">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon">
+                  <p-radioButton name="groupemail" value="1" [(ngModel)]="selected_email"></p-radioButton>
+                </span>
+                <input type="email" style="width: 100%;" [(ngModel)]="email_para_1"
+                  [ngModelOptions]="{standalone: true}" [required]="selected_email == 1">
+              </div>
+            </div>
+            <div class="col-md-6" style="padding-right: 0; padding-left: 8px;">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon">
+                  <p-radioButton name="groupemail" value="2" [(ngModel)]="selected_email"></p-radioButton>
+                </span>
+                <input type="email" style="width: 100%;" [(ngModel)]="email_para_2"
+                  [ngModelOptions]="{standalone: true}" [required]="selected_email == 2">
+              </div>
+            </div>
+          </div>
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label>Assunto:</label>
+            <input required="true" type="text" class="form-control2" [(ngModel)]="email_assunto" style="width: 100%;"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+            <label>Mensagem:</label>
+            <p-editor *ngIf="display_envia_contacto" [(ngModel)]="mensagem_email" [ngModelOptions]="{standalone: true}"
+              [style]="{'height':'200px'}">
+            </p-editor>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" class="btn btn-default" (click)="display_envia_contacto = false"
+        data-dismiss="modal">Fechar</button>
+      <button type="submit" class="btn btn-success " [disabled]="bt_disable2">Enviar</button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Gerar Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="500"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displaytipo_aviso"
+  [modal]="true" styleClass="dialog_index2">
+  <form role="form" ngNativeValidate (ngSubmit)="criarAviso()">
+    <!-- Modal Body -->
+    <div class="modal-body" style="padding-top: 0;">
+
+      <div class="form-group col-md-6" style="margin-top: 6px;">
+        <p-radioButton name="groupname" value="0" label="Pré-Aviso" [(ngModel)]="tipo_aviso"
+          [ngModelOptions]="{standalone: true}"></p-radioButton>
+      </div>
+      <div class="form-group col-md-6" style="margin-top: 6px;">
+        <p-radioButton name="groupname" value="1" label="Aviso 1" [(ngModel)]="tipo_aviso"
+          [ngModelOptions]="{standalone: true}"></p-radioButton>
+      </div>
+      <div class="form-group col-md-6" style="margin-top: 6px;">
+        <p-radioButton name="groupname" value="2" label="Aviso 2" [(ngModel)]="tipo_aviso"
+          [ngModelOptions]="{standalone: true}"></p-radioButton>
+      </div>
+      <div class="form-group col-md-6" style="margin-top: 6px;">
+        <p-radioButton name="groupname" value="3" label="Aviso 3" [(ngModel)]="tipo_aviso"
+          [ngModelOptions]="{standalone: true}"></p-radioButton>
+      </div>
+      <div class="form-group col-md-12" style="padding-left: 29px;">
+        <label>Idioma</label><br>
+        <p-dropdown appendTo="body" [filter]="true" [options]="idiomas" [style]="{'width':'200px','background':'white'}"
+          [(ngModel)]="idioma" [ngModelOptions]="{standalone: true}">
+        </p-dropdown>
+      </div>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displaytipo_aviso = false">Fechar</button>
+      <button type="submit" class="btn btn-success">Ok</button>
+    </div>
+  </form>
+</p-dialog>

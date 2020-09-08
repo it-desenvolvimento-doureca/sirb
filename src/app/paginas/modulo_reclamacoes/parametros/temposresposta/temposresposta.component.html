@@ -1,0 +1,81 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tempos de Resposta</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content" style="padding-top: 0;">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP1">Tempo Resposta STEP-1 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP1" [(ngModel)]="tempo_RESPOSTA_STEP1"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP2">Tempo Resposta STEP-2 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP2" [(ngModel)]="tempo_RESPOSTA_STEP2"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP3">Tempo Resposta STEP-3 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP3" [(ngModel)]="tempo_RESPOSTA_STEP3"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP4">Tempo Resposta STEP-4 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP4" [(ngModel)]="tempo_RESPOSTA_STEP4"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP5">Tempo Resposta STEP-5 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP5" [(ngModel)]="tempo_RESPOSTA_STEP5"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP6">Tempo Resposta STEP-6 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP6" [(ngModel)]="tempo_RESPOSTA_STEP6"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP7">Tempo Resposta STEP-7 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP7" [(ngModel)]="tempo_RESPOSTA_STEP7"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP8">Tempo Resposta STEP-8 (dias):</label>
+                        <input type="text" class="form-control" id="tempo_RESPOSTA_STEP8" [(ngModel)]="tempo_RESPOSTA_STEP8"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                      <div class="form-group col-md-3" style="padding: 0px 18px 0 0;">
+                        <label for="tempo_RESPOSTA_STEP8">Tempo Revisão da Reclamação (dias):</label>
+                        <input type="text" class="form-control" id="tempo_REVISAO" [(ngModel)]="tempo_REVISAO"
+                          [ngModelOptions]="{standalone: true}" required />
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

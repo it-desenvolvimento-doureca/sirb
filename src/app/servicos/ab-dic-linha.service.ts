@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { AB_DIC_LINHA } from "app/entidades/AB_DIC_LINHA";
 
@@ -50,8 +50,22 @@ export class ABDICLINHAService {
       .then(res => res.json().data)
       .catch(this.handleError);
   }
+  
+  verificaOF(of) {
+    const url = webUrl.host + '/rest/sirb/verificaOF/' + of;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
-
+  verificaREF(ref) {
+    const url = webUrl.host + '/rest/sirb/verificaREF/' +ref;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();

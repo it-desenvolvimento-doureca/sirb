@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl";
+
 import 'rxjs/Rx';
 import { AB_DIC_BANHO_ADITIVO } from "app/entidades/AB_DIC_BANHO_ADITIVO";
+import { webUrl } from 'assets/config/webUrl';
 
 @Injectable()
 export class ABDICBANHOADITIVOService {

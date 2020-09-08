@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos (apagarbt)="apagar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -6,6 +6,12 @@
         <div class="card">
           <div class="card-header" data-background-color="red">
             <h4 class="title">Registos dos Parâmetros de Operação</h4>
+            <button [disabled]="novo || disimprimir" title="Imprimir" type="button"
+              style="color: black; float:right; margin-top: -19px; background-color: #ccc1c1;"
+              class="btn btn-white btn-round btn-just-icon" (click)="imprimir('registo_parametros',id)">
+              <i class="material-icons">print</i>
+              <div class="ripple-container"></div>
+            </button>
           </div>
           <div class="card-content">
             <form id="formPara" (ngSubmit)="gravar()" ngNativeValidate>
@@ -13,7 +19,8 @@
                 <div class="col-md-3">
                   <div [ngClass]="nome_criacao == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">Criado por:</label>
-                    <input type="text" class="form-control" [(ngModel)]="nome_criacao" [ngModelOptions]="{standalone: true}" disabled>
+                    <input type="text" class="form-control" [(ngModel)]="nome_criacao"
+                      [ngModelOptions]="{standalone: true}" disabled>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -42,17 +49,26 @@
                     <input type="text" class="form-control" value="{{cob_analise}}" disabled>
                   </div>
                 </div>
-                 <div class="col-md-2">
+                <div class="col-md-2">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Linha</label>
-                    <p-dropdown [style.background]="cor_linha" [options]="linhas" [style]="{'width':'150px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    <p-dropdown [style.background]="cor_linha" class="droplinha" [options]="linhas"
+                      [style]="{'width':'150px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"
+                      [disabled]="!modoedicao" [required]="true">
+                      <ng-template let-car pTemplate="item">
+                        <div class="ui-helper-clearfix" [style.background]="car.cor"
+                          style="position: relative;height: 25px;">
+                          {{car.label}}
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div [ngClass]="banho == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
                     <label class="control-label">Banho:</label>
-                    <input type="text" class="form-control" [(ngModel)]="banho" [ngModelOptions]="{standalone: true}" disabled>
+                    <input type="text" class="form-control" [(ngModel)]="banho" [ngModelOptions]="{standalone: true}"
+                      disabled>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -77,42 +93,137 @@
                     <div class="col-md-1">
                       <label style="font-size: 14px; float: left; color:black;">Decisão:</label>
                     </div>
-                    <div class="col-md-4" style="padding: 0px;     margin-top: -4px;" >
+                    <div class="col-md-3" style="padding: 0px;     margin-top: -4px;">
                       <div class="radio">
-                        <input   type="radio" name="radio1" id="radio1" value="s" [(ngModel)]="decisao" required>
+                        <input type="radio" name="radio1" id="radio1" value="s" [(ngModel)]="decisao" required>
                         <label for="radio1">
-                                    Seguir com a Produção
+                          Seguir com a Produção
                         </label>
                       </div>
                       <div class="radio">
-                        <input [disabled]="!modoedicao" type="radio" name="radio1" id="radio2" value="p" [(ngModel)]="decisao"  required>
+                        <input [disabled]="!modoedicao" type="radio" name="radio1" id="radio2" value="p"
+                          [(ngModel)]="decisao" required>
                         <label for="radio2">
-                                    Para a Produção
+                          Parar a Produção
                         </label>
                       </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-8">
+                      <table class="table table-bordered table-hover" id="tab_logic">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style=" width: 20px;">
+                              <b>#</b>
+                            </th>
+                            <th class="text-center">
+                              <b>Parâmetros Incorrectos</b>
+                            </th>
+                            <th class="text-center">
+                              <b>Valores Óptimos</b>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><b>1</b></td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text"
+                                [(ngModel)]="param_incorreto" [ngModelOptions]="{standalone: true}" class="form-control"
+                                style="width: 100%; float: left; margin: 0; padding-bottom: 0px;" value="">
+                            </td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo"
+                                [ngModelOptions]="{standalone: true}" class="form-control"
+                                style="width: 100%; float: left; margin: 0; padding: 0px;" value="">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><b>2</b></td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text"
+                                [(ngModel)]="param_incorreto_2" [ngModelOptions]="{standalone: true}"
+                                class="form-control" style="width: 100%; float: left; margin: 0; padding: 0px;"
+                                value="">
+                            </td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo_2"
+                                [ngModelOptions]="{standalone: true}" class="form-control"
+                                style="width: 100%; float: left; margin: 0; padding: 0px;" value="">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><b>3</b></td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text"
+                                [(ngModel)]="param_incorreto_3" [ngModelOptions]="{standalone: true}"
+                                class="form-control" style="width: 100%; float: left; margin: 0; padding: 0px;"
+                                value="">
+                            </td>
+                            <td style="padding: 0px 4px 2px 4px;">
+                              <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo_3"
+                                [ngModelOptions]="{standalone: true}" class="form-control"
+                                style="width: 100%; float: left; margin: 0; padding: 0px;" value="">
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!--div class="col-md-4">
+
                       <div class="form-group form-black label-floating">
-                        <label style="font-size: 14px; float: left; ">Parâmetro Incorrecto:</label>
-                        <input  [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="param_incorreto" [ngModelOptions]="{standalone: true}" class="form-control"
-                          style="width: 60%; float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;" value="">
+                        <label style="font-size: 14px; float: left; width: 138px;">Parâmetro Incorrecto:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="param_incorreto"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 155px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <label style="font-size: 14px; float: left; width: 138px;">Parâmetro Incorrecto:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="param_incorreto_2"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 155px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <label style="font-size: 14px; float: left; width: 138px;">Parâmetro Incorrecto:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="param_incorreto_3"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 155px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group form-black label-floating">
-                        <label style="font-size: 14px; float: left;">Valores Óptimos:</label>
-                        <input  [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo" [ngModelOptions]="{standalone: true}" class="form-control"
-                          style="width: 20%; float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;" value="">
+                        <label style="font-size: 14px; float: left; width: 110px;">Valores Óptimos:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 126px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
                       </div>
-                    </div>
+                      <div class="form-group form-black label-floating">
+                        <label style="font-size: 14px; float: left; width: 110px;">Valores Óptimos:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo_2"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 126px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
+                      </div>
+                      <div class="form-group form-black label-floating">
+                        <label style="font-size: 14px; float: left; width: 110px;">Valores Óptimos:</label>
+                        <input [disabled]="!modoedicao" [required]="true" type="text" [(ngModel)]="valor_otimo_3"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: calc( 100% - 126px ); float: left; margin-top: -13px; margin-left: 8px; padding-bottom: 0px;"
+                          value="">
+                      </div>
+                    </div-->
                   </div>
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <div [ngClass]="efeito == '' ? 'is-empty' : null" class="form-group form-black ">
                           <label style="font-size: 14px;" class="control-label">Efeito Sobre as Peças:</label>
-                          <textarea  [required]="true" class="form-control" rows="3" [(ngModel)]="efeito" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="efeito"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -122,7 +233,8 @@
                       <div class="form-group">
                         <div [ngClass]="causa == '' ? 'is-empty' : null" class="form-group form-black ">
                           <label style="font-size: 14px;" class="control-label">Causas:</label>
-                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="causa" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="causa"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -131,9 +243,9 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <div [ngClass]="acao_corretiva == '' ? 'is-empty' : null" class="form-group form-black ">
-                          <label style="font-size: 14px;" class="control-label">Acções Correctivas</label>
-                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="acao_corretiva" [ngModelOptions]="{standalone: true}"
-                            [disabled]="!modoedicao"></textarea>
+                          <label style="font-size: 14px;" class="control-label">Ações Correctivas</label>
+                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="acao_corretiva"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -142,9 +254,9 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <div [ngClass]="acao_preventiva == '' ? 'is-empty' : null" class="form-group form-black ">
-                          <label style="font-size: 14px;" class="control-label">Acções Preventivas</label>
-                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="acao_preventiva" [ngModelOptions]="{standalone: true}"
-                            [disabled]="!modoedicao"></textarea>
+                          <label style="font-size: 14px;" class="control-label">Ações Preventivas</label>
+                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="acao_preventiva"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -153,9 +265,10 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <div [ngClass]="seguimento == '' ? 'is-empty' : null" class="form-group form-black ">
-                          <label style="font-size: 14px;" class="control-label">Traçabilidade/Seguimento(Peças Produzidas)</label>
-                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="seguimento" [ngModelOptions]="{standalone: true}"
-                            [disabled]="!modoedicao"></textarea>
+                          <label style="font-size: 14px;" class="control-label">Traçabilidade/Seguimento(Peças
+                            Produzidas)</label>
+                          <textarea [required]="true" class="form-control" rows="3" [(ngModel)]="seguimento"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -165,7 +278,8 @@
                       <div class="form-group">
                         <div [ngClass]="obs == '' ? 'is-empty' : null" class="form-group form-black ">
                           <label style="font-size: 14px;" class="control-label">Observações</label>
-                          <textarea class="form-control" rows="3" [(ngModel)]="obs" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                          <textarea class="form-control" rows="3" [(ngModel)]="obs"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
                         </div>
                       </div>
                     </div>
@@ -176,26 +290,30 @@
                     </div>
                     <div class="col-md-9" style="    padding: 0px;">
                       <div class="radio" style="float: none">
-                        <input   type="radio" name="distribuicao" id="radio5" value="q" [(ngModel)]="distribuicao">
+                        <input type="radio" name="distribuicao" id="radio5" value="q" [(ngModel)]="distribuicao">
                         <label for="radio5">
-                                    Qualidade
+                          Qualidade
                         </label>
                       </div>
                       <div class="radio" style="float: none; margin-left: 0px;">
-                        <input [disabled]="!modoedicao" type="radio" name="distribuicao" id="radio6" value="o" [(ngModel)]="distribuicao">
-                        <label for="radio6">
-                                    Outros:
+                        <input [disabled]="!modoedicao" type="radio" name="distribuicao" id="radio6" value="o"
+                          [(ngModel)]="distribuicao">
+                        <label for="radio6" style="width: 100%;">
+                          Outros:
                         </label>
-                         <input  [disabled]="!modoedicao" type="text" [(ngModel)]="distribuicao_outros" [ngModelOptions]="{standalone: true}" class="form-control" style="width: 60%; float: left; margin-top: -8px; margin-left: 6px;"
-                        value="">
-                      </div>                     
+                        <input [disabled]="!modoedicao" type="text" [(ngModel)]="distribuicao_outros"
+                          [ngModelOptions]="{standalone: true}" class="form-control"
+                          style="width: 60%; float: left; margin-top: -8px; margin-left: 6px;" value="">
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
-              <button type="button" (click)="validar()" class="btn btn-success pull-right" [hidden]="validado || (novo && modoedicao) ">Validar</button>
+              <button type="button" (click)="validar()" class="btn btn-success pull-right"
+                [hidden]="validado || (novo && modoedicao) ">Validar</button>
               <div class="clearfix"></div>
             </form>
           </div>
@@ -204,7 +322,12 @@
     </div>
   </div>
 </div>
-<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>

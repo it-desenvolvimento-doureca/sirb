@@ -1,0 +1,56 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Nº Semanas Análise</h4>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12">
+              <form role="form" ngNativeValidate (ngSubmit)="gravarlinhas()">
+                <p-dataTable [style]="{'width':'100%'}" [value]="dados" [paginator]="true" [rows]="15">
+                  <p-column field="n_SEMANAS" header="Nº Semanas" [sortable]="true">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                      <input type="number" class="form-control2" [(ngModel)]="car['n_SEMANAS']"
+                        [ngModelOptions]="{standalone: true}" appendTo="body" [disabled]="!acesso_editar"
+                        style="height: 32px; width: 100%; padding: 0 0 0 9px;" required />
+                    </ng-template>
+                  </p-column>
+                  <p-column field="por_DEFEITO" header="Por defeito" [sortable]="true">
+                    <ng-template let-col let-car="rowData" let-index="rowIndex"  pTemplate="body">
+                      <p-checkbox [disabled]="!acesso_editar" [(ngModel)]="car['por_DEFEITO']"
+                        (click)="verifica_porDEFEITO($event,index)" [ngModelOptions]="{standalone: true}" binary="true">
+                      </p-checkbox>
+                    </ng-template>
+                  </p-column>
+                  <p-column [style]="{'width':'100px'}" styleClass="col-button">
+                    <ng-template let-linha="rowData" pTemplate="body">
+                      <button type="button" class="ui-button-danger" pButton (click)="eliminar(linha)" icon="fa-trash"
+                        [class.disabled]="!acesso_apagar" label=" "></button>
+                    </ng-template>
+                  </p-column>
+                  <p-footer>
+                    <a (click)="adicionar()" style="color: black; cursor:pointer; margin-left:10px;"
+                      [class.disabled]="!acesso_criar" title="Adicionar nova linha">
+                      <i class="material-icons">add</i> Adicionar
+                    </a>
+                  </p-footer>
+                </p-dataTable>
+
+
+                <button type="submit" class="btn btn-success "
+                  [hidden]="!acesso_criar && !acesso_editar">Gravar</button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>

@@ -1,0 +1,94 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Cacifos</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single"
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="25"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'30px'}" field="codigo" header="Código" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="nomeTIPO_CACIFO" header="Tipo Cacifo" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="tipo_UTILIZADOR" header="Tipo Utilizador" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="nome_LOCAL" header="Local" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="codigo_nome_UTILIZADOR" header="Utilizador" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+<!-- Modal dados-->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Cacifo
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="form-group col-md-3">
+            <label for="codigo">Código</label><br>
+            <input type="text" style="width: 100%;" class="form-control2" id="codigo" [(ngModel)]="codigo"
+              [ngModelOptions]="{standalone: true}" maxlength="10" required />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="tipo_CACIFO">Tipo Cacifo</label>
+            <p-dropdown [options]="tiposCacifo" [style]="{'width':'100%'}" [(ngModel)]="tipo_CACIFO"
+              [ngModelOptions]="{standalone: true}"></p-dropdown>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="tipo_UTILIZADOR">Tipo Utilizador</label>
+            <p-dropdown [options]="tipos" [style]="{'width':'100%'}" [(ngModel)]="tipo_UTILIZADOR"
+              [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="local">Local</label>
+            <p-dropdown [options]="locais" [style]="{'width':'100%'}" [(ngModel)]="local"
+              [ngModelOptions]="{standalone: true}" [required]="true"> </p-dropdown>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="UTILIZADOR">Utilizador</label>
+            <p-dropdown [filter]="true" [options]="utilizadores" [style]="{'width':'100%'}" [(ngModel)]="UTILIZADOR"
+              [ngModelOptions]="{standalone: true}"></p-dropdown>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button [disabled]="!acesso_apagar" type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger"
+            data-dismiss="modal">Remover</button>
+          <button type="submit" class="btn btn-success ">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

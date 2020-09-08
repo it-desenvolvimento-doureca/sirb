@@ -1,0 +1,1379 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="card">
+          <div class="card-header" data-background-color="gray">
+            <h4 class="title">Análises de Assiduidade e Produtividade</h4>
+            <!--<a class="btn icon-btn btn-default" [routerLink]="['/teste2']" style="background: white; color: black; position: absolute; top: -26px; right: 20px;">
+              <span style="color: black;" class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Criar</a>-->
+          </div>
+
+          <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="card cardnav">
+              <!-- <div class="card-header" data-background-color="gray">
+            <h4 class="title">Vista Rápida</h4>
+          </div>-->
+              <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist" style="display: flex;">
+                  <a [class.disabled]="acesso_geral" (click)="resetActive($event, 'geral');"
+                    [ngClass]="{'activestep': classstep == 'geral'}" class="nav-item nav-link" id="nav-geral-tab"
+                    data-toggle="tab" href="#nav-geral" role="tab" aria-controls="nav-geral"
+                    aria-selected="true">Geral</a>
+                  <a [class.disabled]="acesso_assiduidade" (click)="resetActive($event, 'assiduidade');"
+                    [ngClass]="{'activestep': classstep == 'assiduidade'}" class="nav-item nav-link"
+                    id="nav-assiduidade-tab" data-toggle="tab" href="#nav-assiduidade" role="tab"
+                    aria-controls="nav-assiduidade" aria-selected="false">Assiduidade</a>
+                  <a [class.disabled]="acesso_produtividade" (click)="resetActive($event, 'produtividade');"
+                    [ngClass]="{'activestep': classstep == 'produtividade'}" class="nav-item nav-link"
+                    id="nav-produtividade-tab" data-toggle="tab" href="#nav-produtividade" role="tab"
+                    aria-controls="nav-produtividade" aria-selected="false">Produtividade</a>
+                  <a [class.disabled]="acesso_operacoes" (click)="resetActive($event, 'operacoes');"
+                    [ngClass]="{'activestep': classstep == 'operacoes'}" class="nav-item nav-link"
+                    id="nav-operacoes-tab" data-toggle="tab" href="#nav-operacoes" role="tab"
+                    aria-controls="nav-operacoes" aria-selected="false">Operações</a>
+                  <a [class.disabled]="acesso_comparativa" (click)="resetActive($event, 'comparativa');"
+                    [ngClass]="{'activestep': classstep == 'comparativa'}" class="nav-item nav-link"
+                    id="nav-comparativa-tab" data-toggle="tab" href="#nav-comparativa" role="tab"
+                    aria-controls="nav-comparativa" aria-selected="false">Comparativa Sectores</a>
+                  <a [class.disabled]="acesso_sector" (click)="resetActive($event, 'sector');"
+                    [ngClass]="{'activestep': classstep == 'sector'}" class="nav-item nav-link" id="nav-sector-tab"
+                    data-toggle="tab" href="#nav-sector" role="tab" aria-controls="nav-sector"
+                    aria-selected="false">Sector</a>
+                  <a [class.disabled]="acesso_pausas" (click)="resetActive($event, 'pausas');"
+                    [ngClass]="{'activestep': classstep == 'pausas'}" class="nav-item nav-link" id="nav-pausas-tab"
+                    data-toggle="tab" href="#nav-pausas" role="tab" aria-controls="nav-pausas"
+                    aria-selected="false">Pausas</a>
+                  <a [class.disabled]="acesso_cadencias" (click)="resetActive($event, 'cadencias');"
+                    [ngClass]="{'activestep': classstep == 'cadencias'}" class="nav-item nav-link"
+                    id="nav-cadencias-tab" data-toggle="tab" href="#nav-cadencias" role="tab"
+                    aria-controls="nav-cadencias" aria-selected="false">Cadências</a>
+                  <a [class.disabled]="acesso_cadencias_funcionario"
+                    (click)="resetActive($event, 'cadencias_funcionario');"
+                    [ngClass]="{'activestep': classstep == 'cadencias_funcionario'}" class="nav-item nav-link"
+                    id="nav-cadencias_funcionario-tab" data-toggle="tab" href="#nav-cadencias_funcionario" role="tab"
+                    aria-controls="nav-cadencias_funcionario" aria-selected="false">Cadência/Funcionário</a>
+                  <a style="cursor: pointer; position: absolute;right: 59px; top: 12px; color: black;"
+                    (click)="imprimir('pdf')" *ngIf="imprimirpdf">
+                    <i class="material-icons">print</i>
+                  </a>
+                  <a style="cursor: pointer; position: absolute;right: 19px; top: 14px; color: black;"
+                    (click)="imprimir('xlsx')">
+                    <i style="font-size: 20px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </nav>
+              <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                <div class="card-content table-responsive">
+
+                  <!-- GERAL -->
+                  <div *ngIf="!acesso_geral" class="tab-pane fade show in" [ngClass]="{'active': classstep == 'geral'}"
+                    id="nav-geral" role="tabpanel" aria-labelledby="nav-geral-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama" (ngSubmit)="atualizar('geral')" ngNativeValidate>
+                        <label>Data Referência:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datageral" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label>Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativoGeral" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operarioGeral"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+
+                        <button type="submit" class="btn btn-success " [disabled]="loadingtabelageral"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <p-dataTable [loading]="loadingtabelageral" class="tabelalistatarefas" #tabelageralcomp
+                      [style]="{'min-height':'100px'}" [value]="tabelageral" dataKey="id" [rows]="25" [paginator]="true"
+                      [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="abrirAssiduidade(car['numero'])">{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="empresa"
+                        header="Empresa"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_admissao"
+                        header="Data Admissão"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_demissao"
+                        header="Data Demissão"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="sector"
+                        header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'>{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="turno" header="Turno">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverTurno($event,car,"opturno");'>{{car['turno'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="chefe" header="Chefe">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_cacifo"
+                        header="Nº Cacifo"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_inicio_situacao"
+                        header="Data ínicio Situação"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_fim_situacao"
+                        header="Data Fim Situação"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_entrada"
+                        header="Hora Entrada"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_saida"
+                        header="Hora Saída"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="estado"
+                        header="Estado"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_prevista_retorno"
+                        header="Data Prevista Retorno"></p-column>
+                    </p-dataTable>
+
+                  </div>
+
+                  <!-- ASSIDUIDADE -->
+                  <div *ngIf="!acesso_assiduidade" class="tab-pane fade show in"
+                    [ngClass]="{'active': classstep == 'assiduidade'}" id="nav-assiduidade" role="tabpanel"
+                    aria-labelledby="nav-assiduidade-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_2" (ngSubmit)="atualizar('assiduidade')" ngNativeValidate>
+                        <label>Data Referência:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_assiduidade" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label>Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativoAssiduidade" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operarioAssiduidade"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+                        <button type="submit" class="btn btn-success " [disabled]="loadingtabelaassiduidade"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="text-align: center;">
+                      <a (click)="semanaanterior()" class="previous">&laquo; Semana Anterior</a>
+                      <u><b>{{semana_ano}}</b></u>
+                      <a (click)="semanaseguinte()" class="next">Semana Seguinte &raquo;</a>
+                    </div>
+                    <p-dataTable #stopbutton [loading]="loadingtabelaassiduidade" #tabelaassiduidadecomp
+                      class="tabelalistatarefas tabelaassiduidade" [style]="{'min-height':'100px'}"
+                      [value]="tabelaassiduidade" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-headerColumnGroup>
+                        <p-row>
+                          <p-column [style]="{'width':'6%'}" header="Nº" colspan="1"></p-column>
+                          <p-column [style]="{'width':'6%'}" header="Nome" colspan="1"></p-column>
+                          <p-column [style]="{'width':'6%'}" header="Ativo" colspan="1"></p-column>
+                          <p-column [style]="{'width':'6%'}" header="Local" colspan="1"></p-column>
+                          <p-column [style]="{'width':'6%'}" header="Responsável" colspan="1"></p-column>
+                          <p-column [style]="{'width':'6%','border-right': '4px solid'}" header="Sector" colspan="1">
+                          </p-column>
+                          <p-column *ngFor="let col of colsassiduidade" colspan="3" [header]="col.header">
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input
+                                (input)="filtertabelatabelaassiduidadecomp_filter($event.target.value,'numero_op','contains',tabelaassiduidadecomp)"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input
+                                (input)="filtertabelatabelaassiduidadecomp_filter($event.target.value,'nome','contains',tabelaassiduidadecomp)"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input
+                                (input)="filtertabelatabelaassiduidadecomp_filter($event.target.value,'ativo','contains',tabelaassiduidadecomp)"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input
+                                (input)="filtertabelatabelaassiduidadecomp_filter($event.target.value,'local','contains',tabelaassiduidadecomp)"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input
+                                (input)="filtertabelatabelaassiduidadecomp_filter($event.target.value,'responsavel','contains',tabelaassiduidadecomp)"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column [style]="{'width':'6%','border-right': '4px solid'}" header="" colspan="1">
+                            <ng-template pTemplate="header">
+                              <input (input)="tabelaassiduidadecomp.filter($event.target.value,'sector','contains')"
+                                class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                type="text">
+                            </ng-template>
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                          <p-column header="Horas" colspan="1">
+                          </p-column>
+                          <p-column header="Faltas" colspan="1">
+                          </p-column>
+                          <p-column header="Extra" colspan="1">
+                          </p-column>
+                        </p-row>
+                      </p-headerColumnGroup>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="abrirProdutividade(car['numero'])">{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="sector" header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'
+                            (onEventMouseout)="eventrender2('opsector')">{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column field="data1.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data1.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data1.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data2.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data2.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data2.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data3.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data3.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data3.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data4.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data4.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data4.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data5.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data5.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data5.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data6.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data6.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data6.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data7.horas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data7.faltas" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+                      <p-column field="data7.extra" [style]="{'border-right': '1px solid #c7c7c78f'}"></p-column>
+
+
+                    </p-dataTable>
+                  </div>
+
+                  <!-- PRODUTIVIDADE -->
+                  <div *ngIf="!acesso_produtividade" class="tab-pane fade show in"
+                    [ngClass]="{'active': classstep == 'produtividade'}" id="nav-produtividade" role="tabpanel"
+                    aria-labelledby="nav-produtividade-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_3" (ngSubmit)="atualizar('produtividade')" ngNativeValidate>
+                        <label>Data Entre:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataprodutividade1" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-left': '21px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataprodutividade2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label style="margin-left: 38px;">Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativoProdutividade" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operarioProdutividade"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+                        <button type="submit" class="btn btn-success " [disabled]="loadingtabelprodutividade"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <p-dataTable [loading]="loadingtabelprodutividade" (onFilter)="calculateGroupTotal($event)"
+                      class="tabelalistatarefas tabprodutividade" [style]="{'min-height':'100px'}"
+                      [value]="tabelprodutividade" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      #tabelaprodutividadecomp [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="abrirOperacoes(car['numero'])">{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="sector" header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'>{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data" header="Data">
+                      </p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_entrada"
+                        header="Hora Entrada"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_saida"
+                        header="Hora Saída"></p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="total_horas"
+                        header="Total Horas Trabalhadas"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="total_faltas"
+                        header="Total Faltas">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr *ngFor="let colt of  car[cols.field]">
+                              <td style="white-space: pre;">{{colt}}</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tipo_falta"
+                        header="Tipo Falta">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr *ngFor="let colt of  car[cols.field]">
+                              <td style="white-space: pre;">{{colt}}</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="total_extras"
+                        header="Total Extras">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr *ngFor="let colt of  car[cols.field]">
+                              <td style="white-space: pre;">{{colt}}</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tipo_extra"
+                        header="Tipo Extra">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr *ngFor="let colt of  car[cols.field]">
+                              <td style="white-space: pre;">{{colt}}</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="horas_registadas"
+                        header="Nº Horas Registadas Produção"></p-column>
+                      <p-column styleClass="colracio" [style]="{'width':'6%'}" [sortable]="true" [filter]="true"
+                        field="racio_horas" header="Rácio Horas Trabalhadas">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <tbody
+                            style="top: 0; bottom: 0; left: 0; right: 0; display: inline-grid; position: absolute;">
+                            <tr style="display: inline-table; width: 100%; height: 100%;">
+                              <td [style.background]="car['cor']">
+                                {{car['racio_horas'] }} %
+                              </td>
+                            </tr>
+                          </tbody>
+                        </ng-template>
+                      </p-column>
+
+                      <p-footerColumnGroup>
+                        <p-row>
+                          <p-column footer="" colspan="9"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="1"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="1"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="MÉDIA" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>MÉDIA</b></ng-template>
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column footer="" colspan="9">1</p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{produtividade_totaltrabalhadas}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{produtividade_totalfaltas}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="1"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{produtividade_totalextras}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="1"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{produtividade_horasregistadas}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="MÉDIA" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">
+                              {{produtividade_media}} %</ng-template>
+                          </p-column>
+
+                        </p-row>
+                      </p-footerColumnGroup>
+                    </p-dataTable>
+
+                  </div>
+
+                  <!-- OPERAÇÕES -->
+                  <div *ngIf="!acesso_operacoes" class="tab-pane fade show in" id="nav-operacoes"
+                    [ngClass]="{'active': classstep == 'operacoes'}" role="tabpanel"
+                    aria-labelledby="nav-operacoes-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_4" (ngSubmit)="atualizar('operacoes')" ngNativeValidate>
+                        <label>Data Entre:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataoperacoes1" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-left': '21px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataoperacoes2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label style="margin-left: 38px;">Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativoOperacoes" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Sector:</label>
+                        <p-multiSelect [filter]="true" appendTo="body" [options]="dropsectores"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="sector_operacao" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-multiSelect>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operarioOperacoes"
+                          [ngModelOptions]="{standalone: true}" placeholder="" /><br>
+                        <label>Base de Cálculo:</label>
+                        <p-radioButton name="groupname3" label="Cadências na data do Trabalho" value="definidas"
+                          [(ngModel)]="tipo_cadencia"></p-radioButton>
+                        <p-radioButton name="groupname3" label="Cadência Atual" value="standard"
+                          [(ngModel)]="tipo_cadencia">
+                        </p-radioButton>
+
+                        <button type="submit" class="btn btn-success " [disabled]="false"
+                          [disabled]="loadingtabelaoperacoes"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px; top: 8px; position: absolute; right: 7px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <p-dataTable (onFilter)="calculateGroupTotal2($event)" [loading]="loadingtabelaoperacoes"
+                      #tabelaoperacoescomp class="tabelalistatarefas" [style]="{'min-height':'100px'}"
+                      [value]="tabelaoperacoes" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="abrirSectoreNumero(car['numero'])">{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="sector"
+                        header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'
+                            (onEventMouseout)="eventrender2('opsector')">{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="chefe" header="Chefe"></p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data" header="Data">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_inicio"
+                        header="Hora Início">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_fim"
+                        header="Hora Fim">
+                      </p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="referencia"
+                        header="Referência">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a title="{{car['of_num'] }}">{{car['referencia'] }}</a>
+                        </ng-template>
+
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="designacao"
+                        header="Designação">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="operacao"
+                        header="Operação">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="quant_revistas"
+                        header="Quant. Revistas">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="cadencia"
+                        header="Cadência">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_prep"
+                        header="Tempo Preparação">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_exec"
+                        header="Tempo Execução">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_total"
+                        header="Tempo Total">
+                      </p-column>
+
+
+                      <p-footerColumnGroup>
+                        <p-row>
+                          <p-column footer="" colspan="7"></p-column>
+                          <p-column footer="Nº Registos" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Nº Registos</b>
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="5">
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column footer="" colspan="7"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{total_operacoes}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="5">1</p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{operacoes_qtd_revista}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{operacoes_cadencia}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{operacoes_tempo_prep}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{operacoes_tempo_exec}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{operacoes_tempo_total}}
+                            </ng-template>
+                          </p-column>
+
+                        </p-row>
+                      </p-footerColumnGroup>
+                    </p-dataTable>
+                  </div>
+
+                  <!-- COMPARATIVA -->
+                  <div *ngIf="!acesso_comparativa" class="tab-pane fade show in " id="nav-comparativa"
+                    [ngClass]="{'active': classstep == 'comparativa'}" role="tabpanel"
+                    aria-labelledby="nav-comparativa-tab">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_5" (ngSubmit)="atualizar('comparativa')" ngNativeValidate>
+                        <label>Data</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datacomparativa1" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label style="margin-left: 38px;">Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativocomparativa" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Sector:</label>
+                        <p-multiSelect [filter]="true" appendTo="body" [options]="dropsectores"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="sector_comparativa" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-multiSelect>
+
+                        <label>Base de Cálculo:</label>
+                        <p-radioButton name="groupname4" label="Cadências na data do Trabalho" value="definidas"
+                          [(ngModel)]="tipo_cadencia_comparativa"></p-radioButton>
+                        <p-radioButton name="groupname4" label="Cadência Atual" value="standard"
+                          [(ngModel)]="tipo_cadencia_comparativa">
+                        </p-radioButton>
+
+                        <button type="submit" class="btn btn-success " [disabled]="false"
+                          [disabled]="loadingtabelacomparativa"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="text-align: center;">
+                      <a (click)="semanaanteriorcomparativa()" class="previous">&laquo; Semana Anterior</a>
+                      <u><b>{{semana_ano_comparativa}}</b></u>
+                      <a (click)="semanaseguintecomparativa()" class="next">Semana Seguinte &raquo;</a>
+                    </div>
+                    <p-dataTable (onFilter)="calculateGroupTotalComparativa($event)" #tabelacomparativacomp
+                      [loading]="loadingtabelacomparativa" class="tabelalistatarefas" [style]="{'min-height':'100px'}"
+                      [value]="tabelacomparativa" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="cod_sector"
+                        header="Cod">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'
+                            (onEventMouseout)="eventrender2('opsector')">{{car['cod_sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="sector"
+                        header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'>{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="chefe" header="Chefe">
+                      </p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" *ngFor="let col of colscomparativa"
+                        [header]="col.header">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr>
+                              <td title="Rácio" style="font-weight: 800;  float: left;" *ngIf="col.field== 'data1'">R
+                              </td>
+                              <td style="white-space: pre;">{{car[col.field][0] }} %</td>
+                            </tr>
+                            <tr>
+                              <td title="Cadência" style="font-weight: 800;  float: left;" *ngIf="col.field== 'data1'">C
+                              </td>
+                              <td style="white-space: pre;">{{car[col.field][1] }} %</td>
+                            </tr>
+                            <tr>
+                              <td title="Média Cadência/Rácio" style="font-weight: 800;  float: left;"
+                                *ngIf="col.field== 'data1'">M</td>
+                              <td style="white-space: pre;">{{car[col.field][2] }} %</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%','background': '#b2b2b2'}" [sortable]="true" field="media"
+                        header="Média Total">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][0] }} %</td>
+                            </tr>
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][1] }} %</td>
+                            </tr>
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][2] }} %</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-footerColumnGroup>
+                        <p-row>
+                          <p-column footer="" colspan="4"></p-column>
+                          <p-column footer="Média Total" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Média Total</b>
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="6">
+                          </p-column>
+                          <p-column footer="Média Geral" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Média Geral</b>
+                            </ng-template>
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column footer="" colspan="4"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa1}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa2}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa3}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa4}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa5}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa6}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_comparativa7}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="Média Geral" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_geral_comparativa}} %
+                            </ng-template>
+                          </p-column>
+                        </p-row>
+                      </p-footerColumnGroup>
+                    </p-dataTable>
+
+
+                  </div>
+
+                  <!-- SECTOR -->
+                  <div *ngIf="!acesso_sector" class="tab-pane fade show in" id="nav-sector" role="tabpanel"
+                    [ngClass]="{'active': classstep == 'sector'}" aria-labelledby="nav-sector-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_6" (ngSubmit)="atualizar('sector')" ngNativeValidate>
+                        <label>Data:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datasector1" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label style="margin-left: 38px;">Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativoSector" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Sector:</label>
+                        <p-multiSelect [filter]="true" appendTo="body" [options]="dropsectores"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="sector" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-multiSelect>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operariosector"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+
+                        <label>Base de Cálculo:</label>
+                        <p-radioButton name="groupname1" label="Cadências na data do Trabalho" value="definidas"
+                          [(ngModel)]="tipo_cadencia_sector"></p-radioButton>
+                        <p-radioButton name="groupname1" label="Cadência Atual" value="standard"
+                          [(ngModel)]="tipo_cadencia_sector">
+                        </p-radioButton>
+
+                        <button type="submit" class="btn btn-success " [disabled]="false"
+                          [disabled]="loadingtabelasector"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="text-align: center;">
+                      <a (click)="semanaanteriorsector()" class="previous">&laquo; Semana Anterior</a>
+                      <u><b>{{semana_ano_sector}}</b></u>
+                      <a (click)="semanaseguintesector()" class="next">Semana Seguinte &raquo;</a>
+                    </div>
+                    <p-dataTable (onFilter)="calculateGroupTotalSectores($event)" [loading]="loadingtabelasector"
+                      #tabelasectorcomp class="tabelalistatarefas" [style]="{'min-height':'100px'}"
+                      [value]="tabelasectores" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="abrirOperacoessector(car['numero'])">{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="sector" header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'
+                            (onEventMouseout)="eventrender2('opsector')">{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" *ngFor="let col of colssectores"
+                        [header]="col.header">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr>
+                              <td title="Rácio" style="font-weight: 800;  float: left;" *ngIf="col.field== 'data1'">R
+                              </td>
+                              <td style="white-space: pre;">{{car[col.field][0] }} %</td>
+                            </tr>
+                            <tr>
+                              <td title="Cadência" style="font-weight: 800;  float: left;" *ngIf="col.field== 'data1'">C
+                              </td>
+                              <td style="white-space: pre;">{{car[col.field][1] }} %</td>
+                            </tr>
+                            <tr>
+                              <td title="Média Cadência/Rácio" style="font-weight: 800;  float: left;"
+                                *ngIf="col.field== 'data1'">M</td>
+                              <td style="white-space: pre;">{{car[col.field][2] }} %</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%','background': '#b2b2b2'}" [sortable]="true" field="media"
+                        header="Média Total">
+                        <ng-template let-cols let-car="rowData" pTemplate="body">
+                          <div class="divtable" style="padding: 0px">
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][0] }} %</td>
+                            </tr>
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][1] }} %</td>
+                            </tr>
+                            <tr>
+                              <td style="white-space: pre;">{{car['media'][2] }} %</td>
+                            </tr>
+                          </div>
+                        </ng-template>
+                      </p-column>
+                      <p-footerColumnGroup>
+                        <p-row>
+                          <p-column footer="" colspan="6"></p-column>
+                          <p-column footer="Média Total" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Média Total</b>
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="6">
+                          </p-column>
+                          <p-column footer="Média Geral" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Média Geral</b>
+                            </ng-template>
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column footer="" colspan="6"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector1}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector2}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector3}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector4}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector5}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector6}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_total_sector7}} %
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="Média Geral" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{media_geral_sector}} %
+                            </ng-template>
+                          </p-column>
+                        </p-row>
+                      </p-footerColumnGroup>
+                    </p-dataTable>
+
+
+                  </div>
+
+
+                  <!-- PAUSAS -->
+                  <div *ngIf="!acesso_pausas" class="tab-pane fade show in" id="nav-pausas"
+                    [ngClass]="{'active': classstep == 'pausas'}" role="tabpanel" aria-labelledby="nav-pausas-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_7" (ngSubmit)="atualizar('pausas')" ngNativeValidate>
+                        <label>Data Entre:</label>
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datapausas1" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'122px','margin-left': '21px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datapausas2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true"></p-calendar>
+                        <label style="margin-left: 38px;">Ativo:</label>
+                        <p-triStateCheckbox [(ngModel)]="ativopausas" [ngModelOptions]="{standalone: true}">
+                        </p-triStateCheckbox>
+                        <label>Operário:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="operariopausas"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+                        <button type="submit" class="btn btn-success " [disabled]="false"
+                          [disabled]="loadingtabelapausas"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </form>
+                    </div>
+
+                    <p-dataTable (onFilter)="calculateGroupTotal3($event)" [loading]="loadingtabelapausas"
+                      #tabelapausascomp class="tabelalistatarefas" [style]="{'min-height':'100px'}"
+                      [value]="tabelapausas" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+                      [rowsPerPageOptions]="[25,50,100,'todos']">
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="numero_op"
+                        header="Nº">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a>{{car['numero_op'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="nome" header="Nome">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="ativo" header="Ativo">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="local" header="Local">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="responsavel"
+                        header="Responsável"></p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="sector"
+                        header="Sector">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)='hoverSector($event,car,"opsector");'
+                            (onEventMouseout)="eventrender2('opsector')">{{car['sector'] }}</a>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%','border-right': '4px solid'}" [sortable]="true" [filter]="true"
+                        field="chefe" header="Chefe"></p-column>
+
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data" header="Data">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_inicio"
+                        header="Hora Início">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="hora_fim"
+                        header="Hora Fim">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tipo_Pausa"
+                        header="Tipo de Pausa">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_prep"
+                        header="Tempo em Preparação">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_exec"
+                        header="Tempo em Execução">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="tempo_total"
+                        header="Pausa Total">
+                      </p-column>
+
+
+                      <p-footerColumnGroup>
+                        <p-row>
+                          <p-column footer="" colspan="7"></p-column>
+                          <p-column footer="Nº Registos" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>Nº Registos</b>
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="3">
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer"><b>TOTAL</b></ng-template>
+                          </p-column>
+                        </p-row>
+                        <p-row>
+                          <p-column footer="" colspan="7"></p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{total_pausas}}</ng-template>
+                          </p-column>
+                          <p-column footer="" colspan="3">1</p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{pausas_tempo_prep}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{pausas_tempo_exec}}
+                            </ng-template>
+                          </p-column>
+                          <p-column footer="TOTAL" colspan="1">
+                            <ng-template let-col let-car="rowData" pTemplate="footer">{{pausas_tempo_total}}
+                            </ng-template>
+                          </p-column>
+
+                        </p-row>
+                      </p-footerColumnGroup>
+                    </p-dataTable>
+                  </div>
+
+
+                  <!-- CADENCIAS -->
+                  <div *ngIf="!acesso_cadencias" class="tab-pane fade show in" id="nav-cadencias" role="tabpanel"
+                    [ngClass]="{'active': classstep == 'cadencias'}" aria-labelledby="nav-cadencias-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_8" (ngSubmit)="atualizar('cadencias')" ngNativeValidate>
+
+                        <div class="col-md-2">
+                          <label>Data:</label>
+                          <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datacadencias1"
+                            [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                          <label>Ativo:</label>
+                          <p-triStateCheckbox [(ngModel)]="ativocadencias" [ngModelOptions]="{standalone: true}">
+                          </p-triStateCheckbox>
+                        </div>
+                        <div class="col-md-2">
+                          <label>Sector:</label>
+                          <p-multiSelect [filter]="true" appendTo="body" [options]="dropsectores"
+                            [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                            [(ngModel)]="sector_cadencias" [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-multiSelect>
+                        </div>
+                        <div class="col-md-2">
+                          <label>Operário:</label>
+                          <input type="text" class="form-control2" [(ngModel)]="operariocadencias"
+                            [ngModelOptions]="{standalone: true}" placeholder="" />
+                        </div>
+                        <div class="col-md-2">
+                          <label>Tipo Análise:</label>
+                          <p-dropdown [filter]="true" appendTo="body" [options]="tipos_analise"
+                            [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                            [(ngModel)]="tipo_analise" (onChange)="atualizatipo_analise($event)"
+                            [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Base de Cálculo:</label><br>
+                          <p-radioButton name="groupname2" label="Cadências na data do Trabalho" value="definidas"
+                            [(ngModel)]="tipo_cadencia_candencia"></p-radioButton>
+                          <p-radioButton name="groupname2" label="Cadência Atual" value="standard"
+                            [(ngModel)]="tipo_cadencia_candencia">
+                          </p-radioButton>
+                          <button type="submit" class="btn btn-success " [disabled]="loadingcadencia"
+                            style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        </div>
+
+                      </form>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="text-align: center;">
+                      <a (click)="semanaanteriorcadencias()" [class.disabled]="loadingcadencia" class="previous">&laquo;
+                        Anterior</a>
+                      <u><b>{{semana_ano_cadencias}}</b></u>
+                      <a (click)="semanaseguintecadencias()" [class.disabled]="loadingcadencia" class="next">Seguinte
+                        &raquo;</a>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 19px;">
+                      <div class="col-md-2">
+                        <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput1"
+                          placeholder="Pesquisar..."
+                          style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                          class="form-control">
+                      </div>
+                      <div class="col-md-2">
+                        Por página:
+                        <p-dropdown [(ngModel)]="page_size" #dd [options]="paginasize" [style]="{'width':'70px'}"
+                          (onChange)="onPageSizeChanged($event)" filter="true"></p-dropdown>
+                      </div>
+                      <div class="col-md-8">
+                        <div>
+                          <ul class="pager" style="margin: 0px;">
+                            <li class="previous" style="background: none;     padding: 0;">
+                              <a (click)="onBtFirst()">
+                                << Primeira</a> </li> <li class="previous" style="background: none; padding: 0;">
+                                  <a (click)="onBtPrevious()">
+                                    < Anterior</a> </li> <span
+                                      style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
+                                      Página
+                                      <span class="value" id="lbCurrentPage">-</span> de
+                                      <span class="value" id="lbTotalPages">-</span>
+                                      </span>
+                            <li class="next" style="background: none;     padding: 0;">
+                              <a (click)="onBtNext()">Seguinte > </a>
+                            </li>
+                            <li class="next" style="background: none;     padding: 0;">
+                              <a (click)="onBtLast()" [class.disabled]="ultimodisable">Última >> </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: inline-block;     width: 100%;">
+                      <div [ngStyle]="style" class="gridcadencia">
+                        <ag-grid-angular id="myGrid" style="width: 100%; height: 100%; min-height: 200px;"
+                          [pagination]="true" [domLayout]="domLayout" class="ag-theme-balham" [columnDefs]="columnDefs"
+                          (paginationChanged)="onPaginationChanged($event)" [gridOptions]="gridOptions"
+                          [rowData]="rowData" (filterChanged)="getRowData()"
+                          [overlayLoadingTemplate]="overlayLoadingTemplate"
+                          [overlayNoRowsTemplate]="overlayNoRowsTemplate" (gridReady)="onReady($event)"
+                          [rowSelection]="rowSelection">
+                        </ag-grid-angular>
+                        <ag-grid-angular style="width: 100%; height: 40px" #bottomGrid
+                          class="ag-theme-balham linhastotal" [rowData]="bottomData" [gridOptions]="bottomOptions"
+                          headerHeight="0" [rowStyle]="{ fontWeight: 'bold' }" [columnDefs]="columnDefs">
+                        </ag-grid-angular>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CADENCIAS/FUNCIONARIO -->
+                  <div *ngIf="!acesso_cadencias_funcionario" class="tab-pane fade show in"
+                    id="nav-cadencias_funcionario" role="tabpanel"
+                    [ngClass]="{'active': classstep == 'cadencias_funcionario'}"
+                    aria-labelledby="nav-cadencias_funcionario-tab">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <form #form id="formReclama_9" (ngSubmit)="atualizar('cadencias_funcionario')" ngNativeValidate>
+
+                        <div class="col-md-2">
+                          <label>Data:</label>
+                          <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datacadencias_funcionario"
+                            [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                          <label>Ativo:</label>
+                          <p-triStateCheckbox [(ngModel)]="ativocadencias_funcionario"
+                            [ngModelOptions]="{standalone: true}">
+                          </p-triStateCheckbox>
+                        </div>
+                        <div class="col-md-2">
+                          <label>Sector:</label>
+                          <p-multiSelect [filter]="true" appendTo="body" [options]="dropsectores"
+                            [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                            [(ngModel)]="sector_cadencias_funcionario" [ngModelOptions]="{standalone: true}"
+                            [required]="true">
+                          </p-multiSelect>
+                        </div>
+                        <div class="col-md-2">
+                          <label>Operário:</label>
+                          <input type="text" class="form-control2" [(ngModel)]="operariocadencias_funcionario"
+                            [ngModelOptions]="{standalone: true}" placeholder="" />
+                        </div>
+                        <div class="col-md-2">
+                          <label>Tipo Análise:</label>
+                          <p-dropdown [filter]="true" appendTo="body" [options]="tipos_analise"
+                            [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                            [(ngModel)]="tipo_analisecadencias_funcionario" (onChange)="atualizatipo_analise($event)"
+                            [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Base de Cálculo:</label><br>
+                          <p-radioButton name="groupname2" label="Cadências na data do Trabalho" value="definidas"
+                            [(ngModel)]="tipo_cadencia_cadencias_funcionario"></p-radioButton>
+                          <p-radioButton name="groupname2" label="Cadência Atual" value="standard"
+                            [(ngModel)]="tipo_cadencia_cadencias_funcionario">
+                          </p-radioButton>
+                          <button type="submit" class="btn btn-success " [disabled]="loadingcadencia_func"
+                            style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        </div>
+
+                      </form>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="text-align: center;">
+                      <a (click)="semanaanteriorcadencias_func()" [class.disabled]="loadingcadencia_func"
+                        class="previous">&laquo;
+                        Anterior</a>
+                      <u><b>{{semana_ano_cadencias_funcionario}}</b></u>
+                      <a (click)="semanaseguintecadencias_func()" [class.disabled]="loadingcadencia_func"
+                        class="next">Seguinte
+                        &raquo;</a>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 19px;">
+                      <div class="col-md-2">
+                        <input (keyup)="onQuickFilterChanged_func($event)" type="text" id="quickFilterInput"
+                          placeholder="Pesquisar..."
+                          style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                          class="form-control">
+                      </div>
+                      <div class="col-md-2">
+                        Por página:
+                        <p-dropdown [(ngModel)]="page_size_func" #dd [options]="paginasize" [style]="{'width':'70px'}"
+                          (onChange)="onPageSizeChanged_func($event)" filter="true"></p-dropdown>
+                      </div>
+                      <div class="col-md-8">
+                        <div>
+                          <ul class="pager" style="margin: 0px;">
+                            <li class="previous" style="background: none;     padding: 0;">
+                              <a (click)="onBtFirst_func()">
+                                << Primeira</a> </li> <li class="previous" style="background: none; padding: 0;">
+                                  <a (click)="onBtPrevious_func()">
+                                    < Anterior</a> </li> <span
+                                      style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
+                                      Página
+                                      <span class="value" id="lbCurrentPage">-</span> de
+                                      <span class="value" id="lbTotalPages">-</span>
+                                      </span>
+                            <li class="next" style="background: none;     padding: 0;">
+                              <a (click)="onBtNext_func()">Seguinte > </a>
+                            </li>
+                            <li class="next" style="background: none;     padding: 0;">
+                              <a (click)="onBtLast_func()" [class.disabled]="ultimodisable_func">Última >> </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: inline-block;     width: 100%;">
+                      <div [ngStyle]="style" class="gridcadencia">
+                        <ag-grid-angular id="myGrid" style="width: 100%; height: 100%; min-height: 200px;"
+                          [pagination]="true" [domLayout]="domLayout" class="ag-theme-balham"
+                          [columnDefs]="columnDefs_func" (paginationChanged)="onPaginationChanged_func($event)"
+                          [gridOptions]="gridOptions_func" [rowData]="rowData_func" (filterChanged)="getRowData_func()"
+                          [overlayLoadingTemplate]="overlayLoadingTemplate"
+                          [overlayNoRowsTemplate]="overlayNoRowsTemplate" (gridReady)="onReady_func($event)"
+                          [rowSelection]="rowSelection">
+                        </ag-grid-angular>
+                        <ag-grid-angular style="width: 100%; height: 40px" #bottomGrid
+                          class="ag-theme-balham linhastotal" [rowData]="bottomData_func"
+                          [gridOptions]="bottomOptions_func" headerHeight="0" [rowStyle]="{ fontWeight: 'bold' }"
+                          [columnDefs]="columnDefs_func">
+                        </ag-grid-angular>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Sector" [responsive]="true" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialogsector" [modal]="true" [width]="500">
+  <div class="col-md-12">
+
+    <a (click)="abrirSectores(SECTOR_cod_SECTOR)"><b>Código:</b> {{SECTOR_cod_SECTOR}}<br></a>
+    <b>Descrição:</b> {{SECTOR_des_SECTOR}}<br>
+    <b>Data Início:</b> {{SECTOR_data_INICIO | date:'yyyy-MM-dd' }}<br>
+    <b>Data Fim:</b> {{SECTOR_data_FIM | date:'yyyy-MM-dd' }} <br>
+    <b>Chefe 1:</b> {{SECTOR_chefe1}}<br>
+    <b>Chefe 2:</b> {{SECTOR_chefe2}}<br>
+    <b>Local:</b> {{SECTOR_local}}<br>
+    <b>Rácio MIN:</b> {{SECTOR_racio_MIN}}<br>
+    <b>Rácio MAX:</b> {{SECTOR_racio_MAX}}<br>
+    <b>Estado:</b> {{SECTOR_estado}}<br>
+  </div>
+
+</p-dialog>
+
+<!-- Modal dados-->
+<p-dialog header="Turno" [responsive]="true" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialogturno" [modal]="true" [width]="500">
+
+  <div class="col-md-12">
+    <b>Código:</b> {{TURNO_cod_TURNO}}<br>
+    <b>Descrição:</b> {{TURNO_des_TURNO}}<br>
+    <b>Data Início:</b> {{TURNO_data_INICIO | date:'yyyy-MM-dd' }}<br>
+    <b>Hora Início:</b> {{TURNO_hora_INICIO}}<br>
+    <b>Data Fim:</b> {{TURNO_data_FIM | date:'yyyy-MM-dd' }} <br>
+    <b>Hora Fim:</b> {{TURNO_hora_FIM}}<br>
+    <b>Estado:</b> {{TURNO_estado}}<br>
+  </div>
+
+</p-dialog>

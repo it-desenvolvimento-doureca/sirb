@@ -1,0 +1,12 @@
+.keypad {
+    text-align: -webkit-center;
+}
+
+.keypad button {
+    padding: 23px 34px 23px 35px;
+}
+
+.keypad input {
+    text-align: center;
+    font-size: 23px;
+}

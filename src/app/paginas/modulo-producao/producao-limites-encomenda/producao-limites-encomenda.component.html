@@ -1,0 +1,83 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Limites Encomendas</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single"
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column [style]="{'width':'35%'}" field="referencia" header="Referência" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'35%'}" field="cliente" header="Cliente" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'15%'}" field="quant_MIN" header="Quant. Mínima/Encomenda" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'15%'}" field="quant_MAX_SEMANA" header="Capacidade Comprada/Semana"
+                [filter]="true" [sortable]="true">
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+<!-- Modal TipoAdicaos-->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          Limite Encomenda
+        </h4>
+      </div>
+      <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+        <!-- Modal Body -->
+        <div class="modal-body" style="display: -webkit-box;">
+          <div class="col-md-12">
+            <div class="form-group col-md-12">
+              <label for="tipoop">Referência</label>
+              <input type="text" [disabled]="true" style="width: 100%" class="form-control2" id="referencia"
+                [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+            </div>
+            <div class="form-group col-md-12">
+              <label for="tipoop">Cliente</label>
+              <input type="text" [disabled]="true" style="width: 100%" class="form-control2" id="cliente"
+                [(ngModel)]="cliente" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tipoop">Quant. Mínima/Encomenda</label>
+              <input type="number" step="0.01" [disabled]="!modoedicao" style="width: 100%" class="form-control2"
+                id="quant_MIN" [(ngModel)]="quant_MIN" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tipoop">Capacidade Comprada/Semana</label>
+              <input type="number" step="0.01" [disabled]="!modoedicao" style="width: 100%" class="form-control2"
+                id="quant_MAX_SEMANA" [(ngModel)]="quant_MAX_SEMANA" [ngModelOptions]="{standalone: true}"
+                autocomplete="off" />
+            </div>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success " [hidden]="!modoedicao">Gravar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

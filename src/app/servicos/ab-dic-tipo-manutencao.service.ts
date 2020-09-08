@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
-import { webUrl } from "webUrl"; 
+import { webUrl } from 'assets/config/webUrl';
 import { AB_DIC_TIPO_MANUTENCAO } from "app/entidades/AB_DIC_TIPO_MANUTENCAO";
 
 @Injectable()
@@ -18,10 +18,10 @@ export class ABDICTIPOMANUTENCAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll(): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAO';
+  getAll(classif): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAO/';
     return this.http
-      .get(url)
+      .post(url, JSON.stringify(classif), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
@@ -34,10 +34,10 @@ export class ABDICTIPOMANUTENCAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getbyID_banho(id): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
-    const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAObyid_banho/' + id + '';
+  getbyID_banho(id, classif): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAObyid_banho/' + id;
     return this.http
-      .get(url)
+      .post(url, JSON.stringify(classif), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

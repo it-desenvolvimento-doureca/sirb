@@ -1,0 +1,1000 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Análise de Rejeições</h4>
+          </div>
+          <div class="card-content">
+            <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <button s (click)="ativobt='1';" [class.ativobt]="ativobt == '1'" type="button" id="stars" class="btn "
+                  style="border-right: 2px solid white;" href="#tab1" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Gráfico por Tipo Defeito</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='2';" [class.ativobt]="ativobt == '2'" type="button" id="favorites" class="btn"
+                  style="border-right: 2px solid white;" href="#tab2" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Gráfico por Referência</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='3';" style="border-right: 2px solid white;" [class.ativobt]="ativobt == '3'"
+                  type="button" id="favorites" class="btn" href="#tab3" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Gráfico por Lote</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='4';" [class.ativobt]="ativobt == '4'" type="button" id="stars" class="btn "
+                  style="border-right: 2px solid white;" href="#tab4" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Análise Dados por Referência</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='5';" [class.ativobt]="ativobt == '5'" type="button" id="favorites" class="btn"
+                  style="border-right: 2px solid white;" href="#tab5" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Análise Dados por Funcionário</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='6';" [class.ativobt]="ativobt == '6'" type="button" id="favorites" class="btn"
+                  href="#tab6" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">Evolução de Defeito por Referência</div>
+                </button>
+              </div>
+            </div>
+            <div class="well" style="display: flex;">
+              <div class="tab-content">
+
+
+                <div class="tab-pane fade in active dashboard" id="tab1">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama1" (ngSubmit)="atualizar_dash()" ngNativeValidate>
+                      <label>Linha:</label>
+                      <p-dropdown appendTo="body" [options]="linhas"
+                        [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                        [(ngModel)]="linha_dash" [ngModelOptions]="{standalone: true}" [required]="true">
+                      </p-dropdown>
+                      <label>Data Entre:</label>
+                      <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '30px'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="dataini" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true" [required]="true">
+                      </p-calendar>
+                      <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_ini1"
+                        [ngModelOptions]="{standalone: true}" type="time"
+                        class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      e
+                      <p-calendar [style]="{'height':'25px','width':'122px','margin-left': '3px'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="datafim" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
+                      </p-calendar>
+                      <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="hora_fim1" [ngModelOptions]="{standalone: true}" type="time"
+                        class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      <label style="margin-left: 50px;">Área das Peças:</label>
+                      <p-dropdown appendTo="body" [options]="areas_pecas"
+                        [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                        [(ngModel)]="area_peca_dash" [ngModelOptions]="{standalone: true}" [required]="true">
+                      </p-dropdown>
+
+                      <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading_dash"
+                        style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                    </form>
+                  </div>
+                  <a *ngIf="graf=='graf1'" (click)="voltar(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf=='graf2'" (click)="voltar(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight">
+                      <div id="chartcurtain" [class.classloading]="loading_dash" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect($event)" [data]="data_dash"
+                        [options]="options">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- **************************Análise de Rejeições por Referência*********************************** -->
+
+                <div class="tab-pane fade in dashboard" id="tab2">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+
+                    <form #form id="formReclama_1" (ngSubmit)="atualizar2()" ngNativeValidate>
+                      <div class=" col-md-1" style="padding: 0;">
+                        <label>Linha:</label><br>
+                        <p-dropdown appendTo="body" [options]="linhas"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="linha2" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Família Defeito:</label><br>
+                        <p-dropdown appendTo="body" [options]="familias"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="familia_def" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-5" style="padding: 0; width: 34%;">
+                        <label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-right': '30px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataini2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini2" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-left': '3px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datafim2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim2" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;width: 14%;">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'100%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca2_dash" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+
+                      <div class=" col-md-2" style="padding: 26px 0px 0px 12px; width: 27%;">
+
+                        <p-checkbox *ngIf="familia_def == null" [(ngModel)]="objetivos_gerais_dash"
+                          [ngModelOptions]="{standalone: true}" label="Ref. com objectivos gerais ultrapassados"
+                          binary="true">
+                        </p-checkbox>
+                        <p-checkbox *ngIf="familia_def != null" [(ngModel)]="objetivos_gerais_dash"
+                          [ngModelOptions]="{standalone: true}" label="Ref. com objectivos ultrapassados" binary="true">
+                        </p-checkbox>
+                      </div>
+
+                      <div class=" col-md-12" style="padding: 7px 0 0 0; position: absolute; top: 40px">
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading2_dash"
+                          style="height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+                    </form>
+                  </div>
+                  <a *ngIf="graf_2=='graf1'" (click)="voltar_2(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_2=='graf2'" (click)="voltar_2(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_2=='graf3'" (click)="voltar_2(3)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight2" id="divgrafico">
+                      <div id="chartcurtain" [class.classloading]="loading2_dash" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect_2($event)" [data]="data_2"
+                        [options]="options2">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- **************************Análise de Rejeições por Lote*********************************** -->
+
+                <div class="tab-pane fade in dashboard" id="tab3">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+
+                    <form #form id="formReclama_2" (ngSubmit)="atualizar3()" ngNativeValidate>
+                      <div class=" col-md-1" style="padding: 0;">
+                        <label>Linha:</label><br>
+                        <p-dropdown appendTo="body" [options]="linhas"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="linha3" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Nº Lote:</label><br>
+                        <input class="form-control2" [(ngModel)]="campo_lote" [ngModelOptions]="{standalone: true}" />
+                      </div>
+                      <div class=" col-md-5" style="padding: 0; width: 34%;">
+                        <label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-right': '30px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataini3" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini3" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-left': '3px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datafim3" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim3" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+                      <div class=" col-md-2" style="padding: 0; width: 14%;">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'100%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca3" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 26px 0px 0px 12px; width: 26%;">
+                        <p-checkbox [(ngModel)]="objetivos_gerais_dash" [ngModelOptions]="{standalone: true}"
+                          label="Ref. com objectivos gerais ultrapassados" binary="true">
+                        </p-checkbox>
+                      </div>
+
+                      <div class=" col-md-12" style="padding: 7px 0 0 0; position: absolute; top: 40px;">
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading3"
+                          style=" height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+                    </form>
+                  </div>
+                  <a *ngIf="graf_3=='graf1'" (click)="voltar_3(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_3=='graf2'" (click)="voltar_3(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight3" id="divgrafico">
+                      <div id="chartcurtain" [class.classloading]="loading3" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect_3($event)" [data]="data_3"
+                        [options]="options3">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+                <div class="tab-pane fade in" id="tab4">
+                  <div
+                    style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                    class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+
+                      <div class="table-row-column col-md-2" style="height: 64px; padding-left: 6px;">
+                        <label>Linha:</label><br>
+                        <p-dropdown [filter]="true" appendTo="body" [options]="linhas"
+                          [style]="{'width':'90%','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="linha" [ngModelOptions]="{standalone: true}">
+                        </p-dropdown>
+                      </div>
+
+                      <div class="table-row-column col-md-5" style="height: 64px; width: 38%;"><label>Data
+                          Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-right': '29px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_ini" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-left': '6px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_fim" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+
+                      <div class=" col-md-2" style="height: 64px;">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+
+                      <div class="table-row-column col-md-4" style="padding-left: 16px; width: 28%; padding-top: 30px;">
+                        <p-checkbox [(ngModel)]="objetivos_gerais" [ngModelOptions]="{standalone: true}"
+                          label="Ref. com objectivos gerais ultrapassados" binary="true">
+                        </p-checkbox>
+                      </div>
+
+                      <div class="table-row-column col-md-10"> <label
+                          style="position: relative; top: -11px;">Referências:</label>
+                        <!--<p-multiSelect [filter]="true" appendTo="body" [options]="referencias"
+                          [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
+                        </p-multiSelect>-->
+                        <p-autoComplete [(ngModel)]="campo_refs" [suggestions]="filteredreferencia" [multiple]="true"
+                          class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
+                          inputId="autocompleteinput" forceSelection="true" emptyMessage="Sem Resultados..."
+                          (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
+                          [ngModelOptions]="{standalone: true}" (completeMethod)="filterRef($event)" field="label"
+                          placeholder="Pesquisar..." [minLength]="1">
+                        </p-autoComplete>
+                      </div>
+
+
+                      <div class="table-row-column col-md-2" style="height: 43px;">
+                        <button type="submit" class="btn btn-success " [disabled]="false"
+                          [disabled]="loading || loading2"
+                          style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+
+
+                    </form>
+                  </div>
+
+                  <div class="table-row table-header" style="background: #757676; color: white; font-weight: 500;">
+                    <div class="table-row-column col-md-2">Cód. Referência<br>
+                      <input style="font-weight: 100; height: 19px; color: black;" #myInput type="text"
+                        class="form-control2" (input)="filterItem(myInput.value)" />
+                    </div>
+                    <div class=" table-row-column col-md-2">Designação da Referência</div>
+                    <div class="table-row-column col-md-1">Fase</div>
+                    <!--<div class="table-row-column col-md-1">Nº Barras Produzidas</div>-->
+                    <div class="table-row-column col-md-2">Família de Defeito</div>
+                    <div class="table-row-column col-md-1">Tipo de Defeito</div>
+                    <div class="table-row-column col-md-1"> Total Produzido</div>
+                    <div class="table-row-column col-md-1">Quantidade Rejeição</div>
+                    <div class="table-row-column col-md-1">% Rejeição</div>
+                    <div class="table-row-column col-md-1">Objetivo</div>
+                  </div>
+                  <div id="chartcurtain" [class.classloading]="loading" style="display: none;">
+                    Carregar...
+                  </div>
+                  <div id="chartcurtain" class="classloading" *ngIf="!loading && dados.length == 0">
+                    Sem dados...
+                  </div>
+                  <div class="table-row col-md-12" *ngFor="let ref of dados">
+
+
+                    <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover"
+                      data-toggle="collapse" id="referencia{{ref.id}}" [attr.data-target]="'#collapseref'+ref.id"
+                      (click)="getfamdefeitos(ref.id); " style="background: #d9d9d9;" [class.disabled]="ref.atualiza">
+                      <div class="col-md-4" style="text-align: left;">
+                        <span style="pointer-events: none;" *ngIf="!ref.iconplus" class="fa fa-minus"
+                          aria-hidden="true"></span>
+                        <span style="pointer-events: none;" *ngIf="ref.iconplus" class="fa fa-plus"
+                          aria-hidden="true"></span> {{ref.brand}}
+                        <div *ngIf="ref.atualiza" class="fa fa-spinner fa-spin"></div>
+                      </div>
+                      <div class="col-md-1">
+                        {{ref.fase}}
+                      </div>
+                      <!--<div class="col-md-1">
+                   Nº Barras Produzidas
+                  </div>-->
+                      <div class="col-md-2">
+                        <!--Família de Defeito-->
+                      </div>
+                      <div class="col-md-1">
+                        <!--Tipo de Defeito-->
+                      </div>
+                      <div class="col-md-1">
+                        {{ref.produzidas}}
+                      </div>
+                      <div class="col-md-1">
+                        {{ref.defeito}}
+                      </div>
+                      <div class="col-md-1"
+                        [style.background]="(ref !=null && ref.percdefeitov > ref.objetivov)? '#fa33339c' : ''">
+                        {{ref.percdefeito}}
+                      </div>
+                      <div class="col-md-1">
+                        {{ref.objetivo}}
+                      </div>
+                    </div>
+
+                    <div class="table-row collapse col-md-12" id="collapseref{{ref.id}}">
+                      <div class="table-row col-md-12" *ngFor="let fam of ref.child">
+                        <!-- FAMILIA -->
+                        <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
+                          id="collapsefam{{ref.id}}{{fam.id}}" [attr.data-target]="'#collapsetipo'+ref.id+fam.id"
+                          (click)="getdefeitos(ref.id,fam.id);">
+                          <div class="col-md-6"></div>
+
+                          <div class="col-md-2" style="background: #ccd0d8; text-align: left;">
+                            <span style="pointer-events: none;" *ngIf="!fam.iconplus" class="fa fa-minus"
+                              aria-hidden="true"></span>
+                            <span style="pointer-events: none;" *ngIf="fam.iconplus" class="fa fa-plus"
+                              aria-hidden="true"></span>
+                            {{fam.brand}}
+                            <div *ngIf="fam.atualiza" class="fa fa-spinner fa-spin"></div>
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            <!--Tipo de Defeito-->&nbsp;
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{fam.defeito}}
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{fam.percdefeito}}
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{fam.objetivo}}&nbsp;
+                          </div>
+                        </div>
+
+                        <div class="table-row-column collapse col-md-12" id="collapsetipo{{ref.id}}{{fam.id}}"
+                          style="padding: 0;">
+
+                          <div class="table-row col-md-12" *ngFor="let tipo of fam.child" style="border-bottom:none;">
+                            <!-- DEFEITOS -->
+                            <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
+                              [attr.data-target]="'#collapselote'+ref.id+fam.id+tipo.id"
+                              id="collapsedef{{ref.id}}{{fam.id}}{{tipo.id}}" (click)="getlote(ref.id,fam.id,tipo.id);">
+                              <div class=" col-md-6"></div>
+
+                              <div class="col-md-3" style="background: aliceblue; text-align: left;">
+                                <span style="pointer-events: none;" *ngIf="!tipo.iconplus" class="fa fa-minus"
+                                  aria-hidden="true"></span>
+                                <span style="pointer-events: none;" *ngIf="tipo.iconplus" class="fa fa-plus"
+                                  aria-hidden="true"></span>
+                                {{tipo.brand}}
+                                <div *ngIf="tipo.atualiza" class="fa fa-spinner fa-spin"></div>
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                {{tipo.defeito}}
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                {{tipo.percdefeito}}
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                <!--{{tipo.objetivo}}-->&nbsp;
+                              </div>
+                            </div>
+
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapselote{{ref.id}}{{fam.id}}{{tipo.id}}" style="padding: 0;">
+                              <div class="table-row col-md-12" *ngFor="let lote of tipo.child">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3 table-row-column"
+                                  style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.brand}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.defeito}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.percdefeito}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke;">
+                                  <!--{{lote.objetivo}}-->&nbsp;
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="table-row-column col-md-12 pointer" style="background: #fefaf4;">
+                        <div class="row" style="margin: 0; padding-left: 15px; text-align: left; color: black;">
+                          <b>Nº de Barras Produzidas:</b> {{ref.barras}}
+                        </div>
+                        <div class="table-row-column col-md-12 pointer"
+                          style="background: #939292; color: white; font-weight: 500;">
+                          <div class="row" style="margin: 0;">
+                            <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Total
+                                Produzidas:</b>
+                              {{ref.produzidas}}
+                            </div>
+                            <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Objetivo Geral
+                                (%):</b>
+                              {{ref.objetivo}} %
+                            </div>
+                            <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Área Produzida
+                                (dm2):</b> {{ref.areprod}}
+                            </div>
+                          </div>
+                          <div class="row" style="margin: 0;"></div>
+                          <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Total
+                              Rejeitadas:</b>
+                            {{ref.defeito}}
+                          </div>
+                          <div class=" col-md-4" style="text-align: left;"
+                            [style.background]="(ref !=null && ref.percdefeitov > ref.objetivov)? '#fa33339c' : '#939292'">
+                            <b>Total
+                              Rejeicao (%):</b>
+                            {{ref.percdefeito}} %
+                          </div>
+                          <div class=" col-md-4" style="background: #939292;text-align: left;"><b>&nbsp;Área Rejeitada
+                              (dm2):</b>
+                            {{ref.areadef}} &nbsp;&nbsp;&nbsp;{{ref.media}} %
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <!-- *********************LISTA***********************-->
+
+                  <div class="table-row table-header"
+                    style="background: #757676; margin-top: 25px; height: 45px; padding-top: 12px; color: white; font-weight: 500;">
+
+                    <div class="table-row-column col-md-1"></div>
+                    <div class="table-row-column col-md-4">Defeito</div>
+                    <div class="table-row-column col-md-2"></div>
+                    <div class="table-row-column col-md-2">Quantidade Rejeição</div>
+                    <div class="table-row-column col-md-2" style="width: 13%;">% Rejeição/Peças</div>
+                    <div class="table-row-column col-md-1" style="width: 12%;">% Rejeição/Área</div>
+                  </div>
+                  <div id="chartcurtain" [class.classloading]="loading2" style="display: none;">
+                    Carregar Resumo Defeitos...
+                  </div>
+                  <div id="chartcurtain" class="classloading" *ngIf="!loading2 && lista.length == 0">
+                    Sem dados...
+                  </div>
+                  <div class="table-row col-md-12" *ngFor="let listadef of lista">
+
+
+                    <div class="table-row-column col-md-12 pointer " i
+                      style="background: #d9d9d9;height: 35px; padding-top: 7px; border-top: 1px solid;">
+                      <div class="col-md-2"> </div>
+                      <div class="col-md-2">
+                        {{listadef.descricao}}
+                      </div>
+                      <div class="col-md-3" style="text-align: right;">
+                        <b>Total de Rejeições:</b>
+                      </div>
+                      <div class="col-md-2">
+                        {{gettotal_def(listadef.familia)}}
+                      </div>
+                      <div class="col-md-2">
+                        {{gettotal_perc(listadef.familia)}} %
+                      </div>
+                      <div class="col-md-1">
+                        {{gettotal_perc_area(listadef.familia)}} %
+                      </div>
+                    </div>
+
+                    <div class="table-row col-md-12">
+                      <div class="table-row col-md-12" *ngFor="let defchilf of listadef.child">
+                        <!-- DEFETIOS -->
+                        <div class="table-row-column col-md-12 pointer">
+                          <div class="col-md-2"></div>
+                          <div class="col-md-2">
+                            {{defchilf.tipodef}}
+                          </div>
+                          <div class="col-md-3" style="text-align: left;">
+                            {{defchilf.descricao}}
+                          </div>
+                          <div class="col-md-2">
+                            {{defchilf.defeitos}}
+                          </div>
+                          <div class="col-md-2">
+                            {{defchilf.percdefeito}} %
+                          </div>
+                          <div class="col-md-1"></div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                  <div *ngIf="lista.length > 0" class="table-row-column col-md-12 pointer"
+                    style="background: #fefaf4; color: white; font-weight: 500;">
+                    <div class="row" style="margin: 0; padding-left: 15px; text-align: left; color: black;">
+                      <b>Nº de Barras Produzidas:</b> {{numbarras}}
+                    </div>
+                    <div class="table-row-column col-md-12 pointer" style="background: #939292;">
+                      <div class="row" style="margin: 0;">
+                        <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Total Produzidas:</b>
+                          {{totallista_produzidas}}
+                        </div>
+                        <div class=" col-md-4" style="background: #939292;text-align: left;">
+
+                        </div>
+                        <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Área Produzida
+                            (dm2):</b> {{totallista_areaprod}}&nbsp;&nbsp;&nbsp; {{totallista_media}} %
+                        </div>
+                      </div>
+                      <div class="row" style="margin: 0;"></div>
+                      <div class=" col-md-4" style="background: #939292;text-align: left;"><b>Total Rejeitadas:</b>
+                        {{totallista_rejeitadas}}
+                      </div>
+                      <div class=" col-md-4" style="text-align: left;">
+                        <b>Total
+                          Rejeicao (%):</b>
+                        {{totallista_rejeicao}} %
+                      </div>
+                      <div class=" col-md-4" style="background: #939292;text-align: left;"><b>&nbsp;Área Rejeitada
+                          (dm2):</b>
+                        {{totallista_arearej}}
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- *********************LISTA FIM ***********************-->
+
+
+
+                </div>
+                <div class="tab-pane fade in" id="tab5">
+
+                  <!-- ******************************* FUNCIONÁRIO *************************-->
+
+                  <div
+                    style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                    class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama2" (ngSubmit)="atualizar_func()" ngNativeValidate>
+
+                      <div class="table-row-column col-md-5"><label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-right': '29px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_ini_func" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini_func" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-left': '6px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_fim_func" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim_func" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+
+                      <div class="table-row-column col-md-2"><label>Funcionário:</label><br>
+                        <input type="text" class="form-control2" [(ngModel)]="funcionario"
+                          [ngModelOptions]="{standalone: true}" placeholder="" />
+                      </div>
+
+
+
+                      <div class="table-row-column col-md-2"> <label>Referência:</label><br>
+                        <!--<p-dropdown [filter]="true" appendTo="body" [options]="referencias2"
+                          [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="referencia_func" [ngModelOptions]="{standalone: true}">
+                        </p-dropdown>-->
+                        <p-autoComplete [(ngModel)]="campo_ref_func" [suggestions]="filteredreferencia_func"
+                          class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
+                          forceSelection="true" emptyMessage="Sem Resultados..."
+                          (onUnselect)="filteronUnselect_func($event)" (onSelect)="filterSelect_func($event)"
+                          [ngModelOptions]="{standalone: true}" (completeMethod)="filterRef_func($event)" field="label"
+                          placeholder="Pesquisar..." [minLength]="1">
+                        </p-autoComplete>
+                      </div>
+
+
+                      <div class=" col-md-2">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca2" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+
+                      <div class="table-row-column col-md-1">
+                        <br>
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading_func"
+                          style="margin: 0px 0 0 16px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+
+
+
+                    </form>
+                  </div>
+
+                  <div class="table-row table-header" style="background: #757676; color: white; font-weight: 500;">
+                    <div class="table-row-column col-md-2">Referência<br>
+                      <input style="font-weight: 100; height: 19px; color: black;" #myInput_func type="text"
+                        class="form-control2" (input)="filterItem_func(myInput_func.value)" />
+                    </div>
+                    <!--<div class=" table-row-column col-md-2">Designação da Referência</div>-->
+                    <div class="table-row-column col-md-2">Controlador</div>
+                    <div class="table-row-column col-md-2">Família de Defeito</div>
+                    <div class="table-row-column col-md-1">Tipo de Defeito</div>
+                    <div class="table-row-column col-md-1">Quant. Rev.</div>
+                    <div class="table-row-column col-md-1">Quant. Def.</div>
+                    <div class="table-row-column col-md-1">% Defeitos</div>
+                    <div class="table-row-column col-md-1">Tempo Trabalho</div>
+                    <div class="table-row-column col-md-1">Peças/Hora (cadência)</div>
+                  </div>
+                  <div id="chartcurtain" [class.classloading]="loading_func" style="display: none;">
+                    Carregar...
+                  </div>
+                  <div id="chartcurtain" class="classloading" *ngIf="!loading_func && dados_func.length == 0">
+                    Sem dados...
+                  </div>
+                  <div class="table-row col-md-12" *ngFor="let ref of dados_func">
+
+
+                    <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover"
+                      data-toggle="collapse" id="referenciafunc{{ref.id}}"
+                      [attr.data-target]="'#collapsereffunc'+ref.id" (click)="getfunc(ref.id);"
+                      style="background: #d9d9d9;" [class.disabled]="ref.atualiza">
+                      <div class="col-md-4" style="text-align: left;">
+                        <span style="pointer-events: none;" *ngIf="!ref.iconplus" class="fa fa-minus"
+                          aria-hidden="true"></span>
+                        <span style="pointer-events: none;" *ngIf="ref.iconplus" class="fa fa-plus"
+                          aria-hidden="true"></span> {{ref.brand}}
+                        <div *ngIf="ref.atualiza" class="fa fa-spinner fa-spin"></div>
+                      </div>
+                      <div class="col-md-1">
+                        <b>{{ref.fase}}</b>
+                      </div>
+                      <div class=" col-md-2">
+                      </div>
+                      <div class=" col-md-1">
+                        {{ref.total}}
+                      </div>
+                      <div class=" col-md-1">
+                        {{ref.defeito}}
+                      </div>
+                      <div class=" col-md-1">
+                        {{ref.percdefeito}} %
+                      </div>
+                      <div class=" col-md-1">{{ref.tempo}}
+                      </div>
+                      <div class=" col-md-1">
+                        {{ref.cadencia}}
+                      </div>
+                    </div>
+
+                    <div class="table-row collapse col-md-12" id="collapsereffunc{{ref.id}}">
+                      <div class="table-row col-md-12" *ngFor="let func of ref.child">
+                        <!-- FUNCIONÁRIO -->
+                        <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
+                          id="collapsefunc{{ref.id}}{{func.id}}" [attr.data-target]="'#collapsefamfunc'+ref.id+func.id"
+                          (click)="getfam(ref.id,func.id);">
+                          <div class="col-md-2"></div>
+
+                          <div class="col-md-4" style="background: #ccd0d8; text-align: left;">
+                            <span style="pointer-events: none;" *ngIf="!func.iconplus" class="fa fa-minus"
+                              aria-hidden="true"></span>
+                            <span style="pointer-events: none;" *ngIf="func.iconplus" class="fa fa-plus"
+                              aria-hidden="true"></span>
+                            {{func.brand}}
+                            <div *ngIf="func.atualiza" class="fa fa-spinner fa-spin"></div>
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8; max-height: 21px;">
+                            <!--Tipo de Defeito--><i style="font-size: 10px">Nº Registos: {{func.numero}}</i>
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{func.quantidade}}&nbsp;
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{func.defeito}}&nbsp;
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{func.percdefeito}} %
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{func.tempo}}&nbsp;
+                          </div>
+                          <div class="col-md-1" style="background: #ccd0d8">
+                            {{func.cadencia}}&nbsp;
+                          </div>
+                        </div>
+
+                        <div class="table-row-column collapse col-md-12" id="collapsefamfunc{{ref.id}}{{func.id}}"
+                          style="padding: 0;">
+
+                          <div class="table-row col-md-12" *ngFor="let tipo of func.child" style="border-bottom:none;">
+                            <!-- FAMILIA -->
+                            <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
+                              [attr.data-target]="'#collapselote'+ref.id+func.id+tipo.id"
+                              id="collapsedef{{ref.id}}{{func.id}}{{tipo.id}}"
+                              (click)="getdef(ref.id,func.id,tipo.id);">
+                              <div class=" col-md-4"></div>
+
+                              <div class="col-md-3" style="background: aliceblue; text-align: left;">
+                                <span style="pointer-events: none;" *ngIf="!tipo.iconplus" class="fa fa-minus"
+                                  aria-hidden="true"></span>
+                                <span style="pointer-events: none;" *ngIf="tipo.iconplus" class="fa fa-plus"
+                                  aria-hidden="true"></span>
+                                {{tipo.brand}}
+                                <div *ngIf="tipo.atualiza" class="fa fa-spinner fa-spin"></div>
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                {{tipo.quantidade}}
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                {{tipo.defeito}}
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                {{tipo.percdefeito}} %
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                <!--{{tipo.tempo}}-->&nbsp;
+                              </div>
+                              <div class="col-md-1" style="background: aliceblue;">
+                                <!--{{tipo.cadencia}}-->&nbsp;
+                              </div>
+                            </div>
+
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapselote{{ref.id}}{{func.id}}{{tipo.id}}" style="padding: 0;">
+                              <div class="table-row col-md-12" *ngFor="let lote of tipo.child"
+                                style="border-bottom: none;">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-3 table-row-column"
+                                  style="background: whitesmoke; text-align: left;">
+                                  {{lote.brand}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.quantidade}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.defeito}}
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke; text-align: -webkit-center;">
+                                  {{lote.percdefeito}} %
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke;">
+                                  <!--{{lote.tempo}}-->&nbsp;
+                                </div>
+                                <div class="col-md-1" style="background: whitesmoke;">
+                                  <!--{{lote.cadencia}}-->&nbsp;
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="table-row-column col-md-12 pointer" style="background: #fefaf4;">
+                        <div class="table-row-column col-md-12 pointer"
+                          style="background: #939292; color: white; font-weight: 500;">
+                          <div class="row" style="margin: 0;">
+                            <div class=" col-md-5" style="background: #939292;text-align: left;">&nbsp;</div>
+                            <div class=" col-md-2" style="background: #939292;text-align: right;"><b>Total
+                                de Referência:</b>
+                            </div>
+                            <div class=" col-md-1" style="background: #939292;">
+                              {{ref.total}}
+                            </div>
+                            <div class=" col-md-1" style="background: #939292;">
+                              {{ref.defeito}}
+                            </div>
+                            <div class=" col-md-1" style="background: #939292;">
+                              {{ref.percdefeito}} %
+                            </div>
+                            <div class=" col-md-1" style="background: #939292;">{{ref.tempo}}
+                            </div>
+                            <div class=" col-md-1" style="background: #939292;">
+                              {{ref.cadencia}}
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+                </div>
+
+
+                <div class="tab-pane fade in" id="tab6">
+
+                  <!-- ******************************* Evolução de Defeito por Referência *************************-->
+
+                  <div
+                    style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                    class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama6" (ngSubmit)="carregagraf_tab6()" ngNativeValidate>
+
+                      <div class="table-row-column col-md-3"><label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-right': '29px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_ini_tab6" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <!--input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini_tab6" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm"-->
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'100px','margin-left': '6px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="data_fim_tab6" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <!--input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim_tab6" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm"-->
+                      </div>
+
+
+                      <div class="table-row-column col-md-2"> <label>Referência:</label><br>
+                        <p-autoComplete [(ngModel)]="campo_ref_tab6" [suggestions]="filteredreferencia_tab6"
+                          class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
+                          forceSelection="true" emptyMessage="Sem Resultados..." [required]="true"
+                          (onUnselect)="filteronUnselect_tab6($event)" (onSelect)="filterSelect_tab6($event)"
+                          [ngModelOptions]="{standalone: true}" (completeMethod)="filterRef_tab6($event)" field="label"
+                          placeholder="Pesquisar..." [minLength]="1">
+                        </p-autoComplete>
+                      </div>
+
+                      <div class=" col-md-2">
+                        <label>Defeitos:</label><br>
+                        <p-dropdown appendTo="body" [options]="defeitos" filter="true"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="defeito_tab6" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class="table-row-column col-md-1">
+                        <br>
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading_tab6"
+                          style="margin: 0px 0 0 16px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+
+
+
+                    </form>
+                  </div>
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 290px;"
+                      [style.height.px]="myInnerHeight6">
+                      <div id="chartcurtain" [class.classloading]="loading_tab6" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="line" [data]="data_tab6" [options]="options_tab6">
+                      </p-chart>
+                    </div>
+                  </div>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

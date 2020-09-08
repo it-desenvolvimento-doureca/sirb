@@ -1,0 +1,58 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Registo Manutenções - Histórico</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12" style="float: none;">
+              <b>Código Manutenção: </b>{{codigo_manutencao}}
+              <b style="margin-left: 10px;">Data Planeamento: </b>{{data_manutencao}}{{hora_manutencao}}
+              <b style="margin-left: 10px;">Linha: </b>{{linha}}
+              <b style="margin-left: 10px;">Banho: </b>{{banho}}
+              <b style="margin-left: 10px;">Tina: </b>{{tina}}
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered" style="font-size: 13px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th>
+                      <b>Aditivos</b>
+                    </th>
+                    <th class="thead-light3">
+                      <b>Valor</b>
+                    </th>
+                    <th *ngFor="let c of cabecalho">
+                      <b>
+                        {{c.dia}}
+                        <br>{{c.data}}
+                        <br> {{c.hora}}
+                      </b>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dados of corpo">
+                    <td class="thead-light2">{{dados.componente}}</td>
+                    <td class="thead-light3" style="text-align: right;" [ngClass]="true ? dados.cor : null">{{dados.resultado}}</td>
+                    <td class="valores" *ngFor="let b of dados.valores" [ngClass]="true ? b.cor : null">{{b.valor}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="float:right;">
+                {{inicio}}-{{rows_show}} de {{total_rows}}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <p-chart type="line" [height]="90"  [options]="options" [data]="data1"></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

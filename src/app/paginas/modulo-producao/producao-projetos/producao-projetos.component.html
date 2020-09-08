@@ -1,0 +1,173 @@
+<app-controlos (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Projetos</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+              <div class="row">
+                <div class="form-group col-md-4 class_dropdown">
+                  <label>Programa</label>
+                  <p-dropdown [filter]="true" [options]="programas" [style]="{'width':'100%','height': '25px'}"
+                    [(ngModel)]="id_PROGRAMA" [ngModelOptions]="{standalone: true}" [required]="true"
+                    (onChange)="atualizacampos($event)" [disabled]="!modoedicao" appendTo="body"></p-dropdown>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>OEM</label>
+                  <input type="text" [disabled]="true" class="form-control2" id="oem" [(ngModel)]="oem"
+                    style="margin-left: 0;" style="width: 100%" [ngModelOptions]="{standalone: true}"
+                    autocomplete="off" />
+                </div>
+                <div class="form-group col-md-4">
+                  <label>Veículo</label>
+                  <input type="text" [disabled]="true" class="form-control2" id="veiculo" [(ngModel)]="veiculo"
+                    style="margin-left: 0;" style="width: 100%" [ngModelOptions]="{standalone: true}"
+                    autocomplete="off" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8" style="padding: 0;">
+                  <div class="tab-content" style="padding-top: 0;">
+                    <div class="form-group col-md-12" style="text-align: center;">
+                      <b>Referências</b>
+                    </div>
+                    <div class="col-md-12 " style="padding: 6px">
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="true" [value]="tabela_referencias"
+                        styleClass="tabelasSincronismo">
+
+                        <p-column [style]="{'width':'42.5%','height': '32px'}" [editable]="false" field="id_REF"
+                          header="Código Referência">
+                          <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                            <!--<p-dropdown [filter]="true" [options]="artigos"
+                              [style]="{'width':'100%','background':'white'}" [(ngModel)]="car['PROREF']"
+                              (onChange)="atualizatabelas($event,index)" [ngModelOptions]="{standalone: true}"
+                              [required]="true" appendTo="body"></p-dropdown>-->
+                            <p-autoComplete [(ngModel)]="car['referencia_campo']" [disabled]="!modoedicao"
+                              [suggestions]="car['filteredreferencias']" class="autocompleseguranca"
+                              [style]="{'width': '100%', 'height': '25px'}" forceSelection="true" [required]="true"
+                              emptyMessage="Sem Resultados..." (onUnselect)="filteronUnselect($event,index)"
+                              (onSelect)="filterSelect($event,index)" [ngModelOptions]="{standalone: true}"
+                              (completeMethod)="filterRef($event,index)" field="label" placeholder="Pesquisar..."
+                              [minLength]="1">
+                            </p-autoComplete>
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'42.5%'}" field="desc_REF" header="Descrição">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            {{car[col.field] }}
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'10%'}" field="pv" header="Após-Venda">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <p-checkbox [disabled]="!modoedicao" [(ngModel)]="car[col.field]" binary="true"
+                              [ngModelOptions]="{standalone: true}"></p-checkbox>
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'5%'}">
+                          <ng-template let-index="rowIndex" pTemplate="body">
+                            <button type="button" pButton (click)="apagar_linha_ref( index)" class="ui-button-warning"
+                              [disabled]="!modoedicao" icon="fa-trash"></button>
+                          </ng-template>
+                        </p-column>
+
+                        <p-footer>
+                          <a (click)="adicionar_linha_ref()" [class.disabled]="!modoedicao"
+                            style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                            <i class="material-icons">add</i> Adicionar
+                          </a>
+                        </p-footer>
+                      </p-dataTable>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-md-4" style="padding: 0;">
+                  <div class="tab-content" style="padding-top: 0;">
+                    <div class="form-group col-md-12" style="text-align: center;">
+                      <b>Fábricas</b>
+                    </div>
+                    <div class="col-md-12 " style="padding: 6px">
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="true" [value]="tabela_fabricas"
+                        styleClass="tabelasSincronismo">
+
+                        <p-column [style]="{'width':'42.5%','height': '32px'}" [editable]="false" field="nome"
+                          header="Nome" styleClass="class_dropdown">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <p-dropdown [filter]="true" [options]="fabricas" [disabled]="!modoedicao"
+                              [style]="{'width':'100%','height': '25px','background':'white'}"
+                              [(ngModel)]="car['id_FABRICA']" [ngModelOptions]="{standalone: true}" [required]="true"
+                              appendTo="body"></p-dropdown>
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'42.5%','height': '32px'}" field="percentagem" header="%Prod.">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <input type="number" step="0.01" [disabled]="!modoedicao" style="width: 96%"
+                              class="form-control2" [(ngModel)]="car[col.field]" [ngModelOptions]="{standalone: true}"
+                              [disabled]="!modoedicao" required autocomplete="off" />
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'30px'}">
+                          <ng-template let-index="rowIndex" pTemplate="body">
+                            <button type="button" pButton (click)="apagar_linha_fabrica( index)"
+                              [disabled]="!modoedicao" class="ui-button-warning" icon="fa-trash"></button>
+                          </ng-template>
+                        </p-column>
+
+                        <p-footer>
+                          <a [class.disabled]="!modoedicao" (click)="adicionar_linha_fabrica()"
+                            style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                            <i class="material-icons">add</i> Adicionar
+                          </a>
+                        </p-footer>
+                      </p-dataTable>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" style="text-align: center;">
+                <button [hidden]="!modoedicao" (click)="backview()" type="reset"
+                  class="btn btn-default">Cancelar</button>
+                <button [hidden]="!modoedicao" id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+
+
+<!-- Modal dados-->
+<p-dialog header="Turnos" [responsive]="true" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialog" [modal]="true">
+  <!-- Modal Body -->
+  <div class="modal-body">
+    {{mensagem}}
+  </div>
+
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="dialog = false">Fechar</button>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,268 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="margin: 0;">
+          <div class="card-content">
+            <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button s (click)="ativobt='1';" [class.ativobt]="ativobt == '1'" type="button" id="stars" class="btn "
+                  href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs">Análise de Rejeições por Tipologia de Defeito</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button (click)="ativobt='2';" [class.ativobt]="ativobt == '2'" type="button" id="favorites" class="btn"
+                  href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs">Análise de Rejeições por Referência</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='3';" [class.ativobt]="ativobt == '3'" type="button" id="favorites" class="btn"
+                  href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs">Análise de Rejeições por lote</div>
+                </button>
+              </div>
+            </div>
+            <div class="well">
+              <div class="tab-content">
+
+
+                <div class="tab-pane fade in active" id="tab1">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+                      <label>Linha:</label>
+                      <p-dropdown appendTo="body" [options]="linhas"
+                        [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                        [(ngModel)]="linha" [ngModelOptions]="{standalone: true}" [required]="true">
+                      </p-dropdown>
+                      <label>Data Entre:</label>
+                      <p-calendar [style]="{'height':'25px','width':'122px','margin-right': '44px'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="dataini" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true" [required]="true">
+                      </p-calendar>
+                      <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_ini1"
+                        [ngModelOptions]="{standalone: true}" type="time"
+                        class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      e
+                      <p-calendar [style]="{'height':'25px','width':'122px','margin-left': '21px'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="datafim" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true" [required]="true">
+                      </p-calendar>
+                      <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_fim1"
+                        [ngModelOptions]="{standalone: true}" type="time"
+                        class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      <label style="margin-left: 50px;">Área das Peças:</label>
+                      <p-dropdown appendTo="body" [options]="areas_pecas"
+                        [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                        [(ngModel)]="area_peca" [ngModelOptions]="{standalone: true}" [required]="true">
+                      </p-dropdown>
+
+                      <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading"
+                        style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                    </form>
+                  </div>
+                  <a *ngIf="graf=='graf1'" (click)="voltar(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf=='graf2'" (click)="voltar(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight">
+                      <div id="chartcurtain" [class.classloading]="loading" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect($event)" [data]="data"
+                        [options]="options">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- **************************Análise de Rejeições por Referência*********************************** -->
+
+                <div class="tab-pane fade in" id="tab2">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+
+                    <form #form id="formReclama_1" (ngSubmit)="atualizar2()" ngNativeValidate>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Linha:</label><br>
+                        <p-dropdown appendTo="body" [options]="linhas"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="linha2" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Família Defeito:</label><br>
+                        <p-dropdown appendTo="body" [options]="familias"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="familia_def" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-3" style="padding: 0;">
+                        <label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataini2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini2" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-left': '21px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datafim2" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim2" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca2" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+
+                      <div class=" col-md-2" style="padding: 0;">
+
+                        <p-checkbox *ngIf="familia_def == null" [(ngModel)]="objetivos_gerais"
+                          [ngModelOptions]="{standalone: true}" label="Ref. com objectivos gerais ultrapassados"
+                          binary="true">
+                        </p-checkbox>
+                        <p-checkbox *ngIf="familia_def != null" [(ngModel)]="objetivos_gerais"
+                          [ngModelOptions]="{standalone: true}" label="Ref. com objectivos ultrapassados" binary="true">
+                        </p-checkbox>
+                      </div>
+
+                      <div class=" col-md-1" style="padding: 0;">
+                        <br>
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading2"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+                    </form>
+                  </div>
+                  <a *ngIf="graf_2=='graf1'" (click)="voltar_2(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_2=='graf2'" (click)="voltar_2(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_2=='graf3'" (click)="voltar_2(3)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight2" id="divgrafico">
+                      <div id="chartcurtain" [class.classloading]="loading2" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect_2($event)" [data]="data_2"
+                        [options]="options2">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- **************************Análise de Rejeições por Lote*********************************** -->
+
+                <div class="tab-pane fade in" id="tab3">
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+
+                    <form #form id="formReclama_2" (ngSubmit)="atualizar3()" ngNativeValidate>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Linha:</label><br>
+                        <p-dropdown appendTo="body" [options]="linhas"
+                          [style]="{'width':'90%','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="linha3" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Nº Lote:</label><br>
+                        <input [(ngModel)]="campo_lote" [ngModelOptions]="{standalone: true}" />
+                      </div>
+                      <div class=" col-md-3" style="padding: 0;">
+                        <label>Data Entre:</label><br>
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-right': '44px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="dataini3" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_ini3" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        e
+                        <p-calendar [style]="{'height':'25px','width':'95px','margin-left': '21px'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" [(ngModel)]="datafim3" [ngModelOptions]="{standalone: true}"
+                          [showIcon]="true" [required]="true">
+                        </p-calendar>
+                        <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                          [(ngModel)]="hora_fim3" [ngModelOptions]="{standalone: true}" type="time"
+                          class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                          ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <label>Área das Peças:</label><br>
+                        <p-dropdown appendTo="body" [options]="areas_pecas"
+                          [style]="{'width':'200px','height':'25px','background':'white','display': '-webkit-inline-box','padding-top': '1px','padding-bottom': '6px'}"
+                          [(ngModel)]="area_peca3" [ngModelOptions]="{standalone: true}" [required]="true">
+                        </p-dropdown>
+                      </div>
+                      <div class=" col-md-2" style="padding: 0;">
+                        <p-checkbox [(ngModel)]="objetivos_gerais" [ngModelOptions]="{standalone: true}"
+                          label="Ref. com objectivos gerais ultrapassados" binary="true">
+                        </p-checkbox>
+                      </div>
+
+                      <div class=" col-md-1" style="padding: 0;">
+                        <br>
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading3"
+                          style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      </div>
+                    </form>
+                  </div>
+                  <a *ngIf="graf_3=='graf1'" (click)="voltar_3(1)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+                  <a *ngIf="graf_3=='graf2'" (click)="voltar_3(2)" class="btn btn-default"><span
+                      class="glyphicon glyphicon-arrow-left"></span>
+                    Voltar</a>
+
+                  <div style="text-align: -webkit-center; padding-bottom: 36px;">
+                    <div style="padding: 1px 5px 1px 10px;" style="max-width: 100%; min-height: 280px;"
+                      [style.height.px]="myInnerHeight3" id="divgrafico">
+                      <div id="chartcurtain" [class.classloading]="loading3" style="display: none; color: black;">
+                        Loading...
+                      </div>
+                      <p-chart type="horizontalBar" (onDataSelect)="onDataSelect_3($event)" [data]="data_3"
+                        [options]="options3">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

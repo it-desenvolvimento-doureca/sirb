@@ -1,0 +1,28 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Linhas</h4>
+          </div>
+          <div class="card-content">
+            <div class="col-md-12">
+              <p-pickList (onMoveToTarget)="onMoveToTarget($event)" (onMoveToSource)="onMoveToSource($event)"
+                [source]="sourcePerfil" [showTargetControls]="false" [showSourceControls]="false" [target]="targetPerfil" sourceHeader="Armazéns"
+                targetHeader="Armazéns da Aplicação" [responsive]="true" filterBy="nome,cod" dragdrop="true" filterBy="nome,cod" sourceFilterPlaceholder="Pesquisar pelo perfil"
+                targetFilterPlaceholder="Pesquisar pelo perfil" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                <ng-template let-car pTemplate="item">
+
+                  {{car.cod}} - {{car.nome}}
+
+                </ng-template>
+              </p-pickList>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

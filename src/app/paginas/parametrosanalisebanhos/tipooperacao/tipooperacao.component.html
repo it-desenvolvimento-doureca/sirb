@@ -1,4 +1,4 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<app-controlos></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -8,19 +8,20 @@
             <h4 class="title">Tipo Operação</h4>
           </div>
           <div class="card-content">
-            <p-dataTable [style]="{'width':'300px'}" [value]="operacoes" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)"
-              [paginator]="true" rows="15">
-              <p-column [style]="{'width':'30px'}" field="nome" header="Tipo Operação" [filter]="true" [sortable]="true"></p-column>
-              <p-column [style]="{'width':'30px'}" field="id195" header="ID195" [filter]="true" [sortable]="true">
+            <p-dataTable [style]="{'width':'400px'}" [value]="operacoes" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true"
+              [rows]="15">
+              <p-column [style]="{'width':'40%'}" field="nome" header="Tipo Operação" [filter]="true" [sortable]="true"></p-column>
+              <p-column [style]="{'width':'20%'}" field="id195" header="ID195" [filter]="true" [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">
                   <i *ngIf="car.id195 == false" class="material-icons" style="color: red;">close</i>
                   <i *ngIf="car.id195 == true" class="material-icons" style="color: green;">check</i>
                 </ng-template>
               </p-column>
+              <p-column [style]="{'width':'35%'}" field="classif_nome" header="Classificação" [sortable]="true"></p-column>
               <p-footer>
                 <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
-                         <i class="material-icons">add</i> Adicionar
-                        </a>
+                  <i class="material-icons">add</i> Adicionar
+                </a>
               </p-footer>
             </p-dataTable>
           </div>
@@ -38,9 +39,9 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
         <h4 class="modal-title" id="myModalLabel">
           Tipo Operação
         </h4>
@@ -48,22 +49,28 @@
       <form role="form" ngNativeValidate (ngSubmit)="gravaroperacoes()">
         <!-- Modal Body -->
         <div class="modal-body">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
               <label for="operacao">Nome Operação</label>
               <input type="text" class="form-control" id="operacao" [(ngModel)]="valor_operacao" [ngModelOptions]="{standalone: true}"
                 placeholder="Introduza o Tipo Operação" required />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
               <label for="operacao">ID195</label>
               <br>
               <div class="material-switch pull-left">
                 <input id="someSwitchOptionSuccess" type="checkbox" [(ngModel)]="id195" [ngModelOptions]="{standalone: true}">
-                <label for="someSwitchOptionSuccess" class="label-success" ></label>
+                <label for="someSwitchOptionSuccess" class="label-success"></label>
               </div>
             </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="manutencao">Classificação</label>
+            <br>
+            <p-dropdown [options]="classificacao" [(ngModel)]="classif" [ngModelOptions]="{standalone: true}" [style]="{'width':'300px'}"
+              [required]="true"></p-dropdown>
           </div>
         </div>
         <!-- Modal Footer -->

@@ -1,0 +1,46 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Capacidade Racks</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content" style="padding-top: 0;">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+
+                    <div class="col-md-12 " style="padding: 6px">
+                      <div class="form-group col-md-12" style="padding: 0px 18px 0 0;">
+                        <label for="n_VOLTAS_DIA">Nº Voltas/Dia: </label>
+                        <input type="number" class="form-control2" id="n_VOLTAS_DIA" [(ngModel)]="n_VOLTAS_DIA"
+                          [ngModelOptions]="{standalone: true}" required [disabled]="!acesso_editar" />
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button [hidden]="!acesso_editar" (click)="backview()" type="reset"
+                        class="btn btn-default">Cancelar</button>
+                      <button [hidden]="!acesso_editar" id="gravar" type="submit"
+                        class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

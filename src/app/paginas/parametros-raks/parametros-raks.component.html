@@ -1,0 +1,67 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <!--<div class="card-header" data-background-color="red">
+            <h4 class="title">Parâmetros Aplicação</h4>
+            <p class="category"></p>
+          </div>-->
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+                    <!-- Modal Body -->
+                    <div class="col-md-12 " style="padding: 6px">
+                      <h5 style="margin: 0; ">IMPORTAR FICHEIRO</h5>
+                      <hr style="margin: 0px 0 7px 0;" />
+                      <div class="input-group">
+                        <span class="input-group-btn" style="padding: 0px;">
+                          <button style="color: black; background: white; border-radius: 14px 0 0 14px; border: 1px solid #b8babf38;" (click)="AbrirFicheiro()"
+                            id="fake-file-button-browse" title="Abrir Ficheiro" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-file"></span>
+                          </button>
+                        </span>
+                        <input type="file" accept=".txt" (change)="carregaFicheiro($event)" id="files-input-upload" #files_input_upload style="display:none">
+                        <input type="text" id="fake-file-input-name" [(ngModel)]="ficheiro" [ngModelOptions]="{standalone: true}" disabled="disabled"
+                          placeholder="Ficheiro não seleccionado" style="float: left;height: 41.8px;background: #eeeeee;border: 1px solid #f6f7f7;box-shadow: 0 12px 14px -62px rgba(153, 153, 153, 0.42), 0 4px 11px 0px rgba(0, 0, 0, 0.12), 0 -2px 0px -2px rgba(153, 153, 153, 0.2);width: 48%;padding: 10px;">
+                        <span class="input-group-btn" style="padding: 0px; float: left">
+                          <button style="color: black; background: white; border-radius: 0 14px 14px 0 ; border: 1px solid #b8babf38;" type="submit"
+                            class="btn btn-default" title="Importar Ficheiro" [disabled]="disabled" id="fake-file-button-upload">
+                            <span class="glyphicon glyphicon-upload"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <!--  <button [hidden]="!modoedicao" (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button [hidden]="!modoedicao" id="gravar" type="submit" class="btn btn-success ">Gravar</button>-->
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" [hidden]="!loading_import">
+	<div class="row">
+            <div id="loading">
+                <ul class="bokeh">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+	</div>
+</div>
+
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Importado com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registos não foram Adicionados!',4)"></button>

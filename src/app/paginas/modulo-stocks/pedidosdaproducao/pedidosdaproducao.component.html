@@ -1,0 +1,49 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header"  data-background-color="red">
+            <h4 class="title">Pedidos da Produção</h4>
+            <button [disabled]="disimprimir" title="Imprimir" type="button"
+              style="color: black; float:right; margin-top: -19px; background-color: #ccc1c1;"
+              class="btn btn-white btn-round btn-just-icon" (click)="imprimir('pdf')">
+              <i class="material-icons">print</i>
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+          <div class="card-content">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'25px'}" field="codigo" header="Código" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'35px'}" field="designacao" header="Designação" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'21px'}" field="lote" header="Lote" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="etiqueta" header="Nº etiqueta" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'20px'}" field="quantidade" header="Quant." [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="armazem" header="Armazém" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="localizacao" header="Localização" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="operario" header="Operário" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="sector" header="Sector" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="posto" header="Posto" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="data_hora" header="Data/Hora do Pedido" [filter]="true"
+                [sortable]="true"></p-column>
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

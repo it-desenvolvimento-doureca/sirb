@@ -1,0 +1,128 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Sectores</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true"
+            [rows]="25" [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [style]="{'width':'25px'}" field="cod_SECTOR" header="Código" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="des_SECTOR" header="Designação" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="desc_Turno" header="Turno" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="local" header="Local" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'80px'}" field="nome_chefe1" header="Chefe 1" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'80px'}" field="nome_chefe2" header="Chefe 2" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="data_INICIO" header="Data Início" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="data_FIM" header="Data Fim" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'25px'}" field="racio_MIN" header="Rácio Min. Trab." [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'25px'}" field="racio_MAX" header="Rácio Max. Trab." [filter]="true"
+                [sortable]="true"></p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+<!-- Modal dados-->
+<p-dialog header="Sectores" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form style="height: 68vh" id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravardados()">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="form-group col-md-4">
+        <label for="des_SECTOR">Designação</label>
+        <input type="text" class="form-control2" id="des_SECTOR" [(ngModel)]="des_SECTOR"
+          [ngModelOptions]="{standalone: true}" placeholder="" required />
+      </div>
+      <div class="form-group col-md-4" style="margin-bottom: 0px;">
+        <label for="cod_TURNO">Turno</label>
+        <p-dropdown [filter]="true" [options]="turnos" [style]="{'width':'100%','height':'25px','background':'white'}"
+          [(ngModel)]="cod_TURNO" [ngModelOptions]="{standalone: true}" [required]="true">
+        </p-dropdown>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="cod_local">Local</label>
+        <p-dropdown [filter]="true" [options]="locais" [style]="{'width':'100%','height':'25px','background':'white'}"
+          [(ngModel)]="cod_local" [ngModelOptions]="{standalone: true}" [required]="true">
+        </p-dropdown>
+      </div>
+      <div class="form-group col-md-4" style="margin-bottom: 0px;">
+        <label for="chefe1">Chefe 1</label>
+        <p-dropdown [filter]="true" [options]="chefes" [style]="{'width':'100%','height':'25px','background':'white'}"
+          [(ngModel)]="chefe1" [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+      </div>
+      <div class="form-group col-md-4" style="margin-bottom: 0px;">
+        <label for="chefe2">Chefe 2</label>
+        <p-dropdown [filter]="true" [options]="chefes" [style]="{'width':'100%','height':'25px','background':'white'}"
+          [(ngModel)]="chefe2" [ngModelOptions]="{standalone: true}"></p-dropdown>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="data_INICIO" style="display: -webkit-box;">Data Início</label>
+        <p-calendar [style]="{'height':'25px','width':'92%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+          [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2090" [(ngModel)]="data_INICIO"
+          [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="data_FIM" style="display: -webkit-box;">Data Fim</label>
+        <p-calendar [style]="{'height':'25px','width':'92%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+          [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2090" [(ngModel)]="data_FIM"
+          [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+      </div>
+      <!--<div class="form-group col-md-4">
+        <label for="estado">Estado</label>
+        <br>
+        <input type="text" class="form-control2" id="estado" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}"
+          placeholder="" />
+      </div>-->
+      <div class="form-group col-md-4">
+        <label for="racio_MIN">Rácio Min. Trab.</label>
+        <input type="text" class="form-control2" id="racio_MIN" [(ngModel)]="racio_MIN"
+          [ngModelOptions]="{standalone: true}" placeholder="" required />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="racio_MAX">Rácio Max. Trab.</label>
+        <input type="text" class="form-control2" id="racio_MAX" [(ngModel)]="racio_MAX"
+          [ngModelOptions]="{standalone: true}" placeholder="" required />
+      </div>
+    </div>
+
+    <p-footer>
+      <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+        (click)="dialognovo = false">Fechar</button>
+      <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+        [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+      <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-confirmDialog key="conf001" appendTo="body"></p-confirmDialog>

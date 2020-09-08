@@ -1,0 +1,137 @@
+.form-control2 {
+    height: 36px;
+    padding: 7px 0;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+.form-control2 {
+    height: 25px;
+    padding: 0px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+/*****NAV*****/
+
+.cardnav nav>.nav.nav-tabs {
+    border: none;
+    color: #fff;
+    background: #999999;
+    border-radius: 0;
+    padding-left: 0;
+}
+
+.cardnav .fade {
+    display: none !important;
+}
+
+.cardnav .active {
+    display: block !important;
+}
+
+.cardnav nav>div a.nav-item.nav-link, nav>div a.nav-item.nav-link.active {
+    border: 1px solid;
+    padding: 10px 25px;
+    color: #fff;
+    background: #999999;
+    border-radius: 0;
+}
+
+.cardnav nav>div a.nav-item.nav-link.active:after {
+    content: "";
+    position: relative;
+    bottom: -60px;
+    left: -10%;
+    border: 15px solid transparent;
+    border-top-color: #002168;
+}
+
+.tab-content {
+    background: #fdfdfd;
+    line-height: 25px;
+    /*border: 1px solid #ddd;*/
+    border-top: 5px solid #002168;
+    border-bottom: 5px solid #002168;
+    padding: 0px;
+}
+
+.tab-content .card-content {
+    min-height: 355px;
+}
+
+.cardnav nav>div a.nav-item.nav-link:hover, nav>div a.nav-item.nav-link:focus {
+    border: none;
+    background: #002168;
+    color: #fff;
+    border-radius: 0;
+    transition: background 0.20s linear;
+}
+
+.activestep {
+    background: #002168 !important;
+    color: #fff;
+    transition: background 0.20s linear !important;
+}
+
+.previous, .next {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+.previous:hover, .next:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.previous, .next {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+.round {
+    border-radius: 50%;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: no-drop;
+    opacity: 0.5;
+}
+
+.divtable {
+    padding: .75em;
+    text-align: center;
+}
+
+.divtable>.divspan {
+    top: 45%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.divtable tr {
+    border-bottom: 1px solid #9b9797;
+    text-align: -webkit-center;
+}
+
+.divtable tr:last-child {
+    border-bottom: none;
+}
+
+.divtable tbody {
+    display: grid;
+}

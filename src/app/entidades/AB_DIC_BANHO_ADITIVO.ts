@@ -8,5 +8,12 @@ export class AB_DIC_BANHO_ADITIVO {
     data_CRIA: Date;
     utz_ULT_MODIF: number;
     data_ULT_MODIF: Date;
+    manutencaonaoprogramada: boolean;
+    valor_DOSE1:number;
+    valor_DOSE2:number;
+    valor_DOSE3:number;
+    valor_DOSE4:number;
+    valor_DOSE5:number;
+    quantidade_DEFEITO:number;
 
 }

@@ -1,0 +1,28 @@
+table input {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    /*border: 0 !important;*/
+    width: 100%;
+    border-radius: 0 !important;
+    line-height: 1 !important;
+    background: transparent;
+    border: none;
+}
+
+tbody td {
+    margin: 0 !important;
+    /*padding: 0 !important;*/
+    padding: 5px 2px 5px 4px;
+}
+
+thead td {
+    padding: 6px !important;
+    text-align: -webkit-center !important;
+    font-weight: 500;
+    background: #bbbbba85 !important;
+}
+
+table {
+    border: 1px solid #1c1b1b !important;
+}

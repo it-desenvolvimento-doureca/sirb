@@ -1,0 +1,79 @@
+<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()" (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Secção</h4>
+          </div>
+          <div class="card-content">
+            <form (ngSubmit)="gravar()" ngNativeValidate>
+              <div class="form-group col-md-6" style="padding: 6px;">
+                <label for="obs1">Nome Secção:</label>
+                <input [disabled]="!modoedicao" autocomplete="off" type="text" class="form-control2" id="obs1"
+                  [(ngModel)]="descricao" required [ngModelOptions]="{standalone: true}" />
+              </div>
+              <div class="form-group col-md-3" style="padding: 6px;">
+                <label for="obs1">Departamento:</label>
+                <p-dropdown [required]="true" [filter]="true" #vv (onChange)="getResponsavel(vv)" [options]="departs"
+                  [disabled]="!modoedicao" [style]="{'width':'100%'}" [(ngModel)]="id_DEPARTAMENTO" [ngModelOptions]="{standalone: true}"></p-dropdown>
+              </div>
+              <div class="form-group col-md-3" style="padding: 6px;">
+                <label for="obs1">Responsável:</label>
+                <input [disabled]="true" type="text" class="form-control2" id="obs1" [(ngModel)]="responsavel"
+                  [ngModelOptions]="{standalone: true}" />
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12" style="background: #bfbfbf; text-align: -webkit-center; font-weight: 500;">
+                  Chefes
+                </div>
+
+                <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget($event)" (onMoveToSource)="onMoveToSource($event)"
+                  [source]="sourceUtilizadores" [showTargetControls]="false" [showSourceControls]="false" [target]="targetUtilizadores"
+                  [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome" sourceFilterPlaceholder="Pesquisar pelo Utilizador"
+                  targetFilterPlaceholder="Pesquisar pelo Chefe" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-car pTemplate="item">
+
+                    {{car.nome}}
+
+                  </ng-template>
+                </p-pickList>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12" style="background: #bfbfbf; text-align: -webkit-center; font-weight: 500;">
+                  Funcionários
+                </div>
+
+                <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget2($event)" (onMoveToSource)="onMoveToSource2($event)"
+                  [source]="sourceUtilizadores2" [showTargetControls]="false" [showSourceControls]="false" [target]="targetUtilizadores2"
+                  [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome" sourceFilterPlaceholder="Pesquisar pelo Utilizador"
+                  targetFilterPlaceholder="Pesquisar pelo Funcionário" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-car pTemplate="item">
+
+                    {{car.nome}}
+
+                  </ng-template>
+                </p-pickList>
+              </div>
+
+
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+  <button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+
+
+
+</div>

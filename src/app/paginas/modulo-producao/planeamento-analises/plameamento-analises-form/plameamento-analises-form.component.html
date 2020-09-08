@@ -1,0 +1,893 @@
+<form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()" ngNativeValidate>
+  <div class="col-md-12  hidden-xs">
+    <div class="card-header" data-background-color="orange">
+      <div class="nav-tabs-navigation">
+        <div class="nav-tabs-wrapper">
+          <ul class="nav nav-tabs" style="background:black">
+            <li [hidden]="!btvoltar" style="float: right;">
+              <a (click)=" backClicked()">
+                <i class="material-icons">arrow_back</i>Voltar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <li [class.disabled]="disCriar" [hidden]="!btcriar">
+              <a (click)="criar_novo()" [ngClass]="(novo) ? 'cor_modo' : null">
+                <i class="material-icons">note_add</i>Criar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <!--li [class.disabled]="disEditar" [hidden]="!bteditar">
+              <a (click)="edita()" [ngClass]="(modoedicao && !novo) ? 'cor_modo' : null">
+                <i class="material-icons">mode_edit</i>Editar
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+            <!--li [class.disabled]="disGravar" [hidden]="!btGravar">
+              <input type="submit" #gravarbtc hidden />
+              <a (click)="gravarbtc.click(); ">
+                <i class="material-icons">save</i>Gravar
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+
+            <li [class.disabled]="disCancelar" [hidden]="!btCancelar">
+              <a (click)="Cancelar()">
+                <i class="material-icons">close</i>Cancelar
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+
+            <!--li [class.disabled]="disFechar" [hidden]="!btFechar">
+              <a (click)="Fechar()">
+                <i class="material-icons">check_circle_outline</i>Fechar
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+
+            <!--li [class.disabled]="disAnular" [hidden]="!btAnular">
+              <a (click)="Anular()">
+                <i class="material-icons">delete</i>Anular
+                <div class="ripple-container"></div>
+              </a>
+            </li-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+              <h4 style="position: absolute;" class="title">Análise </h4>
+            </div>
+            <div class="card-content">
+
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div>
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-1">
+                      <label style="display: -webkit-box;">Nº Análise:</label>
+                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="id_PLANEAMENTO_PRODUCAO_ANALISES" [ngModelOptions]="{standalone: true}" type="text"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
+                      <label style="display: -webkit-box;">Data Análise:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
+                      <label style="display: -webkit-box;">Utilizador:</label>
+                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="nome_utilizador"
+                        [ngModelOptions]="{standalone: true}" type="text"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-1 ">
+                      <label>Ano:</label><br>
+                      <p-dropdown (onChange)="alteraAno($event)" [options]="anos"
+                        [style]="{'width':'100%','height':'25px'}" [(ngModel)]="ano"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true">
+                      </p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-1">
+                      <label>Semana:</label><br>
+                      <p-dropdown (onChange)="alteraSemana($event)" [options]="semanas"
+                        [style]="{'width':'100%','height':'25px'}" [(ngModel)]="semana"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true">
+                      </p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-2">
+                      <label>Plano Linha 1:</label><br>
+                      <p-dropdown [options]="planos1" [style]="{'width':'100%','height':'25px'}"
+                        [(ngModel)]="id_PLANO_LINHA_1" [ngModelOptions]="{standalone: true}" [disabled]="!novo"
+                        [required]="true">
+                      </p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-2">
+                      <label>Plano Linha 2:</label><br>
+                      <p-dropdown [options]="planos2" [style]="{'width':'100%','height':'25px'}"
+                        [(ngModel)]="id_PLANO_LINHA_2" [ngModelOptions]="{standalone: true}" [disabled]="!novo"
+                        [required]="true">
+                      </p-dropdown>
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px; margin-bottom: 10px;"
+                      class="form-group col-md-1">
+                      <button type="submit" *ngIf="novo"
+                        style="width: 89%; padding-left: 0; padding-right: 0; border-radius: 0; padding-top: 6px; padding-bottom: 6px; margin: 0; bottom: -2px; position: absolute;"
+                        class="btn btn-success pull-right" [hidden]="!novo">GERAR/GRAVAR</button>
+                      <button type="button" *ngIf="!novo" (click)="atualizar_dados()"
+                        style="width: 89%; padding-left: 0; padding-right: 0; border-radius: 0; padding-top: 6px; padding-bottom: 6px; margin: 0; bottom: -2px; position: absolute;"
+                        class="btn btn-success pull-right" [hidden]="btatualizardados">ATUALIZAR</button>
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <div *ngIf="!novo" class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <button (click)="ativobt='1';" [class.ativobt]="ativobt == '1'" type="button" id="stars"
+                      class="btn " style="border-right: 2px solid white;" href="#tab1" data-toggle="tab">
+                      <div class="hidden-xs texto">Barras a Produzir</div>
+                    </button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button (click)="ativobt='2';" [class.ativobt]="ativobt == '2'" type="button" id="favorites"
+                      class="btn" style="border-right: 2px solid white;" href="#tab2" data-toggle="tab">
+                      <div class="hidden-xs texto">Recursos Humanos</div>
+                    </button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button (click)="ativobt='3';" style="border-right: 2px solid white;"
+                      [class.ativobt]="ativobt == '3'" type="button" id="favorites" class="btn" href="#tab3"
+                      data-toggle="tab">
+                      <div class="hidden-xs texto">Tipo de Acabamento</div>
+                    </button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button (click)="ativobt='4';" [class.ativobt]="ativobt == '4'" type="button" id="stars"
+                      class="btn " style="border-right: 2px solid white;" href="#tab4" data-toggle="tab">
+                      <div class="hidden-xs texto">Racks</div>
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="!novo" class="well" style="display: flex; padding: 0;">
+                  <div class="tab-content">
+                    <div class="tab-pane fade in active dashboard" id="tab1">
+
+                      <button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                        (click)="download('exportpdf','barras_produzir','loading')" style="float:right;"></button>
+                      <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                        label="Export" [disabled]="true" style="float:right;"></button>
+
+                      <div id="analises_prev_scroll"
+                        style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; padding-bottom: 10px; overflow-y: hidden;">
+
+
+                        <div id="exportpdf" style="display: block; min-width: 100px; display: table;">
+                          <div class="table-row table-header cab_analiseencomendas_6"
+                            style="background: #757676; color: white; font-weight: 500;">
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 100px; max-width: 100px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; ">
+                                  Linha
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-row-column col-md-10"
+                              style="padding: 0; /*width: 40%;*/ width: auto; display: contents;">
+                              <!--[style.width]="((100 / cabecalho.length))+'%'"-->
+                              <div style="min-width: 177px; max-width: 177px; padding: 0;" *ngFor="let cab of cabecalho"
+                                class="table-row-column col-md-12">
+                                <div class="table-row-column col-md-12 cell_div" style="height: 27px;">Week
+                                  {{cab.semana}}</div>
+                                <div class="table-row-column col-md-12" style="text-align: right; padding: 0;">
+                                  <div class="table-row-column col-md-6 cell_div" style="text-align: center;">Barras
+                                    Necessárias</div>
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; height: 47px; padding-top: 14px;">Média /
+                                    Dia
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                          <div class="table-row col-md-12 linhas linhas_planeamento"
+                            *ngFor="let barras of barras_produzir; let index_linha = index"
+                            style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 100px; max-width: 100px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; ">
+                                  {{barras.linha}}
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-10" style="padding: 0; display: contents;">
+                              <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let v of barras.valores;"
+                                style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                  <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                    {{v.barras_necessarias  | number: '1.0-0'}}
+                                  </div>
+                                  <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                    {{v.barras_media  | number: '1.2-2'}}
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="table-row col-md-12 linhas linhas_planeamento"
+                            style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 100px; max-width: 100px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; background: black;color: white;">
+                                  Totais
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-10" style="padding: 0; display: contents;">
+                              <div class="table-row-column col-md-4 tab_cell_p"
+                                *ngFor="let total_barras of total_barras;"
+                                style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: black;color: white;">
+                                    {{total_barras.barras_necessarias  | number: '1.0-0'}}
+                                  </div>
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: black;color: white;">
+                                    {{total_barras.barras_media  | number: '1.2-2'}}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="tab-pane fade in dashboard" id="tab2">
+
+                      <button *ngIf="!loading1" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                        (click)="download('exportpdf1','recursos_humanos','loading1')" style="float:right;"></button>
+                      <button *ngIf="loading1" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                        label="Export" [disabled]="true" style="float:right;"></button>
+
+                      <div id="analises_prev_scroll1" style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; padding-bottom:
+                      10px; overflow-y: hidden;">
+
+
+                        <div id="exportpdf1" style="display: block; min-width: 100px; display: table;">
+                          <div class="table-row table-header cab_analiseencomendas_6"
+                            style="background: #757676; color: white; font-weight: 500;">
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; ">
+                                  Sectores
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-row-column col-md-10"
+                              style="padding: 0; /*width: 40%;*/ width: auto; display: contents;">
+                              <!--[style.width]="((100 / cabecalho.length))+'%'"-->
+                              <div style="min-width: 177px; max-width: 177px; padding: 0;" *ngFor="let cab of cabecalho"
+                                class="table-row-column col-md-12">
+                                <div class="table-row-column col-md-12 cell_div" style="height: 27px;">Week
+                                  {{cab.semana}}</div>
+                                <div class="table-row-column col-md-12" style="text-align: right; padding: 0;">
+                                  <div class="table-row-column col-md-6 cell_div" style="text-align: center;">Nº
+                                    Operários Disponíveis</div>
+                                  <div class="table-row-column col-md-6 cell_div" style="text-align: center;">Nº
+                                    Operários
+                                    Necessários</div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                          <div class="table-row col-md-12 linhas linhas_planeamento"
+                            *ngFor="let v of recursos_humanos; let index_linha = index"
+                            style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; background: #A9D08E; justify-content: normal; padding-left: 5px;">
+                                  {{v.sector}}
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-10" style="padding: 0; display: contents;">
+                              <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let vv of v.total_sector;"
+                                style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: #A9D08E;">
+                                    {{vv.operarios_disponiveis  | number: '1.0-0'}}
+                                  </div>
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: #A9D08E;">
+                                    {{vv.operarios_necessarios  | number: '1.0-0'}}
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+
+                            <div class="table-row col-md-12 linhas linhas_planeamento"
+                              *ngFor="let vvv1 of v.sectores1; let index_linha = index"
+                              style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                              <div class="table-row-column col-md-2"
+                                style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                                <div class="table-row-column col-md-1 center_div cell_div"
+                                  style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                  <div class="table-row-column col-md-12 center_div cell_div"
+                                    style="width: 100%; height: 100%; justify-content: normal; padding-left: 5px; padding-right: 0;">
+                                    {{vvv1.nome}}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-10" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let vvvv1 of vvv1.valores;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      {{vvvv1.operarios_disponiveis  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      <!-- {{vvvv1.operarios_necessarios  | number: '1.0-0'}}-->&nbsp;
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-row col-md-12 linhas linhas_planeamento"
+                              style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                              <div class="table-row-column col-md-2"
+                                style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                                <div class="table-row-column col-md-1 center_div cell_div"
+                                  style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                  <div class="table-row-column col-md-12 center_div cell_div"
+                                    style="width: 100%; height: 100%; background: #D9D9D9; justify-content: normal; padding-left: 5px;">
+                                    <b>Total {{v.sector}} Linha 1</b>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-10" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p"
+                                  *ngFor="let total_recurso1 of v.total_recursos1;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell"
+                                      style="padding: 0; text-align: right; background: #D9D9D9;">
+                                      {{total_recurso1.operarios_disponiveis  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell"
+                                      style="padding: 0; text-align: right; background: #D9D9D9;">
+                                      {{total_recurso1.operarios_necessarios  | number: '1.0-0'}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="table-row col-md-12 linhas linhas_planeamento"
+                              *ngFor="let vvv2 of v.sectores2; let index_linha = index"
+                              style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                              <div class="table-row-column col-md-2"
+                                style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                                <div class="table-row-column col-md-1 center_div cell_div"
+                                  style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                  <div class="table-row-column col-md-12 center_div cell_div"
+                                    style="width: 100%; height: 100%; justify-content: normal; padding-left: 5px; padding-right: 0;">
+                                    {{vvv2.nome}}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-10" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let vvvv2 of vvv2.valores;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      {{vvvv2.operarios_disponiveis  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      <!-- {{vvvv2.operarios_necessarios  | number: '1.0-0'}}-->&nbsp;
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-row col-md-12 linhas linhas_planeamento"
+                              style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                              <div class="table-row-column col-md-2"
+                                style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                                <div class="table-row-column col-md-1 center_div cell_div"
+                                  style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                  <div class="table-row-column col-md-12 center_div cell_div"
+                                    style="width: 100%; height: 100%; background: #D9D9D9; justify-content: normal; padding-left: 5px;">
+                                    <b>Total {{v.sector}} Linha 2</b>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-10" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p"
+                                  *ngFor="let total_recurso2 of v.total_recursos2; let index_valores2 = index"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell"
+                                      style="padding: 0; text-align: right; background: #D9D9D9;">
+                                      {{total_recurso2.operarios_disponiveis  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell"
+                                      style="padding: 0; text-align: right; background: #D9D9D9;">
+                                      {{total_recurso2.operarios_necessarios  | number: '1.0-0'}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                          <div class="table-row col-md-12 linhas linhas_planeamento"
+                            style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 245px; max-width: 245px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; background: black;color: white;">
+                                  Totais
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-10" style="padding: 0; display: contents;">
+                              <div class="table-row-column col-md-4 tab_cell_p"
+                                *ngFor="let total_recurso of total_recursos;"
+                                style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: black;color: white;">
+                                    {{total_recurso.operarios_disponiveis  | number: '1.0-0'}}
+                                  </div>
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: black;color: white;">
+                                    {{total_recurso.operarios_necessarios  | number: '1.0-0'}}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                    <div class="tab-pane fade in dashboard" id="tab3">
+                      <button *ngIf="!loading2" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                        (click)="download('exportpdf2','tipos_acabamento','loading2')" style="float:right;"></button>
+                      <button *ngIf="loading2" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                        label="Export" [disabled]="true" style="float:right;"></button>
+
+                      <div id="analises_prev_scroll2" style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; padding-bottom:
+                      10px; overflow-y: hidden;">
+
+                        <div id="exportpdf2" style="display: block; min-width: 100px; display: table;">
+                          <div class="table-row table-header cab_analiseencomendas_6"
+                            style="background: #757676; color: white; font-weight: 500;">
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 210px; max-width: 210px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; ">
+                                  Tipo de Acabamento
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-row-column col-md-10"
+                              style="padding: 0; /*width: 40%;*/ width: auto; display: contents;">
+                              <!--[style.width]="((100 / cabecalho.length))+'%'"-->
+                              <div style="min-width: 177px; max-width: 177px; padding: 0;" *ngFor="let cab of cabecalho"
+                                class="table-row-column col-md-12">
+                                <div class="table-row-column col-md-12 cell_div" style="height: 27px;">Week
+                                  {{cab.semana}}</div>
+                                <div class="table-row-column col-md-12" style="text-align: right; padding: 0;">
+                                  <div class="table-row-column col-md-6 cell_div" style="text-align: center;">
+                                    Barras Necessárias</div>
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; height: 47px; padding-top: 14px;">
+                                    Média / Dia</div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                          <div class="table-row col-md-12 linhas linhas_planeamento"
+                            *ngFor="let t of tipos_acabamento; let index_linha = index"
+                            style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                            <div class="table-row-column col-md-2"
+                              style="padding: 0; /*width: 60%;*/ min-width: 210px; max-width: 210px; ">
+                              <div class="table-row-column col-md-1 center_div cell_div"
+                                style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                <div class="table-row-column col-md-12 center_div cell_div"
+                                  style="width: 100%; height: 100%; background: #A9D08E; justify-content: normal; padding-left: 5px;">
+                                  {{t.linha}}
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-10" style="padding: 0; display: contents;">
+                              <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let tt of t.total_linha;"
+                                style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: #A9D08E;">
+                                    {{tt.barras_necessarias  | number: '1.0-0'}}
+                                  </div>
+                                  <div class="col-md-6 tab_cell"
+                                    style="padding: 0; text-align: right; background: #A9D08E;">
+                                    {{tt.barras_media  | number: '1.2-2'}}
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+
+                            <div class="table-row col-md-12 linhas linhas_planeamento"
+                              *ngFor="let ttt of t.acabamentos; let index_linha = index"
+                              style=" border-bottom: 1px solid black; padding: 0px ;">
+
+                              <div class="table-row-column col-md-2"
+                                style="padding: 0; /*width: 60%;*/ min-width: 210px; max-width: 210px; ">
+                                <div class="table-row-column col-md-1 center_div cell_div"
+                                  style="height: 100%; width: 100%; display: block;padding: 0; ">
+                                  <div class="table-row-column col-md-12 center_div cell_div"
+                                    style="width: 99%; height: 100%; justify-content: normal; padding-left: 5px; padding-right: 0; white-space: nowrap; overflow: hidden;"
+                                    title="{{ttt.descricao}}">
+                                    {{ttt.descricao}}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-10" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let tttx of ttt.valores;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      {{tttx.barras_necessarias  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                      {{tttx.barras_media  | number: '1.2-2'}}
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <div class="tab-pane fade in dashboard" id="tab4">
+
+
+                      <div style="padding: 0; height: 26px;" class="form-group col-md-12 col-lg-12">
+
+                        <form #form id="formReclama_1" (ngSubmit)="carrega_racks_lista()" ngNativeValidate>
+
+                          <div class=" col-md-2" style="padding: 0;">
+                            <p-checkbox [(ngModel)]="filtro_RACK" [ngModelOptions]="{standalone: true}"
+                              label="Racks a Vermelho" binary="true">
+                            </p-checkbox>
+                          </div>
+
+                          <div class=" col-md-2" style="padding: 0; top: -15px;">
+                            <button type="submit" class="btn btn-success " [disabled]="false"
+                              style="height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class=" col-md-3" style="padding: 0; top: -6px; float:right;">
+
+                            <button *ngIf="!loading3" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                              (click)="download('exportpdf3','racks','loading3')" style="float:right;"></button>
+                            <button *ngIf="loading3" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw"
+                              iconPos="left" label="Export" [disabled]="true" style="float:right;"></button>
+                          </div>
+                        </form>
+                      </div>
+                      <div id="analises_prev_scroll3"
+                        style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; overflow-y: hidden;">
+                        <div id="exportpdf3" style="display: block; min-width: 100px; display: table;">
+                          <div class="table-row table-header"
+                            style="background: #757676; color: white; font-weight: 500; ">
+                            <div class="table-row-column col-md-2"
+                              style="width: 130px; padding-left: 0; padding-right: 0; display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Lista de Racks
+                              <!--input style="font-weight: 100; height: 19px; color: black;" #myInput type="text"
+                            class="form-control2" (input)="filterItem(myInput.value)" /-->
+                            </div>
+                            <div class=" table-row-column col-md-1"
+                              style="width: 70px; padding-left: 0; padding-right: 0; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Nº de Barras</div>
+                            <div class="table-row-column col-md-1"
+                              style="width: 95px; padding-left: 0; padding-right: 0; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Linha</div>
+                            <!--<div class="table-row-column col-md-1">Nº Barras Produzidas</div>-->
+                            <div class="table-row-column col-md-2"
+                              style="width: 230px; padding-left: 0; padding-right: 0;border-right: 1px solid white; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Referência</div>
+                            <div class="table-row-column col-md-6"
+                              style="padding: 0; /*width: 40%;*/ width: auto; display: contents;">
+                              <!--[style.width]="((100 / cabecalho.length))+'%'"-->
+                              <div style="min-width: 177px; max-width: 177px; padding: 0;" *ngFor="let cab of cabecalho"
+                                class="table-row-column col-md-12" s>
+                                <div class="table-row-column col-md-12 cell_div"
+                                  style="height: 27px; border-right: 1px solid white; border-bottom: 1px solid white;">
+                                  Week
+                                  {{cab.semana}}</div>
+                                <div class="table-row-column col-md-12"
+                                  style="text-align: right; padding: 0; display: flex;">
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; padding-left: 0; padding-right: 0; display: flex;
+                                    justify-content: center; flex-direction: column;border-right: 1px solid white; border-bottom: 1px solid white; ">
+                                    Barras Necessárias</div>
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; display: flex;
+                                    justify-content: center; flex-direction: column;border-right: 1px solid white; border-bottom: 1px solid white;">
+                                    Média / Dia</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!--div id="chartcurtain" [class.classloading]="loading" style="display: none;">
+                        Carregar...
+                      </div>
+                      <div id="chartcurtain" class="classloading" *ngIf="!loading && dados.length == 0">
+                        Sem dados...
+                      </div-->
+                          <div class="table-row col-md-12" *ngFor="let rack of lista_racks"
+                            style="border-bottom: none;">
+
+
+                            <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover2 collapsed"
+                              data-toggle="collapse" id="rack{{rack.rack}}"
+                              [attr.data-target]="'#collapserack'+rack.rack" (click)="carrega_racks_linhas(rack.rack); "
+                              #divrack style=" display: flex; border-bottom: 1px solid black;"
+                              [class.disabled]="rack.atualiza" [style.background]="rack.cor_rack">
+                              <div class="col-md-2" style="text-align: left; width: 130px;">
+                                <span style="pointer-events: none;" *ngIf="!divrack.classList.contains('collapsed')"
+                                  class="fa fa-minus" aria-hidden="true"></span>
+                                <span style="pointer-events: none;" *ngIf="divrack.classList.contains('collapsed')"
+                                  class="fa fa-plus" aria-hidden="true"></span> {{rack.rack}}
+                                <div *ngIf="rack.atualiza" class="fa fa-spinner fa-spin"></div>
+                              </div>
+                              <div class="col-md-1" style="width: 70px;">
+                                {{rack.n_barras}}&nbsp;
+                              </div>
+                              <div class="col-md-1" style="width: 95px;">&nbsp;
+                                <!--Linha-->
+                              </div>
+                              <div class="col-md-2" style="width: 230px;">&nbsp;
+                                <!--Referencia-->
+                              </div>
+                              <div class="col-md-6" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p" *ngFor="let tttx of rack.total_racks;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;"
+                                      [style.background]="tttx.cor_fundo" [style.color]="tttx.color">
+                                      {{tttx.barras_necessarias  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;"
+                                      [style.background]="tttx.cor_fundo" [style.color]="tttx.color">
+                                      {{tttx.barras_media  | number: '1.2-2'}}
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+
+                            </div>
+
+                            <div class="table-row collapse col-md-12" id="collapserack{{rack.rack}}"
+                              style=" border-bottom: none;">
+                              <div class="table-row col-md-12" *ngFor="let linha of rack.child"
+                                style="border-bottom: none;">
+                                <!-- LINHA -->
+                                <div class="table-row-column col-md-12 pointer collapse" data-toggle="collapse"
+                                  id="collapselinha{{rack.rack}}{{linha.id}}" style="display: flex;"
+                                  [attr.data-target]="'#collapseref'+rack.rack+linha.id" #divref>
+                                  <div class="col-md-3" style="width: 200px; background: white;"></div>
+
+                                  <div class="col-md-2" [style.background]="rack.cor_linha"
+                                    style=" text-align: left; padding: 0;  width: 95px;">
+                                    <span style="pointer-events: none;" *ngIf="!divref.classList.contains('collapsed')"
+                                      class="fa fa-minus" aria-hidden="true"></span>
+                                    <span style="pointer-events: none;" *ngIf="divref.classList.contains('collapsed')"
+                                      class="fa fa-plus" aria-hidden="true"></span>
+                                    {{linha.linha}}
+                                    <div *ngIf="linha.atualiza" class="fa fa-spinner fa-spin"></div>
+                                  </div>
+                                  <div class="col-md-2" [style.background]="rack.cor_linha" style="width: 230px;">
+                                    <!--Ref-->&nbsp;
+                                  </div>
+                                  <div class="col-md-6" style="padding: 0; display: contents;">
+                                    <div class="table-row-column col-md-4 tab_cell_p"
+                                      *ngFor="let tttl of linha.total_racks;"
+                                      style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                      <div class="col-md-12 tab_cell"
+                                        style="text-align: center; padding: 0; height: 100%;">
+                                        <div class="col-md-6 tab_cell" [style.background]="rack.cor_linha"
+                                          style="padding: 0; text-align: right;">
+                                          {{tttl.barras_necessarias  | number: '1.0-0'}}
+                                        </div>
+                                        <div class="col-md-6 tab_cell" [style.background]="rack.cor_linha"
+                                          style="padding: 0; text-align: right;">
+                                          {{tttl.barras_media  | number: '1.2-2'}}
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="table-row-column collapse in col-md-12"
+                                  id="collapseref{{rack.rack}}{{linha.id}}" style="padding: 0;">
+
+                                  <div class="table-row col-md-12" *ngFor="let ref of linha.child"
+                                    style="border-bottom:none;">
+                                    <!-- REFERENCIA -->
+                                    <div class="table-row-column col-md-12 pointer " style="display: flex;">
+                                      <div class=" col-md-4" style="width: 295px;     background: white;"></div>
+
+                                      <div class="col-md-2" style="background: white; text-align: left; width: 230px">
+                                        {{ref.referencia}}
+                                      </div>
+                                      <div class="col-md-6" style="padding: 0; display: contents;">
+                                        <div class="table-row-column col-md-4 tab_cell_p"
+                                          *ngFor="let tttr of ref.valores;"
+                                          style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                          <div class="col-md-12 tab_cell"
+                                            style="text-align: center; padding: 0; height: 100%; background: white;">
+                                            <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                              {{tttr.barras_necessarias  | number: '1.0-0'}}
+                                            </div>
+                                            <div class="col-md-6 tab_cell"
+                                              style="padding: 0; text-align: right; background: white;">
+                                              {{tttr.barras_media  | number: '1.2-2'}}
+                                            </div>
+                                          </div>
+
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <!--button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button-->
+              <div class="clearfix"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+
+
+<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
+  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
+  [modal]="true">
+  <div class="container">
+    <div class="row">
+      <div id="loading">
+        <ul class="bokeh">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-dialog>

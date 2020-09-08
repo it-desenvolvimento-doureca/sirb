@@ -1,0 +1,241 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Seguimento Faturação</h4>
+            <button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+              (click)="download()" style="float:right; top: -15px; position: absolute; right: 23px;"></button>
+            <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+              label="Export" [disabled]="true"
+              style="float:right; top: -15px; position: absolute; right: 23px;"></button>
+          </div>
+          <div class="card-content">
+            <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
+
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button (click)="ativobt='1';" style="padding: 12px;" [class.ativobt]="ativobt == '1'" type="button"
+                  id="stars" class="btn " href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                    aria-hidden="true"></span>
+                  <div class="hidden-xs" style="display: contents;">Análise Dados</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                <button (click)="ativobt='2';" style="padding: 12px;" [class.ativobt]="ativobt == '2'" type="button"
+                  id="favorites" class="btn" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                    aria-hidden="true"></span>
+                  <div class="hidden-xs" style="display: contents;">Análise Gráfica</div>
+                </button>
+              </div>
+            </div>
+            <div class="well" style="display: flex;">
+              <div class="tab-content" style="width: 100%; padding: 0;">
+                <div class="tab-pane fade in active" id="tab1">
+                  <div
+                    style="padding: 1px 0px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                    class="form-group col-md-12 col-lg-12">
+                    <form #form id="formReclama" ngNativeValidate>
+                      <div class="col-md-12">
+                        <div class="table-row-column col-md-2">
+                          <label>Mês/Ano:</label>
+                          <p-dropdown [filter]="true" [options]="meses_objetivo"
+                            [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="mes_ano"
+                            (onChange)='getdadostabela($event)' [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-dropdown>
+                        </div>
+
+                        <div class="table-row-column col-md-2">
+                          <label>Dias Úteis:</label>
+                          <input type="text" class="form-control2" [(ngModel)]="dias_uteis" readonly
+                            style="width: 100%; text-align: center;" [ngModelOptions]="{standalone: true}"
+                            placeholder="" />
+                        </div>
+
+                        <div class="table-row-column col-md-2">
+                          <label>Dias decorridos:</label>
+                          <input type="text" class="form-control2" [(ngModel)]="dias_decorridos" readonly
+                            style="width: 100%; text-align: center;" [ngModelOptions]="{standalone: true}"
+                            placeholder="" />
+                        </div>
+
+                        <div class="table-row-column col-md-2">
+                          <label>Objetivo Diário:</label>
+                          <input type="text" class="form-control2" value="{{objetivo_DIARIO  | number: '1.2-2'}} €"
+                            readonly style="width: 100%; text-align: right;" placeholder="" />
+                        </div>
+
+                        <div class="table-row-column col-md-2">
+                          <label>Facturação {{mes_menos_1}}:</label>
+                          <input type="text" class="form-control2" value="{{faturacao_M_1 | number: '1.2-2'}} €"
+                            readonly style="width: 100%; text-align: right;" placeholder="" />
+                        </div>
+
+                        <div class="table-row-column col-md-2">
+                          <label style="text-align: right;">Objectivo Facturação:</label>
+                          <input type="text" class="form-control2" value="{{objetivo_FATURACAO | number: '1.2-2'}} €"
+                            readonly style="width: 100%; text-align: right;" placeholder="" />
+                        </div>
+                      </div>
+
+
+                    </form>
+                  </div>
+                  <div class="col-md-12 tabela_faturaco" style="font-weight: 400;">
+                    <div class="col-md-2 col_p">
+                      <div class="tab_cab">Vendas</div>
+                      <div class="tab_cab">Data</div>
+                      <div class="tab_cell">Objectivo</div>
+                      <div class="tab_cell">Valorização total ({{mes}})</div>
+                      <div class="tab_cell">Realizado</div>
+                      <div class="tab_cell">Encomendado (inclui atrasos)</div>
+                      <div class="tab_cell">Atraso</div>
+                      <div class="tab_cell_w"></div>
+                      <div class="tab_cab no_border">Stocks</div>
+                      <div class="tab_cell">Valor de stock (Peça Final)</div>
+                      <div class="tab_cell">% Realização</div>
+                      <div class="tab_cell">Desvio</div>
+                      <div class="tab_cell_w"></div>
+                      <div class="tab_cab no_border">Produção Realizada/Planeada</div>
+                      <div class="tab_cell">Barras em {{mes}} (Linha 1)</div>
+                      <div class="tab_cell">Barras em {{mes}} (Linha 2)</div>
+                      <div class="tab_totais">Totais</div>
+                      <div class="tab_cell_w"></div>
+                      <div class="tab_prev">PREVISÕES - {{mes_mais_1}} </div>
+                      <div class="tab_cab">Vendas previstas em:</div>
+                      <div class="tab_cell">Previsão Vendas ({{mes_mais_1}})</div>
+                      <div class="tab_cell_w"></div>
+                      <div class="tab_cab no_border">Produção Planeada </div>
+                      <div class="tab_cell">Barras em {{mes_mais_1}} (Linha 1)</div>
+                      <div class="tab_cell">Barras em {{mes_mais_1}} (Linha 2)</div>
+                      <div class="tab_totais">Totais</div>
+                      <div class="tab_cell_w"></div>
+                      <div class="tab_prev">PREVISÕES - {{mes_mais_2}}</div>
+                      <div class="tab_cab">Vendas previstas em:</div>
+                      <div class="tab_cell">Previsão Vendas ({{mes_mais_2}})</div>
+                    </div>
+                    <!-- DADOS-->
+                    <div class="col-md-10" style="padding: 0;">
+                      <div *ngFor="let campo of tabela_dados" class="col-md-2 col_d"
+                        [style.width]="((100 / tabela_dados.length))+'%'">
+                        <div class="tab_cab" *ngIf="campo.week != 'Total Mês'"><a
+                            style=" cursor: pointer; color: black; text-decoration: underline;"
+                            (click)="abriranalise_encomendas(campo.week,campo.data)">{{campo.week}}</a></div>
+                        <div class="tab_cab" *ngIf="campo.week == 'Total Mês'"></div>
+                        <div class="tab_cab">{{campo.data}}</div>
+                        <div class="tab_cell">{{campo.objetivo | number: '1.2-2'}} €</div>
+                        <div class="tab_cell">{{campo.valorizacao_total_mes | number: '1.2-2'}} €</div>
+                        <div class="tab_cell">{{campo.realizado | number: '1.2-2'}} €</div>
+                        <div class="tab_cell">{{campo.encomendado | number: '1.2-2'}} €</div>
+                        <div class="tab_cell">{{campo.atraso | number: '1.2-2'}} €</div>
+                        <div class="tab_cell_w"></div>
+                        <div class="tab_cab no_border"></div>
+                        <div class="tab_cell">{{campo.valor_stock | number: '1.2-2'}} €</div>
+                        <div class="tab_cell">{{campo.realizacao | number: '1.2-2'}}%</div>
+                        <div class="tab_cell" [style.color]="( 0  > campo.desvio)? 'red' : ''">
+                          {{campo.desvio | number: '1.2-2'}} €</div>
+                        <div class="tab_cell_w"></div>
+                        <div class="tab_cab no_border">{{campo.semana_producao}}</div>
+                        <div class="tab_cell">{{campo.barras_mes_1 | number: '1.'}}</div>
+                        <div class="tab_cell">{{campo.barras_mes_2 | number: '1.'}}</div>
+                        <div class="tab_totais">{{campo.total_barras | number: '1.' }}</div>
+                        <div class="tab_cell_w" style="border-bottom: none;"></div>
+                        <div class="tab_cell_w" style="border-top: none;"></div>
+                        <!--div class="tab_cab">{{campo.vendas_week_1}}</div-->
+                        <div class="tab_cab">{{campo.data}}</div>
+                        <div class="tab_cell">{{campo.previsao_vendas_1 | number: '1.2-2'}} €</div>
+                        <div class="tab_cell_w"></div>
+                        <div class="tab_cab no_border">{{campo.semana_producao_planeada}}</div>
+                        <div class="tab_cell">{{campo.barras_mes_m1_1 | number: '1.'}}</div>
+                        <div class="tab_cell">{{campo.barras_mes_m1_2 | number: '1.'}}</div>
+                        <div class="tab_totais">{{campo.total_barras_m1 | number: '1.'}}</div>
+                        <div class="tab_cell_w" style="border-bottom: none;"></div>
+                        <div class="tab_cell_w" style="border-top: none;"></div>
+                        <!--div class="tab_cab">{{campo.vendas_week_2}}</div-->
+                        <div class="tab_cab">{{campo.data}}</div>
+                        <div class="tab_cell">{{campo.previsao_vendas_2 | number: '1.2-2'}} €</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+                <div class="tab-pane fade in" id="tab2">
+                  <div class="col-md-12">
+                    <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="printer_1" style="position: absolute;width: 100%; height: 0%; overflow: hidden;"></div>
+  <div id="printer_2" style="position: absolute;width: 100%; height: 0%; overflow: hidden;">
+    <div class="tab-pane fade in active" id="tab2_1" style="position: absolute; width:100%;">
+      <div class="col-md-12">
+        <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
+      </div>
+    </div>
+  </div>
+
+
+  <p-dialog [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true" id="dialog1"
+    baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display" [modal]="true">
+    <p-header>
+      Lista
+      <button type="button" class="btn btn-default" (click)="display= false; display_envia = true"
+        style="right: 55px; height: 29px; padding: 0 4px 0 5px; position: absolute; top: 0;" data-dismiss="modal">Enviar
+        por Email</button>
+    </p-header>
+
+    <div style="width: 80vw; text-align: -webkit-center;">
+      <iframe *ngIf="display" class="embed-responsive-item"
+        style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [src]="srcelement" type="application/pdf"
+        scale="aspect" frameborder="0"></iframe>
+    </div>
+  </p-dialog>
+
+
+
+
+  <p-dialog appendTo="body" header="Enviar Email" [(visible)]="display_envia" [responsive]="true" [positionTop]="0"
+    [style]="{'max-height':'99vh','width':'80%','overflow':'auto'}" [dismissableMask]="true" appendTo="body"
+    id="dialog2" [closeOnEscape]="true" [draggable]="false" [modal]="true" styleClass="dialog_index">
+    <form role="form" ngNativeValidate (ngSubmit)="enviar_email()">
+      <div>
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <label>Para:</label>
+              <input required="true" type="email" class="form-control2" [(ngModel)]="email_para" style="width: 100%;"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <label>Assunto:</label>
+              <input required="true" type="text" class="form-control2" [(ngModel)]="assunto" style="width: 100%;"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <label>Mensagem:</label>
+              <p-editor *ngIf="display_envia" [(ngModel)]="mensagem" [ngModelOptions]="{standalone: true}"
+                [style]="{'height':'200px'}">
+              </p-editor>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <button type="button" class="btn btn-default" (click)="display_envia = false;display= true; "
+          data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-success " [disabled]="bt_disable">Enviar</button>
+      </p-footer>
+    </form>
+  </p-dialog>

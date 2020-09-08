@@ -1,4 +1,4 @@
-<app-controlos></app-controlos>
+<app-controlos (atualiza)="atualizar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -10,9 +10,12 @@
           </div>
           <div class="card-content table-responsive">
 
-            <p-dataTable [value]="cols" dataKey="id" [rows]="15" [paginator]="true" [pageLinks]="3" [stacked]="stacked" (onRowDblclick)="abrir($event)"
-              [rowsPerPageOptions]="[15,20,30,'todos']">
+            <p-dataTable [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
               <p-column [filter]="true" [sortable]="true" styleclass="text-danger" field="linha" header="Linha">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="linhas" [style]="{'width':'100%'}" [(ngModel)]="linha" (onChange)="filtrar($event.value,col.field)"
+                    styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <div [style.background]="car['cor']">
                     {{car['linha']}}
@@ -22,7 +25,11 @@
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Código do banho"></p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nome" header="Nome do Banho"></p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tina" header="Tina"></p-column>
-              <p-column [sortable]="true" styleclass="text-danger" field="estado" header="Estado">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="estado" header="Estado">
+                <ng-template pTemplate="filter" let-col>
+                  <p-dropdown [options]="estados" [style]="{'width':'100%'}"  (onChange)="filtrar($event.value,col.field)"
+                    styleClass="ui-column-filter"></p-dropdown>
+                </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <i *ngIf="car.estado == false" class="material-icons" style="color: red;">close</i>
                   <i *ngIf="car.estado == true" class="material-icons" style="color: green;">check</i>
@@ -30,6 +37,10 @@
               </p-column>
               <p-column styleClass="col-button">
                 <ng-template pTemplate="header">
+                  <a (click)="reset()" style="color: black; float: left; cursor: pointer;">
+                    <i class="fa fa-eraser" aria-hidden="true"> Limpar</i>
+                    <div class="ripple-container"></div>
+                  </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/banhos/view']" [queryParams]="{ id: car.id }">

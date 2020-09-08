@@ -1,0 +1,115 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Sectores Agregadores</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
+              </p-column>
+              <p-column field="operacao" header="Operação" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+
+
+<!-- Modal dados-->
+<p-dialog header="Sectores Agregadores" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0;  margin-bottom: 15px;">
+        <div class="col-md-6" style="padding: 0;">
+          <div class="form-group col-md-12">
+            <label for="nome">Nome</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="nome"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group col-md-12">
+            <label for="operacao">Operação</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="operacao" [(ngModel)]="operacao"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <b>Linha 1</b> <br>
+        <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget_linha1($event)"
+          (onMoveToSource)="onMoveToSource_linha1($event)" [source]="sourceSectores_linha1" [showTargetControls]="false"
+          [showSourceControls]="false" [target]="targetSectores_linha1" sourceHeader="Sectores"
+          targetHeader="Sectores para Linha 1" [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome"
+          sourceFilterPlaceholder="Pesquisar pelo Sector" targetFilterPlaceholder="Pesquisar pelo Sector"
+          [sourceStyle]="{'height':'150px'}" [targetStyle]="{'height':'150px'}">
+          <ng-template let-car pTemplate="item">
+            {{car.nome}}
+          </ng-template>
+        </p-pickList>
+      </div>
+
+      <div class="col-md-6">
+        <b>Linha 2</b> <br>
+        <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget_linha2($event)"
+          (onMoveToSource)="onMoveToSource_linha2($event)" [source]="sourceSectores_linha2" [showTargetControls]="false"
+          [showSourceControls]="false" [target]="targetSectores_linha2" sourceHeader="Sectores"
+          targetHeader="Sectores para Linha 2" [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome"
+          sourceFilterPlaceholder="Pesquisar pelo Sector" targetFilterPlaceholder="Pesquisar pelo Sector"
+          [sourceStyle]="{'height':'150px'}" [targetStyle]="{'height':'150px'}">
+          <ng-template let-car pTemplate="item">
+            {{car.nome}}
+          </ng-template>
+        </p-pickList>
+      </div>
+
+      <div class="col-md-6">
+        <b>Geral</b> <br>
+        <p-pickList [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget_geral($event)"
+          (onMoveToSource)="onMoveToSource_geral($event)" [source]="sourceSectores_geral" [showTargetControls]="false"
+          [showSourceControls]="false" [target]="targetSectores_geral" sourceHeader="Sectores"
+          targetHeader="Sectores para Geral" [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome"
+          sourceFilterPlaceholder="Pesquisar pelo Sector" targetFilterPlaceholder="Pesquisar pelo Sector"
+          [sourceStyle]="{'height':'150px'}" [targetStyle]="{'height':'150px'}">
+          <ng-template let-car pTemplate="item">
+            {{car.nome}}
+          </ng-template>
+        </p-pickList>
+      </div>
+      <div class="col-md-12">
+        <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+          (click)="dialognovo = false">Fechar</button>
+        <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+          [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+        <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+      </div>
+    </div>
+
+    <p-footer>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-confirmDialog key="conf001" appendTo="body"></p-confirmDialog>

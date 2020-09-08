@@ -1,0 +1,90 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Validações Bastidores</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column field="descricao" header="Descricão" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column field="simbolo" header="Símbolo" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column field="cor" header="Cor" [filter]="true" [sortable]="true">
+                <ng-template pTemplate="body" let-col3 let-row3="rowData ">
+                  <div [style.background]="row3[col3.field]">
+                    &nbsp;
+                  </div>
+                </ng-template>
+              </p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+
+
+<!-- Modal dados-->
+<p-dialog header="Sectores Agregadores" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0;  margin-bottom: 15px; min-height: 200px;">
+        <div class="col-md-4" style="padding: 0;">
+          <div class="form-group col-md-12">
+            <label for="nome">Descricao</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="descricao"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group col-md-12">
+            <label for="operacao">Símbolo</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="Símbolo" [(ngModel)]="simbolo"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group col-md-12">
+            <label>Cor</label><br>
+            <p-colorPicker [style]="{'height': '25px','display': 'flex'}" [(ngModel)]="cor"
+              [ngModelOptions]="{standalone: true}">
+            </p-colorPicker>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+          (click)="dialognovo = false">Fechar</button>
+        <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+          [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+        <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+      </div>
+    </div>
+
+    <p-footer>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-confirmDialog key="conf001" appendTo="body"></p-confirmDialog>
