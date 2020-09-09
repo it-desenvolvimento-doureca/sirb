@@ -4,7 +4,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+<<<<<<< HEAD
           <div class="card-header"  data-background-color="red">
+=======
+          <div class="card-header" style="height: 54px;" data-background-color="red">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             <h4 class="title">Manutenções de Reposição</h4>
             <button [disabled]="novo || disimprimir" title="Imprimir em folhas separadas" type="button" style="color: black; float:right; margin-top: -19px; background-color: #ccc1c1;"
               class="btn btn-white btn-round btn-just-icon" (click)="imprimir('manutencao_separadas',num_manutencao)">
@@ -565,7 +569,11 @@
             <tr *ngFor="let etiq of etiquetas" style="padding: 5px 4px 0px 0px">
               <td style="padding: 5px 4px 0px 0px">
                 <div class="form-group">
+<<<<<<< HEAD
                   <input (keyup)="etiq.numero = maxNumber($event)" (blur)="etiq.numero =  maxNumber($event)" min="0" max="9999999999" maxlength="10" [disabled]="etiq.disabled" id="{{etiq.id}}" #numero (keyup.enter)="addlinhaetiq(etiq.id,numero.value)"
+=======
+                  <input [disabled]="etiq.disabled" id="{{etiq.id}}" #numero (keyup.enter)="addlinhaetiq(etiq.id,numero.value)"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     type="number" style="background: white;  text-align: center; height: 31px; width: 100%;"
                     [(ngModel)]="etiq.numero" [ngModelOptions]="{standalone: true}">
                 </div>
@@ -635,7 +643,11 @@
             <tr *ngFor="let etiq of etiquetasaditivo" style="padding: 0px 4px 0px 0px">
               <td style="padding: 0px 4px 0px 0px">
                 <div class="form-group">
+<<<<<<< HEAD
                   <input (keyup)="etiq.numero = maxNumber($event)" (blur)="etiq.numero =  maxNumber($event)" min="0" max="9999999999" maxlength="10" id="{{etiq.id}}" (keyup.enter)="addlinhaetiqiadiv(etiq.id,numero2.value,etiq.ETQNUMENR)"
+=======
+                  <input id="{{etiq.id}}" (keyup.enter)="addlinhaetiqiadiv(etiq.id,numero2.value,etiq.ETQNUMENR)"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     #numero2 type="number" style="text-align: center; height: 31px; width: 100%;" [(ngModel)]="etiq.numero"
                     [ngModelOptions]="{standalone: true}" [disabled]="!(modoedicao || planeado) || disaddetiquetas || etiq.ETQNUMENR != ''">
                 </div>

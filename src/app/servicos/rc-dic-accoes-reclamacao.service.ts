@@ -35,6 +35,7 @@ export class RCDICACCOESRECLAMACAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   getAll_TIPO(tipo): Observable<GT_DIC_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_DIC_TAREFASTIPO/' + tipo;
     return this.http
@@ -50,6 +51,8 @@ export class RCDICACCOESRECLAMACAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteGT_DIC_TAREFAS/' + id + '')

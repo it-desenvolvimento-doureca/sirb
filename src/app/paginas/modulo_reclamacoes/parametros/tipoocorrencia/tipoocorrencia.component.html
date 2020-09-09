@@ -5,11 +5,19 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="red">
+<<<<<<< HEAD
             <h4 class="title">Tipos Ocorrência Reclamações</h4>
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
               [paginator]="true" [rows]="15">
+=======
+            <h4 class="title">Tipos Ocorrência</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'300px'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               <p-column [style]="{'width':'30px'}" field="codigo" header="codigo" [filter]="true" [sortable]="true"></p-column>
               <p-column [style]="{'width':'30px'}" field="descricao" header="Descrição" [filter]="true" [sortable]="true"></p-column>
               <p-footer>

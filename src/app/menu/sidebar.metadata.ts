@@ -40,6 +40,7 @@ export class AppGlobals {
   filtros = [];
 
   setfiltros(var_item, filtro) {
+<<<<<<< HEAD
     if (var_item == "lista_dividas_sorttabela") {
 
       if (filtro == "limpar") {
@@ -65,6 +66,9 @@ export class AppGlobals {
     } else {
       this.filtros[var_item] = filtro;
     }
+=======
+    this.filtros[var_item] = filtro;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   getfiltros(var_item) {
@@ -186,7 +190,11 @@ export class AppGlobals {
 
   getcriarmanutencao() {
     return this.criarmanutencao;
+<<<<<<< HEAD
   }
+=======
+  }  
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   setleitura(var_leitura) {
     this.leitura = var_leitura;

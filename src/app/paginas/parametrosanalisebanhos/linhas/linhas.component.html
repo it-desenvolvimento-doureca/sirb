@@ -10,7 +10,11 @@
           <div class="card-content">
             <div class="col-md-12">
               <p-dataTable [style]="{'width':'100%'}" [value]="linhas" selectionMode="single" (onRowSelect)="onRowSelectlinha($event)"
+<<<<<<< HEAD
                 [paginator]="true" [rows]="15">
+=======
+                [paginator]="true" rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 <p-column [style]="{'width':'30px'}" field="nome" header="Nome Linha" [filter]="true" [sortable]="true"></p-column>
                 <p-column [style]="{'width':'30px'}" field="seccao" header="Seccção" [sortable]="true"></p-column>
                 <p-column [style]="{'width':'30px'}" field="subseccao" header="Sub-Seccção" [sortable]="true"></p-column>

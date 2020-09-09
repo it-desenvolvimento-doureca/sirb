@@ -28,7 +28,10 @@ export class RegistoanalisesComponent implements OnInit {
   tipo_anali;
   datacria2: any;
   datacria1: any;
+<<<<<<< HEAD
   yearTimeout: any;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   constructor(private ABMOVANALISELINHAService: ABMOVANALISELINHAService, private ABDICLINHAService: ABDICLINHAService, private router: Router, private globalVar: AppGlobals, private ABMOVANALISEService: ABMOVANALISEService) { }
 
@@ -137,6 +140,7 @@ export class RegistoanalisesComponent implements OnInit {
 
   //filtro coluna linha
   filtrar(value, coluna) {
+<<<<<<< HEAD
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
     }
@@ -154,6 +158,20 @@ export class RegistoanalisesComponent implements OnInit {
       }
       this.globalVar.setfiltros("analises_id", ids);*/
     }, 250);
+=======
+
+    if (value == 0) {
+      value = "";
+    }
+    this.dataTableComponent.filter(value.toString(), coluna, 'contains');
+
+    this.globalVar.setfiltros("analises", this.dataTableComponent.filters);
+    var ids = [];
+    for (var x in this.dataTableComponent.dataToRender) {
+      ids.push(this.dataTableComponent.dataToRender[x].id);
+    }
+    this.globalVar.setfiltros("analises_id", ids);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   //limpar filtro

@@ -56,7 +56,10 @@ export class PaginatarefaComponent implements OnInit {
   @ViewChild('inputapagar') inputapagar: ElementRef;
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('alteraeditar') alteraeditar: ElementRef;
+<<<<<<< HEAD
   @ViewChild('alteraeditarhid') alteraeditarhid: ElementRef;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('fileInput') fileInput: FileUpload;
   tempo_gasto_old: any;
@@ -85,6 +88,7 @@ export class PaginatarefaComponent implements OnInit {
   displayMotivoRejeicao: boolean;
   mototivoRejeicao: string;
   email_utz_origem: any;
+<<<<<<< HEAD
   modulo: any;
   listar: any;
   mototivoRejeicao_texto: any;
@@ -100,10 +104,25 @@ export class PaginatarefaComponent implements OnInit {
 
   ngOnInit() {
 
+=======
+
+  constructor(private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) { }
+
+  ngOnInit() {
+
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/jqbtk.js";
+    this.elementRef.nativeElement.appendChild(s);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     this.globalVar.setapagar(false);
     this.globalVar.seteditar(true);
     this.globalVar.setvoltar(true);
+<<<<<<< HEAD
+=======
+    this.globalVar.seteditar(true);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.setseguinte(false);
     this.globalVar.setanterior(false);
     this.globalVar.setatualizar(false);
@@ -142,12 +161,18 @@ export class PaginatarefaComponent implements OnInit {
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
 
       var id;
+<<<<<<< HEAD
       var listar;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       var sub = this.route
         .queryParams
         .subscribe(params => {
           id = params['id'] || 0;
+<<<<<<< HEAD
           listar = params['listar'] || false;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         });
       if (this.globalVar.getfiltros("tarefas_id") && this.globalVar.getfiltros("tarefas_id").length > 0) {
         /*this.reclamacoes = this.globalVar.getfiltros("reclamacaocliente_id");
@@ -172,7 +197,10 @@ export class PaginatarefaComponent implements OnInit {
           }, error => { console.log(error); });*/
       }
     }
+<<<<<<< HEAD
     this.listar = (listar == "true") ? true : false;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (id != 0) {
       this.inicia(id);
     } else {
@@ -185,10 +213,17 @@ export class PaginatarefaComponent implements OnInit {
     this.drop_utilizadores = [];
     this.GERUTILIZADORESService.getAll().subscribe(
       response => {
+<<<<<<< HEAD
         this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: null });
         var grupo = [];
         for (var x in response) {
           this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, email: response[x].email, value: response[x].id_UTILIZADOR });
+=======
+        this.drop_utilizadores.push({ label: "Seleccionar Utilizador", value: null });
+        var grupo = [];
+        for (var x in response) {
+          this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
 
         this.drop_utilizadores = this.drop_utilizadores.slice();
@@ -229,7 +264,11 @@ export class PaginatarefaComponent implements OnInit {
         this.nome_tarefa = resp[x][0];
         this.utz_origem = resp[x][1];
         this.email_utz_origem = (resp[x][26] == null) ? "" : resp[x][26];
+<<<<<<< HEAD
         this.dep_origem = (resp[x][30] == null) ? "" : resp[x][30];
+=======
+        this.dep_origem = "";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.data_atribuicao = (resp[x][2] != null) ? this.formatDate(resp[x][2]) + " " + new Date(resp[x][2]).toLocaleTimeString() : null;
         this.atribuido = atribuido;
         this.encaminhado = resp[x][4];
@@ -239,6 +278,7 @@ export class PaginatarefaComponent implements OnInit {
         this.estado = estados;
         this.campo_estado = resp[x][8];
         this.cliente = resp[x][9];
+<<<<<<< HEAD
         this.referencia = ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]);
         this.mototivoRejeicao_texto = resp[x][31];
         this.justificacao_ALTERACAO_ESTADO = resp[x][32];
@@ -274,6 +314,32 @@ export class PaginatarefaComponent implements OnInit {
           this.origem = "Planos de Ação: " + resp[x][15];
           this.caminho_origem = "#/planosacao/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
         }
+=======
+        this.referencia = resp[x][10] + "" + resp[x][11];
+        var step = "";
+        var nome_step = "";
+        switch (resp[x][27]) {
+          case 'I':
+            step = "step-3";
+            nome_step = " (STEP 3 - ACÇÕES CORRETIVAS IMEDIATAS)";
+            break;
+          case 'C':
+            step = "step-4";
+            nome_step = " (STEP 5 - AÇÕES CORRETIVAS)";
+            break;
+          case 'E':
+            step = "step-5";
+            nome_step = " (STEP 6 - COMPROVAÇÃO DA EFICÁCIA DAS AÇÕES CORRETIVAS)";
+            break;
+          case 'P':
+            step = "step-6";
+            nome_step = " (STEP 7 - MEDIDAS PREVENTIVAS CONTRA REINCIDÊNCIA)";
+            break;
+          default:
+        }
+        this.origem = "Reclamações de Clientes : " + resp[x][15] + nome_step;
+        this.caminho_origem = "#/reclamacoesclientes/view?id=" + resp[x][15] + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.tempo_gasto = resp[x][19];
         this.descricao = resp[x][18]
         this.percentagem_conclusao = resp[x][17];
@@ -290,16 +356,24 @@ export class PaginatarefaComponent implements OnInit {
         this.utz_origem_id = resp[x][24];
         this.atribuido_id = resp[x][23];
 
+<<<<<<< HEAD
         if (this.adminuser /*|| this.user == this.utz_origem_id*/) {
           this.discancelar = false;
         }
         if (this.adminuser ||/* this.user == this.utz_origem_id ||*/ this.user == this.utz_encaminhado || this.user == this.atribuido_id) {
+=======
+        if (this.adminuser || this.user == this.utz_origem_id) {
+          this.discancelar = false;
+        }
+        if (this.adminuser || this.user == this.utz_origem_id || this.user == this.utz_encaminhado || this.user == this.atribuido_id) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.disrejeitar = false;
           this.disconcluir = false;
           this.disencaminhar = false;
 
         } else {
           this.modoedicao = false;
+<<<<<<< HEAD
           this.globalVar.seteditar(false);
           this.simular(this.alteraeditar);
         }
@@ -317,11 +391,17 @@ export class PaginatarefaComponent implements OnInit {
 
 
         if (this.listar && !(this.user == this.atribuido_id || this.user == this.utz_encaminhado)) {
+=======
+          this.simular(this.alteraeditar);
+        }
+        if (this.campo_estado == "C" || this.campo_estado == "A") {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.discancelar = true;
           this.disconcluir = true;
           this.disencaminhar = true;
           this.disrejeitar = true;
           this.modoedicao = false;
+<<<<<<< HEAD
           this.globalVar.seteditar(false);
           document.getElementById("editarlabel").setAttribute("hidden", "true");
           this.simular(this.alteraeditarhid);
@@ -340,13 +420,26 @@ export class PaginatarefaComponent implements OnInit {
       } else {
         this.carregatabelaFiles_TAREFA(id);
       }
+=======
+          this.simular(this.alteraeditar);
+        }
+        ids.push(resp[x][15]);
+
+      }
+      this.globalVar.setfiltros("reclamacaocliente_id", ids);
+      this.carregatabelaFiles(id);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     }, error => {
       console.log(error);
     });
   }
 
+<<<<<<< HEAD
   carregatabelaFiles_RECLAMACAO(id) {
+=======
+  carregatabelaFiles(id) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.uploadedFiles = [];
 
     this.RCMOVRECLAMACAOFICHEIROSService.getbyidtarefa(id).subscribe(
@@ -369,6 +462,7 @@ export class PaginatarefaComponent implements OnInit {
 
   }
 
+<<<<<<< HEAD
   carregatabelaFiles_TAREFA(id) {
     this.uploadedFiles = [];
 
@@ -391,6 +485,8 @@ export class PaginatarefaComponent implements OnInit {
 
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   //formatar a data para yyyy-mm-dd
   formatDate(date) {
@@ -450,6 +546,7 @@ export class PaginatarefaComponent implements OnInit {
         tarefa.tempo_GASTO = this.tempo_gasto;
         tarefa.percentagem_CONCLUSAO = this.percentagem_conclusao;
 
+<<<<<<< HEAD
         //alerta encaminhamento
 
         this.GTMOVTAREFASService.update(tarefa).then(response => {
@@ -460,6 +557,11 @@ export class PaginatarefaComponent implements OnInit {
               this.getEmailUser(this.utz_encaminhado), this.cliente, tarefa.data_CONCLUSAO, tarefa.data_REJEITA, tarefa.data_ANULACAO,
               this.encaminhado, this.referencia, this.prazo_conclusao, tarefa.motivo_REJEICAO, this.nome_tarefa);
           }
+=======
+
+        this.GTMOVTAREFASService.update(tarefa).then(response => {
+          if (alteracoes && tarefa.estado == "L") this.alterarEstadoPLANO(tarefa.id_CAMPO, "E");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           for (var x in data_logs) {
             var logs = new GT_LOGS;
             logs.id_TAREFA = this.id_tarefa;
@@ -473,11 +575,15 @@ export class PaginatarefaComponent implements OnInit {
             this.displayEncaminhar = false;
 
           } else {
+<<<<<<< HEAD
             if (this.modulo == 5) {
               this.gravarTabelaFicheiros_RECLAMACAO(tarefa.id_TAREFA, encaminhado, this.id_RECLAMACAO);
             } else {
               this.gravarTabelaFicheiros_TAREFA(tarefa.id_TAREFA, encaminhado);
             }
+=======
+            this.gravarTabelaFicheiros(tarefa.id_TAREFA, encaminhado, this.id_RECLAMACAO);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           }
 
         }, error => {
@@ -494,7 +600,11 @@ export class PaginatarefaComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   gravarTabelaFicheiros_RECLAMACAO(id, encaminhado, id_reclamacao) {
+=======
+  gravarTabelaFicheiros(id, encaminhado, id_reclamacao) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (this.uploadedFiles && this.uploadedFiles.length > 0) {
 
 
@@ -525,7 +635,11 @@ export class PaginatarefaComponent implements OnInit {
 
         count++;
         if (novo) {
+<<<<<<< HEAD
           this.gravarTabelaFicheiros2_RECLAMACAO(ficheiros, count, this.uploadedFiles.length, id, encaminhado);
+=======
+          this.gravarTabelaFicheiros2(ficheiros, count, this.uploadedFiles.length, id, encaminhado);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         } else if (count == this.uploadedFiles.length) {
           this.simular(this.inputgravou);
           var back;
@@ -565,7 +679,11 @@ export class PaginatarefaComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
   gravarTabelaFicheiros2_RECLAMACAO(ficheiros, count, total, id, encaminhado) {
+=======
+  gravarTabelaFicheiros2(ficheiros, count, total, id, encaminhado) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.RCMOVRECLAMACAOFICHEIROSService.update(ficheiros).subscribe(
       res => {
         var logs = new GT_LOGS;
@@ -614,6 +732,7 @@ export class PaginatarefaComponent implements OnInit {
       });
   }
 
+<<<<<<< HEAD
   gravarTabelaFicheiros2_TAREFA(ficheiros, count, total, id, encaminhado) {
     this.GTMOVFICHEIROSService.update(ficheiros).subscribe(
       res => {
@@ -735,6 +854,8 @@ export class PaginatarefaComponent implements OnInit {
 
     }
   }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   criaLogs(log) {
     this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {
@@ -754,6 +875,7 @@ export class PaginatarefaComponent implements OnInit {
     return nome;
   }
 
+<<<<<<< HEAD
   getEmailUser(id) {
     var utz = this.drop_utilizadores.find(item => item.value == id);
 
@@ -764,6 +886,8 @@ export class PaginatarefaComponent implements OnInit {
     return email;
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   //simular click para mostrar mensagem
   simular(element) {
@@ -780,12 +904,16 @@ export class PaginatarefaComponent implements OnInit {
 
   //abrir popup encaminhar para
   encaminharpara() {
+<<<<<<< HEAD
     if (this.campo_estado == "E") {
       this.errovalida = "Nâo é Possível encaminhar Tarefa no estado 'Em Curso'.";
       this.displayvalidacao = true;
     } else {
       this.displayEncaminhar = true;
     }
+=======
+    this.displayEncaminhar = true;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   //ATUALIZAR ESTADO TAREFA
@@ -831,7 +959,11 @@ export class PaginatarefaComponent implements OnInit {
         estados = "Em Curso";
         break;
       case 'C':
+<<<<<<< HEAD
         estados = "Desenvolvida/ Realizada";
+=======
+        estados = "Concluída";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         break;
       case 'A':
         estados = "Cancelada";
@@ -839,6 +971,7 @@ export class PaginatarefaComponent implements OnInit {
       case 'R':
         estados = "Rejeitada";
         break;
+<<<<<<< HEAD
       case 'N':
         estados = "Não Respondida";
         break;
@@ -848,6 +981,8 @@ export class PaginatarefaComponent implements OnInit {
       case 'V':
         estados = "Controlada/ Verificada";
         break;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       default:
         estados = "Pendente";
     }
@@ -869,7 +1004,11 @@ export class PaginatarefaComponent implements OnInit {
 
 
         if (tarefa.estado != estado) {
+<<<<<<< HEAD
           data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.estado) + " para " + this.geEstado(estado) })
+=======
+          data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
 
         tarefa.estado = estado;
@@ -890,7 +1029,11 @@ export class PaginatarefaComponent implements OnInit {
 
         this.GTMOVTAREFASService.update(tarefa).then(response => {
           this.displayMotivoRejeicao = false;
+<<<<<<< HEAD
           if (tarefa.id_MODULO == 5) this.alterarEstadoPLANO(tarefa.id_CAMPO, estado);
+=======
+          this.alterarEstadoPLANO(tarefa.id_CAMPO, estado);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           for (var x in data_logs) {
             var logs = new GT_LOGS;
             logs.id_TAREFA = id;
@@ -901,6 +1044,7 @@ export class PaginatarefaComponent implements OnInit {
           }
           if (estado == "C") {
             this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.atribuido, "Ao Concluir Tarefa",
+<<<<<<< HEAD
               this.email_utz_origem, this.cliente, tarefa.data_CONCLUSAO, tarefa.data_REJEITA, tarefa.data_ANULACAO, this.encaminhado, this.referencia, this.prazo_conclusao, tarefa.motivo_REJEICAO, this.nome_tarefa);
           } else if (estado == "A") {
             this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.atribuido, "Ao Anular Tarefa",
@@ -916,6 +1060,18 @@ export class PaginatarefaComponent implements OnInit {
           if (estado == "C" || estado == "A" || estado == "R") {
             this.inicia(this.id_tarefa);
           }
+=======
+              this.email_utz_origem, this.cliente, tarefa.data_CONCLUSAO, tarefa.data_REJEITA, tarefa.data_ANULACAO, this.encaminhado, this.referencia, this.prazo_conclusao, tarefa.motivo_REJEICAO);
+          } else if (estado == "A") {
+            this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.atribuido, "Ao Anular Tarefa",
+              this.email_utz_origem, this.cliente, tarefa.data_CONCLUSAO, tarefa.data_REJEITA, tarefa.data_ANULACAO, this.encaminhado, this.referencia, this.prazo_conclusao, tarefa.motivo_REJEICAO);
+          } else if (estado == "R") {
+            this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.atribuido, "Ao Rejeitar Tarefa",
+              this.email_utz_origem, this.cliente, tarefa.data_CONCLUSAO, tarefa.data_REJEITA, tarefa.data_ANULACAO, this.encaminhado, this.referencia, this.prazo_conclusao, tarefa.motivo_REJEICAO)
+          }
+
+          this.simular(this.inputgravou);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }, error => {
           console.log(error);
 
@@ -1172,15 +1328,34 @@ export class PaginatarefaComponent implements OnInit {
       /*});*/
       this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
     } else {
+<<<<<<< HEAD
       if (this.modulo == 5) {
         this.apaga_ficheiro_RECLAMACAO(tab, index);
       } else {
         this.apaga_ficheiro_TAREFA(tab, index);
       }
+=======
+      this.RCMOVRECLAMACAOFICHEIROSService.delete(tab.id).then(
+        res => {
+          //alterar ficheiro de pasta
+          /* this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
+             (res) => {*/
+          var logs = new GT_LOGS;
+          logs.id_TAREFA = this.id_tarefa;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+          logs.descricao = "Ficheiro " + tab.nome + " ( " + ((tab.descricao == null) ? "" : tab.descricao) + ") removido.";
+          this.criaLogs(logs);
+          /* });*/
+          this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
 
   }
 
+<<<<<<< HEAD
   apaga_ficheiro_RECLAMACAO(tab, index) {
     this.RCMOVRECLAMACAOFICHEIROSService.delete(tab.id).then(
       res => {
@@ -1219,6 +1394,10 @@ export class PaginatarefaComponent implements OnInit {
 
 
   enviarEvento(data_tarefa, observacao, numero_tarefa, atribui_a, MOMENTO, email_para, cliente, data_conlusao, data_rejeicao, data_cancelou, encaminhado_para, referencia, prazo_conclusao, motivo_rejeicao, accao) {
+=======
+
+  enviarEvento(data_tarefa, observacao, numero_tarefa, atribui_a, MOMENTO, email_para, cliente, data_conlusao, data_rejeicao, data_cancelou, encaminhado_para, referencia, prazo_conclusao, motivo_rejeicao) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (observacao == null) {
       observacao = "";
     }
@@ -1226,15 +1405,19 @@ export class PaginatarefaComponent implements OnInit {
     if (encaminhado_para == null) {
       encaminhado_para = "";
     }
+<<<<<<< HEAD
     if (cliente == null) {
       cliente = "";
     }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     var dados = "{observacao::" + observacao
       + "\n/link::" + webUrl.host + '/#/tarefas/view?id=' + numero_tarefa
       + "\n/numero_tarefa::" + numero_tarefa
       + "\n/motivo_rejeicao::" + motivo_rejeicao
       + "\n/atribui_a::" + atribui_a
+<<<<<<< HEAD
       + "\n/encaminhado_por::" + atribui_a
       + "\n/referencia::" + referencia
       + "\n/accao::" + accao
@@ -1244,6 +1427,15 @@ export class PaginatarefaComponent implements OnInit {
       + "\n/data_rejeicao::" + this.formatDate(data_rejeicao)
       + "\n/data_cancelou::" + this.formatDate(data_cancelou)
       + "\n/data_tarefa::" + this.formatDate(data_tarefa)
+=======
+      + "\n/referencia::" + referencia
+      + "\n/encaminhado_para::" + encaminhado_para
+      + "\n/prazo_conclusao::" + new Date(prazo_conclusao).toLocaleDateString()
+      + "\n/data_conlusao::" + new Date(data_conlusao).toLocaleDateString()
+      + "\n/data_rejeicao::" + new Date(data_rejeicao).toLocaleDateString()
+      + "\n/data_cancelou::" + new Date(data_cancelou).toLocaleDateString()
+      + "\n/data_tarefa::" + new Date(data_tarefa).toLocaleDateString()
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       + "\n/cliente::" + cliente + "}";
 
 

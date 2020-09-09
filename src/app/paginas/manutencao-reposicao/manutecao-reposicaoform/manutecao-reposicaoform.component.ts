@@ -153,11 +153,18 @@ export class ManutecaoReposicaoformComponent implements OnInit {
       });
 
 
+<<<<<<< HEAD
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
     script1.setAttribute("src", "assets/js/jqbtk.js");
     document.body.appendChild(script1);
+=======
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/jqbtk.js";
+    this.elementRef.nativeElement.appendChild(s);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.setapagar(true);
     this.globalVar.seteditar(true);
     this.globalVar.setvoltar(true);
@@ -574,7 +581,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
                 var valor1 = this.getValor(event.value, response, x);
 
                 if (valor1 != 0 && valor1 != null) {
+<<<<<<< HEAD
                   array.push({ cor: "", liecod: null, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: valor1, valor2: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, factor_CONVERSAO: response[x][1].factor_CONVERSAO, valor_agua: null, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+=======
+                  array.push({ liecod: null, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: valor1, valor2: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, valor_agua: null, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   this.ordernar(array);
                 }
                 if (pos2 == count) {
@@ -623,7 +634,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
                 liecod = res1[0].LIECOD;
                 unid = res1[0].UNIUTI;
               }
+<<<<<<< HEAD
               array.push({ cor: "", liecod: liecod, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, factor_CONVERSAO: response[x][1].factor_CONVERSAO, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: unid, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+=======
+              array.push({ liecod: liecod, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: unid, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               this.ordernar(array);
               if (pos2 == total2) {
                 this.arrayForm.find(item => item.pos == pos).aditivos = array;
@@ -632,7 +647,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
             },
             error => {
+<<<<<<< HEAD
               array.push({ cor: "", liecod: null, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, factor_CONVERSAO: response[x][1].factor_CONVERSAO, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+=======
+              array.push({ liecod: null, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               this.ordernar(array);
               if (pos2 == total2) {
                 this.arrayForm.find(item => item.pos == pos).aditivos = array;
@@ -641,7 +660,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
               console.log(error);
             });
         } else {
+<<<<<<< HEAD
           array.find(item => item.pos == pos).aditivos.push({ cor: "", liecod: response[x][0].liecod, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, factor_CONVERSAO: response[x][1].factor_CONVERSAO, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+=======
+          array.find(item => item.pos == pos).aditivos.push({ liecod: response[x][0].liecod, disabled: disabled, pos: pos2, id_LIN: null, cisterna: response[x][1].cisterna, nome_REF_SUBSTITUTA: response[x][1].nome_REF_SUBSTITUTA, cod_REF_SUBSTITUTA: response[x][1].cod_REF_SUBSTITUTA, id: response[x][1].id_COMPONENTE, nome: response[x][1].nome_COMPONENTE, valor1: this.getValor(dose, response, x), valor2: null, factor: response[x][1].factor_MULTIPLICACAO_AGUA, valor_agua: null, unidade1: response[x][0].id_UNIDADE1, unidade2: response[x][0].id_UNIDADE2, obs: "", stock: total, unidstock: null, nome_REF: response[x][1].nome_REF, cod_REF: response[x][1].cod_REF });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.ordernar(array);
           if (pos2 == total2) {
             this.arrayForm.find(item => item.pos == pos).aditivos = array;
@@ -814,10 +837,13 @@ export class ManutecaoReposicaoformComponent implements OnInit {
       MOV_MANUTENCAO.data_PLANEAMENTO = this.data_planeamento;
       MOV_MANUTENCAO.estado = this.estado
       this.ABMOVMANUTENCAOService.update(MOV_MANUTENCAO).then(() => {
+<<<<<<< HEAD
         this.ABMOVMANUTENCAOService.atualizarestados(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
           response => { }, error => {
             console.log(error);
           });
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.simular(this.inputgravou);
       }, error => {
         console.log(error); this.simular(this.inputerro);
@@ -913,6 +939,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
           MOV_MANUTENCAO_CAB.hora_EXECUCAO = this.arrayForm.find(item => item.pos == pos).hora_exc;
           MOV_MANUTENCAO_CAB.utz_EXECUCAO = this.arrayForm.find(item => item.pos == pos).resp_exe_id;
         }
+<<<<<<< HEAD
 
         //validar lista de aditivos
         this.ABDICBANHOADITIVOService.getbyID_banho(MOV_MANUTENCAO_CAB.id_BANHO).subscribe(
@@ -951,11 +978,22 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
       }
 
+=======
+        this.ABMOVMANUTENCAOCABService.create(MOV_MANUTENCAO_CAB).subscribe(
+          res => {
+            this.arrayForm.find(item => item.pos == pos).id = res.id_MANUTENCAO_CAB;
+            this.gravarlinhasaditivos(res.id_MANUTENCAO_CAB, pos)
+          }, error => {
+            console.log(error); this.simular(this.inputerro);
+          });
+      }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     } else {
       this.simular(this.aviso_concluir_planeamento3);
     }
   }
 
+<<<<<<< HEAD
   criar_cab(MOV_MANUTENCAO_CAB, pos) {
 
     this.ABMOVMANUTENCAOCABService.create(MOV_MANUTENCAO_CAB).subscribe(
@@ -969,6 +1007,8 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
 
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   gravarlinhasaditivos(id, pos) {
     if (this.arrayForm.find(item => item.pos == pos).aditivos.length > 0) {
       for (var x in this.arrayForm.find(item => item.pos == pos).aditivos) {
@@ -1003,9 +1043,13 @@ export class ManutecaoReposicaoformComponent implements OnInit {
         if (valor1 == 0) {
           this.arrayForm.find(item => item.pos == pos).aditivos[x].cor = "";
         } else {
+<<<<<<< HEAD
           if (this.arrayForm.find(item => item.pos == pos).aditivos[x].cor == "") {
             this.arrayForm.find(item => item.pos == pos).aditivos[x].cor = "red";
           }
+=======
+          this.arrayForm.find(item => item.pos == pos).aditivos[x].cor = "red";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
       }
 
@@ -2189,7 +2233,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
 
       if (this.etiquetas[x].id_lin != null) {
+<<<<<<< HEAD
         this.inseriretiquetas(this.etiquetas[x], data, null);
+=======
+        this.inseriretiquetas(this.etiquetas[x], data);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       }
 
       this.simular(this.closedialogetiq);
@@ -2199,7 +2247,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
   }
 
+<<<<<<< HEAD
   inseriretiquetas(etiqueta, data, aditivo, carrega = false, falta = 1, valor1 = 0, factor_conversao = 0, event = null, count = 0, x = "0") {
+=======
+  inseriretiquetas(etiqueta, data, carrega = false, falta = 1, valor1 = 0, factor_conversao = 0, event = null, count = 0, x = "0") {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     var ETI = new AB_MOV_MANUTENCAO_ETIQ;
     ETI.id_MANUTENCAO_LIN = etiqueta.id_lin;
     ETI.consumir = etiqueta.consumir;
@@ -2225,6 +2277,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     ETI.etqnumenr = etiqueta.ETQNUMENR;
     ETI.etqoriqte1 = parseFloat(etiqueta.ETQORIQTE1);
 
+<<<<<<< HEAD
     var adi = null;
     if (aditivo == null) {
       adi = this.arrayForm.find(item => item.pos == this.posmovacab).aditivos.find(item => item.cod_REF == etiqueta.PROREF);
@@ -2237,6 +2290,8 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     ETI.unidade_CONSUMO = unidade1temp;
     ETI.factor_CONVERSAO = adi.factor_CONVERSAO;
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.ABMOVMANUTENCAOETIQService.create(ETI).subscribe(
       res => {
         if (falta == 0 && carrega) {
@@ -2369,7 +2424,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
                     ETQORIQTE1: response[x].ETQORIQTE1,
                   }];
 
+<<<<<<< HEAD
                   this.inseriretiquetas(etiqueta[0], new Date(), adi, carrega, falta, valor1, factor_conversao, event, count, x);
+=======
+                  this.inseriretiquetas(etiqueta[0], new Date(), carrega, falta, valor1, factor_conversao, event, count, x);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   if (adi.cor == "yellow") { } else if (falta > 0) { adi.cor = "red" } else if (falta == 0) { adi.cor = "green" }
                 } else {
                   if (carrega && count == (parseInt(x) + 1)) {
@@ -2856,7 +2915,11 @@ export class ManutecaoReposicaoformComponent implements OnInit {
         this.etiquetasaditivo[y].consumir = this.etiquetasaditivo[y].consumir.replace(",", ".");
         //console.log(this.etiquetasaditivo[y])
         if (this.etiquetasaditivo[y].id.toString().substring(0, 2) == "id") {
+<<<<<<< HEAD
           this.inseriretiquetas(this.etiquetasaditivo[y], new Date(), null);
+=======
+          this.inseriretiquetas(this.etiquetasaditivo[y], new Date());
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         } else {
           this.atualizaetiquetas(this.etiquetasaditivo[y]);
         }
@@ -3000,6 +3063,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
   maxNumber(event) {
 
     var value = event.srcElement.value;
@@ -3009,4 +3073,6 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     return value;
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

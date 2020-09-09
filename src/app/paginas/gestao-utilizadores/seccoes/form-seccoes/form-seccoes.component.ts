@@ -146,7 +146,11 @@ export class FormSeccoesComponent implements OnInit {
     this.departs = [];
     this.GERDEPARTAMENTOService.getAll2().subscribe(
       response => {
+<<<<<<< HEAD
         this.departs.push({ value: "", label: "Selecionar Departamento" });
+=======
+        this.departs.push({ value: "", label: "Seleccionar Departamento" });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         for (var x in response) {
 
           if (!this.novo && this.id_DEPARTAMENTO == response[x][0].id) this.responsavel = response[x][1].nome_UTILIZADOR;

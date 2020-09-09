@@ -130,7 +130,11 @@
                     <p-fileUpload #fileInput name="myfile[]" customUpload="true" (uploadHandler)="onUpload($event)" multiple="multiple" maxFileSize="1000000"
                       invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, " invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}."
                       invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}." invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, "
+<<<<<<< HEAD
                       chooseLabel="Selecionar" uploadLabel="Carregar" cancelLabel="Cancelar"></p-fileUpload>
+=======
+                      chooseLabel="Seleccionar" uploadLabel="Carregar" cancelLabel="Cancelar"></p-fileUpload>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     <div *ngIf="uploadedFiles.length">
                       <div *ngFor="let file of uploadedFiles" class="ui-fileupload-row" style="float: left;border: 1px solid blue;">
                         <div>{{file.name}}</div>

@@ -4,9 +4,12 @@ import { AppGlobals } from '../../../menu/sidebar.metadata';
 import { GERDEPARTAMENTOService } from '../../../servicos/ger-departamento.service';
 import { GERUTILIZADORESService } from '../../../servicos/ger-utilizadores.service';
 import { ConfirmationService } from 'primeng/primeng';
+<<<<<<< HEAD
 import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
 import { GERDEPARTAMENTOSSECTORESService } from 'app/servicos/ger-departamentos-sectores.service';
 import { GER_DEPARTAMENTOS_SECTORES } from 'app/entidades/GER_DEPARTAMENTOS_SECTORES';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
   selector: 'app-departamentos',
@@ -26,13 +29,17 @@ export class DepartamentosComponent implements OnInit {
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
   descricao: string;
+<<<<<<< HEAD
   local: number;
   modulo: string;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   modoedicao: boolean;
   criar: boolean;
   apagar: boolean;
   departamento: GER_DEPARTAMENTO;
   user: any;
+<<<<<<< HEAD
   locais = [{ label: "Selecionar Local", value: null }, { value: 1, label: "Formariz" }, { value: 2, label: "São Bento" }, { value: 3, label: "Todas" }];
   modulos = [{ label: "Selecionar Módulo", value: null }, { value: 'EP', label: "Engª Processos" },
   { value: 'M', label: "Manutenção" }, { value: 'Q', label: "Qualidade" }, { value: 'I', label: "Injeção" },
@@ -42,6 +49,10 @@ export class DepartamentosComponent implements OnInit {
   targetPerfil: any[];
 
   constructor(private GERDEPARTAMENTOSSECTORESService: GERDEPARTAMENTOSSECTORESService, private RHSECTORESService: RHSECTORESService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private globalVar: AppGlobals, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private renderer: Renderer) { }
+=======
+
+  constructor(private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private globalVar: AppGlobals, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private renderer: Renderer) { }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   ngOnInit() {
 
     this.globalVar.setapagar(false);
@@ -83,10 +94,14 @@ export class DepartamentosComponent implements OnInit {
     this.novo = true;
     this.id_depart_selected = 0;
     this.descricao = "";
+<<<<<<< HEAD
     this.modulo = "";
     this.local = null;
     this.utilizadores_id = null;
     this.preencheListas(0);
+=======
+    this.utilizadores_id = null;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.simular(this.dialog);
   }
 
@@ -97,8 +112,11 @@ export class DepartamentosComponent implements OnInit {
     var depart = new GER_DEPARTAMENTO;
     if (!this.novo) depart = this.departamento;
     depart.descricao = this.descricao;
+<<<<<<< HEAD
     depart.modulo = this.modulo;
     depart.local = this.local;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     depart.id_UTZ = this.utilizadores_id;
     depart.inativo = false;
     depart.utz_ULT_MODIF = this.user;
@@ -108,6 +126,7 @@ export class DepartamentosComponent implements OnInit {
       depart.utz_CRIA = this.user;
       depart.data_CRIA = new Date();
       this.GERDEPARTAMENTOService.create(depart).subscribe(response => {
+<<<<<<< HEAD
 
         for (var x in this.targetPerfil) {
           var perf = new GER_DEPARTAMENTOS_SECTORES;
@@ -116,6 +135,8 @@ export class DepartamentosComponent implements OnInit {
           this.gravarlinhas(perf);
         }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.listar_departs();
         this.simular(this.closedialog);
       },
@@ -131,6 +152,7 @@ export class DepartamentosComponent implements OnInit {
   }
 
 
+<<<<<<< HEAD
   gravarlinhas(perf) {
 
     this.GERDEPARTAMENTOSSECTORESService.create(perf).subscribe(
@@ -139,6 +161,8 @@ export class DepartamentosComponent implements OnInit {
       error => { console.log(error); });
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   //listar os dados na tabela
   listar_departs() {
     this.departs = [];
@@ -147,6 +171,7 @@ export class DepartamentosComponent implements OnInit {
         for (var x in response) {
           var nome_op = "";
 
+<<<<<<< HEAD
           if (response[x].id_UTZ != null && this.utilizadores.find(item => item.value == response[x].id_UTZ)) nome_op = this.utilizadores.find(item => item.value == response[x].id_UTZ).label;
 
           var modulo_text = "";
@@ -155,6 +180,11 @@ export class DepartamentosComponent implements OnInit {
           if (response[x].modulo != null && this.modulos.find(item => item.value == response[x].modulo)) modulo_text = this.modulos.find(item => item.value == response[x].modulo).label;
 
           this.departs.push({ modulo_text: modulo_text, local_text: local_text, id: response[x].id, id_UTZ: response[x].id_UTZ, local: response[x].local, modulo: response[x].modulo, descricao: response[x].descricao, nome_op: nome_op, dados: response[x] });
+=======
+          if (response[x].id_UTZ != null) nome_op = this.utilizadores.find(item => item.value == response[x].id_UTZ).label;
+
+          this.departs.push({ id: response[x].id, id_UTZ: response[x].id_UTZ, descricao: response[x].descricao, nome_op: nome_op, dados: response[x] });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
         this.departs = this.departs.slice();
       },
@@ -174,8 +204,11 @@ export class DepartamentosComponent implements OnInit {
         var depart = new GER_DEPARTAMENTO;
         depart = this.departamento;
         depart.descricao = this.descricao;
+<<<<<<< HEAD
         depart.local = this.local;
         depart.modulo = this.modulo;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         depart.id_UTZ = this.utilizadores_id;
         depart.inativo = true;
         depart.utz_APAGA = this.user;
@@ -190,6 +223,7 @@ export class DepartamentosComponent implements OnInit {
 
   }
 
+<<<<<<< HEAD
   //ao inserir nos sectores do departamento
   onMoveToTarget(e) {
     var x;
@@ -241,6 +275,8 @@ export class DepartamentosComponent implements OnInit {
       }, error => { console.log(error); });
 
   }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
   //ao clicar na tabela abrir popup para editar
@@ -248,11 +284,16 @@ export class DepartamentosComponent implements OnInit {
     this.departamento = event.data.dados;
     this.id_depart_selected = event.data.id;
     this.descricao = event.data.descricao;
+<<<<<<< HEAD
     this.modulo = event.data.modulo;
     this.local = event.data.local;
     this.utilizadores_id = event.data.id_UTZ;
     this.novo = false;
     this.preencheListas(event.data.id);
+=======
+    this.utilizadores_id = event.data.id_UTZ;
+    this.novo = false;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.simular(this.dialog);
   }
 

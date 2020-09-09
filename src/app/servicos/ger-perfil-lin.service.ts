@@ -66,6 +66,7 @@ export class GERPERFILLINService {
   }
 
 
+<<<<<<< HEAD
   getversao() {
     const url = webUrl.host + '/rest/sirb/getVERSAO_APP/';
     return this.http
@@ -73,6 +74,8 @@ export class GERPERFILLINService {
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   private extractData(res: Response) {
     let body = res.json();

@@ -170,7 +170,11 @@ export class AnaliseconsumosetiquetasComponent {
         previous: 'Anterior',
         loadingOoo: 'A carregar...',
         // for set filter
+<<<<<<< HEAD
         selectAll: 'Selecionar tudo',
+=======
+        selectAll: 'Seleccionar tudo',
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         searchOoo: 'Pesquisar...',
         blanks: 'espaços em branco',
         // for number filter and text filter
@@ -469,7 +473,11 @@ export class AnaliseconsumosetiquetasComponent {
 
 
   componentes(inicio, update = false) {
+<<<<<<< HEAD
     var days = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+=======
+    var days = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado-Feira'];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     var month = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
     if (this.gridOptions.api != null) this.gridOptions.api.showLoadingOverlay();

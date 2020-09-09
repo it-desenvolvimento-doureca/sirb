@@ -234,7 +234,10 @@ export class CorrecaoquantidadesComponent implements OnInit {
     ETI.sinal = etiqueta.sinal;
     ETI.observacao = "Correção Quantidades";
     ETI.etqoriqte1 = parseFloat(etiqueta.ETQORIQTE1);
+<<<<<<< HEAD
     ETI.linha = this.linha.id;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
     this.ABMOVMANUTENCAOETIQService.create(ETI).subscribe(

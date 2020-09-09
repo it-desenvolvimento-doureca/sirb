@@ -157,6 +157,7 @@ export class RCMOVRECLAMACAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
 
   getRC_MOV_RECLAMACAOACCOESABERTAS(id, tipo): Observable<RC_MOV_RECLAMACAO[]> {
     const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAOACCOESABERTAS/' + id + '/' + tipo;
@@ -166,6 +167,8 @@ export class RCMOVRECLAMACAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getEMAILS(id) {
     const url = webUrl.host + '/rest/sirb/getEMAILS/' + id;
     return this.http
@@ -196,6 +199,7 @@ export class RCMOVRECLAMACAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   atualizaestadosRC_MOV_RECLAMACAUPDATEESTADOS(id, modulo, tipo) {
     return this.http
       .get(webUrl.host + '/rest/sirb/atualizaestadosRC_MOV_RECLAMACAUPDATEESTADOS/' + id + '/' + modulo + '/' + tipo)
@@ -204,6 +208,8 @@ export class RCMOVRECLAMACAOService {
   }
 
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   traduzir(data) {
     return this.http

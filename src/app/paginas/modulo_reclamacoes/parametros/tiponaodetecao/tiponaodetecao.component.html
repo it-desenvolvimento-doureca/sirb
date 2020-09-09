@@ -8,8 +8,13 @@
             <h4 class="title">Tipos Não Deteção</h4>
           </div>
           <div class="card-content">
+<<<<<<< HEAD
             <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
               [paginator]="true" [rows]="15">
+=======
+            <p-dataTable [style]="{'width':'300px'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               <p-column [style]="{'width':'30px'}" field="codigo" header="codigo" [filter]="true" [sortable]="true"></p-column>
               <p-column [style]="{'width':'30px'}" field="descricao" header="Descrição" [filter]="true" [sortable]="true"></p-column>
               <p-footer>

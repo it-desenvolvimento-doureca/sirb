@@ -28,6 +28,7 @@ export class GT_MOV_TAREFAS {
     percentagem_CONCLUSAO: number;
     descricao: string;
     data_REJEITA: Date;
+<<<<<<< HEAD
     utz_REJEITA: number;
     motivo_REJEICAO: string;
 
@@ -37,4 +38,9 @@ export class GT_MOV_TAREFAS {
     utz_CONTROLA: number;
     justificacao_ALTERACAO_ESTADO: string;
 
+=======
+    utz_REJEITA: Date;
+    motivo_REJEICAO: string;
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

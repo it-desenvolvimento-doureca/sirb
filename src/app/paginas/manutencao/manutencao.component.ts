@@ -36,7 +36,10 @@ export class ManutencaoComponent implements OnInit {
   data_actual: Date;
   cols: any[];
   filtro = [];
+<<<<<<< HEAD
   yearTimeout: any;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
   linha = null;
@@ -179,9 +182,15 @@ export class ManutencaoComponent implements OnInit {
           }
           this.cols = this.cols.slice();
           if (this.linha == null || this.linha == "") this.linha = this.globalVar.getlinha();
+<<<<<<< HEAD
           this.filtrar2(this.linha, "linha", true);
 
           if (this.filtroval) this.filtrar2(this.filtro, "estado", true, "in");
+=======
+          this.filtrar(this.linha, "linha", true);
+
+          if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         },
         error => console.log(error));
 
@@ -229,6 +238,7 @@ export class ManutencaoComponent implements OnInit {
 
   //filtro coluna linha
   filtrar(value, coluna, fil = false, filtro = "contains") {
+<<<<<<< HEAD
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
     }
@@ -260,6 +270,8 @@ export class ManutencaoComponent implements OnInit {
   //filtro coluna linha
   filtrar2(value, coluna, fil = false, filtro = "contains") {
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (value == 0 && fil) {
       value = "";
     }
@@ -278,7 +290,10 @@ export class ManutencaoComponent implements OnInit {
       this.mensagemtabela = "Nenhum Registo foi encontrado...";
     }
     this.globalVar.setfiltros("manutencao_id", ids);
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   atualizaids() {
@@ -345,9 +360,15 @@ export class ManutencaoComponent implements OnInit {
           }
           this.cols = this.cols.slice();
           if (this.linha == null || this.linha == "") this.linha = this.globalVar.getlinha();
+<<<<<<< HEAD
           this.filtrar2(this.linha, "linha", true);
 
           if (this.filtroval) this.filtrar2(this.filtro, "estado", true, "in");
+=======
+          this.filtrar(this.linha, "linha", true);
+
+          if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.globalVar.setfiltros("manutencao_id", ids);
           this.globalVar.setfiltros("manutencaoidbanho", id);
         },
@@ -357,7 +378,11 @@ export class ManutencaoComponent implements OnInit {
       this.globalVar.setfiltros("manutencaoidbanho", null);
       this.carregarlista();
       /*this.id_manu = "";
+<<<<<<< HEAD
       this.filtrar2('', "id", false, "in");*/
+=======
+      this.filtrar('', "id", false, "in");*/
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
   }
 

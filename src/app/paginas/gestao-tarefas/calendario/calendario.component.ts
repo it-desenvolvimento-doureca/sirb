@@ -1,7 +1,10 @@
 import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment-timezone';
+<<<<<<< HEAD
 import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 @Component({
   selector: 'app-calendario',
   templateUrl: './calendario.component.html',
@@ -9,6 +12,7 @@ import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 })
 export class CalendarioComponent implements OnInit {
 
+<<<<<<< HEAD
   titulo_evento: any;
   calOptions: any;
   events: any[] = [];
@@ -280,6 +284,58 @@ export class CalendarioComponent implements OnInit {
 
   formatDate(date) {
     var d = new Date(moment(date).tz("Europe/lisbon")),
+=======
+  hora_fim: any;
+  hora_inicio: any;
+  data_fim: any;
+  data_inicio: any;
+  titulo_evento: any;
+  header: any;
+  events: any[];
+  @ViewChild('abrirpopup') abrirpopup: ElementRef;
+  @ViewChild('fecharpopup') fecharpopup: ElementRef;
+
+  constructor(private renderer: Renderer) { }
+
+  ngOnInit() {
+    this.header = {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay,listWeek'
+    };
+
+    var data = this.formatDate("2018-04-19 10:15");
+    this.events = [
+      {
+        "id": 1,
+        "title": "All Day Event",
+        "start": data,
+        "color": '#257e4a'
+      },
+      {
+        "title": "Long Event",
+        "start": this.formatDate("2018-04-07 00:00:00"),
+        "end": this.formatDate("2018-04-10 00:00:00")
+      },
+      {
+        "title": "Repeating Event 1 ",
+        "start": this.formatDate("2018-04-09 16:00:00")
+      },
+      {
+        "title": "Repeating Event 2",
+        "start": this.formatDate("2018-04-16 16:00:00")
+      },
+      {
+        "title": "Conference",
+        "start": this.formatDate("2018-04-11 00:00:00"),
+        "end": this.formatDate("2018-04-13 00:00:00")
+      }
+    ];
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear(),
@@ -318,8 +374,18 @@ export class CalendarioComponent implements OnInit {
   }
 
   ver_evento(evento) {
+<<<<<<< HEAD
     // console.log(evento);
     /*if (evento.calEvent.allDay) {
+=======
+    this.data_fim = "";
+    this.data_inicio = "";
+    this.hora_inicio = "";
+    this.hora_fim = "";
+
+    // console.log(evento);
+    if (evento.calEvent.allDay) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       this.titulo_evento = evento.calEvent.title;
       this.data_inicio = new Date(moment(evento.calEvent.start._i).tz("Europe/lisbon"));
       if (evento.calEvent.end != null) {
@@ -334,6 +400,7 @@ export class CalendarioComponent implements OnInit {
         this.data_fim = new Date(moment(evento.calEvent.end._d).tz("Europe/lisbon"));
         this.hora_fim = new Date(moment(evento.calEvent.end._i).tz("Europe/lisbon")).toLocaleTimeString();
       }
+<<<<<<< HEAD
     }*/
 
     this.titulo_evento = evento.calEvent.title;
@@ -389,6 +456,11 @@ export class CalendarioComponent implements OnInit {
       this.descricao = evento.calEvent.description;
     }
 
+=======
+    }
+
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     let elem3 = document.getElementById("mainpagecontent");
     let h = elem3.getBoundingClientRect().height;
 

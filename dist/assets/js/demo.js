@@ -213,6 +213,7 @@ $(document).ready(function () {
     });
 
 
+<<<<<<< HEAD
     $('.main-panel').scroll(function () {
         if ($(".cab_analiseencomendas_1").is(":visible")) {
             w = $(".referenciacol").width();
@@ -431,6 +432,8 @@ $(document).ready(function () {
     });
 
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 });
 
@@ -606,6 +609,7 @@ demo = {
             message: messages
 
         }, {
+<<<<<<< HEAD
             type: type[cor],
             timer: 100,
             placement: {
@@ -613,6 +617,15 @@ demo = {
                 align: align
             }
         });
+=======
+                type: type[cor],
+                timer: 100,
+                placement: {
+                    from: from,
+                    align: align
+                }
+            });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
 
 
@@ -637,6 +650,7 @@ function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
     }
 
     //create a bogus data channel
+<<<<<<< HEAD
     var uaString = window.navigator.userAgent;
     var match = /\b(MSIE |Trident.*?rv:|Edge\/)(\d+)/.exec(uaString);
 
@@ -650,6 +664,9 @@ function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
         pc.createDataChannel("");
     }
 
+=======
+    pc.createDataChannel("");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     // create offer and set local description
     pc.createOffer(function (sdp) {
@@ -673,6 +690,7 @@ function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
 getUserIP(function (ip) {
     document.cookie = "IP_CLIENT=" + ip;
 });
+<<<<<<< HEAD
 
 $(document).ready(function () {
     var clicked = false, clickX;
@@ -710,3 +728,5 @@ $(document).ready(function () {
         return false;
     });
 });
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea

@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
 import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
+<<<<<<< HEAD
 import { RC_DIC_GRAU_IMPORTANCIA } from 'app/entidades/RC_DIC_GRAU_IMPORTANCIA';
+=======
+import { RC_DIC_GRAU_IMPORTANCIA } from '../entidades/RC_DIC_GRAU_IMPORTANCIA';
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Injectable()
 export class RCDICGRAUIMPORTANCIAService {

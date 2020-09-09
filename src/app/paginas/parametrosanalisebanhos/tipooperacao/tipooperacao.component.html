@@ -9,7 +9,11 @@
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'400px'}" [value]="operacoes" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true"
+<<<<<<< HEAD
               [rows]="15">
+=======
+              rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               <p-column [style]="{'width':'40%'}" field="nome" header="Tipo Operação" [filter]="true" [sortable]="true"></p-column>
               <p-column [style]="{'width':'20%'}" field="id195" header="ID195" [filter]="true" [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">

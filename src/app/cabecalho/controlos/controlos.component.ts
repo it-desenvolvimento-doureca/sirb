@@ -250,6 +250,7 @@ export class ControlosComponent implements OnInit {
   cancelar() {
     this.cancelarbt.emit()
   }
+<<<<<<< HEAD
 
   valida() {
     this.validarbt.emit()
@@ -274,6 +275,32 @@ export class ControlosComponent implements OnInit {
     this.anterior = false;
   }
 
+=======
+
+  valida() {
+    this.validarbt.emit()
+  }
+
+  historico_f() {
+    this.hitoricobt.emit()
+  }
+
+  editarclick(val) {
+    this.editar = val;
+  }
+
+  cancelarclick() {
+    this.cancela = true;
+  }
+
+  editarclickhidde() {
+    this.editar = false;
+    this.apagar = false;
+    this.seguinte = false;
+    this.anterior = false;
+  }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   atualizar() {
     this.atualiza.emit()
   }

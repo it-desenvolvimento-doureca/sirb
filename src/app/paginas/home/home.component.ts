@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+<<<<<<< HEAD
 
     if (document.getElementById("script2")) document.getElementById("script2").remove();
     var script2 = document.createElement("script");
@@ -31,6 +32,12 @@ export class HomeComponent implements OnInit {
     script2.setAttribute("src", "assets/js/initMenu.js");
     document.body.appendChild(script2);
 
+=======
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/initMenu.js";
+    this.elementRef.nativeElement.appendChild(s);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.mod_prod = webUrl.mod_pro;
 
     if (!this.mod_prod) this.carregagraficos();

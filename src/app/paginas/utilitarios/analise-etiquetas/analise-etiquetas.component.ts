@@ -31,10 +31,17 @@ export class AnaliseEtiquetasComponent implements OnInit {
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
+<<<<<<< HEAD
     this.ABDICCOMPONENTEService.getComponentesdoSGIID().subscribe(
       response => {
         this.componentes_silver = [];
         this.componentes_silver.push({ label: 'Selecionar Referência', value: "" });
+=======
+    this.ABDICCOMPONENTEService.getComponentes().subscribe(
+      response => {
+        this.componentes_silver = [];
+        this.componentes_silver.push({ label: 'Seleccionar Referência', value: "" });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         for (var x in response) {
           this.componentes_silver.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1 + ' ' + response[x].PRODES2, value: { valor: response[x].PROREF, UNISTO: response[x].UNISTO } });
         }

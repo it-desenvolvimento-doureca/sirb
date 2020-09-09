@@ -13,11 +13,18 @@
             <p-dataTable (onFilter)="atualizaids()" [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}"
               [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)"
               [rowsPerPageOptions]="[25,50,100,'todos']">
+<<<<<<< HEAD
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Nº Recl."
                 [style]="{'width':'97px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="id_manu" #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+=======
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Nº Recl." [style]="{'width':'97px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="id_manu"
+                    #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </ng-template>
               </p-column>
               <!--<p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo_manu" header="Tipo">
@@ -29,6 +36,7 @@
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data Reclam."
                 [style]="{'width':'132px'}">
                 <ng-template pTemplate="filter" let-col>
+<<<<<<< HEAD
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="data" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
@@ -47,6 +55,21 @@
                   <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados"
                     [style]="{'width':'100%'}" (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
                     styleClass="ui-column-filter"></p-multiSelect>
+=======
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="data"
+                    #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="cliente" header="Cliente"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Moraca Cliente"></p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="referencia" header="Artigo">
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" filterMatchMode="in" styleclass="text-danger" field="estado"
+                header="Estado" [style]="{'width':'150px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)" styleClass="ui-column-filter"></p-multiSelect>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </ng-template>
               </p-column>
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
@@ -57,8 +80,13 @@
                   </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
+<<<<<<< HEAD
                   <a style="color: black; cursor:pointer;" title="Ver mais"
                     [routerLink]="['/reclamacoesfornecedores/view']" [queryParams]="{ id: car.id }">
+=======
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/reclamacoesfornecedores/view']"
+                    [queryParams]="{ id: car.id }">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>

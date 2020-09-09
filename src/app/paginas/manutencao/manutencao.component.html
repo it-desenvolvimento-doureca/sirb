@@ -16,7 +16,11 @@
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Nº Manut">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="id_manu"
+<<<<<<< HEAD
                     #v (input)="filtrar(v.value,col.field,false,'in')" type="text">
+=======
+                    #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo_manu" header="Tipo">

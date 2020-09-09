@@ -34,6 +34,7 @@ export class GERUTZPERFILService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   getAllbyiduser(id_perfil, id_modulo): Observable<GER_UTZ_PERFIL[]> {
     const url = webUrl.host + '/rest/sirb/getGER_UTZ_PERFILbyidUSER/' + id_perfil + '/' + id_modulo;
     return this.http
@@ -50,6 +51,8 @@ export class GERUTZPERFILService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteGER_UTZ_PERFIL/' + id + '')

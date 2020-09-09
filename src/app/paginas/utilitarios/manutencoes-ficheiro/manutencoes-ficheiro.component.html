@@ -12,7 +12,11 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="tab-content">
+<<<<<<< HEAD
                   <form role="form" ngNativeValidate (ngSubmit)="getListComp()">
+=======
+                  <form role="form" ngNativeValidate (ngSubmit)="getFile()">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     <!-- Modal Body -->
                     <div class="col-md-12 " style="padding: 6px">
                       <h5 style="margin: 0; ">Ficheiros Manutenções (Interface)</h5>
@@ -20,6 +24,7 @@
 
                       <div class="col-md-12">
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+<<<<<<< HEAD
                           <label style="display: -webkit-box;">Data Movimento entre</label>
                           <p-calendar dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
                             [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datainicio"
@@ -27,10 +32,19 @@
                           <input style="width:82px; margin-left:29px; padding: 5px 4px; margin-right: 10px;"
                             [(ngModel)]="horainicio" [ngModelOptions]="{standalone: true}" type="time"
                             class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+=======
+                          <label style="display: -webkit-box;">Data Manutenção entre</label>
+                          <p-calendar dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datainicio" [ngModelOptions]="{standalone: true}"
+                            [showIcon]="true" [required]="true"></p-calendar>
+                          <input style="width:82px; margin-left:29px; padding: 5px 4px; margin-right: 10px;"
+                            [(ngModel)]="horainicio" [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                             ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
 
                           <label style="position: absolute; top: 0;">e:</label>
                           <p-calendar dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+<<<<<<< HEAD
                             [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datafim"
                             [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
                           <input style="width:82px; margin-left:29px; padding: 5px 4px;" [(ngModel)]="horafim"
@@ -81,6 +95,26 @@
                   <div class="col-md-12" style="text-align: center;">
                     <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
                   </div>
+=======
+                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="datafim" [ngModelOptions]="{standalone: true}"
+                            [showIcon]="true" [required]="true"></p-calendar>
+                          <input style="width:82px; margin-left:29px; padding: 5px 4px;" [(ngModel)]="horafim"
+                            [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                            ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        </div>
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
+                          <label>IP (ip do posto de impressão):</label>
+                          <input type="text" class="form-control2" required="true" [(ngModel)]="ip" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                      <button (click)="backview()" type="reset" class="btn btn-default">Cancelar</button>
+                      <button class="btn btn-success" [disabled]="loading" type="submit">Download Ficheiros</button>
+                    </div>
+                  </form>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </div>
               </div>
             </div>
@@ -92,6 +126,7 @@
 </div>
 
 
+<<<<<<< HEAD
 <button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
   onclick="demo.showNotification('top','right','Etiqueta Impressa com Sucesso!',2)"></button>
 
@@ -103,6 +138,15 @@
   [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
   [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="loading"
   [modal]="true">
+=======
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Etiqueta Impressa com Sucesso!',2)"></button>
+
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Erro no Download!',4)"></button>
+
+
+<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0" [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="loading" [modal]="true">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   <div class="container">
     <div class="row">
       <div id="loading">

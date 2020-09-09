@@ -35,8 +35,13 @@
 
           <div class="input-group" style="padding-right: 22px;">
             <span class="input-group-addon iconspan"><i class="glyphicon glyphicon-lock"></i></span>
+<<<<<<< HEAD
             <input id="password" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
               class="form-control" name="password" placeholder="Password" style="margin-top: 22px;" required>
+=======
+            <input id="password" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" name="password"
+              placeholder="Password" style="margin-top: 22px;" required>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
 
           <div class="form-group">
@@ -56,8 +61,12 @@
     </div>
     <div style="text-align: center">
       <button (click)="abrirdialog()" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">
+<<<<<<< HEAD
         <i class="material-icons">dialpad</i>
         <div class="ripple-container"></div>
+=======
+        <i class="material-icons">dialpad</i><div class="ripple-container"></div>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       </button>
     </div>
   </div>
@@ -67,19 +76,31 @@
 <div id="particles"></div>
 
 
+<<<<<<< HEAD
 <button class="btn btn-primary btn-lg" #dialogkeypad data-toggle="modal" [hidden]="true" data-target="#dialogkeypad"
   data-backdrop="false"></button>
 <!-- Modal keypad-->
 <div class="modal fade" id="dialogkeypad" #dialogopen tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
+=======
+<button class="btn btn-primary btn-lg" #dialogkeypad data-toggle="modal" [hidden]="true" data-target="#dialogkeypad" data-backdrop="false"></button>
+<!-- Modal keypad-->
+<div class="modal fade" id="dialogkeypad" #dialogopen tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   <div class="modal-dialog" style="width: 30%">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
+<<<<<<< HEAD
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
+=======
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title" id="myModalLabel">
           <i [hidden]="login_statuspopup" class="glyphicon glyphicon-log-in"></i>
           <i [hidden]="!login_statuspopup" class="fa fa-spinner fa-spin" style="left: -9px;"></i> Log in
@@ -92,6 +113,7 @@
           <div class="col-md-12" class="keypad">
             <div class="col-md-12">
               <div class="col-md-12">
+<<<<<<< HEAD
                 <input class="form-control" style="font-size: 60px;" [disabled]="true" [(ngModel)]="user_code"
                   [ngModelOptions]="{standalone: true}" type="password">
               </div>
@@ -106,10 +128,23 @@
               <div class="col-md-4">
                 <button (click)="marcar('3')" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button">3</button>
+=======
+                <input class="form-control" style="font-size: 60px;" [disabled]="true" [(ngModel)]="user_code" [ngModelOptions]="{standalone: true}" type="password">
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('1')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">1</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('2')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">2</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('3')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">3</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
             </div>
             <div class="col-md-12">
               <div class="col-md-4">
+<<<<<<< HEAD
                 <button (click)="marcar('4')" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button">4</button>
               </div>
@@ -120,10 +155,20 @@
               <div class="col-md-4">
                 <button (click)="marcar('6')" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button">6</button>
+=======
+                <button (click)="marcar('4')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">4</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('5')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">5</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('6')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">6</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
             </div>
             <div class="col-md-12">
               <div class="col-md-4">
+<<<<<<< HEAD
                 <button (click)="marcar('7')" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button">7</button>
               </div>
@@ -134,10 +179,20 @@
               <div class="col-md-4">
                 <button (click)="marcar('9')" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button">9</button>
+=======
+                <button (click)="marcar('7')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">7</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('8')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">8</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('9')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">9</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
             </div>
             <div class="col-md-12">
               <div class="col-md-4">
+<<<<<<< HEAD
                 <button (click)="undo()" class="btn btn-white btn-round btn-just-icon" style="color: black;"
                   type="button"><i class="material-icons">backspace</i></button>
               </div>
@@ -149,14 +204,28 @@
                 <button (click)="validar()" class="btn btn-white btn-round btn-just-icon"
                   style="color: black; background: rgba(0, 128, 0, 0.42);" type="button"><i
                     class="material-icons">keyboard_return</i></button>
+=======
+                <button (click)="undo()" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button"><i class="material-icons">backspace</i></button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="marcar('0')" class="btn btn-white btn-round btn-just-icon" style="color: black;" type="button">0</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="validar()" class="btn btn-white btn-round btn-just-icon" style="color: black; background: rgba(0, 128, 0, 0.42);"
+                  type="button"><i class="material-icons">keyboard_return</i></button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
             </div>
           </div>
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
+<<<<<<< HEAD
           <button type="button" class="btn btn-default" style="width: 100%" #closedialog
             data-dismiss="modal">Fechar</button>
+=======
+          <button type="button" class="btn btn-default" style="width: 100%" #closedialog data-dismiss="modal">Fechar</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         </div>
       </form>
     </div>

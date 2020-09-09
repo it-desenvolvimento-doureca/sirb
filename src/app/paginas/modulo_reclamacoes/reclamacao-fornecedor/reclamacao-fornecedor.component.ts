@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { FileUpload, ConfirmationService } from 'primeng/primeng';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
@@ -17,6 +18,12 @@ import { RCDICCLASSIFICACAOService } from 'app/servicos/rc-dic-classificacao.ser
 import { webUrl } from 'assets/config/webUrl';
 import * as FileSaver from 'file-saver';
 import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
+=======
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FileUpload } from 'primeng/primeng';
+import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { ActivatedRoute, Router } from '@angular/router';
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
   selector: 'app-reclamacao-fornecedor',
@@ -25,11 +32,17 @@ import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
 })
 export class ReclamacaoFornecedorComponent implements OnInit {
   types = [];
+<<<<<<< HEAD
   drop_fornecedor = [];
   drop_referencia = [];
   //drop_moradas = [];
   filedescricao = [];
   fileselectinput = [];
+=======
+  drop_cliente = [];
+  drop_referencia = [];
+  drop_moradas = [];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   @ViewChild('escondebt') escondebt: ElementRef;
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -41,11 +54,14 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   @ViewChild('buttongravar') buttongravar: ElementRef;
   @ViewChild('alteraeditar') alteraeditar: ElementRef;
   @ViewChild('alteracancelar') alteracancelar: ElementRef;
+<<<<<<< HEAD
 
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputartigoexiste') inputartigoexiste: ElementRef;
   @ViewChild('alteraeditar2') alteraeditar2: ElementRef;
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   user: any;
   user_nome: any;
   adminuser: any;
@@ -54,12 +70,17 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   disimprimir: boolean;
   modoedicao: boolean;
   numero_RECLAMACAO;
+<<<<<<< HEAD
   titulo;
+=======
+  numero_RECLAMACAO_CLIENTE;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   data_CRIA;
   hora_CRIA;
   data_RECLAMACAO;
   hora_RECLAMACAO;
   utz_CRIA;
+<<<<<<< HEAD
   numero_RECLAMACAO_FORNECEDOR
   fornecedor;
   //morada_FORNECEDOR;
@@ -133,6 +154,35 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     private RCDICCLASSIFICACAOService: RCDICCLASSIFICACAOService, private GERFORNECEDORService: GERFORNECEDORService,
     private RCMOVRECLAMACAOFORNECEDORService: RCMOVRECLAMACAOFORNECEDORService, private location: Location, private sanitizer: DomSanitizer,
     private UploadService: UploadService) { }
+=======
+  utz_RESPONSAVEL;
+  cliente;
+  morada_CLIENTE;
+  contato_CLIENTE;
+  email_CLIENTE;
+  telefone_CLIENTE;
+  referencia;
+  designacao_REF;
+  selectedType;
+  lote;
+  devolucao;
+  problema_REPETIDO;
+  numero_RECLAMACAO_REPETIDA;
+  descricao_PROBLEMA;
+  responsabilidade_ATRASO3;
+  displayvalidacao;
+  display;
+  texto_estado;
+  drop_utilizadores2;
+  errovalida;
+  type;
+  validaloading;
+  drop_numero_reclamacao;
+  reclamacao_ENCERRADA;
+  nomeficheiro;
+
+  constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router) { }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   ngOnInit() {
     this.types = [
@@ -147,6 +197,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     this.globalVar.seteditar(true);
     this.globalVar.setseguinte(true);
     this.globalVar.setanterior(true);
+<<<<<<< HEAD
     this.btanterior = true;
     this.btseguinte = true;
     this.btseguinte = true;
@@ -157,6 +208,10 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     this.bteditar = true;
     this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
+=======
+    this.globalVar.setatualizar(false);
+    this.globalVar.setduplicar(true);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(true);
@@ -187,6 +242,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
           id = params['id'] || 0;
         });
       if (this.globalVar.getfiltros("reclamacaofornecedor_id") && this.globalVar.getfiltros("reclamacaofornecedor_id").length > 0) {
+<<<<<<< HEAD
         this.reclamacoes = this.globalVar.getfiltros("reclamacaofornecedor_id");
         this.i = this.reclamacoes.indexOf(+id);
         this.carregaDados(true, this.reclamacoes[this.i]);
@@ -205,14 +261,31 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       } else {
         //preenche array para navegar 
         this.RCMOVRECLAMACAOFORNECEDORService.getAll().subscribe(
+=======
+        //this.reclamacoes = this.globalVar.getfiltros("reclamacaofornecedor_id");
+        //this.i = this.reclamacoes.indexOf(+id);
+        //this.carregaDados(true, this.reclamacoes[this.i]);
+        //preenche combo reclamações
+
+
+      } else {
+        //preenche array para navegar 
+        /*this.RCMOVRECLAMACAOService.getAll().subscribe(
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           response => {
             this.reclamacoes = [];
             var count = Object.keys(response).length;
             if (count > 0) {
+<<<<<<< HEAD
               this.drop_numero_reclamacao.push({ label: "Selecionar Reclamação", value: null });
               for (var x in response) {
                 this.reclamacoes.push(response[x].id_RECLAMACAO);
                 if (response[x].id_RECLAMACAO != id) this.drop_numero_reclamacao.push({ label: response[x].id_RECLAMACAO + ' - ' + response[x].referencia + ' / ' + response[x].nome_FORNECEDOR, value: response[x].id_RECLAMACAO });
+=======
+              for (var x in response) {
+                this.reclamacoes.push(response[x].id_RECLAMACAO);
+                if (response[x].id_RECLAMACAO != id) this.drop_numero_reclamacao.push({ label: response[x].id_RECLAMACAO + ' - ' + response[x].referencia + ' / ' + response[x].nome_CLIENTE, value: response[x].id_RECLAMACAO });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               }
             } else {
               this.reclamacoes.push(id);
@@ -221,6 +294,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
             this.i = this.reclamacoes.indexOf(+id);
 
             this.carregaDados(true, this.reclamacoes[this.i]);
+<<<<<<< HEAD
 
           }, error => { console.log(error); });
       }
@@ -232,10 +306,24 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501fechar");
 
       this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501imprimir");
+=======
+            
+          }, error => { console.log(error); });*/
+      }
+
+      this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500editar"));
+      this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500criar"));
+      this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500apagar"));
+
+
+
+      this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500imprimir");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
 
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
+<<<<<<< HEAD
         this.btseguinte = false;
         this.btanterior = false;
         this.btapagar = true;
@@ -277,6 +365,34 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       } else if (urlarray[1].match("view")) {
         this.globalVar.setdisDuplicar(false);
         this.btcriar = true;
+=======
+        this.globalVar.setseguinte(false);
+        this.globalVar.setanterior(false);
+        this.globalVar.setapagar(false);
+        this.globalVar.setcriar(true);
+        this.modoedicao = true;
+
+      } else if (urlarray[1].match("novo")) {
+        this.globalVar.setseguinte(false);
+        this.globalVar.setanterior(false);
+        this.globalVar.setapagar(false);
+        this.globalVar.setcriar(false);
+        this.globalVar.setduplicar(false);
+        this.novo = true;
+        this.globalVar.seteditar(false);
+        this.modoedicao = true;
+        var dirtyFormID = 'formReclama';
+        var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
+        resetForm.reset();
+        /*this.data_CRIA = new Date();
+        this.hora_CRIA = new Date().toLocaleTimeString().slice(0, 5);
+        this.utz_CRIA = this.user;
+        this.carregaDados(false, null);*/
+
+      } else if (urlarray[1].match("view")) {
+        this.globalVar.setdisDuplicar(false);
+        this.globalVar.setcriar(true);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       } else if (urlarray[1].match("duplicar")) {
 
       }
@@ -284,6 +400,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
   filterRef(event) {
 
     this.filteredreferencias = this.pesquisa(event.query);
@@ -903,10 +1020,25 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         this.simular(this.inputgravou);
       }
     }
+=======
+  alteraReferencia(event) {
+
+  }
+
+  getMoradas(event, mor = false) {
+  }
+
+  getArtigos(id) {
+
+  }
+
+  gravar() {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   }
 
   seguinte() {
+<<<<<<< HEAD
     this.i = this.i + 1;
     this.i = this.i % this.reclamacoes.length;
     if (this.reclamacoes.length > 0) {
@@ -952,12 +1084,21 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   }
 
 
+=======
+
+  }
+  anterior() {
+
+  }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   cancelar() {
 
   }
 
   apagar() {
 
+<<<<<<< HEAD
     this.confirmationService.confirm({
       message: 'Tem a certeza que pretende apagar?',
       header: 'Apagar Confirmação',
@@ -985,6 +1126,11 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   }
 
   imprimir(relatorio, id) {
+=======
+  }
+
+  imprimir(relatorio,id) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   }
 
@@ -1000,6 +1146,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   }
 
 
+<<<<<<< HEAD
   btconcluir() {
 
   }
@@ -1209,5 +1356,28 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
   novarecla() {
     this.router.navigate(['reclamacoesfornecedores/novo']);
+=======
+  verconsultaEncomendado(campo,capo1) {
+
+  }
+  verconsultaEnvios() {
+
+  }
+  verconsultaPlaneado() {
+
+  }
+
+  verconsultaStock(camp,pp){
+
+  }
+  btconcluir(){
+
+  }
+  backview(){
+
+  }
+  btgravar(){
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 }

@@ -5,7 +5,10 @@ import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { GT_MOV_TAREFAS } from '../entidades/GT_MOV_TAREFAS';
 import { GT_LOGS } from '../entidades/GT_LOGS';
+<<<<<<< HEAD
 import { parseString } from 'xml2js';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Injectable()
 export class GTMOVTAREFASService {
@@ -21,6 +24,7 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   atualizaTAREFA(data: GT_MOV_TAREFAS) {
     return this.http
       .post(webUrl.host + '/rest/sirb/atualizaTAREFA', JSON.stringify(data), { headers: this.headers })
@@ -28,6 +32,8 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getbyid(id): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_TAREFASbyid/' + id;
     return this.http
@@ -36,6 +42,7 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
 
   getbyids(id, modulo, submodulo): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_TAREFASbyids/' + id + '/' + modulo + '/' + submodulo;
@@ -45,6 +52,8 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getAllbyidUser(id, data): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_TAREFASAllbyUser/' + id;
     return this.http
@@ -61,6 +70,7 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   getFeriados(link) {
 
     var headers = new Headers();
@@ -77,6 +87,8 @@ export class GTMOVTAREFASService {
     });
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getAtulizaTarefasd(id, modulo, link): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_TAREFASAtualizaAccao/' + id + '/' + modulo;
     return this.http
@@ -85,6 +97,7 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
 
   getAtualizaTarefaReclamacao(id, modulo, link): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getAtualizaTarefaReclamacao/' + id + '/' + modulo;
@@ -94,6 +107,8 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getAll(): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_TAREFAS';
     return this.http

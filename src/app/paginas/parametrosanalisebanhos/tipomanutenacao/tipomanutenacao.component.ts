@@ -25,7 +25,11 @@ export class TipomanutenacaoComponent implements OnInit {
 
   constructor(private globalVar: AppGlobals, private ABDICTIPOMANUTENCAOService: ABDICTIPOMANUTENCAOService, private renderer: Renderer) { }
   ngOnInit() {
+<<<<<<< HEAD
     this.classificacao = [{ label: "Selecionar Clasif.", value: "" },
+=======
+    this.classificacao = [{ label: "Seleccionar Clasif.", value: "" },
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" },
     { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }];
     this.globalVar.setapagar(false);

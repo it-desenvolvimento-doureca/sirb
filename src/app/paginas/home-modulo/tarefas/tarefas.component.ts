@@ -30,6 +30,7 @@ export class TarefasComponent implements OnInit {
       { label: 'Pendente', value: 'P' },
       { label: 'Lida', value: 'L' },
       { label: 'Em Curso', value: 'E' },
+<<<<<<< HEAD
       { label: 'Desenvolvida/ Realizada', value: 'C' },
       { label: 'Cancelada', value: 'A' },
       { label: 'Rejeitada', value: 'R' },
@@ -38,6 +39,12 @@ export class TarefasComponent implements OnInit {
       { label: 'Controlada/ Verificada', value: 'V' }
     ];
 
+=======
+      { label: 'Conluída', value: 'C' },
+      { label: 'Cancelada', value: 'A' },
+      { label: 'Rejeitada', value: 'R' }
+    ];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     //this.estado = ["P", "L", "E"];
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
@@ -101,8 +108,12 @@ export class TarefasComponent implements OnInit {
     if (isNaN(new Date(this.datafim2).getDate()) || datafim2 == '1970-01-01') datafim2 = null;
     var tipo_utilizador = null;
     var utilizador_grupo = null;
+<<<<<<< HEAD
     var utilizador_sector = null;
     var todas = false;
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     if (this.tipo_utl.length > 0) {
       for (var x in this.tipo_utl) {
@@ -110,15 +121,22 @@ export class TarefasComponent implements OnInit {
           tipo_utilizador = "u";
         } else if (this.tipo_utl[x] == "g") {
           utilizador_grupo = "g";
+<<<<<<< HEAD
         } else if (this.tipo_utl[x] == "s") {
           utilizador_sector = "s";
         } else if (this.tipo_utl[x] == "t") {
           todas = true;
+=======
+        } else if (this.tipo_utl[x] == "t") {
+          utilizador_grupo = null;
+          tipo_utilizador = null;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
       }
     } else {
       tipo_utilizador = "u";
       utilizador_grupo = "g";
+<<<<<<< HEAD
       utilizador_sector = "s";
     }
     if (todas) {
@@ -130,6 +148,11 @@ export class TarefasComponent implements OnInit {
     var data = [{
       utilizador: this.user, tipo_utilizador: tipo_utilizador, estado: estado, utilizador_grupo: utilizador_grupo,
       utilizador_sector: utilizador_sector,
+=======
+    }
+    var data = [{
+      utilizador: this.user, tipo_utilizador: tipo_utilizador, estado: estado, utilizador_grupo: utilizador_grupo,
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       datacria1: datacria1, datacria2: datacria2, datafim1: datafim1, datafim2: this.datafim2,
       accao: accao
     }];
@@ -146,10 +169,13 @@ export class TarefasComponent implements OnInit {
           title1: "Tarefas não lidas: " + res[x][2] + ', Total Tarefas: ' + res[x][3] + ', Tarefas Encaminhadas: ' + res[x][4],
           reclamacoes_fornecedores: 0 + ' ( ' + 0 + ' ) - ' + 0,
           title2: "Tarefas não lidas: " + 0 + ', Total Tarefas: ' + 0 + ', Tarefas Encaminhadas: ' + 0,
+<<<<<<< HEAD
           amostras: res[x][5] + ' ( ' + res[x][6] + ' ) - ' + res[x][7],
           title3: "Tarefas não lidas: " + res[x][5] + ', Total Tarefas: ' + res[x][6] + ', Tarefas Encaminhadas: ' + res[x][7],
           planosacao: res[x][8] + ' ( ' + res[x][9] + ' ) - ' + res[x][10],
           title4: "Tarefas não lidas: " + res[x][8] + ', Total Tarefas: ' + res[x][9] + ', Tarefas Encaminhadas: ' + res[x][10],
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         });
       }
 
@@ -176,7 +202,11 @@ export class TarefasComponent implements OnInit {
             estados = "Em Curso";
             break;
           case 'C':
+<<<<<<< HEAD
             estados = "Desenvolvida/ Realizada";
+=======
+            estados = "Concluída";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             break;
           case 'A':
             estados = "Cancelada";
@@ -184,6 +214,7 @@ export class TarefasComponent implements OnInit {
           case 'R':
             estados = "Rejeitada";
             break;
+<<<<<<< HEAD
           case 'N':
             estados = "Não Respondida";
             break;
@@ -193,6 +224,8 @@ export class TarefasComponent implements OnInit {
           case 'V':
             estados = "Controlada/ Verificada";
             break;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           default:
             estados = "Pendente";
         }
@@ -218,7 +251,11 @@ export class TarefasComponent implements OnInit {
             prioridade: resp[x][7],
             estado: estados,
             cliente: resp[x][9],
+<<<<<<< HEAD
             referencia: ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]),
+=======
+            referencia: resp[x][10] + "" + resp[x][11],
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             data_conclusao: (resp[x][12] != null) ? this.formatDate(resp[x][12]) + " " + new Date(resp[x][12]).toLocaleTimeString() : null,
             utz_concluiu: resp[x][13],
             id_tarefa: resp[x][14]
@@ -236,7 +273,11 @@ export class TarefasComponent implements OnInit {
             prioridade: resp[x][7],
             estado: estados,
             cliente: resp[x][9],
+<<<<<<< HEAD
             referencia: ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]),
+=======
+            referencia: resp[x][10] + "" + resp[x][11],
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             data_conclusao: (resp[x][12] != null) ? this.formatDate(resp[x][12]) + " " + new Date(resp[x][12]).toLocaleTimeString() : null,
             utz_concluiu: resp[x][13],
             id_tarefa: resp[x][14]

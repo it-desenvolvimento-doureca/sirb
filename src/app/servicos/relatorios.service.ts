@@ -18,6 +18,7 @@ export class RelatoriosService {
         } else if (format == "xlsx") {
           return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         } else if (format == "docx") {
+<<<<<<< HEAD
           return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         }
 
@@ -51,6 +52,8 @@ export class RelatoriosService {
         } else if (format == "xlsx") {
           return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         } else if (format == "docx") {
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         }
 

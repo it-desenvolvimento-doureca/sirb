@@ -144,7 +144,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   custos_REJEICAO_EXTERNA;
 
   ref_IGUAIS: boolean;
+<<<<<<< HEAD
   accoes_EVITAR: boolean;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   observacoes_RESULTADOS: string;
   user: any;
   novo: boolean;
@@ -290,11 +293,18 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private RCDICTIPODEFEITOService: RCDICTIPODEFEITOService, private RCDICTIPORECLAMACAOService: RCDICTIPORECLAMACAOService, private RCDICREJEICAOService: RCDICREJEICAOService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService, private renderer: Renderer, private RCMOVRECLAMACAOService: RCMOVRECLAMACAOService, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer, private UploadService: UploadService, private globalVar: AppGlobals, private router: Router) { }
 
   ngOnInit() {
+<<<<<<< HEAD
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
     script1.setAttribute("src", "assets/js/jqbtk.js");
     document.body.appendChild(script1);
+=======
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/jqbtk.js";
+    this.elementRef.nativeElement.appendChild(s);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     this.types = [
       { label: 'Lote', value: 'lote', icon: 'fa-close' },
@@ -322,7 +332,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.globalVar.setseguinte(true);
     this.globalVar.setanterior(true);
     this.globalVar.setatualizar(false);
+<<<<<<< HEAD
     //this.globalVar.setduplicar(true);
+=======
+    this.globalVar.setduplicar(true);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(true);
@@ -357,16 +371,24 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       if (this.globalVar.getfiltros("reclamacaocliente_id") && this.globalVar.getfiltros("reclamacaocliente_id").length > 0) {
         this.reclamacoes = this.globalVar.getfiltros("reclamacaocliente_id");
         this.i = this.reclamacoes.indexOf(+id);
+<<<<<<< HEAD
 
         var id_r = this.reclamacoes[this.i];
         if (this.i < 0) { id_r = id }
         this.carregaDados(true, id_r);
+=======
+        this.carregaDados(true, this.reclamacoes[this.i]);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         //preenche combo reclamações
         this.RCMOVRECLAMACAOService.getAll().subscribe(
           response => {
             var count = Object.keys(response).length;
             if (count > 0) {
+<<<<<<< HEAD
               this.drop_numero_reclamacao.push({ label: "Selecionar Reclamação", value: null });
+=======
+              this.drop_numero_reclamacao.push({ label: "Seleccionar Reclamação", value: null });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               for (var x in response) {
                 if (response[x].id_RECLAMACAO != id) this.drop_numero_reclamacao.push({ label: response[x].id_RECLAMACAO + ' - ' + response[x].referencia + ' / ' + response[x].nome_CLIENTE, value: response[x].id_RECLAMACAO });
               }
@@ -380,7 +402,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.reclamacoes = [];
             var count = Object.keys(response).length;
             if (count > 0) {
+<<<<<<< HEAD
               this.drop_numero_reclamacao.push({ label: "Selecionar Reclamação", value: null });
+=======
+              this.drop_numero_reclamacao.push({ label: "Seleccionar Reclamação", value: null });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               for (var x in response) {
                 this.reclamacoes.push(response[x].id_RECLAMACAO);
                 if (response[x].id_RECLAMACAO != id) this.drop_numero_reclamacao.push({ label: response[x].id_RECLAMACAO + ' - ' + response[x].referencia + ' / ' + response[x].nome_CLIENTE, value: response[x].id_RECLAMACAO });
@@ -401,8 +427,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500editar"));
       this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500criar"));
       this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500apagar"));
+<<<<<<< HEAD
       this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500duplicar"));
       this.globalVar.setduplicar(JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500duplicar"));
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       this.acessoSTEP1 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step1");
       this.acessoSTEP2 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step2");
       this.acessoSTEP3 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step3");
@@ -522,6 +552,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.drop_utilizadores2 = [];
     this.GERUTILIZADORESService.getAll().subscribe(
       response => {
+<<<<<<< HEAD
         this.drop_utilizadores2.push({ label: "Selecionar Utilizador", value: "" });
         var grupo = [];
         for (var x in response) {
@@ -529,6 +560,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
         }
         //this.drop_utilizadores.push({ label: "Utilizadores", itens: grupo });
+=======
+        this.drop_utilizadores2.push({ label: "Seleccionar Utilizador", value: null });
+        var grupo = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
+          this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+        }
+        this.drop_utilizadores.push({ label: "Utilizadores", itens: grupo });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
         this.drop_utilizadores = this.drop_utilizadores.slice();
         this.drop_utilizadores2 = this.drop_utilizadores2.slice();
@@ -539,9 +579,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
   carregaaccoes(inicia, id, continua = true) {
     this.drop_accoes = [];
+<<<<<<< HEAD
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("R").subscribe(
       response => {
         this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+=======
+    this.RCDICACCOESRECLAMACAOService.getAll().subscribe(
+      response => {
+        this.drop_accoes.push({ label: "Seleccionar Acção", value: null });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
@@ -770,7 +816,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.numero_RECLAMACAO_REPETIDA = response[x].numero_RECLAMACAO_REPETIDA;
             this.reclamacao_REPETIDA_ACEITE = response[x].reclamacao_REPETIDA_ACEITE;
             this.ref_IGUAIS = response[x].ref_IGUAIS;
+<<<<<<< HEAD
             this.accoes_EVITAR = response[x].accoes_EVITAR;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
             this.causas_PROBLEMA = response[x].causas_PROBLEMA;
             this.causas_PROBLEMA_IDIOMA_CLIENTE = response[x].causas_PROBLEMA_IDIOMA_CLIENTE;
@@ -936,11 +985,18 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.RCMOVRECLAMACAOEQUIPAService.getbyidreclamacao(id).subscribe(
       response => {
         var count = Object.keys(response).length;
+<<<<<<< HEAD
         var grupo = []
         if (count > 0) {
           for (var x in response) {
             var id2 = null;
             grupo.push({ label: this.getNomeUser(response[x].id_UTZ), value: "u" + response[x].id_UTZ });
+=======
+        if (count > 0) {
+          for (var x in response) {
+            var id2 = null;
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             if (!this.duplica) id2 = response[x].id;
             this.tabelaEquipa.push({
               data: response[x],
@@ -949,9 +1005,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             });
 
           }
+<<<<<<< HEAD
           this.drop_utilizadores.unshift({ label: "Utilizadores", itens: grupo });
 
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.tabelaEquipa = this.tabelaEquipa.slice();
         }
         this.carregaArtigosSimilares(id);
@@ -1050,7 +1109,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
 
   /********************  TABELA CORRETIVA E EFICACIA E EFICACIA E PREVENTIVAS **************************** */
+<<<<<<< HEAD
   carregatabelasaccoes(id, continua = true) {
+=======
+  carregatabelasaccoes(id) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     this.tabelaaccoescorretivas = [];
     this.tabelaEficacia = [];
@@ -1127,10 +1190,17 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           this.tabelapreventiva = this.tabelapreventiva.slice();
         }
         //this.carregatabelapreventivas(id);
+<<<<<<< HEAD
         if (continua) this.carregatabelaTipoOcorrencia(id);
       }, error => {
         //this.carregatabelapreventivas(id);
         if (continua) this.carregatabelaTipoOcorrencia(id);
+=======
+        this.carregatabelaTipoOcorrencia(id);
+      }, error => {
+        //this.carregatabelapreventivas(id);
+        this.carregatabelaTipoOcorrencia(id);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         console.log(error);
       });
   }
@@ -1141,7 +1211,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       response => {
         this.tabelaTipoOcorrencia = [];
         this.tabelaTipoOcorrencia.push({
+<<<<<<< HEAD
           label: "Selecionar Tipo Ocorrência", value: null
+=======
+          label: "Seleccionar Tipo Ocorrência", value: null
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         });
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1164,7 +1238,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       response => {
         this.tabelaTipoNaoDetecao = [];
         this.tabelaTipoNaoDetecao.push({
+<<<<<<< HEAD
           label: "Selecionar Tipo Não Deteção", value: null
+=======
+          label: "Seleccionar Tipo Não Deteção", value: null
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         });
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1981,9 +2059,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     reclamacao.problema_REPETIDO = this.problema_REPETIDO;
     reclamacao.numero_RECLAMACAO_REPETIDA = this.numero_RECLAMACAO_REPETIDA;
     reclamacao.reclamacao_REPETIDA_ACEITE = this.reclamacao_REPETIDA_ACEITE;
+<<<<<<< HEAD
     reclamacao.ref_IGUAIS = this.ref_IGUAIS;
     reclamacao.accoes_EVITAR = this.accoes_EVITAR;
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     reclamacao.accoes_NECESSARIAS = this.accoes_NECESSARIAS;
     reclamacao.accoes_NECESSARIAS_TEXTO = this.accoes_NECESSARIAS_TEXTO;
@@ -2425,7 +2506,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           accoes.data_PREVISTA = new Date(this.tabelaaccoesimediatas[x].data_PREVISTA);
 
           var id_resp = this.tabelaaccoesimediatas[x].responsavel;
+<<<<<<< HEAD
           var tipo = "u";
+=======
+          var tipo = "";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           if (this.tabelaaccoesimediatas[x].responsavel.charAt(0) == 'u' || this.tabelaaccoesimediatas[x].responsavel.charAt(0) == 'g') {
             tipo = this.tabelaaccoesimediatas[x].responsavel.charAt(0);
             id_resp = this.tabelaaccoesimediatas[x].responsavel.substr(1);
@@ -2457,7 +2542,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (atualizatarefa) {
           this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
         } else {
+<<<<<<< HEAD
           //this.criaTarefas(res.id, 5);
+=======
+          this.criaTarefas(res.id, 5);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
 
         if (count == total) {
@@ -2488,7 +2577,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           accoes.id_RECLAMACAO = id;
 
           var id_resp = this.tabelaaccoescorretivas[x].responsavel;
+<<<<<<< HEAD
           var tipo = "u";
+=======
+          var tipo = "";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           if (this.tabelaaccoescorretivas[x].responsavel.charAt(0) == 'u' || this.tabelaaccoescorretivas[x].responsavel.charAt(0) == 'g') {
             tipo = this.tabelaaccoescorretivas[x].responsavel.charAt(0);
             id_resp = this.tabelaaccoescorretivas[x].responsavel.substr(1);
@@ -2539,7 +2632,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (atualizatarefa) {
           this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
         } else {
+<<<<<<< HEAD
           //this.criaTarefas(res.id, 5);
+=======
+          this.criaTarefas(res.id, 5);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
 
         if (count == total) {
@@ -2552,12 +2649,16 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   gravarTabelaFicheirosAnalise(id) {
+<<<<<<< HEAD
     var total = 0;
     for (var x in this.fileselect) {
       if (this.fileselect[x]) { total++; }
     }
 
     if (this.fileselect && total > 0) {
+=======
+    if (this.fileselect && (this.fileselect.length - 1) > 0) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
       var count = 0;
@@ -2588,11 +2689,17 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           ficheiros.utz_ULT_MODIF = this.user;
           ficheiros.id_RECLAMACAO = id;
 
+<<<<<<< HEAD
 
           this.gravarTabelaFicheirosAnalise2(ficheiros, count, total, id);
         } else {
 
           if (count == total) {
+=======
+          this.gravarTabelaFicheirosAnalise2(ficheiros, count, (this.fileselect.length - 1), id);
+        } else {
+          if (count == (this.fileselect.length - 1)) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.gravarTabelaEficacia(id);
           }
         }
@@ -2604,9 +2711,13 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   gravarTabelaFicheirosAnalise2(ficheiros, count, total, id) {
     this.RCMOVRECLAMACAOFICHEIROSService.update(ficheiros).subscribe(
       res => {
+<<<<<<< HEAD
         //console.log("e")
         if (count == total) {
           //console.log("f")
+=======
+        if (count == total) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.gravarTabelaEficacia(id);
         }
       },
@@ -2635,7 +2746,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           eficacia.id_RECLAMACAO = id;
           eficacia.id_ACCAO = this.tabelaEficacia[x].id_ACCOES;
           var id_resp = this.tabelaEficacia[x].responsavel;
+<<<<<<< HEAD
           var tipo = "u";
+=======
+          var tipo = "E";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           if (this.tabelaEficacia[x].responsavel.charAt(0) == 'u' || this.tabelaEficacia[x].responsavel.charAt(0) == 'g') {
             tipo = this.tabelaEficacia[x].responsavel.charAt(0);
             id_resp = this.tabelaEficacia[x].responsavel.substr(1);
@@ -2682,7 +2797,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (atualizatarefa) {
           this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
         } else {
+<<<<<<< HEAD
           //this.criaTarefas(res.id, 5);
+=======
+          this.criaTarefas(res.id, 5);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
         if (count == total) {
           this.gravarTabelaAccoesPreventivas(id);
@@ -2712,7 +2831,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           accoes.id_RECLAMACAO = id;
 
           var id_resp = this.tabelapreventiva[x].responsavel;
+<<<<<<< HEAD
           var tipo = "u";
+=======
+          var tipo = "";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           if (this.tabelapreventiva[x].responsavel.charAt(0) == 'u' || this.tabelapreventiva[x].responsavel.charAt(0) == 'g') {
             tipo = this.tabelapreventiva[x].responsavel.charAt(0);
             id_resp = this.tabelapreventiva[x].responsavel.substr(1);
@@ -2754,7 +2877,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (atualizatarefa) {
           this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
         } else {
+<<<<<<< HEAD
           //this.criaTarefas(res.id, 5);
+=======
+          this.criaTarefas(res.id, 5);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
 
         if (count == total) {
@@ -2800,7 +2927,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         } else if (count == this.tabelaEnviosGarantidos.length) {
           if (this.novo) {
             this.displayLoading = false;
+<<<<<<< HEAD
             this.crisaTarefas(id, 5);
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -2814,10 +2944,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
+<<<<<<< HEAD
               this.crisaTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
               this.crisaTarefas(id, 5);
+=======
+              this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
+            } else {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             }
             this.simular(this.inputgravou);
@@ -2830,7 +2965,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       // console.log("FIM")
       this.displayLoading = false;
       if (this.novo) {
+<<<<<<< HEAD
         this.crisaTarefas(id, 5);
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
         this.simular(this.inputnotifi);
       } else {
@@ -2843,10 +2981,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           });
 
         if (back != 0) {
+<<<<<<< HEAD
           this.crisaTarefas(id, 5);
           this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
         } else {
           this.crisaTarefas(id, 5);
+=======
+          this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
+        } else {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
         }
         this.simular(this.inputgravou);
@@ -2861,7 +3004,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (count == total) {
           if (this.novo) {
             this.displayLoading = false;
+<<<<<<< HEAD
             this.crisaTarefas(id, 5);
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -2875,10 +3021,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
+<<<<<<< HEAD
               this.crisaTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
               this.crisaTarefas(id, 5);
+=======
+              this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
+            } else {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             }
             this.simular(this.inputgravou);
@@ -2891,7 +3042,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (count == total) {
           if (this.novo) {
             this.displayLoading = false;
+<<<<<<< HEAD
             this.crisaTarefas(id, 5);
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -2905,10 +3059,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
+<<<<<<< HEAD
               this.crisaTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
               this.crisaTarefas(id, 5);
+=======
+              this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
+            } else {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             };
             this.simular(this.inputgravou);
@@ -2962,9 +3121,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.temporesposta['step6_data'].setDate(data.getDate() + this.temporesposta['step6']);
     this.temporesposta['step7_data'].setDate(data.getDate() + this.temporesposta['step7']);
     this.temporesposta['step8_data'].setDate(data.getDate() + this.temporesposta['step8']);
+<<<<<<< HEAD
 
     this.data_PRAZO_REVISAO = new Date(data);
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.data_PRAZO_REVISAO.setDate(data.getDate() + this.temporesposta['revisao']);
     this.hora_PRAZO_REVISAO = this.data_PRAZO_REVISAO.toLocaleTimeString().slice(0, 5);
 
@@ -3149,6 +3311,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   concluirEtapa(etapa) {
     this.temp_RESPONSABILIDADE_ATRASADO = null;
     this.temp_MOTIVO_ATRASO = null;
+<<<<<<< HEAD
     if (etapa == 1 && this.tabelaEquipa.length == 0) {
 
       this.mensagem_verifica = "É necessário conter pelo menos um Responsável.";
@@ -3202,6 +3365,9 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   continuarconcluitEtapa(etapa) {
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     var atraso = this.atualizaDatasresposta(etapa, this['step' + etapa + 'CONCLUIDO_DATA']);
     if (atraso > 0) {
       this.temp_RESPONSABILIDADE_ATRASADO = "Doureca";
@@ -3212,6 +3378,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       this.tempo_ATRASO = 0;
       this.concluirEtapaGravar(etapa);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   //verifica  se quer apagar
@@ -4018,7 +4188,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
     ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
     ACCOES_RECLAMACAO.utz_ULT_MODIF = this.user;
+<<<<<<< HEAD
     ACCOES_RECLAMACAO.tipo_TAREFA = "R";
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     ACCOES_RECLAMACAO.data_ULT_MODIF = new Date();
 
     ACCOES_RECLAMACAO.utz_CRIA = this.user;
@@ -4056,6 +4229,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.tabelaEquipa[index].email = this.drop_utilizadores2.find(item => item.value == event.value).email;
     this.tabelaEquipa[index].telefone = this.drop_utilizadores2.find(item => item.value == event.value).telefone;
     this.tabelaEquipa[index].area = this.drop_utilizadores2.find(item => item.value == event.value).area;
+<<<<<<< HEAD
 
     var grupo = [];
     grupo.push({ label: this.getNomeUser(event.value), value: "u" + event.value });
@@ -4068,6 +4242,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     } else {
       this.drop_utilizadores.unshift({ label: "Utilizadores", itens: grupo });
     }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   alterarEmail2(index, event, tabela) {
@@ -4082,6 +4258,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       } else if (tabela == "tabelapreventiva") {
         this.tabelapreventiva[index].area = this.drop_utilizadores2.find(item => item.value == id).area;
       }
+<<<<<<< HEAD
     } else {
       if (tabela == "tabelaaccoescorretivas") {
         this.tabelaaccoescorretivas[index].area = "";
@@ -4092,6 +4269,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       } else if (tabela == "tabelapreventiva") {
         this.tabelapreventiva[index].area = "";
       }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
   }
 
@@ -4115,6 +4294,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   //atualiza ou cria tarefa
+<<<<<<< HEAD
   crisaTarefas(id, modulo) {
     var link = webUrl.host + '/#/tarefas/view?id=';
     /*this.GTMOVTAREFASService.getAtulizaTarefasd(id, modulo, link).subscribe(
@@ -4122,6 +4302,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
       }, error => { console.log(error); });*/
     this.GTMOVTAREFASService.getAtualizaTarefaReclamacao(id, modulo, link).subscribe(
+=======
+  criaTarefas(id, modulo) {
+    var link = webUrl.host + '/#/tarefas/view?id=';
+    this.GTMOVTAREFASService.getAtulizaTarefasd(id, modulo, link).subscribe(
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       response => {
 
       }, error => { console.log(error); });
@@ -4129,6 +4314,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
 
   atualizaestadoTarefa(id, estado) {
+<<<<<<< HEAD
     if (id != null) {
       this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
 
@@ -4175,6 +4361,53 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         this.simular(this.inputerro);
       });
     }
+=======
+
+    this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
+
+      var count = Object.keys(response).length;
+      if (count > 0) {
+        var tarefa = new GT_MOV_TAREFAS;
+        tarefa = response[0]
+
+        var data_logs = [];
+
+
+        if (tarefa.estado != estado) {
+          data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+        }
+
+        tarefa.estado = estado;
+        if (estado == "C") {
+          tarefa.utz_CONCLUSAO = this.user;
+          tarefa.data_CONCLUSAO = new Date();
+        } else if (estado == "A") {
+          tarefa.utz_ANULACAO = this.user;
+          tarefa.data_ANULACAO = new Date();
+        }
+
+
+        this.GTMOVTAREFASService.update(tarefa).then(response => {
+          for (var x in data_logs) {
+            var logs = new GT_LOGS;
+            logs.id_TAREFA = id;
+            logs.utz_CRIA = this.user;
+            logs.data_CRIA = new Date();
+            logs.descricao = data_logs[x].descricao;
+            this.criaLogs(logs);
+          }
+
+
+        }, error => {
+          console.log(error);
+
+        });
+      }
+    }, error => {
+      console.log(error);
+      this.simular(this.inputerro);
+    });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
 
@@ -4210,7 +4443,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         estados = "Em Curso";
         break;
       case 'C':
+<<<<<<< HEAD
         estados = "Desenvolvida/ Realizada";
+=======
+        estados = "Concluída";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         break;
       case 'A':
         estados = "Cancelada";
@@ -4218,6 +4455,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       case 'R':
         estados = "Rejeitada";
         break;
+<<<<<<< HEAD
       case 'N':
         estados = "Não Respondida";
         break;
@@ -4227,6 +4465,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       case 'V':
         estados = "Controlada/ Verificada";
         break;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       default:
         estados = "Pendente";
     }
@@ -4268,7 +4508,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.GERGRUPOService.getByidUsers(car.value).subscribe(
       response => {
         //console.log(response)
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         for (var x in response) {
           if (!this.tabelaEquipa.find(item => item.responsavel == response[x][0])) {
             this.tabelaEquipa.push({
@@ -4276,6 +4519,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               id: null, responsavel: response[x][0],
               area: response[x][15], email: response[x][3], telefone: response[x][14]
             });
+<<<<<<< HEAD
 
             var utz2 = this.drop_utilizadores.find(item => item.label == "Utilizadores");
             if (utz2) {
@@ -4294,6 +4538,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
 
 
+=======
+          }
+        }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.tabelaEquipa = this.tabelaEquipa.slice();
         this.displaygrupos = false;
       },

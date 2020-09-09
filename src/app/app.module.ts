@@ -10,7 +10,11 @@ import { HomeComponent } from './paginas/home/home.component';
 import { RouterComponent } from "app/router.component";
 import { FornecedoresComponent } from './paginas/fornecedores/fornecedores.component';
 import { TinasComponent } from './paginas/tinas/tinas.component';
+<<<<<<< HEAD
 import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule, OverlayPanelModule, TriStateCheckboxModule, TooltipModule } from 'primeng/primeng';
+=======
+import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule } from 'primeng/primeng';
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 import { AppGlobals } from "app/menu/sidebar.metadata";
 import { FormComponent } from './paginas/fornecedores/form/form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -125,6 +129,10 @@ import { FicheirosanaliseComponent } from './paginas/modulo_reclamacoes/parametr
 import { RCDICTIPODEFEITOService } from './servicos/rc-dic-tipo-defeito.service';
 import { RCDICTIPORECLAMACAOService } from './servicos/rc-dic-tipo-reclamacao.service';
 import { RCDICREJEICAOService } from './servicos/rc-dic-rejeicao.service';
+<<<<<<< HEAD
+=======
+import { RCDICGRAUIMPORTANCIAService } from './servicos/rc-dic-grau-importancia.service';
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 import { RCDICFICHEIROSANALISEService } from './servicos/rc-dic-ficheiros-analise.service';
 import { ListareclamacoesclientesComponent } from './paginas/modulo_reclamacoes/listareclamacoesclientes/listareclamacoesclientes.component';
 import { RCMOVRECLAMACAOService } from './servicos/rc-mov-reclamacao.service';
@@ -161,6 +169,7 @@ import { ListareclamacoesfornecedoresComponent } from './paginas/modulo_reclamac
 import { TiponaodetecaoComponent } from './paginas/modulo_reclamacoes/parametros/tiponaodetecao/tiponaodetecao.component';
 import { TipoocorrenciaComponent } from './paginas/modulo_reclamacoes/parametros/tipoocorrencia/tipoocorrencia.component';
 import { ManutencoesFicheiroComponent } from './paginas/utilitarios/manutencoes-ficheiro/manutencoes-ficheiro.component';
+<<<<<<< HEAD
 import { ControloAssiduidadeComponent } from './paginas/modulo-recursos-humanos/controlo-assiduidade/controlo-assiduidade.component';
 import { EstadosfuncionariosComponent } from './paginas/modulo-recursos-humanos/parametros/estadosfuncionarios/estadosfuncionarios.component';
 import { SectoresComponent } from './paginas/modulo-recursos-humanos/parametros/sectores/sectores.component';
@@ -295,6 +304,8 @@ import { ValidacoesBastidoresComponent } from './paginas/modulo-producao/paramet
 import { PRGESTAOBARRASREFERENCIASService } from './servicos/pr-gestao-barras-referencias.service';
 import { PRGESTAOBARRASService } from './servicos/pr-gestao-barras.service';
 import { PRDICVALIDACAOBASTIDORService } from './servicos/pr-dic-validacao-bastidor.service';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -480,6 +491,7 @@ const routes: Routes = [
   { path: 'analiseetiquetas', component: AnaliseEtiquetasComponent, canActivate: [LoginService], data: { breadcrumb: "Análise de Etiquetas" } },
   { path: 'ficheirosmanutencoes', component: ManutencoesFicheiroComponent, canActivate: [LoginService], data: { breadcrumb: "Ficheiros Manutenções (Interface)" } },
 
+<<<<<<< HEAD
   {
     path: 'controloassiduidade_producao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Recursos Humanos" }, children: [
       { path: '', component: ControloAssiduidadeComponent, canActivate: [LoginService], data: { breadcrumb: "Análises de Assiduidade e Produtividade" } },
@@ -627,6 +639,8 @@ const routes: Routes = [
 
   { path: 'pausas_p', component: PausasComponent, canActivate: [LoginService], data: { breadcrumb: "Pausas" } },
   { path: 'pedidosdaproducao', component: PedidosdaproducaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos da Produção" } },
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   { path: 'teste1', component: GestaoTarefasComponent, canActivate: [LoginService], data: { breadcrumb: "Teste1" } },
   { path: 'teste2', component: FormTarefasComponent, canActivate: [LoginService], data: { breadcrumb: "Teste2" } },
@@ -672,22 +686,29 @@ const routes: Routes = [
   { path: 'rejeicoes', component: RejeicoesComponent, canActivate: [LoginService], data: { breadcrumb: "Rejeições" } },
   { path: 'tiposreclamacoes', component: TiposreclamacoesComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Reclamações" } },
   { path: 'dictarefas', component: GTDICTarefasComponent, canActivate: [LoginService], data: { breadcrumb: "Tarefas" } },
+<<<<<<< HEAD
   { path: 'dictiposacao', component: TipoAcaoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Ação" } },
   { path: 'grausimportancia', component: GrausimportanciaComponent, canActivate: [LoginService], data: { breadcrumb: "Graus de Importância" } },
   { path: 'classificacao', component: ClassificacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Classificação" } },
   { path: 'tipologia', component: TipologiaComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologia" } },
+=======
+  { path: 'grausimportancia', component: GrausimportanciaComponent, canActivate: [LoginService], data: { breadcrumb: "Graus de Importância" } },
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   { path: 'tiposdefeito', component: TiposdefeitoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Defeito" } },
   { path: 'ficheirosanalise', component: FicheirosanaliseComponent, canActivate: [LoginService], data: { breadcrumb: "Ficheiros de Análise" } },
   { path: 'temposresposta', component: TemposrespostaComponent, canActivate: [LoginService], data: { breadcrumb: "Tempos de Resposta" } },
   { path: 'tiposnaodetecao', component: TiponaodetecaoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos Não Deteção" } },
   { path: 'tiposocorrencia', component: TipoocorrenciaComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos Ocorrência" } },
   { path: 'departamentos', component: DepartamentosComponent, canActivate: [LoginService], data: { breadcrumb: "Departamentos" } },
+<<<<<<< HEAD
   { path: 'cacifos', component: CacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Cacifos" } },
   { path: 'tiposcacifos', component: TipoCacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Cacifo" } },
   { path: 'cacifos_p', component: CacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Cacifos" } },
   { path: 'tiposcacifos_p', component: TipoCacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Cacifo" } },
   { path: 'locais', component: LocaisComponent, canActivate: [LoginService], data: { breadcrumb: "Locais" } },
   { path: 'feriados', component: FeriadosComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   {
     path: 'reclamacoesclientes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Reclamações Cliente" },
@@ -708,6 +729,7 @@ const routes: Routes = [
       { path: 'novo', component: ReclamacaoFornecedorComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
+<<<<<<< HEAD
     path: 'seguranca_trabalho', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Segurança no Trabalho" },
     children: [
       { path: '', component: ModuloSegurancaTrabalhoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -716,6 +738,8 @@ const routes: Routes = [
       { path: 'novo', component: RelatoriosOcorrenciasComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     path: 'seccoes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Secções" },
     children: [
       { path: '', component: ListaSeccoesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -731,6 +755,7 @@ const routes: Routes = [
       { path: 'editar', component: FormGruposComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: FormGruposComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
+<<<<<<< HEAD
   {
     path: 'gestao_barras', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Gestão de Barras" },
     children: [
@@ -739,6 +764,8 @@ const routes: Routes = [
       { path: 'editar', component: GestaoBarrasComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: GestaoBarrasComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -795,7 +822,10 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     GestaoeventosComponent,
     EventoslistaComponent,
     HistoricoAnalisesComponent,
+<<<<<<< HEAD
     TiposOcorrenciaComponent,
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     ListaComponent,
     ConfComponent,
     HeaderComponent,
@@ -844,6 +874,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ListareclamacoesfornecedoresComponent,
     TiponaodetecaoComponent,
     TipoocorrenciaComponent,
+<<<<<<< HEAD
     ManutencoesFicheiroComponent,
     ControloAssiduidadeComponent,
     EstadosfuncionariosComponent,
@@ -905,6 +936,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     SectoresAgregadoresComponent,
     GestaoBarrasComponent,
     ValidacoesBastidoresComponent
+=======
+    ManutencoesFicheiroComponent
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   ],
   imports: [
     BrowserModule,
@@ -937,9 +971,12 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     OrderListModule,
     SelectButtonModule,
     PanelModule,
+<<<<<<< HEAD
     OverlayPanelModule,
     TriStateCheckboxModule,
     TooltipModule,
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,
@@ -1015,6 +1052,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     RCMOVRECLAMACAOTIPONAODETECAOService,
     RCMOVRECLAMACAOTIPOOCORRENCIAService,
     GERATUALIZACAOSILVERBITABELASService,
+<<<<<<< HEAD
     RHESTADOSFUNCService,
     RHFUNCIONARIOSService,
     RHTURNOSService,
@@ -1090,5 +1128,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
+=======
+    GERFORNECEDORService],
+  bootstrap: [AppComponent]
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 })
 export class AppModule { }

@@ -234,8 +234,13 @@ export class GestaoBanhosComponent implements OnInit {
               dados2.push(null);
             }
             var cor = this.verificalimites(response[x][0].calculo, response[x][0].limite_AMARELO_INF, response[x][0].limite_AMARELO_SUP, response[x][0].limite_VERDE_INF, response[x][0].limite_VERDE_SUP);
+<<<<<<< HEAD
             this.corpo.push({ cor: cor, id: response[x][0].id_BANHO_COMP /*response[x][1].id_COMPONENTE*/, componente: response[x][1].nome_COMPONENTE, medida: response[x][3], resultado: calculo, valores: dados })
             this.datasetsgraf.push({ id: response[x][0].id_BANHO_COMP /*response[x][1].id_COMPONENTE*/, label: response[x][1].nome_COMPONENTE + "(" + response[x][3] + ")", data: dados2, fill: false, borderColor: this.getRandomColor(x), borderWidth: 2 });
+=======
+            this.corpo.push({ cor: cor, id: response[x][1].id_COMPONENTE, componente: response[x][1].nome_COMPONENTE, medida: response[x][3], resultado: calculo, valores: dados })
+            this.datasetsgraf.push({ id: response[x][1].id_COMPONENTE, label: response[x][1].nome_COMPONENTE + "(" + response[x][3] + ")", data: dados2, fill: false, borderColor: this.getRandomColor(x), borderWidth: 2 });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           }
 
           for (var y in this.cabecalho) {
@@ -302,11 +307,17 @@ export class GestaoBanhosComponent implements OnInit {
             var index_comp = null;
             var index_analise = null;
             var index_datasetsgraf = null;
+<<<<<<< HEAD
             //index_comp = this.corpo.find(item => item.id == response[x][0].id_COMPONENTE);
             index_comp = this.corpo.find(item => item.id == response[x][5]);
             index_analise = this.cabecalho.findIndex(item => item.id == response[x][0].id_ANALISE);
             //index_datasetsgraf = this.datasetsgraf.find(item => item.id == response[x][0].id_COMPONENTE)
             index_datasetsgraf = this.datasetsgraf.find(item => item.id == response[x][5])
+=======
+            index_comp = this.corpo.find(item => item.id == response[x][0].id_COMPONENTE);
+            index_analise = this.cabecalho.findIndex(item => item.id == response[x][0].id_ANALISE);
+            index_datasetsgraf = this.datasetsgraf.find(item => item.id == response[x][0].id_COMPONENTE)
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             //console.log(response)
             if (index_comp != null && index_analise != null) {
               index_comp.valores[index_analise].valor = (response[x][0].calculo != null) ? response[x][0].calculo.toLocaleString(undefined, { minimumFractionDigits: 3 }).replace(/\s/g, '') : "";

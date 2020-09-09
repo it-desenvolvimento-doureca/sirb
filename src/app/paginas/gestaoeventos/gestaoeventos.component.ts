@@ -29,10 +29,13 @@ export class GestaoeventosComponent implements OnInit {
   user: any;
   email_mensagem: string;
   email_assunto: string;
+<<<<<<< HEAD
   email_mensagem_ENG: string;
   email_assunto_ENG: string;
   email_mensagem_FR: string;
   email_assunto_FR: string;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   cols: any[];
   email_para;
   results;
@@ -40,7 +43,11 @@ export class GestaoeventosComponent implements OnInit {
   inclui_anexo;
   text: string = ""; i: any;
   gteventos: any;
+<<<<<<< HEAD
 
+=======
+  ;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   draggedCar: any;
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputerro') inputerro: ElementRef;
@@ -50,8 +57,11 @@ export class GestaoeventosComponent implements OnInit {
   @ViewChild('closedialog') closedialog: ElementRef;
 
   campos = [];
+<<<<<<< HEAD
   idioma: string = "PT";
   idiomas = [{ value: 'PT', label: 'Português' }, { value: 'ENG', label: 'Inglês' }, { value: 'FR', label: 'Francês' }];
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   constructor(private GERCAMPOSDISPService: GERCAMPOSDISPService, private renderer: Renderer, private GEREVENTOSCONFService: GEREVENTOSCONFService, private route: ActivatedRoute, private router: Router, private location: Location, private globalVar: AppGlobals, private EmailService: EmailService, private GERUTILIZADORESService: GERUTILIZADORESService) { }
 
@@ -129,7 +139,12 @@ export class GestaoeventosComponent implements OnInit {
       response => {
         this.evento = response[0][0];
         for (var x in response) {
+<<<<<<< HEAD
 
+=======
+          this.email_assunto = response[x][0].email_ASSUNTO;
+          this.email_mensagem = response[x][0].email_MENSAGEM;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.email_para = (response[x][0].email_PARA != null && response[x][0].email_PARA != "") ? response[x][0].email_PARA.split(",") : [];
           this.inclui_anexo = response[x][0].email_ANEXO;
           this.estado = response[x][0].estado;
@@ -137,6 +152,7 @@ export class GestaoeventosComponent implements OnInit {
           this.modulo = response[x][1].nome_MODULO;
           this.pagina = response[x][0].pagina;
           this.momento = response[x][0].momento;
+<<<<<<< HEAD
 
           //PORTUGUES
           this.email_assunto = response[x][0].email_ASSUNTO;
@@ -149,6 +165,8 @@ export class GestaoeventosComponent implements OnInit {
           //FRANCES
           this.email_assunto_FR = response[x][0].email_ASSUNTO_FR;
           this.email_mensagem_FR = response[x][0].email_MENSAGEM_FR;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
       },
       error => console.log(error));
@@ -293,11 +311,15 @@ export class GestaoeventosComponent implements OnInit {
       eventos.data_ULT_MODIF = new Date();
       eventos.email_ANEXO = false;//this.inclui_anexo;
       eventos.email_ASSUNTO = this.email_assunto;
+<<<<<<< HEAD
       eventos.email_ASSUNTO_ENG = this.email_assunto_ENG;
       eventos.email_ASSUNTO_FR = this.email_assunto_FR;
       eventos.email_MENSAGEM = this.email_mensagem;
       eventos.email_MENSAGEM_ENG = this.email_mensagem_ENG;
       eventos.email_MENSAGEM_FR = this.email_mensagem_FR;
+=======
+      eventos.email_MENSAGEM = this.email_mensagem;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       eventos.email_PARA = this.email_para.toString();
       eventos.estado = this.estado;
       eventos.obs = this.observacoes;
@@ -323,9 +345,12 @@ export class GestaoeventosComponent implements OnInit {
   }
 
   enviar() {
+<<<<<<< HEAD
     if (this.idioma = 'PT') { }
     if (this.idioma = 'ENG') { }
     if (this.idioma = 'PT') { }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (this.email_mensagem != "" && this.email_mensagem != null && this.campos.length > 0) {
       var email_mens = this.email_mensagem;
       var email_assunto = this.email_assunto;

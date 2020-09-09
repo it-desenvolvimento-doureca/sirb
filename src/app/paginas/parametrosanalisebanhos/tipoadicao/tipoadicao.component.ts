@@ -27,7 +27,11 @@ export class TipoadicaoComponent implements OnInit {
   @ViewChild('closedialog') closedialog: ElementRef;
   constructor(private globalVar: AppGlobals, private ABDICTIPOOPERACAOService: ABDICTIPOOPERACAOService, private ABDICTIPOADICAOService: ABDICTIPOADICAOService, private renderer: Renderer) { }
   ngOnInit() {
+<<<<<<< HEAD
     this.classificacao = [{ label: "Selecionar Clasif.", value: "" }, { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" }, { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }];
+=======
+    this.classificacao = [{ label: "Seleccionar Clasif.", value: "" }, { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" }, { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.setapagar(false);
     this.globalVar.seteditar(false);
     this.globalVar.setvoltar(false);

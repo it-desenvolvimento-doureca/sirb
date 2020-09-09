@@ -1,12 +1,21 @@
 <div class="col-md-12">
+<<<<<<< HEAD
   <div class="col-md-12" style="padding:0px; ">
+=======
+  <div class="col-md-12" style="padding:0px">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     <div class="card-header" data-background-color="orange">
       <div class="nav-tabs-navigation">
         <div class="nav-tabs-wrapper">
           <ul class="nav nav-tabs" style="background:black">
             <li>
+<<<<<<< HEAD
               <p-dropdown [style]="{'width':'200px','background':'white','margin-top':'6px'}" [(ngModel)]="num_vista"
                 [options]="config" (onChange)="configuracoes($event)" filter="true"></p-dropdown>
+=======
+              <p-dropdown [style]="{'width':'200px','background':'white','margin-top':'6px'}" [(ngModel)]="num_vista" [options]="config"
+                (onChange)="configuracoes($event)" filter="true"></p-dropdown>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             </li>
             <li style="float: right;">
               <a (click)="createRowData(false,true)">
@@ -81,7 +90,11 @@
               <div style="margin-top: 11px;" class="col-md-12">
                 <form (ngSubmit)="createRowData(false,false)" ngNativeValidate>
 
+<<<<<<< HEAD
                   <!-- <button (click)="gridOptions.api.selectAll()">Selecionar Tudo</button>
+=======
+                  <!-- <button (click)="gridOptions.api.selectAll()">Seleccionar Tudo</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <button (click)="gridOptions.api.deselectAll()">Remover Selecção</button>
                    <label>
                     <input type="checkbox" (change)="showToolPanel=$event.target.checked" /> Show Tool Panel
@@ -92,13 +105,18 @@
                       <b>Famílias:</b>
                     </div>
                     <div class="col-md-12" style="padding-top: 0;">
+<<<<<<< HEAD
                       <p-multiSelect defaultLabel="Escolher Famílias" [required]="true" [options]="familias"
                         [style]="{'width':'100%','height':'30px'}" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="famSeleccionadas"></p-multiSelect>
+=======
+                      <p-multiSelect defaultLabel="Escolher Famílias" [required]="true" [options]="familias" [style]="{'width':'100%','height':'30px'}"[ngModelOptions]="{standalone: true}"  [(ngModel)]="famSeleccionadas"></p-multiSelect>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     </div>
                   </div>
                   <div class="col-md-2" style="padding: 0; width: 14%;">
                     <b>Data Ínicio:</b>
+<<<<<<< HEAD
                     <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="yy-mm-dd"
                       [style]="{'height':'27px'}" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
                       [(ngModel)]="data_ini" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
@@ -128,6 +146,33 @@
                   <div class="col-md-2" style="padding: 0; width: 14%; text-align: -webkit-right;">
                     <button pButton type="submit" label="APLICAR" iconPos="left"
                       style="width: 60%; height: 89%; margin-top: 3px;"></button>
+=======
+                    <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="yy-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                      [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_ini" [ngModelOptions]="{standalone: true}"
+                      [showIcon]="true"></p-calendar>
+                  </div>
+                  <div class="col-md-2" style="padding: 0; width: 14%;">
+                    <b>Data Fim:</b>
+                    <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="yy-mm-dd" [style]="{'height':'27px'}" [monthNavigator]="true"
+                      [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_fim" [ngModelOptions]="{standalone: true}"
+                      [showIcon]="true"></p-calendar>
+                  </div>
+                  <div class="col-md-2" style="padding: 0; width: 14%;">
+                    <b>Utiliz.</b>
+                    <p-dropdown [(ngModel)]="utilizador" [ngModelOptions]="{standalone: true}" #dd [options]="utilizadores" [style]="{'width':'96%','height':'27px'}" filter="true"></p-dropdown>
+                  </div>
+                  <div class="col-md-2" style="padding: 0; width: 14%;">
+                    <b>Operação:</b>
+                    <p-dropdown [(ngModel)]="operacao" [ngModelOptions]="{standalone: true}" #dd [options]="operacoes" [style]="{'width':'96%','height':'27px'}" filter="true"></p-dropdown>
+                  </div>
+                  <div class="col-md-2" style="padding: 0; width: 14%;">
+                    <b>Referência</b>
+                    <input type="text" style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+                      class="form-control" [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
+                  </div>
+                  <div class="col-md-2" style="padding: 0; width: 14%; text-align: -webkit-right;">
+                    <button pButton type="submit" label="APLICAR" iconPos="left" style="width: 60%; height: 89%; margin-top: 3px;"></button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   </div>
                 </form>
               </div>
@@ -136,15 +181,23 @@
                   <p-checkbox [(ngModel)]="select_table" (onChange)="selecttable()" binary="true"></p-checkbox>
                 </div>
                 <div class="col-md-2">
+<<<<<<< HEAD
                   <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
                     placeholder="Pesquisar..."
                     style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+=======
+                  <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput" placeholder="Pesquisar..." style="background: white; height: 27px; text-align: center; border: 1px solid #dedede; border-radius: 6px; width: 98%;"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     class="form-control">
                 </div>
                 <div class="col-md-2">
                   Por página:
+<<<<<<< HEAD
                   <p-dropdown [(ngModel)]="page_size" #dd [options]="paginasize" (onChange)="onPageSizeChanged($event)"
                     filter="true"></p-dropdown>
+=======
+                  <p-dropdown [(ngModel)]="page_size" #dd [options]="paginasize" (onChange)="onPageSizeChanged($event)" filter="true"></p-dropdown>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </div>
                 <div class="col-md-7">
                   <div>
@@ -178,6 +231,7 @@
               </div>
               <div style="clear: both;"></div>
 
+<<<<<<< HEAD
               <ag-grid-angular style="width: 100%; height: 100%; min-height: 100px;" [domLayout]="domLayout"
                 class="ag-fresh" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [showToolPanel]="showToolPanel"
                 [rowData]="rowData" enableColResize [enableSorting]="true" enableFilter groupHeaders rowHeight="22"
@@ -194,6 +248,20 @@
                 (columnVisible)="onColumnEvent($event)" (columnGroupOpened)="onColumnEvent($event)"
                 [overlayLoadingTemplate]="overlayLoadingTemplate" (columnResized)="onColumnEvent($event)"
                 (columnPinnedCountChanged)="onColumnEvent($event)" (paginationChanged)="onPaginationChanged($event)">
+=======
+              <ag-grid-angular style="width: 100%; height: 100%; min-height: 100px;" [domLayout]="domLayout" class="ag-fresh" [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" [showToolPanel]="showToolPanel" [rowData]="rowData" enableColResize [enableSorting]="true"
+                enableFilter groupHeaders rowHeight="22" rowSelection="multiple" (modelUpdated)="onModelUpdated()" (cellClicked)="onCellClicked($event)"
+                (cellDoubleClicked)="onCellDoubleClicked($event)" (cellContextMenu)="onCellContextMenu($event)" (cellValueChanged)="onCellValueChanged($event)"
+                (cellFocused)="onCellFocused($event)" (rowSelected)="onRowSelected($event)" (selectionChanged)="onSelectionChanged()"
+                [pagination]="true" (beforeFilterChanged)="onBeforeFilterChanged()" (afterFilterChanged)="onAfterFilterChanged()"
+                (filterModified)="onFilterModified()" (beforeSortChanged)="onBeforeSortChanged()" (afterSortChanged)="onAfterSortChanged()"
+                (virtualRowRemoved)="onVirtualRowRemoved($event)" (rowClicked)="onRowClicked($event)" (gridReady)="onReady($event)"
+                (columnEverythingChanged)="onColumnEvent($event)" (columnRowGroupChanged)="onColumnEvent($event)" (columnValueChanged)="onColumnEvent($event)"
+                (columnMoved)="onColumnEvent($event)" (columnVisible)="onColumnEvent($event)" (columnGroupOpened)="onColumnEvent($event)"
+                [overlayLoadingTemplate]="overlayLoadingTemplate" (columnResized)="onColumnEvent($event)" (columnPinnedCountChanged)="onColumnEvent($event)"
+                (paginationChanged)="onPaginationChanged($event)">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </ag-grid-angular>
             </div>
           </div>
@@ -224,8 +292,12 @@
       <div class="col-md-12" style="text-align: center; margin-top: 10px;">
         <button type="submit" pButton icon="fa-check" label="Gravar"></button>
         <button type="button" pButton icon="fa-close" (click)="displayVista=false" label="Cancelar"></button>
+<<<<<<< HEAD
         <button type="button" pButton icon="fa-trash" [hidden]="novo" class="ui-button-danger" (click)="remover()"
           label="Remover"></button>
+=======
+        <button type="button" pButton icon="fa-trash" [hidden]="novo" class="ui-button-danger" (click)="remover()" label="Remover"></button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       </div>
     </p-footer>
   </form>

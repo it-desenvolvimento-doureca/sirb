@@ -45,7 +45,10 @@ export class ConstrucaoBanhosComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('waitingDialog') waitingDialog: ElementRef;
   @ViewChild('waitingDialogclose') waitingDialogclose: ElementRef;
+<<<<<<< HEAD
   yearTimeout: any;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   constructor(private ABDICBANHOService: ABDICBANHOService, private ABDICLINHAService: ABDICLINHAService, private confirmationService: ConfirmationService, private renderer: Renderer, private ABMOVMANUTENCAOLINHAService: ABMOVMANUTENCAOLINHAService, private ABMOVMANUTENCAOCABService: ABMOVMANUTENCAOCABService, private ABMOVMANUTENCAOService: ABMOVMANUTENCAOService, private router: Router, private globalVar: AppGlobals) { }
 
@@ -179,9 +182,15 @@ export class ConstrucaoBanhosComponent implements OnInit {
         }
         this.cols = this.cols.slice();
         if (this.linha == null || this.linha == "") this.linha = this.globalVar.getlinha();
+<<<<<<< HEAD
         this.filtrar2(this.linha, "linha", true);
 
         if (this.filtroval) this.filtrar2(this.filtro, "estado", true, "in");
+=======
+        this.filtrar(this.linha, "linha", true);
+
+        if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       },
       error => console.log(error));
 
@@ -217,6 +226,7 @@ export class ConstrucaoBanhosComponent implements OnInit {
 
   //filtro coluna linha
   filtrar(value, coluna, fil = false, filtro = "contains") {
+<<<<<<< HEAD
 
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
@@ -246,6 +256,8 @@ export class ConstrucaoBanhosComponent implements OnInit {
 
   //filtro coluna linha
   filtrar2(value, coluna, fil = false, filtro = "contains") {
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (value == 0 && fil) {
       value = "";
     }
@@ -266,7 +278,10 @@ export class ConstrucaoBanhosComponent implements OnInit {
     this.globalVar.setfiltros("construcaobanhos_id", ids);
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   atualizaids() {
     var ids = [];
     for (var x in this.dataTableComponent.dataToRender) {
@@ -303,10 +318,17 @@ export class ConstrucaoBanhosComponent implements OnInit {
               ids.push(response[x].id_MANUTENCAO);
             }
             this.id_manu = ids.toString();
+<<<<<<< HEAD
             this.filtrar2(ids, "id", false, "in")
           }
           else {
             this.filtrar2('null', "id", false, "in")
+=======
+            this.filtrar(ids, "id", false, "in")
+          }
+          else {
+            this.filtrar('null', "id", false, "in")
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           }
 
         }, error => {
@@ -314,7 +336,11 @@ export class ConstrucaoBanhosComponent implements OnInit {
         });
     } else {
       this.id_manu = "";
+<<<<<<< HEAD
       this.filtrar2('', "id", false, "in")
+=======
+      this.filtrar('', "id", false, "in")
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
   }
 

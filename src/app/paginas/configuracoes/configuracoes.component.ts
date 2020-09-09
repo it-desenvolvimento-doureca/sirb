@@ -13,10 +13,13 @@ import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { ConfirmationService } from "primeng/primeng";
 import { DomSanitizer } from '@angular/platform-browser';
 import { GERANALISESService } from 'app/servicos/ger-analises.service';
+<<<<<<< HEAD
 import { GERUTZPERFILService } from 'app/servicos/ger-utz-perfil.service';
 import { GER_UTZ_PERFIL } from 'app/entidades/GER_UTZ_PERFIL';
 import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
 import { GERARMAZEMService } from 'app/servicos/ger-armazem.service';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
   selector: 'app-configuracoes',
@@ -44,6 +47,7 @@ export class ConfiguracoesComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
 
   public list = [];
+<<<<<<< HEAD
   sourcePerfil: any;
   targetPerfil: any[];
   dialognovo = false;
@@ -51,6 +55,10 @@ export class ConfiguracoesComponent implements OnInit {
   list3: { id: number; parent: any; name: string; children: any[]; }[];
 
   constructor(private GERARMAZEMService: GERARMAZEMService, private RHSECTORESService: RHSECTORESService, private GERUTZPERFILService: GERUTZPERFILService, private GERANALISESService: GERANALISESService, private sanitizer: DomSanitizer, private confirmationService: ConfirmationService, private GERPERFILLINService: GERPERFILLINService, private GERMODULOService: GERMODULOService, private GERPERFILCABService: GERPERFILCABService, private elementRef: ElementRef, private renderer: Renderer, private location: Location) {
+=======
+
+  constructor(private GERANALISESService: GERANALISESService, private sanitizer: DomSanitizer, private confirmationService: ConfirmationService, private GERPERFILLINService: GERPERFILLINService, private GERMODULOService: GERMODULOService, private GERPERFILCABService: GERPERFILCABService, private elementRef: ElementRef, private renderer: Renderer, private location: Location) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   ngOnInit() {
@@ -73,6 +81,7 @@ export class ConfiguracoesComponent implements OnInit {
   atualizaperfil() {
     this.id_perfil = null;
     var modulo = this.id_modulo;
+<<<<<<< HEAD
     if (this.id_modulo == null) modulo = 0;
     if (modulo == 10 || modulo == 18) {
       this.carregaSectores();
@@ -80,6 +89,9 @@ export class ConfiguracoesComponent implements OnInit {
       this.carregaArmazens();
     }
 
+=======
+    if(this.id_modulo == null) modulo =0;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.GERPERFILCABService.getAllbymodulo(modulo).subscribe(
       response => {
         this.perfis = [];
@@ -120,6 +132,7 @@ export class ConfiguracoesComponent implements OnInit {
     this.nome_perfil = event.data.nome;
     this.novo_perfil = false;
     this.tree_nodes(this.id_modulo);
+<<<<<<< HEAD
 
     this.carregaperfis();
   }
@@ -209,6 +222,10 @@ export class ConfiguracoesComponent implements OnInit {
       });
     }
   }
+=======
+  }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   //bt gravar
   gravar() {
     var encontrou = false;
@@ -361,7 +378,11 @@ export class ConfiguracoesComponent implements OnInit {
 
   //criar array arvore analises
   tree_nodes(id) {
+<<<<<<< HEAD
     this.nodes = [];
+=======
+    this.nodes= [];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     var array = [{ id: 0, parent: null, name: 'Análises', link: null, ativo: true }];
 
     this.GERANALISESService.getbyidmodulo(id).subscribe(result => {

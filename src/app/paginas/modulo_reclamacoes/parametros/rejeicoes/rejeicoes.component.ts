@@ -22,7 +22,10 @@ export class RejeicoesComponent implements OnInit {
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
   revisao_RECLAMACAO: boolean;
+<<<<<<< HEAD
   objetivo: number;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   constructor(private globalVar: AppGlobals, private RCDICREJEICAOService: RCDICREJEICAOService, private renderer: Renderer) { }
   ngOnInit() {
     this.globalVar.setduplicar(false);
@@ -45,7 +48,10 @@ export class RejeicoesComponent implements OnInit {
     this.novo = true;
     this.id_selected = 0;
     this.descricao = "";
+<<<<<<< HEAD
     this.objetivo = 0;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.revisao_RECLAMACAO = false;
     this.datacria = null;
     this.utz_cria = null;
@@ -58,7 +64,10 @@ export class RejeicoesComponent implements OnInit {
   gravardados() {
     var DIC_REJEICAO = new RC_DIC_REJEICAO;
     DIC_REJEICAO.descricao = this.descricao;
+<<<<<<< HEAD
     DIC_REJEICAO.objetivo = this.objetivo;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     DIC_REJEICAO.utz_ULT_MODIF = JSON.parse(localStorage.getItem('userapp'))["id"];
     DIC_REJEICAO.data_ULT_MODIF = new Date();
     DIC_REJEICAO.revisao_RECLAMACAO = this.revisao_RECLAMACAO;
@@ -90,7 +99,11 @@ export class RejeicoesComponent implements OnInit {
     this.RCDICREJEICAOService.getAll().subscribe(
       response => {
         for (var x in response) {
+<<<<<<< HEAD
           this.dados.push({ id: response[x].id, revisao_RECLAMACAO: response[x].revisao_RECLAMACAO, objetivo: response[x].objetivo, nome: response[x].descricao, data_CRIA: response[x].data_CRIA, utz_CRIA: response[x].utz_CRIA });
+=======
+          this.dados.push({ id: response[x].id, revisao_RECLAMACAO: response[x].revisao_RECLAMACAO, nome: response[x].descricao, data_CRIA: response[x].data_CRIA, utz_CRIA: response[x].utz_CRIA });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
         this.dados = this.dados.slice();
       },
@@ -104,7 +117,11 @@ export class RejeicoesComponent implements OnInit {
     var DIC_REJEICAO = new RC_DIC_REJEICAO;
     DIC_REJEICAO.descricao = this.descricao;
     DIC_REJEICAO.id = this.id_selected;
+<<<<<<< HEAD
     DIC_REJEICAO.objetivo = this.objetivo;
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.RCDICREJEICAOService.delete(DIC_REJEICAO.id).then(() => {
       this.listar();
     });
@@ -116,7 +133,10 @@ export class RejeicoesComponent implements OnInit {
   onRowSelect(event) {
     this.id_selected = event.data.id;
     this.descricao = event.data.nome;
+<<<<<<< HEAD
     this.objetivo = event.data.objetivo;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.novo = false;
     this.datacria = event.data.data_CRIA;
     this.utz_cria = event.data.utz_CRIA;

@@ -45,7 +45,10 @@ export class ManutencaoReposicaoComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('waitingDialog') waitingDialog: ElementRef;
   @ViewChild('waitingDialogclose') waitingDialogclose: ElementRef;
+<<<<<<< HEAD
   yearTimeout: any;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   constructor(private ABDICBANHOService: ABDICBANHOService, private ABDICLINHAService: ABDICLINHAService, private confirmationService: ConfirmationService, private renderer: Renderer, private ABMOVMANUTENCAOLINHAService: ABMOVMANUTENCAOLINHAService, private ABMOVMANUTENCAOCABService: ABMOVMANUTENCAOCABService, private ABMOVMANUTENCAOService: ABMOVMANUTENCAOService, private router: Router, private globalVar: AppGlobals) { }
 
@@ -179,9 +182,15 @@ export class ManutencaoReposicaoComponent implements OnInit {
           }
           this.cols = this.cols.slice();
           if (this.linha == null || this.linha == "") this.linha = this.globalVar.getlinha();
+<<<<<<< HEAD
           this.filtrar2(this.linha, "linha", true);
 
           if (this.filtroval) this.filtrar2(this.filtro, "estado", true, "in");
+=======
+          this.filtrar(this.linha, "linha", true);
+
+          if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         },
         error => console.log(error));
 
@@ -227,6 +236,7 @@ export class ManutencaoReposicaoComponent implements OnInit {
 
   //filtro coluna linha
   filtrar(value, coluna, fil = false, filtro = "contains") {
+<<<<<<< HEAD
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
     }
@@ -255,6 +265,8 @@ export class ManutencaoReposicaoComponent implements OnInit {
 
   filtrar2(value, coluna, fil = false, filtro = "contains") {
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     if (value == 0 && fil) {
       value = "";
     }
@@ -273,7 +285,10 @@ export class ManutencaoReposicaoComponent implements OnInit {
       this.mensagemtabela = "Nenhum Registo foi encontrado...";
     }
     this.globalVar.setfiltros("manutencaoreposicao_id", ids);
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   atualizaids() {
@@ -337,9 +352,15 @@ export class ManutencaoReposicaoComponent implements OnInit {
           }
           this.cols = this.cols.slice();
           if (this.linha == null || this.linha == "") this.linha = this.globalVar.getlinha();
+<<<<<<< HEAD
           this.filtrar2(this.linha, "linha", true);
 
           if (this.filtroval) this.filtrar2(this.filtro, "estado", true, "in");
+=======
+          this.filtrar(this.linha, "linha", true);
+
+          if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.globalVar.setfiltros("manutencaoreposicao_id", ids);
           this.globalVar.setfiltros("manutencaoreposicaoidbanho", id);
         },
@@ -349,7 +370,11 @@ export class ManutencaoReposicaoComponent implements OnInit {
       this.globalVar.setfiltros("manutencaoreposicaoidbanho", null);
       this.carregarlista();
       /*this.id_manu = "";
+<<<<<<< HEAD
       this.filtrar2('', "id", false, "in");*/
+=======
+      this.filtrar('', "id", false, "in");*/
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
   }
 

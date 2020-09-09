@@ -10,19 +10,31 @@
               <span style="color: black;" class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Criar</a>-->
           </div>
           <div class="card-content table-responsive">
+<<<<<<< HEAD
             <p-dataTable class="tabelahometarefa" [style]="{'min-height':'100px'}" [value]="cols" dataKey="id"
               [rows]="25" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">
+=======
+            <p-dataTable class="tabelahometarefa" [style]="{'min-height':'100px'}" [value]="cols" dataKey="id" [rows]="25"
+              [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
               <p-headerColumnGroup>
                 <p-row>
                   <p-column header="Nome Tarefa" rowspan="2"></p-column>
+<<<<<<< HEAD
                   <p-column [style]="{'width':'460px'}" header="Origem" colspan="4"></p-column>
+=======
+                  <p-column [style]="{'width':'264px'}" header="Origem" colspan="2"></p-column>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </p-row>
                 <p-row>
                   <p-column header="Reclamações Clientes" colspan="1"></p-column>
                   <p-column header="Reclamações Fornecedores" colspan="1"></p-column>
+<<<<<<< HEAD
                   <p-column header="Amostras" colspan="1"></p-column>
                   <p-column header="Planos de Ação" colspan="1"></p-column>
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </p-row>
               </p-headerColumnGroup>
 
@@ -41,6 +53,7 @@
                   <span title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}</span>
                 </ng-template>
               </p-column>
+<<<<<<< HEAD
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
                 <ng-template let-col let-car="rowData" pTemplate="body">
                   <span title="{{car['title3'] }}">{{car['amostras'] }}</span>
@@ -51,6 +64,8 @@
                   <span title="{{car['title4'] }}">{{car['planosacao'] }}</span>
                 </ng-template>
               </p-column>
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             </p-dataTable>
           </div>
         </div>
@@ -66,17 +81,26 @@
               <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                 <label>Tarefas:</label>
                 <br>
+<<<<<<< HEAD
                 <p-multiSelect styleClass="ui-column-filter" [options]="drop_accoes"
                   [ngModelOptions]="{standalone: true}"
                   [style]="{'width':'100%','height':'25px','background':'white','padding': '3px'}" [(ngModel)]="accao">
                 </p-multiSelect>
+=======
+                <p-multiSelect styleClass="ui-column-filter" [options]="drop_accoes" [ngModelOptions]="{standalone: true}"
+                  [style]="{'width':'100%','height':'25px','background':'white','padding': '3px'}" [(ngModel)]="accao"></p-multiSelect>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
               <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
                 <label>Estado:</label>
                 <br>
                 <p-multiSelect styleClass="ui-column-filter" [options]="estados" [ngModelOptions]="{standalone: true}"
+<<<<<<< HEAD
                   [style]="{'width':'100%','height':'25px','background':'white','padding': '3px'}" [(ngModel)]="estado">
                 </p-multiSelect>
+=======
+                  [style]="{'width':'100%','height':'25px','background':'white','padding': '3px'}" [(ngModel)]="estado"></p-multiSelect>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
 
               <div style="padding: 4px 5px 7px 10px;" class="form-group col-lg-6">
@@ -89,9 +113,12 @@
                   <p-checkbox name="group4" value="g" label="Grupo" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
                 <div class="ui-g-12" style="float: left; margin-left: 10px;">
+<<<<<<< HEAD
                   <p-checkbox name="group4" value="s" label="Sector" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
                 <div class="ui-g-12" style="float: left; /*margin-left: 10px;*/">
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <p-checkbox name="group4" value="t" label="Todas" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
               </div>
@@ -100,6 +127,7 @@
                 <label style="display: -webkit-box;">Data Atribuição Entre:</label>
                 <p-calendar [style]="{'height':'25px','width':'35%','margin-right': '44px'}" dateFormat="yy-mm-dd"
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+<<<<<<< HEAD
                   [(ngModel)]="datacria1" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
                 </p-calendar>
                 e
@@ -107,12 +135,20 @@
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
                   [(ngModel)]="datacria2" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
                 </p-calendar>
+=======
+                  [(ngModel)]="datacria1" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                e
+                <p-calendar [style]="{'height':'25px','width':'35%','margin-left': '21px'}" dateFormat="yy-mm-dd"
+                  placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                  [(ngModel)]="datacria2" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
 
               <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                 <label style="display: -webkit-box;">Prazo Conclusão Entre:</label>
                 <p-calendar [style]="{'height':'25px','width':'35%','margin-right': '44px'}" dateFormat="yy-mm-dd"
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+<<<<<<< HEAD
                   [(ngModel)]="datafim1" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
                 </p-calendar>
                 e
@@ -120,6 +156,13 @@
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
                   [(ngModel)]="datafim2" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
                 </p-calendar>
+=======
+                  [(ngModel)]="datafim1" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                e
+                <p-calendar [style]="{'height':'25px','width':'35%','margin-left': '21px'}" dateFormat="yy-mm-dd"
+                  placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                  [(ngModel)]="datafim2" [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               </div>
 
               <button type="submit" class="btn btn-success pull-right">Aplicar</button>
@@ -136,6 +179,7 @@
           </div>-->
           <nav>
             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist" style="display: flex;">
+<<<<<<< HEAD
               <a (click)="resetActive($event, 'step1');" [ngClass]="{'activestep': classstep == 'step1'}"
                 class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                 aria-controls="nav-home" aria-selected="true">Tarefas
@@ -143,6 +187,14 @@
               <a (click)="resetActive($event, 'step2');" [ngClass]="{'activestep': classstep == 'step2'}"
                 class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
                 aria-controls="nav-profile" aria-selected="false">Tarefas Concluídas/Fechadas</a>
+=======
+              <a (click)="resetActive($event, 'step1');" [ngClass]="{'activestep': classstep == 'step1'}" class="nav-item nav-link"
+                id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Tarefas
+                Abertas</a>
+              <a (click)="resetActive($event, 'step2');" [ngClass]="{'activestep': classstep == 'step2'}" class="nav-item nav-link"
+                id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
+                aria-selected="false">Tarefas Concluídas/Fechadas</a>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
             </div>
           </nav>
@@ -153,6 +205,7 @@
                 <p-dataTable class="tabelalistatarefas" [style]="{'min-height':'100px'}" (onRowDblclick)="abrir($event)"
                   [value]="tabelalistatarefas" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
                   [rowsPerPageOptions]="[25,50,100,'todos']">
+<<<<<<< HEAD
                   <p-column [style]="{'width':'13%'}" [sortable]="true" [filter]="true" field="nome"
                     header="Nome Tarefas"></p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_origem"
@@ -181,6 +234,22 @@
                     header="Data/Hora Conclusão"></p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_concluiu"
                     header="Utili. Concluíu"></p-column>
+=======
+                  <p-column [style]="{'width':'13%'}" [sortable]="true" [filter]="true" field="nome" header="Nome Tarefas"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_origem" header="Utili. Origem"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="dep_origem" header="Dep. Origem"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_atribuicao" header="Data/Hora Atribuição"></p-column>
+                  <p-column [style]="{'width':'7%'}" [sortable]="true" [filter]="true" field="atribuido" header="Atribuído a"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="encaminhado" header="Encaminhado para"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+                  <p-column [style]="{'width':'7%'}" [sortable]="true" [filter]="true" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+                  <p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade" header="Prioridade"></p-column>
+                  <p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="estado" header="Estado"></p-column>
+                  <p-column [style]="{'width':'10%'}" [sortable]="true" [filter]="true" field="cliente" header="Cliente"></p-column>
+                  <p-column [style]="{'width':'11%'}" [sortable]="true" [filter]="true" field="referencia" header="Referência"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </p-dataTable>
               </div>
 
@@ -188,6 +257,7 @@
                 <p-dataTable class="tabelalistatarefas" [style]="{'min-height':'100px'}" (onRowDblclick)="abrir($event)"
                   [value]="tabelalistatarefas2" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
                   [rowsPerPageOptions]="[25,50,100,'todos']">
+<<<<<<< HEAD
                   <p-column [style]="{'width':'13%'}" [sortable]="true" [filter]="true" field="nome"
                     header="Nome Tarefas"></p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_origem"
@@ -216,6 +286,22 @@
                     header="Data/Hora Conclusão"></p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_concluiu"
                     header="Utili. Concluíu"></p-column>
+=======
+                  <p-column [style]="{'width':'13%'}" [sortable]="true" [filter]="true" field="nome" header="Nome Tarefas"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_origem" header="Utili. Origem"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="dep_origem" header="Dep. Origem"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_atribuicao" header="Data/Hora Atribuição"></p-column>
+                  <p-column [style]="{'width':'7%'}" [sortable]="true" [filter]="true" field="atribuido" header="Atribuído a"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="encaminhado" header="Encaminhado para"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+                  <p-column [style]="{'width':'7%'}" [sortable]="true" [filter]="true" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+                  <p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade" header="Prioridade"></p-column>
+                  <p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="estado" header="Estado"></p-column>
+                  <p-column [style]="{'width':'10%'}" [sortable]="true" [filter]="true" field="cliente" header="Cliente"></p-column>
+                  <p-column [style]="{'width':'11%'}" [sortable]="true" [filter]="true" field="referencia" header="Referência"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+                  <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 </p-dataTable>
               </div>
 

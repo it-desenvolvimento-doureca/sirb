@@ -8,6 +8,7 @@
             <h4 class="title">Departamentos</h4>
           </div>
           <div class="card-content">
+<<<<<<< HEAD
             <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single"
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column [style]="{'width':'70px'}" field="descricao" header="Nome Departamento" [filter]="true"
@@ -23,6 +24,16 @@
               <p-footer>
                 <a [class.disabled]="!criar" (click)="showDialogToAdd()"
                   style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+=======
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+              <p-column [style]="{'width':'70px'}" field="descricao" header="Nome Departamento" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'90px'}" field="nome_op" header="Responsável" [filter]="true" [sortable]="true"></p-column>
+              <p-footer>
+                <a [class.disabled]="!criar" (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;"
+                  title="Adicionar nova linha">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <i class="material-icons">add</i> Adicionar
                 </a>
               </p-footer>
@@ -52,6 +63,7 @@
       </div>
       <form role="form" ngNativeValidate (ngSubmit)="gravar()">
         <!-- Modal Body -->
+<<<<<<< HEAD
         <div class="modal-body">
           <div class="col-md-12" style="padding: 0;">
             <div class="col-md-6" style="padding: 0;">
@@ -97,6 +109,22 @@
                 {{car.nome}}
               </ng-template>
             </p-pickList>
+=======
+        <div class="modal-body" style="display: -webkit-box;">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="TipoAdicao">Nome Departamento</label>
+              <input type="text" [disabled]="!modoedicao" class="form-control" id="TipoAdicao" [(ngModel)]="descricao"
+                [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group col-md-12">
+              <label for="tipoop">Responsável</label>
+              <p-dropdown [filter]="true" [options]="utilizadores" [disabled]="!modoedicao" [style]="{'width':'100%'}"
+                [(ngModel)]="utilizadores_id" [ngModelOptions]="{standalone: true}"></p-dropdown>
+            </div>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
         </div>
         <!-- Modal Footer -->

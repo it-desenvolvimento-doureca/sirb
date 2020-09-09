@@ -20,10 +20,13 @@ export class GER_PARAMETROS {
     pasta_DESTINO_ERRO: string;
 
     atualizacao_SILVER_BI_ATIVO: boolean;
+<<<<<<< HEAD
     tempo_PAUSA_TURNOS_CONTINUOS: String;
 
     modelo_REPORT_PRODUCAO: string;
     sectores_ABSENTISMO: string;
     taxa_ABSENTISMO: number;
     taxa_REJEICAO: number;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

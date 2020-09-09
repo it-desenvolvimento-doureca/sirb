@@ -45,7 +45,11 @@ export class CabecalhoComponent implements OnInit {
              var hora= new Date();
              this.hora = hora.toLocaleTimeString();
          }, 1000);
+<<<<<<< HEAD
  */
+=======
+ */      
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
         if (localStorage.getItem("userapp")) {

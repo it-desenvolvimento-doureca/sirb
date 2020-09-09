@@ -3,7 +3,10 @@ import { DataTable, ConfirmationService } from 'primeng/primeng';
 import { Router } from '@angular/router';
 import { AppGlobals } from '../../../menu/sidebar.metadata';
 import { RCMOVRECLAMACAOService } from '../../../servicos/rc-mov-reclamacao.service';
+<<<<<<< HEAD
 import { RCMOVRECLAMACAOFORNECEDORService } from 'app/servicos/rc-mov-reclamacao-fornecedor.service';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
 @Component({
@@ -38,7 +41,11 @@ export class ListareclamacoesfornecedoresComponent implements OnInit {
   linhas: any[] = null;
 
 
+<<<<<<< HEAD
   constructor(private RCMOVRECLAMACAOFORNECEDORService: RCMOVRECLAMACAOFORNECEDORService, private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+=======
+  constructor(private RCMOVRECLAMACAOService: RCMOVRECLAMACAOService, private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   ngOnInit() {
     this.filtroval = true;
@@ -76,10 +83,17 @@ export class ListareclamacoesfornecedoresComponent implements OnInit {
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(true);
+<<<<<<< HEAD
     this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501editar"));
     this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501criar"));
     this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501apagar"));
     this.disduplicar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501duplicar");
+=======
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node005editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node005criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node005apagar"));
+    this.disduplicar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node005duplicar");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
 
@@ -92,9 +106,14 @@ export class ListareclamacoesfornecedoresComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
+<<<<<<< HEAD
     this.RCMOVRECLAMACAOFORNECEDORService.getAll2().subscribe(
       response => {
         this.cols = [];
+=======
+    this.RCMOVRECLAMACAOService.getAll().subscribe(
+      response => {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         var count = Object.keys(response).length;
         if (count == 0) {
           this.mensagemtabela = "Nenhum Registo foi encontrado...";
@@ -102,9 +121,15 @@ export class ListareclamacoesfornecedoresComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
+<<<<<<< HEAD
             id: response[x][0].id_RECLAMACAO, classificacao: response[x][1],
             data: this.formatDate(response[x][0].data_RECLAMACAO), cliente: response[x][0].nome_FORNECEDOR, morada: response[x][0].morada_FORNECEDOR,
             referencia: response[x][0].referencia + ' - ' + response[x][0].designacao_REF, estado: this.getESTADO(response[x][0].estado)
+=======
+            id: response[x].id_RECLAMACAO, tipo_manu: response[x].id_TIPO_RECLAMACAO,
+            data: this.formatDate(response[x].data_RECLAMACAO), cliente: response[x].nome_CLIENTE, morada: response[x].morada_CLIENTE,
+            referencia: response[x].referencia + ' - ' + response[x].designacao_REF, estado: this.getESTADO(response[x].estado)
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           });
 
         }

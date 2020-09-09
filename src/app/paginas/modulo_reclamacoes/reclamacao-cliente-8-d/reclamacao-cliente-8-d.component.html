@@ -241,7 +241,11 @@
                           <i [hidden]="!validaloading" class="fa fa-spinner fa-spin"></i>
                         </button>
                         <button [disabled]="lote == '' || lote == null" title="Consultar Lotes" type="button" (click)="consulta()"
+<<<<<<< HEAD
                           class="btn btn-sm" id="plus-btn11" style="float: left; width: 16%; margin: 5px 0 0 0; height: 25px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
+=======
+                          class="btn btn-sm" id="plus-btn" style="float: left; width: 16%; margin: 5px 0 0 0; height: 25px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                           <i class="fa fa-area-chart"></i>
                         </button>
                       </div>
@@ -491,7 +495,11 @@
                             invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, "
                             invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}."
                             invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}."
+<<<<<<< HEAD
                             invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, " chooseLabel="Selecionar"
+=======
+                            invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, " chooseLabel="Seleccionar"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                             uploadLabel="Carregar" cancelLabel="Cancelar">
                             <ng-template let-file pTemplate="file">
                               <div class="ui-fileupload-row">
@@ -605,16 +613,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(1)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step1CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step1CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step1CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess65" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step1CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step1CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step1CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step1CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -724,16 +743,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(2)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step2CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step2CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step2CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess75" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step2CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step2CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step2CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step2CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -916,16 +946,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(3)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step3CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step3CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step3CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess85" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step3CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step3CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step3CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step3CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -1082,16 +1123,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(4)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step4CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step4CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step4CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess95" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step4CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step4CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step4CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step4CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -1221,16 +1273,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(5)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step5CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step5CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step5CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess115" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step5CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step5CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step5CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step5CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -1387,16 +1450,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(6)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step6CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step6CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step6CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess225" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step6CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step6CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step6CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step6CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -1551,16 +1625,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(7)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step7CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step7CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step7CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess45" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step7CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step7CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step7CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step7CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -1717,16 +1802,27 @@
                           <form style="width: 100%; display: -webkit-box;" (ngSubmit)="concluirEtapa(8)"
                             ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+<<<<<<< HEAD
                               <button [disabled]="!modoedicao || step8CONCLUIDO || duplica" class="btn btn-success" type="submit"
+=======
+                              <button [disabled]="!modoedicao || step8CONCLUIDO" class="btn btn-success" type="submit"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 style="width: 100%;">Concluir
                                 Etapa</button>
                             </span>
                             <div class="form-group  has-concluir" style="width: 85%;">
                               <input type="text" disabled placeholder="Utilizador" value="{{getNomeUser(step8CONCLUIDO_UTZ)}}"
+<<<<<<< HEAD
                                 class="form-control2" id="inputSuccess55" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
 
                               <p-calendar [disabled]="!modoedicao || step8CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
                                 dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" [minDate]="data_RECLAMACAO"
+=======
+                                class="form-control2" id="inputSuccess5" style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                              <p-calendar [disabled]="!modoedicao || step8CONCLUIDO" [style]="{'height':'41px','width':'43%','float':'left'}"
+                                dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                                 yearRange="2000:2050" [(ngModel)]="step8CONCLUIDO_DATA" [ngModelOptions]="{standalone: true}"
                                 [showIcon]="true" [required]="true"></p-calendar>
                               <button [hidden]="!modoedicao || !step8CONCLUIDO || (user != utz_RESPONSAVEL && user != utz_CRIA && !adminuser)"
@@ -2202,7 +2298,11 @@
 
 <!-- Modal dados-->
 
+<<<<<<< HEAD
 <p-dialog header="Ações de Reclamações" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+=======
+<p-dialog header="Acções de Reclamações" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayAddAccao"
   [modal]="true">
 
@@ -2290,7 +2390,11 @@
 
 
 
+<<<<<<< HEAD
 <p-dialog header="Ações de Reclamações" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '600px'}"
+=======
+<p-dialog header="Acções de Reclamações" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '600px'}"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayResponsabilidade"
   [modal]="true">
 

@@ -3,7 +3,10 @@ import { ROUTES } from "app/menu/sidebar-routes.config";
 import { Router } from "@angular/router";
 import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+<<<<<<< HEAD
 import { AppComponent } from 'app/app.component';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
   selector: 'app-menu',
@@ -15,7 +18,11 @@ export class MenuComponent implements OnInit {
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('dialog2') dialog2: ElementRef;
 
+<<<<<<< HEAD
   constructor(private comp: AppComponent, private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
+=======
+  constructor(private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   }
 
@@ -42,6 +49,7 @@ export class MenuComponent implements OnInit {
   }
 
   abreAjuda() {
+<<<<<<< HEAD
     //this.simular(this.dialog2);
     this.comp.abreAjuda();
   }
@@ -53,6 +61,11 @@ export class MenuComponent implements OnInit {
   }
 
 
+=======
+    this.simular(this.dialog2);
+  }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   //simular click para mostrar mensagem
   simular(element) {
     let event = new MouseEvent('click', { bubbles: true });
@@ -71,6 +84,7 @@ export class MenuComponent implements OnInit {
     //[routerLink]="['/homegestaobanhos']"
   }
 
+<<<<<<< HEAD
   abrircontroloassiduidade() {
     if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node7"))
       this.router.navigate(['controloassiduidade']);
@@ -89,6 +103,10 @@ export class MenuComponent implements OnInit {
   abrirdashboardTarefas() {
     if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node6"))
       this.router.navigate(['tarefas']);
+=======
+  abrirdashboardTarefas() {
+    this.router.navigate(['tarefas']);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
 

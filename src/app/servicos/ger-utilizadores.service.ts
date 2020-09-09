@@ -36,6 +36,7 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
   getDadosUtilizador(id): Observable<GER_UTILIZADORES[]> {
     const url = webUrl.host + '/rest/sirb/getDadosUtilizador/' + id;
     return this.http
@@ -44,6 +45,8 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   getAllfromsilver() {
     const url = webUrl.host + '/rest/sirb/getusers';
     return this.http
@@ -100,7 +103,11 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   verifica_LDAP(id, code): Observable<GER_UTILIZADORES[]> {
     const url = webUrl.host + '/rest/sirb/getGER_UTILIZADORESverifica_LDAP/' + id + '/' + code;
     return this.http

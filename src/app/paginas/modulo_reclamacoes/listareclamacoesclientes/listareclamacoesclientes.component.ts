@@ -13,6 +13,7 @@ export class ListareclamacoesclientesComponent implements OnInit {
 
   mensagemtabela: string;
   acessoplaneamento = true;
+<<<<<<< HEAD
   referencia: any;
   filtro2: any;
   filtroval;
@@ -20,6 +21,16 @@ export class ListareclamacoesclientesComponent implements OnInit {
   data: string;
   id_manu: string;
   morada: string;
+=======
+  banho: any;
+  banhos: any[];
+  filtro2: any;
+  filtroval;
+  turno: string;
+  data: string;
+  id_manu: string;
+  tipo_manu: string;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   estados: ({ label: string; value: string; } | { label: string; value: boolean; })[];
   query: any = [];
   disduplicar: boolean = true;
@@ -31,8 +42,13 @@ export class ListareclamacoesclientesComponent implements OnInit {
   filtro = [];
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
+<<<<<<< HEAD
 
   yearTimeout: any;
+=======
+  linha = null;
+  linhas: any[] = null;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
   constructor(private RCMOVRECLAMACAOService: RCMOVRECLAMACAOService, private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
@@ -47,11 +63,14 @@ export class ListareclamacoesclientesComponent implements OnInit {
 
       this.dataTableComponent.filters = array;
 
+<<<<<<< HEAD
       this.data = (array['data'] != undefined) ? array['data'].value : "";
       this.id_manu = (array['id'] != undefined) ? array['id'].value : "";
       this.morada = (array['morada'] != undefined) ? array['morada'].value : "";
       this.cliente = (array['cliente'] != undefined) ? array['cliente'].value : "";
       this.referencia = (array['referencia'] != undefined) ? array['referencia'].value : "";
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
       if (this.filtro2 != null && this.filtro2 != "") {
         var f = this.filtro2.split(',');
@@ -125,6 +144,7 @@ export class ListareclamacoesclientesComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
     this.filtro = [];
+<<<<<<< HEAD
     this.id_manu = "";
     this.morada = "";
     this.data = "";
@@ -134,6 +154,23 @@ export class ListareclamacoesclientesComponent implements OnInit {
     this.dataTableComponent.filter("", "", "");
 
 
+=======
+    this.linha = null;
+    this.id_manu = "";
+    this.tipo_manu = "";
+    this.data = "";
+    this.turno = "";
+    //this.banho = null;
+
+    this.dataTableComponent.filter("", "", "");
+
+    var count = 0;
+    if (this.globalVar.getfiltros("reclamacaoclienteidbanho")) count = 1;
+    if (count > 0) {
+      this.globalVar.setfiltros("reclamacaoclienteidbanho", null);
+      this.carregarlista();
+    }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
 
@@ -151,6 +188,7 @@ export class ListareclamacoesclientesComponent implements OnInit {
 
   //filtro coluna linha
   filtrar(value, coluna, fil = false, filtro = "contains") {
+<<<<<<< HEAD
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
     }
@@ -176,10 +214,29 @@ export class ListareclamacoesclientesComponent implements OnInit {
 
       this.globalVar.setfiltros("reclamacaocliente_id", ids);
     }, 250);
+=======
+    if (value == 0 && fil) {
+      value = "";
+    }
+
+    this.dataTableComponent.filter(value.toString(), coluna, filtro);
+
+    this.globalVar.setfiltros("reclamacaocliente", this.dataTableComponent.filters);
+    var ids = [];
+    for (var x in this.dataTableComponent.dataToRender) {
+      ids.push(this.dataTableComponent.dataToRender[x].id);
+    }
+    if (this.dataTableComponent.dataToRender.length == 0) {
+      this.mensagemtabela = "Nenhum Registo foi encontrado...";
+    }
+
+    this.globalVar.setfiltros("reclamacaocliente_id", ids);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   atualizaids() {
     var ids = [];
+<<<<<<< HEAD
     var array = this.dataTableComponent._value;
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
 
@@ -187,6 +244,11 @@ export class ListareclamacoesclientesComponent implements OnInit {
       ids.push(array[x].id);
     }
     
+=======
+    for (var x in this.dataTableComponent.dataToRender) {
+      ids.push(this.dataTableComponent.dataToRender[x].id);
+    }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.globalVar.setfiltros("reclamacaocliente_id", ids);
   }
 

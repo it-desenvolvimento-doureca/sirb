@@ -8,12 +8,20 @@
             <h4 class="title">Rejeições</h4>
           </div>
           <div class="card-content">
+<<<<<<< HEAD
             <p-dataTable [style]="{'width':'400px'}" [value]="dados" selectionMode="single"
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column [style]="{'width':'40px'}" field="nome" header="Descrição" [filter]="true" [sortable]="true">
               </p-column>
               <p-column [style]="{'width':'100px'}" field="revisao_RECLAMACAO" header="Revisão da Reclamação"
                 [filter]="true" [sortable]="true">
+=======
+            <p-dataTable [style]="{'width':'400px'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+              <p-column [style]="{'width':'40px'}" field="nome" header="Descrição" [filter]="true" [sortable]="true"></p-column>
+              <p-column [style]="{'width':'100px'}" field="revisao_RECLAMACAO" header="Revisão da Reclamação" [filter]="true"
+                [sortable]="true">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                 <ng-template let-car="rowData" pTemplate="body">
                   <i *ngIf="car.revisao_RECLAMACAO == false || car.revisao_RECLAMACAO == null" class="material-icons"
                     style="color: red;">close</i>
@@ -21,8 +29,12 @@
                 </ng-template>
               </p-column>
               <p-footer>
+<<<<<<< HEAD
                 <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;"
                   title="Adicionar nova linha">
+=======
+                <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <i class="material-icons">add</i> Adicionar
                 </a>
               </p-footer>
@@ -53,6 +65,7 @@
       <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
         <!-- Modal Body -->
         <div class="modal-body">
+<<<<<<< HEAD
           <div class="form-group col-md-4">
             <label for="descricao">Descrição</label>
             <input type="text" class="form-control" id="descricao" [(ngModel)]="descricao"
@@ -67,13 +80,27 @@
             <label for="revisao">Revisão da Reclamação</label><br>
             <p-checkbox binary="true" [(ngModel)]="revisao_RECLAMACAO" [ngModelOptions]="{standalone: true}">
             </p-checkbox>
+=======
+          <div class="form-group col-md-6">
+            <label for="descricao">Descrição</label>
+            <input type="text" class="form-control" id="descricao" [(ngModel)]="descricao" [ngModelOptions]="{standalone: true}"
+              placeholder="Introduza a Descrição" required />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="descricao">Revisão da Reclamação</label><br>
+            <p-checkbox binary="true" [(ngModel)]="revisao_RECLAMACAO" [ngModelOptions]="{standalone: true}"></p-checkbox>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+<<<<<<< HEAD
           <button type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger"
             data-dismiss="modal">Remover</button>
+=======
+          <button type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           <button type="submit" class="btn btn-success ">Gravar</button>
         </div>
       </form>

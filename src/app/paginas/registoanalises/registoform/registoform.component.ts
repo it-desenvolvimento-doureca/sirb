@@ -77,11 +77,18 @@ export class RegistoformComponent implements OnInit {
 
 
   ngOnInit() {
+<<<<<<< HEAD
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
     script1.setAttribute("src", "assets/js/jqbtk.js");
     document.body.appendChild(script1);
+=======
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/jqbtk.js";
+    this.elementRef.nativeElement.appendChild(s);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     this.tipo_analise = [{ label: "INTERNA", value: "I" }, { label: "EXTERNA", value: "E" }, { label: "PURIFICAÇÃO", value: "P" }];
     this.analise_valor = "I";
@@ -262,19 +269,31 @@ export class RegistoformComponent implements OnInit {
             var limite_VERDE_SUP = null;
             if (response[x][0].calculo != null) calculo = response[x][0].calculo.toLocaleString(undefined, { minimumFractionDigits: 3 }).replace(/\s/g, '');
             if (response[x][0].resultado != null) resultado = response[x][0].resultado.toLocaleString(undefined, { minimumFractionDigits: 3 }).replace(/\s/g, '');
+<<<<<<< HEAD
             if (response[x][0].limite_AMARELO_INF != null) limite_AMARELO_INF = response[x][0].limite_AMARELO_INF.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace(/\s/g, '');
+=======
+            if (response[x][0].limite_AMARELO_INF != null) limite_AMARELO_INF =response[x][0].limite_AMARELO_INF.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace(/\s/g, '');
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             if (response[x][0].limite_VERDE_INF != null) limite_VERDE_INF = response[x][0].limite_VERDE_INF.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace(/\s/g, '');
             if (response[x][0].limite_AMARELO_SUP != null) limite_AMARELO_SUP = response[x][0].limite_AMARELO_SUP.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace(/\s/g, '');
             if (response[x][0].limite_VERDE_SUP != null) limite_VERDE_SUP = response[x][0].limite_VERDE_SUP.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace(/\s/g, '');
             this.banho_componentes.push({
               cor: null, pos: this.pos, unidade: response[x][2], sinal: response[x][0].sinal,
+<<<<<<< HEAD
               limite_AMARELO_INF: response[x][0].limite_AMARELO_INF, limite_VERDE_INF: response[x][0].limite_VERDE_INF,
+=======
+              limite_AMARELO_INF: response[x][0].limite_AMARELO_INF, limite_VERDE_INF:response[x][0].limite_VERDE_INF, 
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               limite_AMARELO_SUP: response[x][0].limite_AMARELO_SUP, limite_VERDE_SUP: response[x][0].limite_VERDE_SUP,
               vlimite_AMARELO_INF: limite_AMARELO_INF, vlimite_VERDE_INF: limite_VERDE_INF, vlimite_AMARELO_SUP: limite_AMARELO_SUP, vlimite_VERDE_SUP: limite_VERDE_SUP,
               id_ANALISE_LIN: response[x][0].id_ANALISE_LIN, id: response[x][0].id_COMPONENTE, nome_comp: response[x][1].nome_COMPONENTE, resultado: resultado,
               calculo: calculo
             });
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.verificalimites(response[x][0].calculo, response[x][0].limite_AMARELO_INF, response[x][0].limite_AMARELO_SUP, response[x][0].limite_VERDE_INF, response[x][0].limite_VERDE_SUP, this.pos)
           }
           this.banho_componentes = this.banho_componentes.slice();
@@ -588,6 +607,7 @@ export class RegistoformComponent implements OnInit {
       }
     });
   }
+<<<<<<< HEAD
 
   enviar() {
     var id;
@@ -688,6 +708,108 @@ export class RegistoformComponent implements OnInit {
 
 
 
+=======
+
+  enviar() {
+    var id;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        id = params['id'] || 0;
+      });
+    if (this.novo) {
+      this.gravar("C");
+    } else {
+      this.conclui(id, true);
+    }
+
+  }
+
+  conclui(id, evento) {
+    /*this.ABMOVANALISELINHAService.getbyid_analise(id, this.banhos_valor['id']).subscribe(
+      response => {*/
+
+        var analise = new AB_MOV_ANALISE;
+        analise = this.analise_dados;
+        analise.estado = "C";
+        analise.utz_ULT_MODIF = this.user;
+        analise.data_ULT_MODIF = new Date();
+        analise.obs = this.obs;
+        analise.id_BANHO = this.banhos_valor['id'];
+        analise.id_LINHA = this.linha.id;
+        analise.data_ANALISE = this.data_ANALISE;
+        analise.analise_INT_EXT = this.analise_valor;
+        analise.celulahull = this.celula;
+        analise.hora_ANALISE = this.hora_ANALISE;
+        analise.mensagem = this.email_mensagem;
+
+        if (this.cores.find(item => item == "vermelho")) {
+          analise.cor_LIMITES = "vermelho";
+        } else if (this.cores.find(item => item == "amarelo")) {
+          analise.cor_LIMITES = "amarelo";
+        } else if (this.cores.find(item => item == "verde")) {
+          analise.cor_LIMITES = "verde";
+        } else {
+          analise.cor_LIMITES = "none";
+        }
+
+        this.ABMOVANALISEService.update(analise).then(() => {
+          if (evento) this.verifica(this.obs, this.codigo, this.data_ANALISE, this.banhos_valor['nome_banho'], this.banhos_valor['nome_tina'], this.nome_utz, "Concluída", this.linha.id, this.email_mensagem);
+          this.inserir_linhas(id);
+        });
+
+
+     /* },
+      error => console.log(error));*/
+  }
+
+
+  //verificar eventos
+  verifica(observacao, numero_analise, data_analise, nome_banho, tina, utilizador, estado, linha, email_mensagem) {
+    var dados = "{observacao::" + observacao + "\n/numero_analise::" + numero_analise + "\n/mensagem::" + email_mensagem
+      + "\n/data_analise::" + new Date(data_analise).toLocaleDateString() + "\n/nome_banho::" + nome_banho
+      + "\n/tina::" + tina + "\n/utilizador::" + utilizador + "\n/estado::" + estado + "\n/linha::" + linha + "}";
+    var data = [{ MODULO: 1, MOMENTO: "Ao Concluir", PAGINA: "Ánalises", ESTADO: true, DADOS: dados, EMAIL_PARA: this.email_para }];
+    this.UploadService.verficaEventos(data).subscribe(result => {
+      this.simular(this.dialogemailclose)
+      this.bt_disable = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  //botão de “Validar” para que o utilizador possa indicar que terminou a análise
+  validar() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Validar?',
+      header: 'Validar',
+      icon: 'fa fa-bell-o',
+      accept: () => {
+        var id;
+        var sub = this.route
+          .queryParams
+          .subscribe(params => {
+            id = params['id'] || 0;
+          });
+
+        /*this.ABMOVANALISELINHAService.getbyid_analise(id, this.banhos_valor['id']).subscribe(
+          response => {*/
+
+            var analise = new AB_MOV_ANALISE;
+            analise = this.analise_dados;
+            analise.estado = "V";
+            analise.utz_VALIDA = this.user;
+            analise.data_VALIDA = new Date();
+
+            this.ABMOVANALISEService.update(analise).then(() => {
+              this.simular(this.inputgravou);
+              this.inicia(this.analises[this.i]);
+              //this.router.navigate(['registo/view'], { queryParams: { id: this.analises[this.i] } });
+            });
+
+
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         /*  },
           error => console.log(error));*/
       }
@@ -737,8 +859,13 @@ export class RegistoformComponent implements OnInit {
 
 
 
+<<<<<<< HEAD
         /* },
          error => console.log(error));*/
+=======
+         /* },
+          error => console.log(error));*/
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       }
     });
   }
@@ -755,9 +882,14 @@ export class RegistoformComponent implements OnInit {
   verificalimites(valor, limite_AMARELO_INF, limite_AMARELO_SUP, limite_VERDE_INF, limite_VERDE_SUP, pos) {
     //console.log(limite_AMARELO_INF + '/' + limite_AMARELO_SUP + '/' + limite_VERDE_INF + '/' + limite_VERDE_SUP)
 
+<<<<<<< HEAD
 
     if (valor != null) {
       valor = valor.toLocaleString().replace(",", ".").replace(/\s/g, '');
+=======
+    if (valor != null) {
+      valor = valor.toLocaleString().replace(",", ".");
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
     if (valor == null || valor == "" || (limite_AMARELO_INF == null && limite_AMARELO_SUP == null && limite_VERDE_INF == null && limite_VERDE_SUP == null)) {
       this.banho_componentes.find(item => item.pos == pos).cor = "none";
@@ -789,8 +921,11 @@ export class RegistoformComponent implements OnInit {
       this.banho_componentes.find(item => item.pos == pos).cor = "none";
       this.cores[pos] = "none";
     }
+<<<<<<< HEAD
     //console.log(valor + ' - ' +limite_AMARELO_INF+ ' - ' +limite_AMARELO_SUP+ ' - ' +limite_VERDE_INF+ ' - ' +limite_VERDE_SUP)
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   //ver historico

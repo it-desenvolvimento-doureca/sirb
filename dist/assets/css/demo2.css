@@ -29,6 +29,7 @@ body .ui-widget, body .ui-widget .ui-widget, body .ui-widget input, body .ui-wid
 
 /*calendario*/
 
+<<<<<<< HEAD
 .fc-list-item-marker {
     padding: 8px 14px !important;
 }
@@ -74,6 +75,8 @@ body .ui-widget, body .ui-widget .ui-widget, body .ui-widget input, body .ui-wid
     background: #fcf8e3 !important;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 .fc-left {
     margin-top: 20px;
 }
@@ -457,10 +460,13 @@ body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-list-item {
     border-radius: 6px;
 }
 
+<<<<<<< HEAD
 .droplinha_amostra {
     width: 100%;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-group {
     padding: 0.375em 0.75em;
     background-color: #e6e6e6;
@@ -1873,7 +1879,11 @@ body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
     display: none;
 }
 
+<<<<<<< HEAD
 .ui-widget-content:not(.ui-dialog-footer):not(.ui-dialog-content):not(.ui-multiselect-items):not(.ui-state-highlight) {
+=======
+.ui-widget-content:not(.ui-dialog-footer):not(.ui-dialog-content):not(.ui-multiselect-items) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     border: 1px solid #D5D5D5;
     background-color: #ffffff;
     color: #222222;
@@ -2327,6 +2337,7 @@ body .ui-overlaypanel .ui-overlaypanel-close {
     transition: color 0.3s;
 }
 
+<<<<<<< HEAD
 body .ui-overlaypanel {
     background-color: #ffffff;
     color: #333333;
@@ -2384,6 +2395,8 @@ body .ui-overlaypanel.ui-overlaypanel-flipped:before {
     border-top-color: #c8c8c8;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 body .ui-overlaypanel .ui-overlaypanel-close:hover {
     color: #0275d8;
 }
@@ -2392,6 +2405,7 @@ body .ui-overlaypanel .ui-overlaypanel-close span {
     margin-left: 0.063em;
 }
 
+<<<<<<< HEAD
 .ui-overlaypanel {
     padding: 0;
     margin: 10px 0 0;
@@ -2405,6 +2419,8 @@ body .ui-overlaypanel .ui-overlaypanel-close span {
     border-radius: 0;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 body .ui-dialog {
     -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -2438,7 +2454,11 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon:hover {
     color: #2d353c;
 }
 
+<<<<<<< HEAD
 body .ui-dialog:not(.dialognot).ui-dialog-content {
+=======
+body .ui-dialog .ui-dialog-content {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     padding: 1em;
     font-size: 20px;
 }
@@ -3384,6 +3404,7 @@ textarea:not(.form-control2) {
     cursor: default;
 }
 
+<<<<<<< HEAD
 #tabelaplanos input {
     border: none !important;
     font-size: 12px;
@@ -3413,6 +3434,8 @@ textarea:not(.form-control2) {
     background: none;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 .ui-datatable input:not(.bordernormal2):not(.bordervermelho2) {
     /* border: 1px dotted #767070 !important;*/
     border-radius: 0.25em !important;
@@ -3582,6 +3605,7 @@ input[type="date"]::-webkit-input-placeholder {
     visibility: hidden !important;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] .ui-dropdown-label {
     padding-top: 3px;
 }
@@ -3607,23 +3631,59 @@ input[type="date"]::-webkit-input-placeholder {
 }
 
 [id^=formReclama] .ui-datatable-footer {
+=======
+#formReclama .ui-dropdown-label {
+    padding-top: 3px;
+}
+
+#formReclama table .ui-dropdown-label {
+    font-size: 14px;
+}
+
+#formReclama .ui-panel .ui-panel-content {
+    background-color: #F5F5F5;
+}
+
+#formReclama .ui-dropdown .ui-dropdown-trigger .fa {
+    margin-top: 6px;
+}
+
+#formReclama .ui-fileupload .ui-fileupload-content {
+    border: 2px dotted #0782d0;
+}
+
+#formReclama .ui-fileupload .ui-fileupload-content.ui-fileupload-highlight {
+    border: 2px dotted blue;
+}
+
+#formReclama .ui-datatable-footer {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     /* border: 1px solid #101010;
     background: #cccccc;*/
     background: #bbc6de;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] .ui-datatable-footer:hover {
+=======
+#formReclama .ui-datatable-footer:hover {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     /* border: 1px solid #101010;
      background: #cccccc;*/
     background: #87a4e4;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] .ui-datatable-footer a {
+=======
+#formReclama .ui-datatable-footer a {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     width: 100%;
     display: block;
     text-align: -webkit-center;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] .ui-calendar .ui-inputtext {
     height: 25px;
 }
@@ -3637,11 +3697,30 @@ input[type="date"]::-webkit-input-placeholder {
 }
 
 [id^=formReclama] table .ui-inputtext {
+=======
+#formReclama .ui-calendar .ui-inputtext {
+    height: 25px;
+}
+
+#formReclama table .ui-multiselect-label {
+    font-size: 14px;
+}
+
+#formReclama .ui-panel .ui-panel-content {
+    background-color: #F5F5F5;
+}
+
+#formReclama table .ui-inputtext {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     height: 25px;
     color: black;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] .ui-multiselect .ui-multiselect-trigger .fa {
+=======
+#formReclama .ui-multiselect .ui-multiselect-trigger .fa {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     margin-top: 6px;
 }
 
@@ -3863,6 +3942,7 @@ input[type="date"]::-webkit-input-placeholder {
     height: 100%
 }
 
+<<<<<<< HEAD
 .tabelafuncionarios .ui-widget-overlay {
     top: 50px;
     /* height: auto !important;*/
@@ -3896,6 +3976,8 @@ input[type="date"]::-webkit-input-placeholder {
     color: black;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 .scrollup {
     width: 40px;
     height: 40px;
@@ -3923,6 +4005,7 @@ input[type="date"]::-webkit-input-placeholder {
     transform: rotate(180deg);
 }
 
+<<<<<<< HEAD
 .scrollleft {
     width: 40px;
     height: 40px;
@@ -3974,6 +4057,8 @@ input[type="date"]::-webkit-input-placeholder {
     left: 59px;
 }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 .radio, .checkbox {
     position: relative;
     display: block;
@@ -4351,8 +4436,11 @@ checkbox {
     z-index: 2035;
     position: absolute;
     top: -24px;
+<<<<<<< HEAD
     /*top: -13px;*/
     /* margin-left: -8px;*/
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }
 
 .ui-picklist>div {
@@ -5242,7 +5330,11 @@ checkbox {
     border-radius: 120px;
 }
 
+<<<<<<< HEAD
 input[type="file"]:not(.form-control2):not(.fileinput) {
+=======
+input[type="file"]:not(.form-control2) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     z-index: 999;
     line-height: 0;
     font-size: 0;
@@ -5545,7 +5637,11 @@ body .ui-panel .ui-panel-footer {
     pointer-events: none;
 }
 
+<<<<<<< HEAD
 [id^=formReclama] input[disabled] {
+=======
+#formReclama input[disabled] {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     cursor: no-drop;
 }
 
@@ -5589,6 +5685,7 @@ body .ui-panel .ui-panel-footer {
 
 .ui-panel-content-wrapper-overflown {
     opacity: 0 !important;
+<<<<<<< HEAD
 }
 
 .ui-overlaypanel-flipped:after, .ui-overlaypanel-flipped:before {
@@ -5920,4 +6017,6 @@ body>.ui-dropdown-panel {
 
 .tabela_analise_dividas tbody td {
     font-weight: 500;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

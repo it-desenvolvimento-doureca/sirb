@@ -25,7 +25,11 @@ export class TipooperacaoComponent implements OnInit {
 
   constructor(private globalVar: AppGlobals, private ABDICTIPOOPERACAOService: ABDICTIPOOPERACAOService, private renderer: Renderer) { }
   ngOnInit() {
+<<<<<<< HEAD
     this.classificacao = [{ label: "Selecionar Clasif.", value: "" }, { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" }, 
+=======
+    this.classificacao = [{ label: "Seleccionar Clasif.", value: "" }, { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" }, 
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }];
     this.globalVar.setapagar(false);
     this.globalVar.seteditar(false);

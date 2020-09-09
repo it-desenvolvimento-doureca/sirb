@@ -11,20 +11,29 @@ export class ManutencoesFicheiroComponent implements OnInit {
   datafim: any;
   datainicio: any;
   ip: any;
+<<<<<<< HEAD
   horainicio = "00:00";
   horafim = "00:00";
   selectedIDS: string[] = []
+=======
+  horainicio: "00:00";
+  horafim: "00:00";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
   @ViewChild('inputerro') inputerro: ElementRef;
   loading: boolean;
 
+<<<<<<< HEAD
   listaofscomps: any[] = [];
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   constructor(private renderer: Renderer, private location: Location, private ABMOVMANUTENCAOService: ABMOVMANUTENCAOService) { }
 
   ngOnInit() {
   }
 
+<<<<<<< HEAD
   getListComp() {
     this.loading = true;
     var data = [{ datainicio: this.formatDate(this.datainicio) + " " + this.horainicio, ip: this.ip, datafim: this.formatDate(this.datafim) + " " + this.horafim }];
@@ -68,6 +77,27 @@ export class ManutencoesFicheiroComponent implements OnInit {
     }
   }
 
+=======
+  getFile() {
+    this.loading = true;
+    var data = [{ datainicio: this.formatDate(this.datainicio) + " " + this.horainicio, ip: this.ip, datafim: this.formatDate(this.datafim) + " " + this.horafim }];
+    this.ABMOVMANUTENCAOService.criaficheiro(data).subscribe(resu => {
+      this.loading = false;
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(resu);
+      a.download = "ficheiros_interface.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+    }, error => {
+      this.loading = false;
+      this.simular(this.inputerro);
+      console.log(error)
+    });
+  }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   //bt cancelar
   backview() {
     this.location.back();

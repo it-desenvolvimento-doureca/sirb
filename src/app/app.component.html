@@ -5,8 +5,12 @@
 </style>
 <div *ngIf="semInternet">
   <i class="fa fa-3x fa-wifi blink" style="color:red; position: fixed; z-index: 1035"></i>
+<<<<<<< HEAD
   <i class="fa fa-3x fa-exclamation blink"
     style="position: fixed; z-index: 1035; color: black; left: 18px;font-size: 35px;"></i>
+=======
+  <i class="fa fa-3x fa-exclamation blink" style="position: fixed; z-index: 1035; color: black; left: 18px;font-size: 35px;"></i>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 </div>
 <div class="wrapper" [hidden]="!isMaps('login')">
 
@@ -15,9 +19,14 @@
     <div class="sidebar-background" style="background-image: url(assets/img/sidebar-4.jpg)"></div>
   </div>
 
+<<<<<<< HEAD
   <div class="main-panel" id="idmainpanel" *ngIf="isMaps('login')">
     <div id="toptexttop" class="top_text"
       style="color:black; position: sticky; top: 0; z-index: 1041; background: #eeeeee; -webkit-ruby-position: before; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+=======
+  <div class="main-panel" *ngIf="isMaps('login')">
+    <div id="toptexttop" class="top_text" style="color:black; position: sticky; top: 0; z-index: 1041; background: #eeeeee; -webkit-ruby-position: before; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       <nav class="navbar navbar-transparent navbar-absolute gradient" style="padding-top: 3px; height: 100%;">
         <div class="container-fluid" style="position: relative">
           <div class="col-md-12">
@@ -25,6 +34,7 @@
               <div style="float: left; width: 204px;">
                 <img src="assets/img/logo.png" style="max-height:42px;" />
               </div>
+<<<<<<< HEAD
               <div class="versao"
                 style="display: -webkit-inline-box; margin-left: 5px; margin-top: 11px; color: black;">
                 <span>
@@ -51,6 +61,27 @@
                 </a>
                 <a class="dropdown-toggle" title="Sair" (click)="logout()"
                   style="margin-top: -4px; margin-left: 32px; float: right; background: black; color: white; cursor: pointer; border:1px solid  white;">
+=======
+              <div class="versao" style="display: -webkit-inline-box; margin-left: 5px; margin-top: 11px; color: black;">
+                <span>
+                  <b class="hidden-xs hidden-sm " style="font-size: 13pt;">Sistema de Gestão Integrado de Informação da Doureca</b>
+                  <b class="hidden-md hidden-lg" style="font-size: 13pt;">SGIID</b>
+                  <b style="font-size: 12pt; margin-left: 25px;" id="datamomento">{{ myDate | date: 'yyyy-MM-dd' }} &nbsp;&nbsp;&nbsp; {{ myDate | date: 'HH:mm:ss' }}</b>
+                </span>
+                <span style="font-size: 7pt; margin-top: -3px;position: absolute;">
+                  ({{modulo}} - {{versao}})
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-12 utz" style=" margin: auto; text-align:right; padding: 0; right: 0; float: right;">
+              <div style="font-size: 11pt; display: -webkit-inline-box; margin-left: 5px; margin-top: 11px; color: black;">
+                <b style="vertical-align: middle;">Utilizador:</b>
+                <span style="vertical-align: middle;"> {{isnome()}}</span>
+                <a id="go-button" style="margin-top: -9px; margin-left: 12px; display: block; cursor: pointer; float: right; ">
+                  <i class="material-icons" style="font-size: 37px; color: black;">fullscreen</i>
+                </a>
+                <a class="dropdown-toggle" title="Sair" (click)="logout()" style="margin-top: -4px; margin-left: 32px; float: right; background: black; color: white; cursor: pointer; border:1px solid  white;">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <i class="material-icons">close</i>
                 </a>
 
@@ -158,8 +189,12 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+<<<<<<< HEAD
         <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close"
           data-dismiss="modal">&times;</button>
+=======
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
@@ -177,8 +212,12 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+<<<<<<< HEAD
         <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close"
           data-dismiss="modal">&times;</button>
+=======
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
@@ -196,8 +235,12 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+<<<<<<< HEAD
         <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close"
           data-dismiss="modal">&times;</button>
+=======
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
@@ -217,8 +260,12 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+<<<<<<< HEAD
         <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close"
           data-dismiss="modal">&times;</button>
+=======
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
@@ -236,8 +283,12 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+<<<<<<< HEAD
         <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close"
           data-dismiss="modal">&times;</button>
+=======
+        <button type="ui-dialog-titlebar-close" style="font-size: 23px;" class="close" data-dismiss="modal">&times;</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <h4 class="modal-title">AVISO</h4>
       </div>
       <div class="modal-body">
@@ -269,8 +320,12 @@
         <div class="modal-body">
           <div class="form-group form-black label-floating">
             <label style="font-size: 14px;">Linha</label>
+<<<<<<< HEAD
             <p-dropdown [options]="linhas" [style]="{'width':'100px'}" [(ngModel)]="linha"
               [ngModelOptions]="{standalone: true}"></p-dropdown>
+=======
+            <p-dropdown [options]="linhas" [style]="{'width':'100px'}" [(ngModel)]="linha" [ngModelOptions]="{standalone: true}"></p-dropdown>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
         </div>
         <!-- Modal Footer -->
@@ -285,11 +340,19 @@
 
 
 
+<<<<<<< HEAD
 <!-- Modal sel. Ajuda
 <div class="modal fade" id="myModalAjuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header 
+=======
+<!-- Modal sel. Ajuda-->
+<div class="modal fade" id="myModalAjuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
@@ -301,6 +364,7 @@
         </h4>
       </div>
       <form role="form" ngNativeValidate (ngSubmit)="enviar()">
+<<<<<<< HEAD
         <!-- Modal Body 
         <div class="modal-body" style="max-height: 75vh; overflow-y: overlay;">
           <div class="form-group">
@@ -314,6 +378,20 @@
               [style]="{'height':'24vh'}"></p-editor>
           </div>
           <!-- -
+=======
+        <!-- Modal Body -->
+        <div class="modal-body" style="max-height: 75vh; overflow-y: overlay;">
+          <div class="form-group">
+            <label for="nmlinha">Assunto:</label>
+            <input type="text" class="form-control" id="nmlinha" [(ngModel)]="email_assunto" [ngModelOptions]="{standalone: true}" placeholder="Introduza o Assunto"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="mensagem">Mensagem (descreva o problema):</label>
+            <p-editor id="comment" [(ngModel)]="email_mensagem" [ngModelOptions]="{standalone: true}" [style]="{'height':'24vh'}"></p-editor>
+          </div>
+          <!-- -->
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           <div class="row row-bordered">
             <div class="col-md-12" style="padding-bottom: 0">
               <h6 style="margin: 0px">
@@ -322,6 +400,7 @@
             </div>
           </div>
           <div>
+<<<<<<< HEAD
             <p-fileUpload #fileInput name="myfile[]" multiple="multiple" maxFileSize="1000000"
               invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, "
               invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}."
@@ -336,6 +415,18 @@
                 <div>
                   <button icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close"
                     class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+=======
+            <p-fileUpload #fileInput name="myfile[]" multiple="multiple" maxFileSize="1000000" invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, "
+              invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}." invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}."
+              invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, " chooseLabel="Seleccionar" cancelLabel="Cancelar"
+              [showUploadButton]="false"></p-fileUpload>
+            <div *ngIf="uploadedFiles.length">
+              <div *ngFor="let file of uploadedFiles" class="ui-fileupload-row" style="float: left;border: 1px solid blue;">
+                <div>{{file.name}}</div>
+                <div>{{file.size}} bytes</div>
+                <div>
+                  <button icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     <span class="ui-button-icon-left ui-c fa fa-fw fa-close"></span>
                     <span class="ui-button-text ui-c">ui-btn</span>
                   </button>
@@ -343,9 +434,15 @@
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           <!-- 
         </div>
         <!-- Modal Footer 
+=======
+          <!-- -->
+        </div>
+        <!-- Modal Footer -->
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialog2 data-dismiss="modal">Fechar</button>
           <button type="submit" [disabled]="btdisabled" class="btn btn-success ">Enviar</button>
@@ -353,6 +450,7 @@
       </form>
     </div>
   </div>
+<<<<<<< HEAD
 </div>-->
 
 
@@ -505,3 +603,6 @@
     </form>
   </div>
 </p-dialog>
+=======
+</div>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea

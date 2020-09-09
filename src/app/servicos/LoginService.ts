@@ -23,6 +23,7 @@ export class LoginService implements CanActivate {
         node13: "eventos", node14: "configjasper", node16: "eventosprogramados", node2: "analisesjasper", node31: "grid", node33: "cartelas", node040: "homegestaobanhos",
         node041: "listagem", node051: "analiseconsumos", node052: "analiseconsumosetiquetas", node060: "correcaoquantidades", node061: "analiseetiquetas", node062: "ficheirosmanutencoes",
         node500: "reclamacoesclientes", node501: "reclamacoesfornecedores", node520: "rejeicoes", node521: "tiposreclamacoes", node522: "grausimportancia", node523: "tiposdefeito", node6: "tarefas",
+<<<<<<< HEAD
         node524: "ficheirosanalise", node525: "temposresposta", node526: "tiposocorrencia", node527: "tiposnaodetecao", node528: 'classificacao', node529: "tipologia"
         , node622: "dictiposacao", node621: "dictarefas", node17: "departamentos", node18: "seccoes", node19: "grupos",
         node7_18: "controloassiduidade_financeira", node7_10: "controloassiduidade_producao", node721: "estadosfuncionarios", node722: "sectores", node723: "turnosrecursos", node724: "funcionarios", node191: "locais", node725: "cacifos", node726: "tiposcacifos"
@@ -40,17 +41,25 @@ export class LoginService implements CanActivate {
         node15830: 'comercial_oem', node15831: 'comercial_veiculos', node15832: 'comercial_programas', node15833: 'comercial_fabricas', node15834: 'comercial_projetos',
         node15835: 'comercial_limites_encomendas', node828: 'objetivos_faturacao', node1609: 'seguimento_faturacao', node1603: 'analise_dividas', node829: 'tipos_documento',
         node9211: 'dias_producao', node9212: 'capacidade_acabamento', node9213: 'capacidade_racks', node9214: 'semanas_analise', node99: 'planeamento_producao',
+=======
+        node524: "ficheirosanalise", node525: "temposresposta", node526: "tiposocorrencia", node527: "tiposnaodetecao", node621: "dictarefas", node17: "departamentos", node18: "seccoes", node19: "grupos"
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     };
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         if (localStorage.getItem('time_sgiid')) {
             var data_storage = new Date(JSON.parse(localStorage.getItem('time_sgiid'))["data"]).getTime();
+<<<<<<< HEAD
             if ((data_storage + 28800000) <= new Date().getTime()) {
                 //localStorage.clear();
                 localStorage.removeItem('acessos');
                 localStorage.removeItem('userapp');
                 localStorage.removeItem('time_sgiid');
+=======
+            if ((data_storage + 7200000) <= new Date().getTime()) {
+                localStorage.clear();
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             } else {
                 localStorage.setItem('time_sgiid', JSON.stringify({ data: new Date() }));
             }
@@ -67,6 +76,7 @@ export class LoginService implements CanActivate {
             var url = state.url;
             url = url.slice(1);
             var urlarray = url.split("/");
+<<<<<<< HEAD
 
             if (urlarray[0] != 'login') {
                 if (!document.getElementById("script2")) { //document.getElementById("script2").remove();
@@ -83,6 +93,10 @@ export class LoginService implements CanActivate {
                 if (urlarray[1] != null) link = urlarray[0] + '/' + urlarray[1];
 
                 if (this.nodes[x] == urlarray[0] || this.nodes[x] == link) {
+=======
+            for (var x in this.nodes) {
+                if (this.nodes[x] == urlarray[0]) {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                     if (urlarray[1] != null) {
                         if (urlarray[1].match("editar")) {
                             if (x != 'node6' && !access.find(item => item.node == x + "editar")) {
@@ -99,6 +113,7 @@ export class LoginService implements CanActivate {
                                 this.router.navigate(['./home']);
                                 return false;
                             }
+<<<<<<< HEAD
                         } else if (urlarray[0] + '/' + urlarray[1] == this.nodes[x]) {
                             if (urlarray[2] != null) {
                                 this.verifica(urlarray[2], access, x);
@@ -108,6 +123,8 @@ export class LoginService implements CanActivate {
                                     return false;
                                 }
                             }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                         }
                     } else {
                         if (!access.find(item => item.node == x)) {

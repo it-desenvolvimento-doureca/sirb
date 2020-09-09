@@ -12,8 +12,11 @@ export class GER_EVENTOS_CONF {
     obs: string;
     utz_ULT_MODIF: number;
     data_ULT_MODIF: Date;
+<<<<<<< HEAD
     email_ASSUNTO_ENG: string;
     email_MENSAGEM_ENG: string;
     email_ASSUNTO_FR: string;
     email_MENSAGEM_FR: string;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

@@ -39,7 +39,10 @@ export class RC_MOV_RECLAMACAO {
 	reclamacao_REPETIDA_ACEITE: boolean;
 
 	ref_IGUAIS: boolean;
+<<<<<<< HEAD
 	accoes_EVITAR: boolean;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 	estado: string;
 	utz_CANCELADA: number;
 	data_CANCELADA: Date;

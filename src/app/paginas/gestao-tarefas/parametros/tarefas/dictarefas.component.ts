@@ -20,11 +20,17 @@ export class GTDICTarefasComponent implements OnInit {
   novazona: boolean;
   datacria;
   utz_cria;
+<<<<<<< HEAD
   tipos_tarefas = [{ value: "", label: "Selecionar Tipo" }, { value: "R", label: "Reclamações" }, { value: "A", label: "Amostras" }, { value: "PA", label: "Planos de Acção" }]
 
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
   tipo_TAREFA: any;
+=======
+
+  @ViewChild('dialog') dialog: ElementRef;
+  @ViewChild('closedialog') closedialog: ElementRef;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   constructor(private globalVar: AppGlobals, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private renderer: Renderer) { }
   ngOnInit() {
     this.globalVar.setapagar(false);
@@ -50,7 +56,10 @@ export class GTDICTarefasComponent implements OnInit {
     this.descricaofr = "";
     this.datacria = null;
     this.utz_cria = null;
+<<<<<<< HEAD
     this.tipo_TAREFA = null;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.simular(this.dialog);
   }
 
@@ -62,7 +71,10 @@ export class GTDICTarefasComponent implements OnInit {
     ACCOES_RECLAMACAO.descricao_ENG = this.descricaoeng;
     ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
     ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
+<<<<<<< HEAD
     ACCOES_RECLAMACAO.tipo_TAREFA = this.tipo_TAREFA;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     ACCOES_RECLAMACAO.utz_ULT_MODIF = JSON.parse(localStorage.getItem('userapp'))["id"];
     ACCOES_RECLAMACAO.data_ULT_MODIF = new Date();
 
@@ -93,10 +105,14 @@ export class GTDICTarefasComponent implements OnInit {
     this.RCDICACCOESRECLAMACAOService.getAll().subscribe(
       response => {
         for (var x in response) {
+<<<<<<< HEAD
           this.dados.push({
             tipo_TAREFA: response[x].tipo_TAREFA, descricao_TIPO: (response[x].tipo_TAREFA == null) ? "" : this.tipos_tarefas.find(item => item.value == response[x].tipo_TAREFA).label
             , id: response[x].id, nomefr: response[x].descricao_FR, nomept: response[x].descricao_PT, nomeeng: response[x].descricao_ENG, data_CRIA: response[x].data_CRIA, utz_CRIA: response[x].utz_CRIA
           });
+=======
+          this.dados.push({ id: response[x].id, nomefr: response[x].descricao_FR, nomept: response[x].descricao_PT, nomeeng: response[x].descricao_ENG, data_CRIA: response[x].data_CRIA, utz_CRIA: response[x].utz_CRIA });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
         this.dados = this.dados.slice();
       },
@@ -111,7 +127,11 @@ export class GTDICTarefasComponent implements OnInit {
     ACCOES_RECLAMACAO.descricao_ENG = this.descricaoeng;
     ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
     ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
+<<<<<<< HEAD
     ACCOES_RECLAMACAO.tipo_TAREFA = this.tipo_TAREFA;
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     ACCOES_RECLAMACAO.id = this.id_selected;
 
 
@@ -126,7 +146,10 @@ export class GTDICTarefasComponent implements OnInit {
   onRowSelect(event) {
     this.id_selected = event.data.id;
     this.descricaopt = event.data.nomept;
+<<<<<<< HEAD
     this.tipo_TAREFA = event.data.tipo_TAREFA;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.descricaofr = event.data.nomefr;
     this.descricaoeng = event.data.nomeeng;
     this.novo = false;

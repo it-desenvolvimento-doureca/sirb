@@ -211,6 +211,7 @@ $(document).ready(function () {
             $(".ag-header").css("position", "initial");
         }
     });
+<<<<<<< HEAD
 
 
     $('.main-panel').scroll(function () {
@@ -429,6 +430,8 @@ $(document).ready(function () {
 
         }
     });
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
 
@@ -668,11 +671,52 @@ function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
     };
 }
 
+<<<<<<< HEAD
+=======
+//guardar ip nos cookies
+function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+    //compatibility for firefox and chrome
+    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    var pc = new myPeerConnection({
+        iceServers: []
+    }),
+        noop = function () { },
+        localIPs = {},
+        ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+        key;
+
+    function iterateIP(ip) {
+        if (!localIPs[ip]) onNewIP(ip);
+        localIPs[ip] = true;
+    }
+
+    //create a bogus data channel
+    pc.createDataChannel("");
+
+    // create offer and set local description
+    pc.createOffer(function (sdp) {
+        sdp.sdp.split('\n').forEach(function (line) {
+            if (line.indexOf('candidate') < 0) return;
+            line.match(ipRegex).forEach(iterateIP);
+        });
+
+        pc.setLocalDescription(sdp, noop, noop);
+    }, noop);
+
+    //listen for candidate events
+    pc.onicecandidate = function (ice) {
+        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+    };
+}
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 // Usage
 
 getUserIP(function (ip) {
     document.cookie = "IP_CLIENT=" + ip;
 });
+<<<<<<< HEAD
 
 $(document).ready(function () {
     var clicked = false, clickX;
@@ -710,3 +754,5 @@ $(document).ready(function () {
         return false;
     });
 });
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea

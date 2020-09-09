@@ -208,7 +208,11 @@ export class GestaoeventostemporaisComponent implements OnInit {
   getModulos(inicia, id) {
     //carregar modulos
     this.modulos = [];
+<<<<<<< HEAD
     this.modulos.push({ label: "Selecionar Módulo", value: "" });
+=======
+    this.modulos.push({ label: "Seleccionar Módulo", value: "" });
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     this.GERMODULOService.getAll().subscribe(
       response => {
         for (var x in response) {

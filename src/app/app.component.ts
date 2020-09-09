@@ -6,11 +6,14 @@ import { AppGlobals } from "app/menu/sidebar.metadata";
 import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { UploadService } from 'app/servicos/upload.service';
 import { FileUpload } from 'primeng/primeng';
+<<<<<<< HEAD
 import { RCDICGRAUIMPORTANCIAService } from './servicos/rc-dic-grau-importancia.service';
 import { PEDIDOS_APP } from './entidades/PEDIDOS_APP';
 import { PEDIDOSAPPService } from './servicos/pedidos-app.service';
 import { FICHEIROS_PAGINAS } from './entidades/FICHEIROS_PAGINAS';
 import { FICHEIROSPAGINASService } from './servicos/ficheiros-paginas.service';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
     selector: 'app-root',
@@ -21,19 +24,30 @@ export class AppComponent {
     myDate: Date;
     btdisabled: boolean;
     listfile;
+<<<<<<< HEAD
     uploadedFiles = []; semInternet: boolean;
+=======
+    uploadedFiles = [];semInternet: boolean;
+;
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     email_assunto: string;
     email_mensagem: string;
     nome: any;
     linha = 0;
     linhas: any[];
     location: Location;
+<<<<<<< HEAD
     versao = "";
     modulo = "";
+=======
+    versao = "versão 1.0.1";
+    modulo = "Gestão de Banhos Químicos";
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     mensagem = "";
     @ViewChild('fileInput') fileInput: FileUpload;
     @ViewChild('closedialog') closedialog: ElementRef;
     @ViewChild('closedialog2') closedialog2: ElementRef;
+<<<<<<< HEAD
     email_CONTACTO: string;
     prioridades: any[];
     prioridade: any;
@@ -46,13 +60,24 @@ export class AppComponent {
         var vers = this.getCookie("app_sgiid_versao");
         this.versao = "versão " + ((vers != null) ? vers.replace(",", "") : "1.1.1");
         this.semInternet = false;
+=======
+    constructor(private UploadService: UploadService, private GERPERFILLINService: GERPERFILLINService, private globalVar: AppGlobals, private ABDICLINHAService: ABDICLINHAService, private renderer: Renderer, location: Location, private router: Router) {
+        //this.myDate = new Date();
+        this.semInternet = false; 
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         setInterval(() => {         //replaced function() by ()=>
             this.myDate = new Date();
             if (navigator.onLine) {
                 this.semInternet = false;
+<<<<<<< HEAD
             } else {
                 this.semInternet = true;
             }
+=======
+              } else {
+                this.semInternet = true;
+              }
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }, 1000);
         this.location = location;
         //preenche combobox linhas
@@ -73,6 +98,7 @@ export class AppComponent {
                  var elem = (<HTMLInputElement>document.getElementById('node1'));
                  if (elem) elem.setAttribute("style", "pointer-events: auto; cursor: pointer; opacity: 1;");
              }*/
+<<<<<<< HEAD
 
             //carregar acessos
             this.GERPERFILLINService.getbyID_node(JSON.parse(localStorage.getItem('userapp'))["id"], "null").subscribe(
@@ -96,6 +122,31 @@ export class AppComponent {
         }
     }
 
+=======
+
+            //carregar acessos
+            this.GERPERFILLINService.getbyID_node(JSON.parse(localStorage.getItem('userapp'))["id"], "null").subscribe(
+                response2 => {
+                    var count = Object.keys(response2).length;
+                    var array = [];
+                    if (count > 0) {
+                        for (var x in response2) {
+                            array.push({ node: response2[x].id_CAMPO });
+                            if (JSON.parse(localStorage.getItem('userapp')) != null) {
+                                if (!(!JSON.parse(localStorage.getItem('userapp'))["admin"] && response2[x].id_CAMPO == "node1")) {
+                                    var elem = (<HTMLInputElement>document.getElementById(response2[x].id_CAMPO));
+                                    if (elem) elem.setAttribute("style", "pointer-events: auto; cursor: pointer; opacity: 1;");
+                                }
+                            }
+
+                        }
+                    }
+                    localStorage.setItem('acessos', JSON.stringify(array));
+                }, error => { console.log(error); });
+        }
+    }
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     isnome() {
         if (localStorage.getItem("userapp")) {
             return JSON.parse(localStorage.getItem('userapp'))["nome"];
@@ -126,6 +177,7 @@ export class AppComponent {
     }
 
     logout() {
+<<<<<<< HEAD
         //localStorage.clear();
         localStorage.removeItem('acessos');
         localStorage.removeItem('userapp');
@@ -135,6 +187,10 @@ export class AppComponent {
         /*setTimeout(() => {
             location.reload(true);
         }, 50);*/
+=======
+        localStorage.clear();
+        this.router.navigate(['login']);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     }
 
     confirmar() {
@@ -150,7 +206,11 @@ export class AppComponent {
     }
 
     //verificar eventos
+<<<<<<< HEAD
     /*enviar() {
+=======
+    enviar() {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         this.btdisabled = true;
         let files = this.fileInput.files;
         //let files = [];
@@ -169,9 +229,15 @@ export class AppComponent {
             this.sendemail();
         }
 
+<<<<<<< HEAD
     }*/
 
     /*sendemail() {
+=======
+    }
+
+    sendemail() {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         var mensagem = (this.email_mensagem != null) ? this.email_mensagem : "";
         var dados = "{mensagem::" + mensagem + "\n/utilizador::" + this.isnome() + "\n/assunto::" + this.email_assunto + "}";
 
@@ -186,6 +252,7 @@ export class AppComponent {
             console.log(error);
             this.btdisabled = false;
         });
+<<<<<<< HEAD
     }*/
 
     sendemail(tipo) {
@@ -247,18 +314,28 @@ export class AppComponent {
     }
 
     readThis(inputValue: any, count, total, tipo): void {
+=======
+    }
+
+    readThis(inputValue: any, count, total): void {
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         var file: File = inputValue;
         var myReader: FileReader = new FileReader();
 
         myReader.onloadend = (e) => {
             this.listfile += file.name + "<//>" + myReader.result + "<:>";
+<<<<<<< HEAD
 
             this.fileupoad(file, myReader.result);
             if (count == total) this.sendemail(tipo);
+=======
+            if (count == total) this.sendemail();
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         }
         myReader.readAsDataURL(file);
     }
 
+<<<<<<< HEAD
     fileupoad(file, ficheiro) {
 
         /* this.UploadService.fileChange(file, nome).subscribe(result => {*/
@@ -396,5 +473,7 @@ export class AppComponent {
         }
         return null;
     }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 }

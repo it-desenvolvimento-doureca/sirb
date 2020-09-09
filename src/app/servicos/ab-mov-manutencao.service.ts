@@ -116,6 +116,7 @@ export class ABMOVMANUTENCAOService {
 
       });
   }
+<<<<<<< HEAD
 
   criaficheiro2(data) {
     const url = webUrl.host + '/rest/sirb/ficheiromanual2';
@@ -133,6 +134,8 @@ export class ABMOVMANUTENCAOService {
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 
   private extractData(res: Response) {

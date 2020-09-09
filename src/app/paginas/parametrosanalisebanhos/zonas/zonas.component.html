@@ -9,7 +9,11 @@
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'300px'}" [value]="zonas" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+<<<<<<< HEAD
               [paginator]="true" [rows]="15">
+=======
+              [paginator]="true" rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               <p-column [style]="{'width':'30px'}" field="nome" header="Nome Zona" [filter]="true" [sortable]="true"></p-column>
               <p-footer>
                 <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">

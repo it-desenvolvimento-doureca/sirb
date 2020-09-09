@@ -9,7 +9,11 @@
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'600px'}" [value]="TipoAdicaos" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+<<<<<<< HEAD
               [paginator]="true" [rows]="15">
+=======
+              [paginator]="true" rows="15">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
               <p-column [style]="{'width':'70px'}" field="nome" header="Tipo Adiçao" [filter]="true" [sortable]="true"></p-column>
               <p-column [style]="{'width':'90px'}" field="nome_op" header="Tipo Operação" [filter]="true" [sortable]="true"></p-column>
               <p-column [style]="{'width':'60px'}" field="classif_nome" header="Classificação" [sortable]="true"></p-column>

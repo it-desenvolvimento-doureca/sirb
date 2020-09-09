@@ -14,6 +14,7 @@ export class UploadService {
   constructor(private http: Http) { }
 
 
+<<<<<<< HEAD
 
   uploadFilePDF(file, nomefile) {
 
@@ -25,6 +26,8 @@ export class UploadService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   fileChange(file, nomefile) {
 
     var nome = file.name.split(".");
@@ -98,7 +101,11 @@ export class UploadService {
   downloadFileMSGBASE64(filename, ficheiro): any {
     const url = webUrl.host + '/rest/sirb/downloadFileMSGBASE64/' + filename;
     var data = [{ filename: filename }];
+<<<<<<< HEAD
     return this.http.post(url, JSON.stringify(ficheiro), { headers: this.headers2, responseType: ResponseContentType.Blob }).map(
+=======
+    return this.http.post(url, JSON.stringify(ficheiro), { headers: this.headers2,responseType: ResponseContentType.Blob }).map(
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       (res) => {
 
         return new Blob([res.blob()], { type: 'text/html' });

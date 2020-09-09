@@ -9,10 +9,14 @@ import { GERPOSTOSService } from 'app/servicos/ger-postos.service';
 import { GER_POSTOS } from 'app/entidades/GER_POSTOS';
 import { ConfirmationService } from 'primeng/primeng';
 import { GERATUALIZACAOSILVERBITABELASService } from 'app/servicos/ger-atualizacao-silver-bi-tabelas.service';
+<<<<<<< HEAD
 import { RH_EXCLUSAO_TIPO_EXTRAService } from 'app/servicos/RH_EXCLUSAO_TIPO_EXTRA.service';
 import { GER_ATUALIZACAO_SILVER_BI_TABELAS } from 'app/entidades/GER_ATUALIZACAO_SILVER_BI_TABELAS';
 import { RH_EXCLUSAO_TIPO_EXTRA } from 'app/entidades/RH_EXCLUSAO_TIPO_EXTRA';
 import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
+=======
+import { GER_ATUALIZACAO_SILVER_BI_TABELAS } from 'app/entidades/GER_ATUALIZACAO_SILVER_BI_TABELAS';
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 @Component({
   selector: 'app-parametros',
@@ -26,7 +30,10 @@ export class ParametrosComponent implements OnInit {
   tempo_PLANEADAS: any;
   pasta_JASPERREPORT: string;
   modelo_REPORT: string;
+<<<<<<< HEAD
   modelo_REPORT_PRODUCAO;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   pasta_ETIQUETAS: any;
   temp_ip: any = "192.168.01.01";
   pos: any = 0;
@@ -36,7 +43,10 @@ export class ParametrosComponent implements OnInit {
   modoedicao: boolean;
   pasta_ficheiro: string;
   parametros: any;
+<<<<<<< HEAD
   classstep = 'geral';
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   user: any;
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputerro') inputerro: ElementRef;
@@ -55,6 +65,7 @@ export class ParametrosComponent implements OnInit {
   tipo_repete: any = [];
   tipos_dias: any = [];
   bases_de_dados: any[] = [];
+<<<<<<< HEAD
   tiposextra = [];
   tabelaTiposExtra: any[];
   postabelaTiposExtra = 0;
@@ -69,6 +80,14 @@ export class ParametrosComponent implements OnInit {
   ngOnInit() {
     this.impressoras = [
       { label: 'Selecionar Impressora', value: null },
+=======
+
+  constructor(private GERATUALIZACAOSILVERBITABELASService: GERATUALIZACAOSILVERBITABELASService, private confirmationService: ConfirmationService, private GERPOSTOSService: GERPOSTOSService, private UploadService: UploadService, private renderer: Renderer, private route: ActivatedRoute, private router: Router, private location: Location, private GERPARAMETROSService: GERPARAMETROSService, private globalVar: AppGlobals) { }
+
+  ngOnInit() {
+    this.impressoras = [
+      { label: 'Seleccionar Impressora', value: null },
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     ];
 
     this.dias_semana = [
@@ -101,7 +120,10 @@ export class ParametrosComponent implements OnInit {
 
     this.bases_de_dados = [
       { label: 'SILVER', value: "SILVER" },
+<<<<<<< HEAD
       { label: 'SGIID', value: "SGIID" },
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       { label: 'SILVER_BI', value: "SILVER_BI" }];
 
     this.globalVar.setvoltar(false);
@@ -158,10 +180,13 @@ export class ParametrosComponent implements OnInit {
           this.pasta_ficheiro = response[x].pasta_FICHEIRO;
           this.pasta_ETIQUETAS = response[x].pasta_ETIQUETAS;
           this.modelo_REPORT = response[x].modelo_REPORT;
+<<<<<<< HEAD
           this.modelo_REPORT_PRODUCAO = response[x].modelo_REPORT_PRODUCAO;
           this.sectores_ABSENTISMO = (response[x].sectores_ABSENTISMO == null) ? null : response[x].sectores_ABSENTISMO.split(",");
           this.taxa_ABSENTISMO = response[x].taxa_ABSENTISMO;
           this.taxa_REJEICAO = response[x].taxa_REJEICAO;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.tempo_SINCRO_CARTELAS = response[x].tempo_SINCRO_CARTELAS;
           this.cartelas_ATIVO = response[x].cartelas_ATIVO;
           this.url_SILVER = response[x].url_SILVER;
@@ -176,7 +201,11 @@ export class ParametrosComponent implements OnInit {
           this.senha_LOGS_SILVER = (response[x].senha_LOGS_SILVER == null) ? null : atob(response[x].senha_LOGS_SILVER);
           this.tempo_SINCRO_LOGS_SILVER = response[x].tempo_SINCRO_LOGS_SILVER;
           this.utilizador_LOGS_SILVER = response[x].utilizador_LOGS_SILVER;
+<<<<<<< HEAD
           this.tempo_PAUSA_TURNOS_CONTINUOS = response[x].tempo_PAUSA_TURNOS_CONTINUOS;
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           this.atualizacao_SILVER_BI_ATIVO = response[x].atualizacao_SILVER_BI_ATIVO;
 
         }
@@ -184,6 +213,7 @@ export class ParametrosComponent implements OnInit {
       error => console.log(error));
     this.tabelaPostos();
     this.tabelaAtualizacao();
+<<<<<<< HEAD
     this.carregatabelatiposextra();
     this.drop_tipos();
     this.listarsectores();
@@ -207,6 +237,8 @@ export class ParametrosComponent implements OnInit {
         this.sectores = this.sectores.slice();
       },
       error => console.log(error));
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   }
 
   //atualizar tabela postos
@@ -277,12 +309,15 @@ export class ParametrosComponent implements OnInit {
     parametros.pasta_DESTINO_ERRO = this.pasta_DESTINO_ERRO.trim();
     parametros.pasta_ETIQUETAS = this.pasta_ETIQUETAS.trim();
     parametros.modelo_REPORT = this.modelo_REPORT.trim();
+<<<<<<< HEAD
     parametros.modelo_REPORT_PRODUCAO = this.modelo_REPORT_PRODUCAO.trim();
 
     parametros.sectores_ABSENTISMO = (this.sectores_ABSENTISMO.length > 0) ? this.sectores_ABSENTISMO.toString() : null;
     parametros.taxa_ABSENTISMO = this.taxa_ABSENTISMO;
     parametros.taxa_REJEICAO = this.taxa_REJEICAO;
 
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
     parametros.tempo_SINCRO_CARTELAS = this.tempo_SINCRO_CARTELAS;
     parametros.cartelas_ATIVO = this.cartelas_ATIVO;
 
@@ -292,7 +327,11 @@ export class ParametrosComponent implements OnInit {
     parametros.senha_LOGS_SILVER = (this.senha_LOGS_SILVER == null) ? null : btoa(this.senha_LOGS_SILVER);
     parametros.tempo_SINCRO_LOGS_SILVER = this.tempo_SINCRO_LOGS_SILVER;
     parametros.utilizador_LOGS_SILVER = this.utilizador_LOGS_SILVER;
+<<<<<<< HEAD
     parametros.tempo_PAUSA_TURNOS_CONTINUOS = (this.tempo_PAUSA_TURNOS_CONTINUOS + ":00").slice(0, 8);
+=======
+
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
     parametros.atualizacao_SILVER_BI_ATIVO = this.atualizacao_SILVER_BI_ATIVO;
 
@@ -311,6 +350,7 @@ export class ParametrosComponent implements OnInit {
           this.atualiza_tabelas(this.tabelasSincronismo[x]);
         }
       }
+<<<<<<< HEAD
       for (var x in this.tabelaTiposExtra) {
         if (this.tabelaTiposExtra[x].id.toString().substring(0, 1) == "P") {
           this.cria_TiposExtra(this.tabelaTiposExtra[x]);
@@ -318,6 +358,8 @@ export class ParametrosComponent implements OnInit {
           this.atualiza_TiposExtra(this.tabelaTiposExtra[x], this.tabelaTiposExtra[x].data);
         }
       }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
       this.simular(this.inputgravou);
       //this.location.back();
@@ -506,6 +548,7 @@ export class ParametrosComponent implements OnInit {
       error => { console.log(error); this.tabelasSincronismo[index].tables = tab; });
   }
 
+<<<<<<< HEAD
   //carrega tabela tipos extra (recursos humanos)
   drop_tipos() {
     this.tiposextra = [];
@@ -605,4 +648,6 @@ export class ParametrosComponent implements OnInit {
         error => { console.log(error); this.simular(this.inputerro); });
     }
   }
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 }

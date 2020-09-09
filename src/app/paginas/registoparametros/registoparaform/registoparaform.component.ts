@@ -188,8 +188,13 @@ export class RegistoparaformComponent implements OnInit {
               this.simular(this.alteraeditar);
             }
 
+<<<<<<< HEAD
             this.tipo_manutencao = response[x][4];
             this.numero_manutencao = response[x][3];
+=======
+            this.tipo_manutencao = response[x][3];
+            this.numero_manutencao = response[x][4];
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
             this.reg_dados = response[x][0];
             this.nome_criacao = response[x][1];
             this.id = response[x][0].id_REG_PARAM_OPERA;

@@ -7,6 +7,9 @@ export class GT_DIC_TAREFAS {
 	utz_CRIA: number;
 	data_ULT_MODIF: Date;
 	utz_ULT_MODIF: number;
+<<<<<<< HEAD
 	tipo_TAREFA: string;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 }

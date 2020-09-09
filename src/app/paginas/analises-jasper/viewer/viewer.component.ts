@@ -114,7 +114,11 @@ export class ViewerComponent implements OnInit {
 
   alterarelatorio(link, id) {
     if (link != null) {
+<<<<<<< HEAD
       this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(link + "&userLocale=pt_BR&j_username=" + encodeURIComponent(this.user_jasper_login) + "&j_password=" + encodeURIComponent(this.pass_jasper_login));
+=======
+      this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(link + "&userLocale=pt_BR&j_username=" + this.user_jasper_login + "&j_password=" + this.pass_jasper_login);
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       this.noativo = id;
     }
 

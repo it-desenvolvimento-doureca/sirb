@@ -8,6 +8,7 @@
             <h4 class="title">Tarefas</h4>
           </div>
           <div class="card-content">
+<<<<<<< HEAD
             <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single"
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column [style]="{'width':'30px'}" field="nomept" header="Descrição PT" [filter]="true"
@@ -21,6 +22,15 @@
               <p-footer>
                 <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;"
                   title="Adicionar nova linha">
+=======
+            <p-dataTable [style]="{'width':'100%'}" [value]="dados" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+              [paginator]="true" rows="15">
+              <p-column [style]="{'width':'30px'}" field="nomept" header="Descrição PT" [filter]="true" [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="nomeeng" header="Descrição ENG" [filter]="true" [sortable]="true"></p-column>
+              <p-column [style]="{'width':'30px'}" field="nomefr" header="Descrição FR" [filter]="true" [sortable]="true"></p-column>
+              <p-footer>
+                <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
                   <i class="material-icons">add</i> Adicionar
                 </a>
               </p-footer>
@@ -45,7 +55,11 @@
           <span class="sr-only">Close</span>
         </button>
         <h4 class="modal-title" id="myModalLabel">
+<<<<<<< HEAD
           Ações de Reclamações
+=======
+          Acções de Reclamações
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         </h4>
       </div>
       <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
@@ -53,6 +67,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="descricao">Descrição PT</label>
+<<<<<<< HEAD
             <input type="text" class="form-control" id="descricaopt" [(ngModel)]="descricaopt"
               [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Português" required />
           </div>
@@ -70,13 +85,31 @@
             <label for="descricao">Tipo de Tarefa</label>
             <p-dropdown [options]="tipos_tarefas" [style]="{'width':'100%'}" [(ngModel)]="tipo_TAREFA"
               [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+=======
+            <input type="text" class="form-control" id="descricaopt" [(ngModel)]="descricaopt" [ngModelOptions]="{standalone: true}"
+              placeholder="Introduza a Descrição em Português" required />
+          </div>
+          <div class="form-group">
+            <label for="descricao">Descrição ENG</label>
+            <input type="text" class="form-control" id="descricaoeng" [(ngModel)]="descricaoeng" [ngModelOptions]="{standalone: true}"
+              placeholder="Introduza a Descrição em Inglês" />
+          </div>
+          <div class="form-group">
+            <label for="descricao">Descrição FR</label>
+            <input type="text" class="form-control" id="descricaofr" [(ngModel)]="descricaofr" [ngModelOptions]="{standalone: true}"
+              placeholder="Introduza a Descrição em Francês" />
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
+<<<<<<< HEAD
           <button type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger"
             data-dismiss="modal">Remover</button>
+=======
+          <button type="button" (click)="apagar()" [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           <button type="submit" class="btn btn-success ">Gravar</button>
         </div>
       </form>

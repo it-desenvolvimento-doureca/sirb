@@ -9,6 +9,7 @@
             <p class="category"></p>
           </div>
           <div class="card-content table-responsive">
+<<<<<<< HEAD
             <!-- <p-schedule #fc (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm' 
               (onDayClick)="adiciona($event);" [events]="events" [header]="header" locale="es" [contentHeight]="400" locale="pt"
               [editable]="true"></p-schedule>-->
@@ -16,12 +17,18 @@
               (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm'
               [events]="events" [options]="calOptions" locale="es" [contentHeight]="400" locale="pt" [editable]="true">
             </p-schedule>
+=======
+            <p-schedule #fc (onEventDrop)="teste(fc)" (onEventClick)="ver_evento($event)" [eventLimit]="4" timeFormat='H:mm' 
+              (onDayClick)="adiciona($event);" [events]="events" [header]="header" locale="es" [contentHeight]="400" locale="pt"
+              [editable]="true"></p-schedule>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 <!--<p-overlayPanel appendTo="body" #op>
   <label>{{popOverTitle}}</label>
 </p-overlayPanel>-->
@@ -31,6 +38,14 @@
 <!-- Modal Linhas-->
 <div style="background: #05020263;" class="modal fade" id="modalcalendario" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
+=======
+
+
+<button class="btn btn-primary btn-lg" #abrirpopup data-toggle="modal" [hidden]="true" data-target="#modalcalendario" data-backdrop="false"></button>
+<!-- Modal Linhas-->
+<div style="background: #05020263;" class="modal fade" id="modalcalendario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
   <div class="modal-dialog">
     <div class="modal-content" id="modalcalendariocontent">
       <!-- Modal Header -->
@@ -40,12 +55,19 @@
           <span class="sr-only">Close</span>
         </button>
         <h4 class="modal-title" id="myModalLabel">
+<<<<<<< HEAD
           Evento - <b>{{titulo_evento}}</b>
         </h4>
+=======
+          Evento
+        </h4>
+        <b>{{titulo_evento}}</b>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
       </div>
       <!-- Modal Body -->
       <div class="" style="max-height: 80vh; overflow-y: overlay; padding: 0px 5px 0px 5px">
         <div class="col-md-12">
+<<<<<<< HEAD
           <div *ngIf="!feriado" class="container-fluid" style="padding: 0;">
 
             <div style="display: inline-block;">
@@ -164,6 +186,45 @@
           <button type="button" class="btn btn-danger" #fecharpopup data-dismiss="modal">CANCELAR</button>
           <button type="button" class="btn btn-success">GUARDAR</button>
         </div>-->
+=======
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Data Início</p>
+              <p-calendar [style]="{'width':'60%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                [(ngModel)]="data_inicio" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+              <input  style="width:75px; margin-left:22px; padding: 5px 4px;height: 31px;" [(ngModel)]="hora_inicio"
+                [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Prioridade</p>
+              <p-dropdown [style]="{'width':'100%'}" 
+                [required]="true"></p-dropdown>
+            </div>
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Data Limite</p>
+              <p-calendar [style]="{'width':'60%'}" dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2070"
+                [(ngModel)]="data_fim" [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+              <input style="width:75px; margin-left:22px; padding: 5px 4px;height: 31px;" [(ngModel)]="hora_fim"
+                [ngModelOptions]="{standalone: true}" type="time" class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group form-black label-floating">
+              <p style="font-size: 14px;">Tempo Estimado (horas)</p>
+              <input type="text" class="form-control" id="usr">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-danger" #fecharpopup data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-success">GUARDAR</button>
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
         </div>
       </div>
     </div>

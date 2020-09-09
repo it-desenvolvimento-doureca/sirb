@@ -24,9 +24,12 @@ export class AB_MOV_MANUTENCAO_ETIQ {
     observacao: string;
     sinal: string;
     etqoriqte1: number;
+<<<<<<< HEAD
     linha: number;
 
     unidade_CONSUMO: string;
     factor_CONVERSAO: number;
+=======
+>>>>>>> aa167a7d63b9fa01b26efb1fceaeb7aed3e4b2ea
 
 }
