@@ -430,6 +430,7 @@ const routes: Routes = [
   { path: 'objetivos_faturacao', component: ObjetivosComponent, canActivate: [LoginService], data: { breadcrumb: "Objetivos Faturação" } },
   { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Documento" } },
   { path: 'seguimento_faturacao', component: SeguimentoFaturacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Mensal" } },
+  { path: 'seguimento_faturacao_anual', component: SeguimentoFaturacaoAnualComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Anual" } },
   { path: 'tipologia_ensaio', component: TipologiaEnsaioComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologias de Ensaio" } },
   { path: 'producao_fabricas', component: ProducaoFabricasComponent, canActivate: [LoginService], data: { breadcrumb: "Fábricas" } },
   { path: 'producao_programas', component: ProducaoProgramaComponent, canActivate: [LoginService], data: { breadcrumb: "Programas" } },
@@ -906,8 +907,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PlameamentoAnalisesFormComponent,
     SectoresAgregadoresComponent,
     GestaoBarrasComponent,
-    ValidacoesBastidoresComponent,
-    SeguimentoFaturacaoAnualComponent
+    ValidacoesBastidoresComponent
   ],
   imports: [
     BrowserModule,

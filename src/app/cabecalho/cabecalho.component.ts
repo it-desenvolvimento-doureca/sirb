@@ -70,19 +70,20 @@ export class CabecalhoComponent implements OnInit {
         this.favorito = false;
         this.id_favorito = null;
         var url = this.location.path();
-        var id = JSON.parse(localStorage.getItem('userapp'))["id"];
-        this.GERFAVORITOSService.getbyid(id).subscribe(
-            response => {
-                for (var x in response) {
-                    if (url == response[x].url) {
-                        this.favorito = true;
-                        this.id_favorito = response[x].id_FAVORITO;
+        if (JSON.parse(localStorage.getItem('userapp'))) {
+            var id = JSON.parse(localStorage.getItem('userapp'))["id"];
+            this.GERFAVORITOSService.getbyid(id).subscribe(
+                response => {
+                    for (var x in response) {
+                        if (url == response[x].url) {
+                            this.favorito = true;
+                            this.id_favorito = response[x].id_FAVORITO;
+                        }
                     }
-                }
 
-            },
-            error => { console.log(error); });
-
+                },
+                error => { console.log(error); });
+        }
         var titlee = this.location.prepareExternalUrl(this.location.path());
         if (titlee.match("editar") || titlee.match("view") || titlee.match("novo") || url == '/dashboard') {
             this.show_favoritos = false;

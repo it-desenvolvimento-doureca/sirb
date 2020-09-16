@@ -42,15 +42,18 @@ export class HomeComponent implements OnInit {
   }
 
   carregafavoritos() {
-    var id = JSON.parse(localStorage.getItem('userapp'))["id"];
-    this.GERFAVORITOSService.getbyid(id).subscribe(
-      response => {
-        this.favoritos = [];
-        for (var x in response) {
-          this.favoritos.push({ id_FAVORITO: response[x].id_FAVORITO, descricao: response[x].descricao, url: response[x].url })
-        }
-      },
-      error => { console.log(error); });
+
+    if (JSON.parse(localStorage.getItem('userapp'))) {
+      var id = JSON.parse(localStorage.getItem('userapp'))["id"];
+      this.GERFAVORITOSService.getbyid(id).subscribe(
+        response => {
+          this.favoritos = [];
+          for (var x in response) {
+            this.favoritos.push({ id_FAVORITO: response[x].id_FAVORITO, descricao: response[x].descricao, url: response[x].url })
+          }
+        },
+        error => { console.log(error); });
+    }
   }
 
   carregagraficos() {

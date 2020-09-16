@@ -209,7 +209,7 @@
                         </tr>
                       </ng-template>
                     </p-column>
-                    <p-column header="Designação da Peça">
+                    <p-column header="Designação da Peça" [style]="{'width':'182px'}">
                       <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                         <tr *ngFor="let ref of car['referencias']; let index_ref = index">
                           <input [disabled]="true" type="text" class="form-control2" title="{{ref.design_REFERENCIA}}"
@@ -217,7 +217,7 @@
                         </tr>
                       </ng-template>
                     </p-column>
-                    <p-column header="Observações">
+                    <p-column header="Observações" [style]="{'min-width':'50px'}">
                       <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                         <tr *ngFor="let ref of car['referencias']; let index_ref = index">
                           <input [disabled]="!modoedicao" type="text" class="form-control2"
