@@ -295,6 +295,7 @@ import { ValidacoesBastidoresComponent } from './paginas/modulo-producao/paramet
 import { PRGESTAOBARRASREFERENCIASService } from './servicos/pr-gestao-barras-referencias.service';
 import { PRGESTAOBARRASService } from './servicos/pr-gestao-barras.service';
 import { PRDICVALIDACAOBASTIDORService } from './servicos/pr-dic-validacao-bastidor.service';
+import { GERFAVORITOSService } from './servicos/ger-favoritos.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -450,7 +451,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'planeamento_analises', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Análises" },
+    path: 'planeamento_analises', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Produção - Análises" },
     children: [
       { path: '', component: PlaneamentoAnalisesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: PlameamentoAnalisesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Análise" } },
@@ -532,7 +533,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'planosacaoengenaria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoengenaria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Engenharia" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -541,7 +542,7 @@ const routes: Routes = [
   }
   ,
   {
-    path: 'planosacaoproducao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoproducao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Produção" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -549,7 +550,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaologistica', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaologistica', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Logística" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -557,7 +558,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaomanutencao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaomanutencao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Manutenção" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -565,7 +566,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaoinjecao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoinjecao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Injeção" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -573,7 +574,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaoqualidade', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoqualidade', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Qualidade" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -581,7 +582,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaoFinanceira', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoFinanceira', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Financeira" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -589,7 +590,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaoComercial', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoComercial', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Comercial" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -597,7 +598,7 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
   {
-    path: 'planosacaoProjetos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },
+    path: 'planosacaoProjetos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações - Projetos" },
     children: [
       { path: '', component: ListaplanosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ação" } },
@@ -1087,6 +1088,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PRGESTAOBARRASREFERENCIASService,
     PRGESTAOBARRASService,
     PRDICVALIDACAOBASTIDORService,
+    GERFAVORITOSService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

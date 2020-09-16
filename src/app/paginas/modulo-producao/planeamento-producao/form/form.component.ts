@@ -11,9 +11,10 @@ import { PR_PLANEAMENTO_PRODUCAO_CAB } from 'app/entidades/PR_PLANEAMENTO_PRODUC
 import { PRPLANEAMENTOPRODUCAOLINHASService } from 'app/servicos/pr-planeamento-producao-linhas.service';
 import { PR_PLANEAMENTO_PRODUCAO_LINHAS } from 'app/entidades/PR_PLANEAMENTO_PRODUCAO_LINHAS';
 import { PRDICCAPACIDADEACABAMENTOService } from 'app/servicos/pr-dic-capacidade-acabamento.service';
-
+import * as FileSaver from 'file-saver';
 import { zipProto } from 'rxjs/operator/zip';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
 
 @Component({
   selector: 'app-form',
@@ -30,6 +31,7 @@ export class FormComponent implements OnInit {
   disEditar: boolean;
   disCriar: boolean;
   disAnular: boolean;
+  disImprimir: boolean;
   disFechar: boolean;
   modoedicao: boolean;
   loading: boolean;
@@ -52,6 +54,7 @@ export class FormComponent implements OnInit {
   caminho: string;
   btFechar;
   btAnular;
+  btImprimir;
   disCancelar;
   btCancelar;
   disGravar;
@@ -85,7 +88,7 @@ export class FormComponent implements OnInit {
   constructor(private renderer: Renderer, private sanitizer: DomSanitizer, private ABDICLINHAService: ABDICLINHAService, private elementRef: ElementRef,
     private PRDICSEMANASANALISEService: PRDICSEMANASANALISEService, private PRPLANEAMENTOPRODUCAOCABService: PRPLANEAMENTOPRODUCAOCABService,
     private PRPLANEAMENTOPRODUCAOLINHASService: PRPLANEAMENTOPRODUCAOLINHASService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
-    private PRDICCAPACIDADEACABAMENTOService: PRDICCAPACIDADEACABAMENTOService,
+    private PRDICCAPACIDADEACABAMENTOService: PRDICCAPACIDADEACABAMENTOService, private RelatoriosService: RelatoriosService,
     private location: Location, private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
@@ -118,6 +121,8 @@ export class FormComponent implements OnInit {
     this.disAnular = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node99apagar");
     this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node99fechar");
 
+    this.disImprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node99imprimir");
+
     this.btvoltar = true;
     var url = this.router.routerState.snapshot.url;
     url = url.slice(1);
@@ -143,6 +148,7 @@ export class FormComponent implements OnInit {
         this.btGravar = true;
         this.btCancelar = true;
         this.btAnular = true;
+        this.btImprimir = true;
         this.btFechar = true;
 
       } else if (urlarray[1].match("novo")) {
@@ -159,6 +165,7 @@ export class FormComponent implements OnInit {
         this.globalVar.setdisDuplicar(false);
         this.btcriar = true;
         this.btAnular = true;
+        this.btImprimir = true;
         this.btFechar = true;
       }
 
@@ -467,6 +474,7 @@ export class FormComponent implements OnInit {
         var plan_linha = new PR_PLANEAMENTO_PRODUCAO_LINHAS;
         plan_linha.id_PLANEAMENTO_PRODUCAO_LINHA = this.campos_update[x].id;
         plan_linha.num_BARRAS_PLANO = this.campos_update[x].valor;
+        plan_linha.quant_PLANO = this.campos_update[x].qtd_plano;
         plan_linha.data_MODIF = this.campos_update[x].data;
         plan_linha.utz_MODIF = this.campos_update[x].user;
         this.update_campos(plan_linha, this.campos_update.length, parseInt(x) + 1);
@@ -816,9 +824,10 @@ export class FormComponent implements OnInit {
 
     if (this.campos_update.find(x => x.id === id)) {
       this.campos_update.find(x => x.id === id).valor = n_barras_plano;
+      this.campos_update.find(x => x.id === id).qtd_plano = n_barras_plano * this.linhas[index_linha].qtd_pecas;
       this.campos_update.find(x => x.id === id).data = new Date();
     } else {
-      this.campos_update.push({ id: id, valor: n_barras_plano, user: this.user, data: new Date() })
+      this.campos_update.push({ id: id, valor: n_barras_plano, qtd_plano: n_barras_plano * this.linhas[index_linha].qtd_pecas, user: this.user, data: new Date() })
     }
 
     this.linhas[index_linha].mrp_plano[index_mrp_plano].qtd_plano = n_barras_plano * this.linhas[index_linha].qtd_pecas;
@@ -1105,6 +1114,19 @@ export class FormComponent implements OnInit {
     this.filtro_rack = null;
     this.campo_ref = null;
     this.referencia_principal = null;
+  }
+  exportar() {
+
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+
+    var filenametransfer = "planeamento_producao";
+
+    this.RelatoriosService.downloadPDF("pdf", filename, this.numero_PLANO, 'planeamento_producao').subscribe(
+      (res) => {
+        FileSaver.saveAs(res, filenametransfer);
+      }
+    );
+
   }
 
 }

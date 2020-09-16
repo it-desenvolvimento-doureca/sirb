@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { RelatoriosService } from "app/servicos/relatorios.service";
 import { Message } from "primeng/primeng";
 import { webUrl } from 'assets/config/webUrl';
+import { GERFAVORITOSService } from 'app/servicos/ger-favoritos.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,9 @@ export class HomeComponent implements OnInit {
   data2 = null;
   data: any;
   data1: any;
-  constructor(private elementRef: ElementRef) {
+  favoritos: any[];
+  list = false;
+  constructor(private elementRef: ElementRef, private GERFAVORITOSService: GERFAVORITOSService) {
 
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
@@ -31,10 +34,23 @@ export class HomeComponent implements OnInit {
     script2.setAttribute("src", "assets/js/initMenu.js");
     document.body.appendChild(script2);
 
-    this.mod_prod = webUrl.mod_pro;
+    this.mod_prod = true;// webUrl.mod_pro;
 
     if (!this.mod_prod) this.carregagraficos();
 
+    this.carregafavoritos();
+  }
+
+  carregafavoritos() {
+    var id = JSON.parse(localStorage.getItem('userapp'))["id"];
+    this.GERFAVORITOSService.getbyid(id).subscribe(
+      response => {
+        this.favoritos = [];
+        for (var x in response) {
+          this.favoritos.push({ id_FAVORITO: response[x].id_FAVORITO, descricao: response[x].descricao, url: response[x].url })
+        }
+      },
+      error => { console.log(error); });
   }
 
   carregagraficos() {

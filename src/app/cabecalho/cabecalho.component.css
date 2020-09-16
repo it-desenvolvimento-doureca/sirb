@@ -29,3 +29,10 @@
     outline: 0;
 }
 
+.li_star {
+    float: right;
+}
+
+.li_star:before {
+    content: none;
+}

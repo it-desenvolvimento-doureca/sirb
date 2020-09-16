@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { AppComponent } from 'app/app.component';
+import { MenuItem } from 'primeng/primeng';
 
 @Component({
   selector: 'app-menu',
@@ -14,6 +15,16 @@ export class MenuComponent implements OnInit {
   public menuItems: any[];
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('dialog2') dialog2: ElementRef;
+  items2: MenuItem[] = [
+    {
+      label: 'Next',
+      icon: 'fa-chevron-right'
+    },
+    {
+      label: 'Prev',
+      icon: 'fa-chevron-left'
+    }
+  ];
 
   constructor(private comp: AppComponent, private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
 
@@ -24,6 +35,9 @@ export class MenuComponent implements OnInit {
     this.globalVar.setlinha(0);
   }
 
+  click(event) {
+    console.log(event)
+  }
 
   logout() {
     //localStorage.clear();

@@ -12,6 +12,9 @@
                 <li *ngFor="let breadcrumb of breadcrumbs">
                     <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{ breadcrumb.label }}</a>
                 </li>
+                <li *ngIf="show_favoritos" class="li_star"><a (click)="set_favoritos()" class="fa "
+                        style="cursor: pointer; color: black; font-size: 20px;"
+                        [ngClass]="(favorito)? 'fa-star':'fa-star-o'"></a></li>
             </ol>
             {{getTitle()}}
         </div>

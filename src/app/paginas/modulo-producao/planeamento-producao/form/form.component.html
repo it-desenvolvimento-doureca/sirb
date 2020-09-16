@@ -50,6 +50,12 @@
                 <div class="ripple-container"></div>
               </a>
             </li>
+            <li [class.disabled]="disImprimir" [hidden]="!btImprimir">
+              <a (click)="exportar()">
+                <i class="material-icons">print</i>Imprimir
+                <div class="ripple-container"></div>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -322,6 +328,7 @@
                         </div>
                         <div class="table-row col-md-12 linhas linhas_planeamento"
                           *ngFor="let linha of linhas; let index_linha = index" (click)="class_active = index_linha"
+                          (keyup)="class_active = index_linha"
                           [ngClass]="class_active == index_linha? 'ref_selected':''"
                           style=" border-bottom: 1px solid black; padding: 0px ;">
 
@@ -444,7 +451,7 @@
                                   <div class="col-md-12 tab_cell"
                                     style="padding: 0; text-align: right; height: 33.3333%; white-space: nowrap; overflow: hidden;"
                                     title="{{v.diff_qtd  | number: '1.0-0'}}"
-                                    [style.background]="(v.diff_qtd != 0)? 'yellow' : ''">
+                                    [style.background]="(v.diff_qtd != 0)? ((index_mrp_plano + 1 == linha.mrp_plano.length) ?'rgba(250, 51, 51, 0.61)':'yellow') : ''">
                                     {{v.diff_qtd  | number: '1.0-0'}}
                                   </div>
                                 </div>
@@ -460,6 +467,7 @@
                                       style="max-height: 20.8px; width: 100%; text-align: right; padding: 0; border:none; padding-right: 2px;"
                                       [(ngModel)]="v.n_barras_plano" [ngModelOptions]="{standalone: true}"
                                       type="number"></div>
+                                  <!--[style.background]="(v.diff_barras  != 0 && (index_mrp_plano + 1 == linha.mrp_plano.length))? 'red' : ''"-->
                                   <div class="col-md-12 tab_cell"
                                     style="padding: 0; border-left: 1px solid black; text-align: right; height: 33.3333%; white-space: nowrap; overflow: hidden;"
                                     title="{{v.diff_barras  | number: '1.0-0'}}">

@@ -380,6 +380,6 @@ input[type=number] {
 
 .linhas_planeamento.ref_selected {
     /*border: 2px solid red;*/
-    border-top: 2px solid red;
-    border-bottom: 2px solid red !important;
+    border-top: 4px solid red;
+    border-bottom: 4px solid red !important;
 }
