@@ -296,6 +296,7 @@ import { PRGESTAOBARRASREFERENCIASService } from './servicos/pr-gestao-barras-re
 import { PRGESTAOBARRASService } from './servicos/pr-gestao-barras.service';
 import { PRDICVALIDACAOBASTIDORService } from './servicos/pr-dic-validacao-bastidor.service';
 import { GERFAVORITOSService } from './servicos/ger-favoritos.service';
+import { SeguimentoFaturacaoAnualComponent } from './paginas/modulo-financeira/seguimento-faturacao-anual/seguimento-faturacao-anual.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -428,7 +429,7 @@ const routes: Routes = [
 
   { path: 'objetivos_faturacao', component: ObjetivosComponent, canActivate: [LoginService], data: { breadcrumb: "Objetivos Faturação" } },
   { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Documento" } },
-  { path: 'seguimento_faturacao', component: SeguimentoFaturacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação" } },
+  { path: 'seguimento_faturacao', component: SeguimentoFaturacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Mensal" } },
   { path: 'tipologia_ensaio', component: TipologiaEnsaioComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologias de Ensaio" } },
   { path: 'producao_fabricas', component: ProducaoFabricasComponent, canActivate: [LoginService], data: { breadcrumb: "Fábricas" } },
   { path: 'producao_programas', component: ProducaoProgramaComponent, canActivate: [LoginService], data: { breadcrumb: "Programas" } },
@@ -905,7 +906,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PlameamentoAnalisesFormComponent,
     SectoresAgregadoresComponent,
     GestaoBarrasComponent,
-    ValidacoesBastidoresComponent
+    ValidacoesBastidoresComponent,
+    SeguimentoFaturacaoAnualComponent
   ],
   imports: [
     BrowserModule,
