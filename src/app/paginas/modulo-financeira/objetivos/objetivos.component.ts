@@ -19,6 +19,7 @@ export class ObjetivosComponent implements OnInit {
   ano;
   mes;
   valor_OBJETIVO;
+  valor_OBJETIVO_ANUAL;
   hora_INICIO;
   n_DIAS_UTEIS;
 
@@ -81,6 +82,7 @@ export class ObjetivosComponent implements OnInit {
     OBJE.ano = this.ano;
     OBJE.mes = this.mes;
     OBJE.valor_OBJETIVO = this.valor_OBJETIVO;
+    OBJE.valor_OBJETIVO_ANUAL = this.valor_OBJETIVO_ANUAL;
     OBJE.n_DIAS_UTEIS = this.n_DIAS_UTEIS;
 
     if (this.novo) {
@@ -114,6 +116,7 @@ export class ObjetivosComponent implements OnInit {
             mes: response[x].mes,
             mes_nome: month[response[x].mes - 1],
             valor_OBJETIVO: response[x].valor_OBJETIVO,
+            valor_OBJETIVO_ANUAL: response[x].valor_OBJETIVO_ANUAL,
             n_DIAS_UTEIS: response[x].n_DIAS_UTEIS,
           });
         }
@@ -154,6 +157,7 @@ export class ObjetivosComponent implements OnInit {
       this.ano = event.data.ano;
       this.mes = event.data.mes;
       this.valor_OBJETIVO = event.data.valor_OBJETIVO;
+      this.valor_OBJETIVO_ANUAL = event.data.valor_OBJETIVO_ANUAL;
       this.n_DIAS_UTEIS = event.data.n_DIAS_UTEIS;
 
       this.novo = false;
@@ -168,6 +172,7 @@ export class ObjetivosComponent implements OnInit {
     this.ano = new Date().getFullYear();
     this.mes = null;
     this.valor_OBJETIVO = null;
+    this.valor_OBJETIVO_ANUAL = null;
     this.n_DIAS_UTEIS = null;
     this.dialognovo = true;
   }

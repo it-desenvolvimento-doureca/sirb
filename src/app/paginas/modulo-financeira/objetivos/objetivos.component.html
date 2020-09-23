@@ -14,8 +14,17 @@
               </p-column>
               <p-column [style]="{'width':'30px'}" field="ano" header="Ano" [filter]="true" [sortable]="true">
               </p-column>
-              <p-column [style]="{'width':'30px'}" field="valor_OBJETIVO" header="Valor Objetivo" [filter]="true"
+              <p-column [style]="{'width':'30px'}" field="valor_OBJETIVO" header="Valor Objetivo Mensal" [filter]="true"
                 [sortable]="true">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span>{{car[col.field] | number: '1.2-2'}} €</span>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'30px'}" field="valor_OBJETIVO_ANUAL" header="Valor Objetivo Anual"
+                [filter]="true" [sortable]="true">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span>{{car[col.field] | number: '1.2-2'}} €</span>
+                </ng-template>
               </p-column>
               <p-column [style]="{'width':'30px'}" field="n_DIAS_UTEIS" header="Nº Dias Úteis" [filter]="true"
                 [sortable]="true">
@@ -45,25 +54,31 @@
   <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravardados()">
     <!-- Modal Body -->
     <div class="modal-body">
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label for="mes">Mês</label>
         <p-dropdown appendTo="body" [filter]="true" [options]="meses"
           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="mes"
           [ngModelOptions]="{standalone: true}" [required]="true">
         </p-dropdown>
       </div>
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label for="ano">Ano</label>
-        <p-dropdown  appendTo="body"  [filter]="true" [options]="anos" [style]="{'width':'100%','height':'25px','background':'white'}"
-          [(ngModel)]="ano" [ngModelOptions]="{standalone: true}" [required]="true">
+        <p-dropdown appendTo="body" [filter]="true" [options]="anos"
+          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="ano"
+          [ngModelOptions]="{standalone: true}" [required]="true">
         </p-dropdown>
       </div>
       <div class="form-group col-md-3">
-        <label for="valor_OBJETIVO">Valor Objetivo</label>
+        <label for="valor_OBJETIVO">Valor Objetivo Mensal</label>
         <input type="number" step="0.01" class="form-control2" id="valor_OBJETIVO" [(ngModel)]="valor_OBJETIVO"
           [ngModelOptions]="{standalone: true}" placeholder="" [required]="true" />
       </div>
       <div class="form-group col-md-3">
+        <label for="valor_OBJETIVO">Valor Objetivo Anual</label>
+        <input type="number" step="0.01" class="form-control2" id="valor_OBJETIVO_ANUAL"
+          [(ngModel)]="valor_OBJETIVO_ANUAL" [ngModelOptions]="{standalone: true}" placeholder="" [required]="true" />
+      </div>
+      <div class="form-group col-md-2">
         <label for="n_DIAS_UTEIS">Nº Dias Úteis</label>
         <input type="number" class="form-control2" id="n_DIAS_UTEIS" [(ngModel)]="n_DIAS_UTEIS"
           [ngModelOptions]="{standalone: true}" placeholder="" [required]="true" />

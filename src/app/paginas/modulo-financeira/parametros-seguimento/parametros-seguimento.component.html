@@ -1,0 +1,76 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Parâmetros Seguimento Faturação Anual</h4>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div style="display: inline-block; width: 100%;">
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+                    <table class="tg">
+                      <tr>
+                        <th class="tg-wfll">Parâmetro</th>
+                        <th class="tg-wfll">Tipos Documento <br>(separar com ;) </th>
+                        <th class="tg-wfll">Tipo Artigo Protypcod<br>(separar com ;)
+                        </th>
+                      </tr>
+
+                      <tr *ngFor="let col of dados">
+                        <td class="tg-0pky descricao" style="min-width: 120px;">{{col.descricao}}</td>
+                        <td class="tg-0pky"><input [disabled]="!acesso_editar" type="text" class="form-control2"
+                            [(ngModel)]="col.tipos_DOCUMENTO" [ngModelOptions]="{standalone: true}"></td>
+                        <td class="tg-0pky"><input [disabled]="!acesso_editar" type="text" class="form-control2"
+                            [(ngModel)]="col.tipo_ARTIGO" [ngModelOptions]="{standalone: true}"></td>
+                      </tr>
+                    </table>
+                  </div>
+
+
+                </div>
+
+
+
+              </div>
+
+
+
+
+
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!acesso_editar">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!acesso_editar">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>

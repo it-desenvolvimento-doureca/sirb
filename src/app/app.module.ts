@@ -297,6 +297,9 @@ import { PRGESTAOBARRASService } from './servicos/pr-gestao-barras.service';
 import { PRDICVALIDACAOBASTIDORService } from './servicos/pr-dic-validacao-bastidor.service';
 import { GERFAVORITOSService } from './servicos/ger-favoritos.service';
 import { SeguimentoFaturacaoAnualComponent } from './paginas/modulo-financeira/seguimento-faturacao-anual/seguimento-faturacao-anual.component';
+import { FINSEGUIMENTOFATURACAOANUALService } from './servicos/fin-seguimento-faturacao-anual.service';
+import { ParametrosSeguimentoComponent } from './paginas/modulo-financeira/parametros-seguimento/parametros-seguimento.component';
+import { FINDICPARAMETROSSEGUIMENTOService } from './servicos/fin-dic-parametros-seguimento.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -428,6 +431,8 @@ const routes: Routes = [
   { path: 'sectores_analise', component: SectoresAnaliseComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores de Análise - Dashboard Formariz" } },
 
   { path: 'objetivos_faturacao', component: ObjetivosComponent, canActivate: [LoginService], data: { breadcrumb: "Objetivos Faturação" } },
+  { path: 'parametros_seguimento_faturacao_anual', component: ParametrosSeguimentoComponent, canActivate: [LoginService], data: { breadcrumb: "Parâmetros Seguimento Faturação Anual" } },
+
   { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Documento" } },
   { path: 'seguimento_faturacao', component: SeguimentoFaturacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Mensal" } },
   { path: 'seguimento_faturacao_anual', component: SeguimentoFaturacaoAnualComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Anual" } },
@@ -895,6 +900,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ProducaoLimitesEncomendaComponent,
     ObjetivosComponent,
     SeguimentoFaturacaoComponent,
+    SeguimentoFaturacaoAnualComponent,
     FichaComponent,
     TiposDocumentoComponent,
     ListaAnalise,
@@ -907,7 +913,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PlameamentoAnalisesFormComponent,
     SectoresAgregadoresComponent,
     GestaoBarrasComponent,
-    ValidacoesBastidoresComponent
+    ValidacoesBastidoresComponent,
+    ParametrosSeguimentoComponent
   ],
   imports: [
     BrowserModule,
@@ -1091,6 +1098,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PRGESTAOBARRASService,
     PRDICVALIDACAOBASTIDORService,
     GERFAVORITOSService,
+    FINSEGUIMENTOFATURACAOANUALService,
+    FINDICPARAMETROSSEGUIMENTOService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

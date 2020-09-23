@@ -418,9 +418,9 @@
 
                 <!-- MENU Financeira -->
                 <div class="panel panel-default">
-                    <div class="panel-heading"
-                        [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
-                    || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)   || router.isActive('/seguimento_faturacao_anual',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/tipos_documento',true) ">
+                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
+                    || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)   || router.isActive('/seguimento_faturacao_anual',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true)
+                      || router.isActive('/tipos_documento',true) ">
                         <h4 class="panel-title">
                             <a id="node160" data-toggle="collapse" data-parent="#accordion" href="#collapseFinanceira">
                                 <span class="fa fa-line-chart" style="margin-right: 12px;">
@@ -470,7 +470,7 @@
                                     <td>
                                         <li id="node1602" data-toggle="collapse" data-target="#parametrosrecursos"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true) || router.isActive('/tipos_documento',true) }">
+                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true) || router.isActive('/tipos_documento',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -510,6 +510,10 @@
                                             <li id="node829" [routerLinkActive]="['active']"
                                                 [routerLink]="['/tipos_documento']">
                                                 <a>Tipos de Documento</a>
+                                            </li>
+                                            <li id="node830" [routerLinkActive]="['active']"
+                                                [routerLink]="['/parametros_seguimento_faturacao_anual']">
+                                                <a>Segui. Faturação Anual</a>
                                             </li>
                                         </ul>
                                     </td>

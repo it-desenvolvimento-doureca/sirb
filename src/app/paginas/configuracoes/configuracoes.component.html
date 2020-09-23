@@ -2994,7 +2994,15 @@
                                         </label>
                                         <label for="node-99-1-1" class="criar">Criar</label>
                                       </li>
-
+                                      <li>
+                                        <input type="checkbox" id="node-99-1-2" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node991apagar" [(ngModel)]="checkbox.node991apagar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node-99-1-2" class="remover">Anular</label>
+                                      </li>
 
                                     </ul>
                                   </li>
@@ -4960,7 +4968,26 @@
                                       </li>
                                     </ul>
                                   </li>
-
+                                  <li>
+                                    <input type="checkbox" class="parent" id="node-160-2-10" />
+                                    <label>
+                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node830"
+                                        [(ngModel)]="checkbox.node830" />
+                                      <span></span>
+                                    </label>
+                                    <label for="node-160-2-10">Parâmetros Seguimento Faturação Anual</label>
+                                    <ul>
+                                      <li>
+                                        <input type="checkbox" id="node-160-2-10-0" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node830editar" [(ngModel)]="checkbox.node830editar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node-160-2-10-0" class="editar">Editar</label>
+                                      </li>
+                                    </ul>
+                                  </li>
                                 </ul>
                               </li>
                             </ul>

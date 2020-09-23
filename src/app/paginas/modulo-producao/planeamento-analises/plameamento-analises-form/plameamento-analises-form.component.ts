@@ -1023,4 +1023,24 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
 
   }
+
+  Anular() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Anular?',
+      header: 'Anular Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+
+        this.PRPLANEAMENTOPRODUCAOANALISESService.delete(this.id_PLANEAMENTO_PRODUCAO_ANALISES).then(() => {
+          this.PRPLANEAMENTOPRODUCAOANALISESRECURSOSHUMANOSService.delete(this.id_PLANEAMENTO_PRODUCAO_ANALISES).then(() => {
+            this.router.navigate([this.caminho]);
+          },
+
+            error => { console.log(error); this.router.navigate([this.caminho]); });
+        },
+          error => { console.log(error); this.simular(this.inputerro) });
+
+      }
+    });
+  }
 }
