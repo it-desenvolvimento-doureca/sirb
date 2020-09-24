@@ -163,7 +163,7 @@
 
 
                 <div class="tab-pane fade in" id="tab2">
-                  <div class="col-md-12">
+                  <div class="col-md-12" id="tab2_1">
                     <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
                   </div>
                 </div>
@@ -177,13 +177,13 @@
   </div>
 
   <div id="printer_1" style="position: absolute;width: 100%; height: 0%; overflow: hidden;"></div>
-  <div id="printer_2" style="position: absolute;width: 100%; height: 0%; overflow: hidden;">
+  <!--div id="printer_2" style="position: absolute;width: 100%; height: 0%; overflow: hidden;">
     <div class="tab-pane fade in active" id="tab2_1" style="position: absolute; width:100%;">
       <div class="col-md-12">
         <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
       </div>
     </div>
-  </div>
+  </div-->
 
 
   <p-dialog [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true" id="dialog1"

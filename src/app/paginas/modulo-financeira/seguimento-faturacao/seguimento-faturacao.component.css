@@ -297,3 +297,11 @@
     border: none;
     box-shadow: none;
 }
+
+div#tab2:not(.active) {
+    display: block;
+    opacity: 1;
+    height: 0%;
+    overflow: hidden;
+    position: absolute;
+}

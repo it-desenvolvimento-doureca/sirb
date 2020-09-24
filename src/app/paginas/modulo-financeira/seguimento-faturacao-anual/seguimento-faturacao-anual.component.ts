@@ -152,6 +152,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
   atualiza_total_realizado_ano2: boolean;
   atualiza_budget: boolean;
   srcelement: any;
+  loading2;
 
   constructor(private elementRef: ElementRef, private GERDICVEICULOService: GERDICVEICULOService, private GERDICOEMService: GERDICOEMService,
     private GERDICPROJCABService: GERDICPROJCABService, private FINSEGUIMENTOFATURACAOANUALService: FINSEGUIMENTOFATURACAOANUALService) { }
@@ -1806,30 +1807,13 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     this.srcelement = null;
     var doc = new jsPDF('l', 'mm', 'a4');
 
-
-    if (document.getElementById('tab1_1')) document.getElementById('printer_1').removeChild(document.getElementById('tab1_1'));
-    //if (document.getElementById('tab2_1')) document.getElementById('printer_2').removeChild(document.getElementById('tab2_1'));
-
-
-
-    var tab1 = document.getElementById(id);
-    var printer_1 = document.getElementById('printer_1');
-    var g = tab1.cloneNode(true);
-    printer_1.appendChild(g);
-
-    printer_1.children[0].setAttribute("id", "tab1_1");
-    document.getElementById('tab1_1').style.position = "absolute";
-    document.getElementById('tab1_1').classList.add("active")
-    document.getElementById('tab1_1').classList.add("in")
-
-    //tab1.style.position = "absolute";
     const options = {
       logging: false
     };
 
     var data = this.formatDate(new Date);
 
-    await html2canvas(document.getElementById('tab1_1'), options).then(function (canvas) {
+    await html2canvas(document.getElementById(id), options).then(function (canvas) {
 
       var img = canvas.toDataURL("image/png");
       var pageHeight = doc.internal.pageSize.getHeight();
@@ -1884,10 +1868,37 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
       //fails to add image to pdf
     });
 
-    await html2canvas(document.getElementById('tab2_1'), options).then(function (canvas) {
+
+
+    doc.save(nome_ficheiro + '.pdf');
+    //this.display = true;
+    /*var srcelement = doc.output('bloburl');
+    this.doc_blob = doc.output('blob');
+    this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(srcelement);*/
+    this[loading] = false;
+
+
+  }
+
+  async download_graf(id, nome_ficheiro, loading) {
+    this[loading] = true;
+    this.srcelement = null;
+    var doc = new jsPDF('l', 'mm', 'a4');
+
+
+    //tab1.style.position = "absolute";
+    const options = {
+      logging: false
+    };
+
+    var data = this.formatDate(new Date);
+
+
+
+    await html2canvas(document.getElementById(id), options).then(function (canvas) {
       //document.getElementById('printer_2').removeChild(document.getElementById('tab2_1'));
       var pageWidth = doc.internal.pageSize.getWidth();
-      doc.addPage();
+      // doc.addPage();
       doc.setFontSize(10);
       doc.setFont('helvetica')
       doc.setFontType('bold')
@@ -1919,7 +1930,5 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     this.doc_blob = doc.output('blob');
     this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(srcelement);*/
     this[loading] = false;
-
-
   }
 }

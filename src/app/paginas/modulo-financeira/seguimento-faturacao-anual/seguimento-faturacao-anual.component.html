@@ -5,12 +5,6 @@
         <div class="card">
           <div class="card-header" data-background-color="red">
             <h4 class="title">Seguimento Faturação Mensal</h4>
-            <button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
-              (click)="download('exportpdf3','seguimento_faturacao_anual','loading')"
-              style="float:right; top: -15px; position: absolute; right: 23px;"></button>
-            <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
-              label="Export" [disabled]="true"
-              style="float:right; top: -15px; position: absolute; right: 23px;"></button>
           </div>
           <div class="card-content">
             <div class="btn-pref btn-group-justified btn-group-lg" role="group" aria-label="...">
@@ -30,12 +24,20 @@
                 </button>
               </div>
             </div>
-            <div class="well" style="display: flex;">
+            <div class="well" style="display: flex; padding-top: 3px;">
               <div class="tab-content" style="width: 100%; padding: 0;">
                 <div class="tab-pane fade in active" id="tab1">
+
+                  <button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                    (click)="download('exportpdf3','seguimento_faturacao_anual','loading')"
+                    style="float:right; top: -15px; right: 23px; margin-bottom: 3px;"></button>
+                  <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                    label="Export" [disabled]="true"
+                    style="float:right; top: -15px; right: 23px; margin-bottom: 3px;"></button>
                   <div
                     style="padding: 1px 0px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
                     class="form-group col-md-12 col-lg-12 filtros_seguimento_faturacao">
+
                     <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
                       <div class="col-md-12" style="padding-left: 0;">
                         <div class="table-row-column col-md-1" style="padding-left: 0;">
@@ -5403,7 +5405,14 @@
 
 
                 <div class="tab-pane fade in" id="tab2">
-                  <div class="col-md-12">
+
+                  <button *ngIf="!loading2" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                    (click)="download('export_graf','seguimento_faturacao_anual_grafico','loading2')"
+                    style="float:right; top: -15px; right: 23px;"></button>
+                  <button *ngIf="loading2" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                    label="Export" [disabled]="true" style="float:right; top: -15px; right: 23px;"></button>
+
+                  <div class="col-md-12" id="export_graf">
                     <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
                   </div>
                 </div>
@@ -5413,16 +5422,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-
-<div id="printer_1" style="position: absolute;width: 100%; height: 0%; overflow: hidden;"></div>
-<div id="printer_2" style="position: absolute;width: 100%; height: 0%; overflow: hidden;">
-  <div class="tab-pane fade in active" id="tab2_1" style="position: absolute; width:100%;">
-    <div class="col-md-12">
-      <p-chart type="line" [height]="100" [options]="options" [data]="data_graf"></p-chart>
     </div>
   </div>
 </div>
