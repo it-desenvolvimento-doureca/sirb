@@ -33,6 +33,8 @@ export class CabecalhoComponent implements OnInit {
 
     public breadcrumbs: IBreadcrumb[];
     id_favorito;
+    descricao: string;
+    display: boolean;
 
     constructor(private route: ActivatedRoute, private router: Router, location: Location, private globalVar: AppGlobals, private changeDetectorRef: ChangeDetectorRef, private GERFAVORITOSService: GERFAVORITOSService) {
         this.location = location;
@@ -75,9 +77,9 @@ export class CabecalhoComponent implements OnInit {
             this.GERFAVORITOSService.getbyid(id).subscribe(
                 response => {
                     for (var x in response) {
-                        if (url == response[x].url) {
+                        if (url == response[x][0].url) {
                             this.favorito = true;
-                            this.id_favorito = response[x].id_FAVORITO;
+                            this.id_favorito = response[x][0].id_FAVORITO;
                         }
                     }
 
@@ -102,10 +104,15 @@ export class CabecalhoComponent implements OnInit {
             }
         } else {
             let root: ActivatedRoute = this.route.root;
-            var desc = this.get_Descricao(root);
-            var id = JSON.parse(localStorage.getItem('userapp'))["id"];
-            this.insert_favorito(id, this.location.path(), desc);
+            this.descricao = this.get_Descricao(root);
+            this.display = true;
         }
+    }
+
+    gravar_favorito() {
+        var desc = this.descricao;
+        var id = JSON.parse(localStorage.getItem('userapp'))["id"];
+        this.insert_favorito(id, this.location.path(), desc);
     }
 
     insert_favorito(id, url, descricao) {
@@ -118,10 +125,12 @@ export class CabecalhoComponent implements OnInit {
         this.GERFAVORITOSService.create(fav).subscribe(response => {
             this.favorito = true;
             this.id_favorito = response.id_FAVORITO;
+            this.display = false;
         },
             error => {
                 this.favorito = false;
                 console.log(error);
+                this.display = false;
             });
     }
 

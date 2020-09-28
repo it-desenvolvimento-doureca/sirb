@@ -19,6 +19,14 @@ export class GERFAVORITOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getUPDATETIPO_LISTA(id, tipo_lista) {
+    const url = webUrl.host + '/rest/sirb/getUPDATETIPO_LISTA/' + id + '/' + tipo_lista;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   create(data: GER_FAVORITOS) {
     return this.http
       .post(webUrl.host + '/rest/sirb/createGER_FAVORITOS', JSON.stringify(data), { headers: this.headers })

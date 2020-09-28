@@ -441,7 +441,8 @@
                                   <div class="col-md-12 tab_cell"
                                     style="padding: 0; text-align: right;  height: 33.3333%; white-space: nowrap; overflow: hidden;"
                                     title="{{v.qtd_plano  | number: '1.0-0'}}"
-                                    [style.background]="((linha.n_barras * v.dias * N_VOLTAS_DIA) < v.n_barras_plano)? '#fa33339c' : '#C6E0B4'">
+                                    [style.font-weight]="(v.qtd_plano == 0)? 'normal':'bold'"
+                                    [style.background]="(v.qtd_plano == 0)? 'white': (((linha.n_barras * v.dias * N_VOLTAS_DIA) < v.n_barras_plano)? '#fa33339c' : '#C6E0B4')">
                                     <p-checkbox [hidden]='!modoedicao' [(ngModel)]="v.qtd_sel"
                                       [ngModelOptions]="{standalone: true}"
                                       [style]="{'float': 'left','margin-top': '4px', 'margin-left': '4px'}"
@@ -456,23 +457,23 @@
                                   </div>
                                 </div>
                                 <div class="col-md-6 tab_cell" style="text-align: center; padding: 0; height: 100%;">
-                                  <div class="col-md-12 tab_cell"
+                                  <!--div class="col-md-12 tab_cell"
                                     style="padding: 0; border-left: 1px solid black; text-align: right; height: 33.3333%; white-space: nowrap; overflow: hidden;"
                                     title="{{v.n_barras_mrp  | number: '1.0-0'}}">
-                                    {{v.n_barras_mrp}}</div>
+                                    {{v.n_barras_mrp}}</div-->
                                   <div class="col-md-12 tab_cell"
-                                    style="padding: 0 !important; border-left: 1px solid black; text-align: right; background: #C6E0B4; height: 33.3333%;">
+                                    style="padding: 0 !important; border-left: 1px solid black; text-align: right; background: #C6E0B4; height: 100%;">
                                     <input [disabled]="!modoedicao"
                                       (input)="atualizarcampo(v.id,v.n_barras_plano,index_linha,index_mrp_plano)"
-                                      style="max-height: 20.8px; width: 100%; text-align: right; padding: 0; border:none; padding-right: 2px;"
+                                      style=" height: 100%; width: 100%; text-align: center; padding: 0; border:none; padding-right: 2px;"
                                       [(ngModel)]="v.n_barras_plano" [ngModelOptions]="{standalone: true}"
                                       type="number"></div>
-                                  <!--[style.background]="(v.diff_barras  != 0 && (index_mrp_plano + 1 == linha.mrp_plano.length))? 'red' : ''"-->
-                                  <div class="col-md-12 tab_cell"
+                                  <!--max-height: 20.8px; [style.background]="(v.diff_barras  != 0 && (index_mrp_plano + 1 == linha.mrp_plano.length))? 'red' : ''"-->
+                                  <!--div class="col-md-12 tab_cell"
                                     style="padding: 0; border-left: 1px solid black; text-align: right; height: 33.3333%; white-space: nowrap; overflow: hidden;"
                                     title="{{v.diff_barras  | number: '1.0-0'}}">
                                     {{v.diff_barras  | number: '1.0-0'}}
-                                  </div>
+                                  </div-->
                                 </div>
                               </div>
                             </div>

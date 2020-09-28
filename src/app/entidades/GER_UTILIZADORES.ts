@@ -4,8 +4,8 @@ export class GER_UTILIZADORES {
     nome_UTILIZADOR: string;
     password: string;
     email: string;
-    telefone:string;
-    area:string;
+    telefone: string;
+    area: string;
     data_CRIA: Date;
     utz_ANULACAO: number;
     data_ANULACAO: Date;
@@ -15,4 +15,5 @@ export class GER_UTILIZADORES {
     user_JASPER: string;
     pass_JASPER: string;
     user_WINDOWS: string;
+    tipo_LISTA_FAVORITOS: string;
 }

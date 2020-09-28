@@ -48,12 +48,30 @@ export class HomeComponent implements OnInit {
       this.GERFAVORITOSService.getbyid(id).subscribe(
         response => {
           this.favoritos = [];
+          var lista = '';
           for (var x in response) {
-            this.favoritos.push({ id_FAVORITO: response[x].id_FAVORITO, descricao: response[x].descricao, url: response[x].url })
+            this.favoritos.push({ id_FAVORITO: response[x][0].id_FAVORITO, descricao: response[x][0].descricao, url: response[x][0].url })
+            lista = response[x][1];
+          }
+          if (lista == "List") {
+            this.list = true;
+          } else {
+            this.list = false;
           }
         },
         error => { console.log(error); });
     }
+  }
+
+  alterar_lista(val) {
+    this.list = val;
+    var lista = "Grid"
+    if (val) lista = "List";
+    var id = JSON.parse(localStorage.getItem('userapp'))["id"];
+    this.GERFAVORITOSService.getUPDATETIPO_LISTA(id, lista).subscribe(
+      response => {
+      },
+      error => { console.log(error); });
   }
 
   carregagraficos() {

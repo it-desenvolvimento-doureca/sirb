@@ -13,6 +13,7 @@
                     <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{ breadcrumb.label }}</a>
                 </li>
                 <li *ngIf="show_favoritos" class="li_star"><a (click)="set_favoritos()" class="fa "
+                        [title]="(favorito)? 'Remova esta página dos Favoritos' :'Adicione esta página aos Favoritos'"
                         style="cursor: pointer; color: black; font-size: 20px;"
                         [ngClass]="(favorito)? 'fa-star':'fa-star-o'"></a></li>
             </ol>
@@ -36,3 +37,25 @@
         </div>
     </div>
 </nav>
+
+<p-dialog header="Adicionar aos Favoritos" [responsive]="true" [positionTop]="0" width="700" [dismissableMask]="true"
+    appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display" [modal]="true">
+    <form role="form" ngNativeValidate (ngSubmit)="gravar_favorito()">
+        <!-- Modal Body -->
+        <div class="col-md-12" style="padding: 0;  margin-bottom: 15px;">
+
+            <div class="form-group col-md-12">
+                <label for="nome">Descrição Favorito</label>
+                <input type="text" class="form-control2" id="descricao" [(ngModel)]="descricao" style="width: 100%;"
+                    [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+            </div>
+
+        </div>
+        <!-- Modal Footer -->
+        <div class="" style="text-align: -webkit-center;">
+            <button type="button" class="btn btn-default" style="float: right; margin-right: 17px;"
+                (click)="display = false">Fechar</button>
+            <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+        </div>
+    </form>
+</p-dialog>

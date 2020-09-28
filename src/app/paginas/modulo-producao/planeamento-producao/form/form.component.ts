@@ -315,6 +315,8 @@ export class FormComponent implements OnInit {
 
 
   getlinhas() {
+    this.gravar_linhas(false);
+
     this.linhas = [];
 
     this.loading = true;
@@ -468,7 +470,8 @@ export class FormComponent implements OnInit {
       this.gravar_linhas();
     }
   }
-  gravar_linhas() {
+
+  gravar_linhas(update = true) {
     if (this.campos_update.length > 0) {
       for (var x in this.campos_update) {
         var plan_linha = new PR_PLANEAMENTO_PRODUCAO_LINHAS;
@@ -477,26 +480,33 @@ export class FormComponent implements OnInit {
         plan_linha.quant_PLANO = this.campos_update[x].qtd_plano;
         plan_linha.data_MODIF = this.campos_update[x].data;
         plan_linha.utz_MODIF = this.campos_update[x].user;
-        this.update_campos(plan_linha, this.campos_update.length, parseInt(x) + 1);
+        this.update_campos(plan_linha, this.campos_update.length, parseInt(x) + 1, update);
       }
     } else {
-      this.simular(this.inputgravou);
-      this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+      if (update) {
+        this.simular(this.inputgravou);
+        this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+      }
     }
 
   }
 
-  update_campos(plan_linha, total, count) {
+  update_campos(plan_linha, total, count, update) {
     this.PRPLANEAMENTOPRODUCAOLINHASService.update_campos(plan_linha).subscribe(response => {
       if (total == count) {
-        this.simular(this.inputgravou);
-        this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+        if (update) {
+          this.simular(this.inputgravou);
+          this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+        }
+        this.campos_update = [];
       }
     },
       error => {
         if (total == count) {
-          this.simular(this.inputgravou);
-          this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+          if (update) {
+            this.simular(this.inputgravou);
+            this.router.navigate([this.caminho + '/view'], { queryParams: { id: this.numero_PLANO } });
+          }
         }
         console.log(error);
       });
@@ -1115,6 +1125,7 @@ export class FormComponent implements OnInit {
     this.campo_ref = null;
     this.referencia_principal = null;
   }
+
   exportar() {
 
     var filename = new Date().toLocaleString().replace(/\D/g, '');
