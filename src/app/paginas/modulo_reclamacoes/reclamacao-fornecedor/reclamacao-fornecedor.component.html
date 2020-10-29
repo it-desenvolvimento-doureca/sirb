@@ -1,4 +1,4 @@
-<div class="col-md-12  hidden-xs" >
+<div class="col-md-12  hidden-xs">
   <div class="card-header" data-background-color="orange">
     <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
@@ -31,6 +31,12 @@
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
               <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disExportar" [hidden]="!btexportar">
+            <a (click)="exportar()">
+              <i class="material-icons">save_alt</i>Exportar PDF<div class="ripple-container"></div>
             </a>
           </li>
 

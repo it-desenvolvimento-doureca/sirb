@@ -99,6 +99,24 @@ export class PRPLANEAMENTOPRODUCAOANALISESService {
   }
 
 
+
+  GET_RACKS_MONTADOS_ANALISES(data) {
+    const url = webUrl.host + '/rest/sirb/GET_RACKS_MONTADOS_ANALISES';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_RACKS_MONTADOS_REFERENCIAS_ANALISES(data) {
+    const url = webUrl.host + '/rest/sirb/GET_RACKS_MONTADOS_REFERENCIAS_ANALISES';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   ATUALIZAR_RECURSOS_HUMANOS(data) {
     const url = webUrl.host + '/rest/sirb/ATUALIZAR_RECURSOS_HUMANOS';
     return this.http

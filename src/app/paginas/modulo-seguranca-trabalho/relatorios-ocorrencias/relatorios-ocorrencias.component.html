@@ -26,7 +26,7 @@
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-8">
 
                       <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-8">
-                        <label style="display: -webkit-box;">Data Registo:</label>
+                        <label style="display: -webkit-box; font-weight: 600;">Data Registo:</label>
                         <p-calendar [disabled]="true" [style]="{'height':'25px','width':'150px'}" dateFormat="yy-mm-dd"
                           placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
                           [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
@@ -38,13 +38,13 @@
                       </div>
 
                       <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
-                        <label>Estado:</label>
+                        <label style="font-weight: 600;">Estado:</label>
                         <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado_texto" required
                           [ngModelOptions]="{standalone: true}">
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-8 ">
-                        <label>Nome:</label>
+                        <label style="font-weight: 600;">Nome:</label>
                         <p-autoComplete [(ngModel)]="nome_PESSOA" [suggestions]="filteredNomesSingle"
                           class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
                           (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
@@ -55,7 +55,7 @@
                           required [ngModelOptions]="{standalone: true}">-->
                       </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2">
-                        <label>Nº:</label>
+                        <label style="font-weight: 600;">Nº:</label>
                         <!--<input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="numero_PESSOA"
                           required [ngModelOptions]="{standalone: true}">-->
                         <p-dropdown (onChange)="alteraNome($event)" [options]="funcionarios" filter="filter"
@@ -65,7 +65,7 @@
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
-                        <label>Idade:</label>
+                        <label style="font-weight: 600;">Idade:</label>
                         <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="idade_PESSOA"
                           [ngModelOptions]="{standalone: true}">
                       </div>
@@ -77,13 +77,13 @@
                       </div>-->
 
                       <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 ">
-                        <label>Função:</label>
+                        <label style="font-weight: 600;">Função:</label>
                         <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="funcao_PESSOA"
                           [ngModelOptions]="{standalone: true}">
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 ">
-                        <label>Departamento:</label>
+                        <label style="font-weight: 600;">Departamento:</label>
                         <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="departamento"
                           [ngModelOptions]="{standalone: true}">
                       </div>
@@ -91,9 +91,9 @@
 
 
 
-                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
-                        <div class="ui-g-12">
-                          <label style="margin-right: 11px;">Notificado à Seguradora:</label>
+                      <div style="padding: 5px 5px 1px 10px;" class="form-group col-md-12 ">
+                        <div class="col-md-6" style="padding-left: 0;">
+                          <label style="margin-right: 11px; font-weight: 600;">Notificado à Seguradora:</label>
                           <p-radioButton [disabled]="!modoedicao" name="groupnameS" label="Sim" [value]="true"
                             [(ngModel)]="notificou_SEGURADORA">
                           </p-radioButton>
@@ -101,14 +101,23 @@
                             [(ngModel)]="notificou_SEGURADORA">
                           </p-radioButton>
                         </div>
+                        <div class="col-md-6">
+                          <label style="margin-right: 11px; font-weight: 600;">Vínculo Temporário:</label>
+                          <p-radioButton [disabled]="!modoedicao" name="groupnamevinculo" label="Sim" [value]="true"
+                            [(ngModel)]="vinculo">
+                          </p-radioButton>
+                          <p-radioButton [disabled]="!modoedicao" name="groupnamevinculo" label="Não" [value]="false"
+                            [(ngModel)]="vinculo">
+                          </p-radioButton>
+                        </div>
                       </div>
                       <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 ">
-                        <label>Companhia:</label>
+                        <label style="font-weight: 600;">Companhia:</label>
                         <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="companhia"
                           [ngModelOptions]="{standalone: true}">
                       </div>
                       <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 ">
-                        <label>Nº Apólice:</label>
+                        <label style="font-weight: 600;">Nº Apólice:</label>
                         <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="n_APOLICE"
                           [ngModelOptions]="{standalone: true}">
                       </div>
@@ -232,7 +241,8 @@
                     <div class="col-xs-12">
                       <div class="" style="text-align: left;">
                         <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-12 col-lg-12">
-                          <label style="display: -webkit-box;">Data/Hora Acidente ou emergência:</label>
+                          <label style="display: -webkit-box; font-weight: 600;">Data/Hora Acidente ou
+                            emergência:</label>
                           <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'120px'}"
                             dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
                             [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_ACIDENTE"
@@ -243,30 +253,43 @@
                             ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                         </div>
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                          <label>Local do acidente ou emergência:</label>
+                          <label style="font-weight: 600;">Local do acidente ou emergência:</label>
                           <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="local_ACIDENTE"
                             [ngModelOptions]="{standalone: true}">
                         </div>
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                          <label>Número de pessoas envolvidas:</label>
+                          <label style="font-weight: 600;">Número de pessoas envolvidas:</label>
                           <input [disabled]="!modoedicao" type="text" class="form-control2"
                             [(ngModel)]="numero_PESSOAS_ENVOLVIDAS" [ngModelOptions]="{standalone: true}">
                         </div>
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                          <label>Número de Vítimas:</label>
+                          <label style="font-weight: 600;">Número de Vítimas:</label>
                           <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="numero_VITIMAS"
                             [ngModelOptions]="{standalone: true}">
                         </div>
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-12">
-                          <label>Descrição breve do acidente ou da emergência ou emergência:</label>
+                          <label style="font-weight: 600;">Descrição breve do acidente ou da emergência ou
+                            emergência:</label>
                           <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="descricao_ACIDENTE"
                             class="form-control2" [ngModelOptions]="{standalone: true}"
                             style="height: 85px; width: 100%;"></textarea>
                         </div>
 
-                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-12">
+                          <label style="font-weight: 600;">Identificação do(s) EPI(s) que o colaborador estava a
+                            utilizar:</label>
+                          <div class="col-md-12" style="padding-left: 0;">
+                            <div class=" col-lg-2" *ngFor="let epi of epis" style="padding-left: 0;">
+                              <p-checkbox [disabled]="!modoedicao" binary="true" [label]="epi.descricao"
+                                [(ngModel)]="epi.selected" [ngModelOptions]="{standalone: true}">
+                              </p-checkbox>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;">Grau da lesão:</label>
+                            <label style="margin-right: 11px; font-weight: 600;">Grau da lesão:</label>
                             <p-radioButton [disabled]="!modoedicao" name="groupname1" label="Leve" value="L"
                               [(ngModel)]="grau_LESAO">
                             </p-radioButton>
@@ -282,11 +305,12 @@
                           </div>
                         </div>
 
-                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;">Gerou Incapacidade Temporária (IT):</label>
+                            <label style="margin-right: 11px; font-weight: 600;">Gerou Incapacidade Temporária
+                              (IT):</label>
                             <p-radioButton [disabled]="!modoedicao" name="groupname2" label="Sim" [value]="true"
-                              [(ngModel)]="gerou_IT">
+                              [(ngModel)]="gerou_IT"><br>
                             </p-radioButton>
                             <p-radioButton [disabled]="!modoedicao" name="groupname2" label="Não" [value]="false"
                               [(ngModel)]="gerou_IT">
@@ -294,11 +318,12 @@
                           </div>
                         </div>
 
-                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;">Gerou Incapacidade Permanente (IP):</label>
+                            <label style="margin-right: 11px; font-weight: 600;">Gerou Incapacidade Permanente
+                              (IP):</label>
                             <p-radioButton [disabled]="!modoedicao" name="groupname3" label="Sim" [value]="true"
-                              [(ngModel)]="gerou_IP">
+                              [(ngModel)]="gerou_IP"><br>
                             </p-radioButton>
                             <p-radioButton [disabled]="!modoedicao" name="groupname3" label="Não" [value]="false"
                               [(ngModel)]="gerou_IP">
@@ -307,14 +332,25 @@
                         </div>
 
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                          <label>Danos Materiais:</label>
+                          <label style="font-weight: 600;">Danos Materiais:</label>
                           <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="danos_MATERIAS"
                             [ngModelOptions]="{standalone: true}">
                         </div>
 
-                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+
+                        <div style="padding: 1px 5px 1px 0px; height: 29.5px;" class="form-group col-md-6 ">
+
+                          <label style="margin-right: 11px; margin-left: 11px; font-weight: 600;">Dias perdidos
+                            (úteis):</label>
+                          <input [disabled]="!modoedicao" type="number" class="form-control2"
+                            [(ngModel)]="dias_PERDIDOS" [ngModelOptions]="{standalone: true}"
+                            style="width: 100px; display: inline;">
+                        </div>
+
+                        <div style="padding: 1px 5px 1px 10px; height: 29.5px;" class="form-group col-md-6 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;">Existem outros trabalhadores em postos/tarefas de
+                            <label style="margin-right: 11px; font-weight: 600;">Existem outros trabalhadores em
+                              postos/tarefas de
                               trabalho similares?</label>
                             <p-radioButton name="groupname4" label="Sim" [value]="true" [disabled]="!modoedicao"
                               [(ngModel)]="trabalhadores_SIMILARES">
@@ -325,7 +361,7 @@
                           </div>
                         </div>
 
-                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 ">
                           <table style="width: 100%; border: 1px solid; " class="tabela_partes_atingidas">
                             <tbody>
                               <tr>
@@ -432,6 +468,116 @@
                             </tbody>
                           </table>
                         </div>
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 ">
+
+                          <table style="width: 100%; border: 1px solid; " class="tabela_partes_atingidas">
+                            <tbody>
+                              <tr>
+                                <td colspan="2"
+                                  style="background: antiquewhite; width: 33.333%;font-size: 16px;font-weight: 500; border: 1px solid; text-align: center;">
+                                  Classificação da lesão (se aplicável)</td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Corte"
+                                    [(ngModel)]="cl_CORTE" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Lesão Ocular"
+                                    [(ngModel)]="cl_LESAO_OCULAR" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Ferida"
+                                    [(ngModel)]="cl_FERIDA" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Esmagamento"
+                                    [(ngModel)]="cl_ESMAGAMENTO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Contusão"
+                                    [(ngModel)]="cl_CONTUSAO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Perfuração"
+                                    [(ngModel)]="cl_PERFURACAO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Fratura"
+                                    [(ngModel)]="cl_FRATURA" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Entalamento"
+                                    [(ngModel)]="cl_ENTATALAMENTO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Hematoma"
+                                    [(ngModel)]="cl_HEMATOMA" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Amputação"
+                                    [(ngModel)]="cl_AMPUTACAO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Intoxicação/ Envenenamento"
+                                    [(ngModel)]="cl_INTOXICACAO_ENVENENAMENTO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Queimadura"
+                                    [(ngModel)]="cl_QUEIMADURA" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Lesão musculo-esquelética"
+                                    [(ngModel)]="cl_LESAO_MUSCULO_ESQUELETICA" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Outro (indicar)"
+                                    [(ngModel)]="cl_OUTRO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="border-right: 1px solid;">
+                                  <p-checkbox [disabled]="!modoedicao" binary="true" label="Entorse/Luxação"
+                                    [(ngModel)]="cl_ENTORSE_LUXACAO" [ngModelOptions]="{standalone: true}">
+                                  </p-checkbox>
+                                </td>
+                                <td>
+                                  <input [disabled]="!modoedicao" type="text" class="form-control2"
+                                    [(ngModel)]="cl_OUTRO_TEXTO" [ngModelOptions]="{standalone: true}">
+                                </td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+
 
                       </div>
                     </div>
@@ -445,7 +591,7 @@
 
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;     font-weight: 600;">1. Recolha de evidências:</label>
+                            <label style="margin-right: 11px; font-weight: 600;">1. Recolha de evidências:</label>
                             <p-checkbox [disabled]="!modoedicao" value="fotos" label="Fotos"
                               [(ngModel)]="recolha_EVIDENCIAS" [ngModelOptions]="{standalone: true}">
                             </p-checkbox>
@@ -464,7 +610,7 @@
 
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
                           <div class="ui-g-12">
-                            <label style="margin-right: 11px;     font-weight: 600;">2. Testemunha(s):</label>
+                            <label style="margin-right: 11px; font-weight: 600;">2. Testemunha(s):</label>
                             <p-radioButton name="groupnameT" label="Sim" [value]="true" [disabled]="!modoedicao"
                               [(ngModel)]="testemunhas">
                             </p-radioButton>
@@ -575,14 +721,16 @@
                     [ngClass]="classstep == 'step-3'? 'activeStepInfo' : 'hiddenStepInfo' ">
                     <div class="col-xs-12">
                       <div class="form-group col-md-12 " style="text-align: left;">
-                        <label> Quais as medidas de prevenção existentes no posto de trabalho relacionadas com o
+                        <label style="font-weight: 600;"> Quais as medidas de prevenção existentes no posto de trabalho
+                          relacionadas com o
                           acidente de trabalho?</label>
                         <table style="width: 100%" class="tabela_dados_posto">
                           <tr>
                             <td>Formação e/ou Informação:</td>
                             <td><input [disabled]="!modoedicao" type="text" class="form-control2"
                                 [(ngModel)]="medidas_FORMACAO" [ngModelOptions]="{standalone: true}"
-                                style="width: 100%;"></td>
+                                style="width: 100%;">
+                            </td>
                           </tr>
                           <tr>
                             <td>Organização do trabalho:</td>
@@ -619,7 +767,14 @@
                     [ngClass]="classstep == 'step-4'? 'activeStepInfo' : 'hiddenStepInfo' ">
                     <div class="col-xs-12">
                       <div class="" style="text-align: left;">
-                        <div class="col-md-9" style="padding: 0;" style="width: 75%; float: left;">
+                        <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-12">
+                          <div style="padding-left: 0;" class="col-md-4" *ngFor="let causa of causas_acidente">
+                            <p-checkbox [disabled]="!modoedicao" binary="true" [label]="causa.descricao"
+                              [(ngModel)]="causa.selected" [ngModelOptions]="{standalone: true}">
+                            </p-checkbox>
+                          </div>
+                        </div>
+                        <!--div class="col-md-9" style="padding: 0;" style="width: 75%; float: left;">
                           <div class="col-md-12" style="height: 10vw; width: 100%;">
 
                             <div class="col-md-6" style="height: 10vw; width: 50%;float: left; ">
@@ -679,10 +834,10 @@
                           <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="diagrama_DIR"
                             [ngModelOptions]="{standalone: true}"
                             style="width: 90%;position: absolute; bottom: -36px; ">
-                        </div>
+                        </div-->
 
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-12">
-                          <label>Descrição pormenorizada das causas:</label>
+                          <label style="font-weight: 600;">Descrição pormenorizada das causas:</label>
                           <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="descricao_CAUSAS"
                             class="form-control2" [ngModelOptions]="{standalone: true}"
                             style="height: 85px; width: 100%;"></textarea>
@@ -769,7 +924,7 @@
                     <div class="col-xs-12">
                       <div class="" style="text-align: left;">
                         <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-12">
-                          <label>Análise da Eficácia:</label>
+                          <label style="font-weight: 600;">Análise da Eficácia:</label>
                           <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="analise_EFICACIA"
                             class="form-control2" [ngModelOptions]="{standalone: true}"
                             style="height: 85px; width: 100%;"></textarea>

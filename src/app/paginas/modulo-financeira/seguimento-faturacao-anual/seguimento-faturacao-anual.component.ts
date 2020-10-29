@@ -38,7 +38,9 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
   veiculo_projetosano2;
   clientestrading;
   referenciastrading;
+  referenciasdevolucoes;
   veiculo_projetostrading;
+  veiculo_projetosdevolucoes;
   clientessubcontrato;
   referenciassubcontrato;
   veiculo_projetossubcontrato;
@@ -129,7 +131,9 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
   atualizaveiculo_projetoano2 = false;
   atualizaclientetrading = false;
   atualizareferenciatrading = false;
+  atualizareferenciadevolucoes = false;
   atualizaveiculo_projetotrading = false;
+  atualizaveiculo_projetodevolucoes = false;
   atualizareferenciasubcontrato = false;
   projeto: any;
   ano_anterior: number;
@@ -1551,6 +1555,57 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     }
   }
 
+
+  carrega_referenciadevolucoes() {
+    if (!this.atualizareferenciadevolucoes && this.referenciasdevolucoes.length == 0) {
+      this.atualizareferenciadevolucoes = true;
+      this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_REFERENCIAS(this.dados_filtro).subscribe(
+        response => {
+          for (var x in response) {
+            if (this.referenciasdevolucoes.find(item => item.id == response[x][3])) {
+              var linha = this.referenciasdevolucoes.find(item => item.id == response[x][3]);
+              linha['acumulado'] = response[x][5];
+              linha[response[x][1]] = response[x][0];
+            } else {
+              this.referenciasdevolucoes.push({ id: response[x][3], descricao: response[x][3] + ' - ' + response[x][4], 'acumulado': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0 });
+              var linha_n = this.referenciasdevolucoes.find(item => item.id == response[x][3]);
+              linha_n['acumulado'] = response[x][5];
+              linha_n[response[x][1]] = response[x][0];
+            }
+          }
+          this.atualizareferenciadevolucoes = false;
+        }, error => {
+          this.atualizareferenciadevolucoes = false;
+          console.log(error);
+        });
+    }
+  }
+
+  carrega_veiculo_projetodevolucoes() {
+    if (!this.atualizaveiculo_projetodevolucoes && this.veiculo_projetosdevolucoes.length == 0) {
+      this.atualizaveiculo_projetodevolucoes = true;
+      this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_OEM_VEICULO_PROJETO(this.dados_filtro).subscribe(
+        response => {
+          for (var x in response) {
+            if (this.veiculo_projetosdevolucoes.find(item => item.id == response[x][3])) {
+              var linha = this.veiculo_projetosdevolucoes.find(item => item.id == response[x][3]);
+              linha['acumulado'] = response[x][4];
+              linha[response[x][1]] = response[x][0];
+            } else {
+              this.veiculo_projetosdevolucoes.push({ id: response[x][3], descricao: response[x][3], 'acumulado': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0 });
+              var linha_n = this.veiculo_projetosdevolucoes.find(item => item.id == response[x][3]);
+              linha_n['acumulado'] = response[x][4];
+              linha_n[response[x][1]] = response[x][0];
+            }
+          }
+          this.atualizaveiculo_projetodevolucoes = false;
+        }, error => {
+          this.atualizaveiculo_projetodevolucoes = false;
+          console.log(error);
+        });
+    }
+  }
+
   limpar_dados() {
     this.ano1 = { 'acumulado': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0 };
     this.ano2 = { 'acumulado': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0 };
@@ -1592,6 +1647,8 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     this.referenciassubcontrato = [];
     this.veiculo_projetossubcontrato = [];
 
+    this.referenciasdevolucoes = [];
+    this.veiculo_projetosdevolucoes = [];
 
     this.clientesfaturas_ferramentas = [];
     this.referenciasfaturas_ferramentas = [];

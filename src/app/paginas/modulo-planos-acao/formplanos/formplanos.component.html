@@ -302,9 +302,32 @@
                     <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
                       <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                         (onRowSelect)="onRowSelect($event)" styleClass="ExcelTable2007" id="tabelaplanos"
-                        [(selection)]="linhasSelecionadas">
+                        [(selection)]="linhasSelecionadas" expandableRows="true" [expandedRows]="tabelaaccoes">
 
                         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+
+                        <!--p-column [style]="{'width':'24px','padding-left':'2px'}" header="REF." expander="true"
+                          styleClass="col-icon">
+                        </p-column-->
+                        <ng-template let-car pTemplate="rowexpansion">
+                          <table style="border: none;">
+                            <th class="ui-state-default ui-unselectable-text"
+                              style="width: 100px; display: table-cell; padding-left: 7px;">
+                              <span class="ui-column-title">REFERÊNCIA</span>
+                            </th>
+                            <th style="border-top: none; border-right: none; border-left: none;">
+                              <p-autoComplete [(ngModel)]="car.referencia_campo" [disabled]="!modoedicao"
+                                [suggestions]="car.filteredreferencias" class="autocompleseguranca"
+                                [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                                emptyMessage="Sem Resultados..." (onUnselect)="filteronUnselectlinha($event,car)"
+                                (onSelect)="filterSelectlinha($event,car)" [ngModelOptions]="{standalone: true}"
+                                (completeMethod)="filterReflinha($event,car)" field="label"
+                                placeholder="Pesquisar Referência..." [minLength]="1">
+                              </p-autoComplete>
+                            </th>
+                          </table>
+                        </ng-template>
+
 
                         <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO"
                           [style]="{'width':'100px'}">
@@ -357,7 +380,7 @@
                           </ng-template>
                           <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">-->
                             <p-dropdown [filter]="true" [options]="drop_utilizadores"
-                              [style]="{'width':'100%','height':'25px','background':'white'}"
+                              [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                               [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
                               appendTo="body" [required]="true">
@@ -402,7 +425,7 @@
                           </ng-template>
                           <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">-->
                             <p-dropdown [filter]="true" [options]="tipos_acao"
-                              [style]="{'width':'100%','height':'25px','background':'white'}"
+                              [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                               [(ngModel)]="car['tipo_ACAO']" [ngModelOptions]="{standalone: true}"
                               [disabled]="!modoedicao" appendTo="body" [required]="true">
                             </p-dropdown>

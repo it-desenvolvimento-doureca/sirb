@@ -9,6 +9,8 @@ import { ATACCOESService } from 'app/servicos/at-accoes.service';
 import { ATENTREVISTASService } from 'app/servicos/at-entrevistas.service';
 import { ConfirmationService } from 'primeng/primeng';
 import { RHFUNCIONARIOSService } from 'app/servicos/rh-funcionarios.service';
+import { RHDICEPIService } from 'app/servicos/rh-dic-epi.service';
+import { ATDICCAUSASACIDENTEService } from 'app/servicos/at-dic-causas-acidente.service';
 
 @Component({
   selector: 'app-relatorios-ocorrencias',
@@ -87,6 +89,24 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
   descricao_CAUSAS: string;
   analise_EFICACIA: string;
   eficaz: boolean;
+  cl_CORTE;
+  cl_FERIDA;
+  cl_CONTUSAO;
+  cl_FRATURA;
+  cl_HEMATOMA;
+  cl_LESAO_MUSCULO_ESQUELETICA;
+  cl_INTOXICACAO_ENVENENAMENTO;
+  cl_ENTORSE_LUXACAO;
+  cl_LESAO_OCULAR;
+  cl_ESMAGAMENTO;
+  cl_PERFURACAO;
+  cl_ENTATALAMENTO;
+  cl_AMPUTACAO;
+  cl_QUEIMADURA;
+  cl_OUTRO;
+  cl_OUTRO_TEXTO;
+  vinculo;
+  dias_PERDIDOS;
 
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputapagar') inputapagar: ElementRef;
@@ -99,9 +119,12 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
   estado_texto: string;
   funcionarios: any[];
   filteredNomesSingle: any[];
+  epis: any[];
+  causas_acidente: any[];
 
   constructor(private RHFUNCIONARIOSService: RHFUNCIONARIOSService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService, private route: ActivatedRoute,
     private ATTESTEMUNHASService: ATTESTEMUNHASService, private ATACCOESService: ATACCOESService, private ATENTREVISTASService: ATENTREVISTASService,
+    private RHDICEPIService: RHDICEPIService, private ATDICCAUSASACIDENTEService: ATDICCAUSASACIDENTEService,
     private renderer: Renderer, private ATOCORRENCIASService: ATOCORRENCIASService, private globalVar: AppGlobals, private router: Router) { }
 
   ngOnInit() {
@@ -171,6 +194,8 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
     this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node23apagar"));
 
     this.carregaFuncionarios();
+    this.carrega_epis(id);
+    this.carrega_causas(id);
     if (!this.novo) {
       this.inicia(id);
     }
@@ -212,6 +237,30 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
       error => {
         console.log(error);
       });
+  }
+
+  carrega_epis(id) {
+    this.epis = [];
+    this.RHDICEPIService.getAT_OCORRENCIAS_EPI(id).subscribe(
+      response => {
+        for (var x in response) {
+          this.epis.push({ id: response[x][0], id_OCORRENCIA: response[x][1], descricao: response[x][2], selected: (response[x][1]) ? true : false });
+        }
+        this.epis = this.epis.slice();
+      },
+      error => console.log(error));
+  }
+
+  carrega_causas(id) {
+    this.causas_acidente = [];
+    this.ATDICCAUSASACIDENTEService.getAT_OCORRENCIAS_CAUSAS_ACIDENTE(id).subscribe(
+      response => {
+        for (var x in response) {
+          this.causas_acidente.push({ id: response[x][0], id_OCORRENCIA: response[x][1], descricao: response[x][2], selected: (response[x][1]) ? true : false });
+        }
+        this.causas_acidente = this.causas_acidente.slice();
+      },
+      error => console.log(error));
   }
 
   inicia(id) {
@@ -280,6 +329,26 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
           this.tipo_ACIDENTE = response[0].tipo_ACIDENTE;
           this.tipo_RELATORIO = response[0].tipo_RELATORIO;
           this.trabalhadores_SIMILARES = response[0].trabalhadores_SIMILARES;
+
+          this.cl_CORTE = response[0].cl_CORTE;
+          this.cl_FERIDA = response[0].cl_FERIDA;
+          this.cl_CONTUSAO = response[0].cl_CONTUSAO;
+          this.cl_FRATURA = response[0].cl_FRATURA;
+          this.cl_HEMATOMA = response[0].cl_HEMATOMA;
+          this.cl_LESAO_MUSCULO_ESQUELETICA = response[0].cl_LESAO_MUSCULO_ESQUELETICA;
+          this.cl_INTOXICACAO_ENVENENAMENTO = response[0].cl_INTOXICACAO_ENVENENAMENTO;
+          this.cl_ENTORSE_LUXACAO = response[0].cl_ENTORSE_LUXACAO;
+          this.cl_LESAO_OCULAR = response[0].cl_LESAO_OCULAR;
+          this.cl_ESMAGAMENTO = response[0].cl_ESMAGAMENTO;
+          this.cl_PERFURACAO = response[0].cl_PERFURACAO;
+          this.cl_ENTATALAMENTO = response[0].cl_ENTATALAMENTO;
+          this.cl_AMPUTACAO = response[0].cl_AMPUTACAO;
+          this.cl_QUEIMADURA = response[0].cl_QUEIMADURA;
+          this.cl_OUTRO = response[0].cl_OUTRO;
+          this.cl_OUTRO_TEXTO = response[0].cl_OUTRO_TEXTO;
+          this.vinculo = response[0].vinculo;
+          this.dias_PERDIDOS = response[0].dias_PERDIDOS;
+
           this.estado = response[0].estado;
           this.estado_texto = this.getestado(response[0].estado);
 
@@ -512,6 +581,26 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
     ocorrencia.pa_PE = this.pa_PE;
     ocorrencia.pa_PESCOCO = this.pa_PESCOCO;
     ocorrencia.pa_TORAX = this.pa_TORAX;
+
+    ocorrencia.cl_CORTE = this.cl_CORTE;
+    ocorrencia.cl_FERIDA = this.cl_FERIDA;
+    ocorrencia.cl_CONTUSAO = this.cl_CONTUSAO;
+    ocorrencia.cl_FRATURA = this.cl_FRATURA;
+    ocorrencia.cl_HEMATOMA = this.cl_HEMATOMA;
+    ocorrencia.cl_LESAO_MUSCULO_ESQUELETICA = this.cl_LESAO_MUSCULO_ESQUELETICA;
+    ocorrencia.cl_INTOXICACAO_ENVENENAMENTO = this.cl_INTOXICACAO_ENVENENAMENTO;
+    ocorrencia.cl_ENTORSE_LUXACAO = this.cl_ENTORSE_LUXACAO;
+    ocorrencia.cl_LESAO_OCULAR = this.cl_LESAO_OCULAR;
+    ocorrencia.cl_ESMAGAMENTO = this.cl_ESMAGAMENTO;
+    ocorrencia.cl_PERFURACAO = this.cl_PERFURACAO;
+    ocorrencia.cl_ENTATALAMENTO = this.cl_ENTATALAMENTO;
+    ocorrencia.cl_AMPUTACAO = this.cl_AMPUTACAO;
+    ocorrencia.cl_QUEIMADURA = this.cl_QUEIMADURA;
+    ocorrencia.cl_OUTRO = this.cl_OUTRO;
+    ocorrencia.cl_OUTRO_TEXTO = this.cl_OUTRO_TEXTO;
+    ocorrencia.vinculo = this.vinculo;
+    ocorrencia.dias_PERDIDOS = this.dias_PERDIDOS;
+
     ocorrencia.recolha_EVIDENCIAS = (this.recolha_EVIDENCIAS != null) ? this.recolha_EVIDENCIAS.toString() : null;
     ocorrencia.testemunhas = this.gettruefalse(this.testemunhas);
     ocorrencia.tipo_ACIDENTE = this.tipo_ACIDENTE;
@@ -599,9 +688,9 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
         if (entrevista.nome != "") this.gravarENTREVISTAS_save(entrevista, 0, 0);
       }
 
-      this.gravarACCOES(id);
+      this.gravarEPIS(id);
     } else {
-      this.gravarACCOES(id);
+      this.gravarEPIS(id);
     }
 
   }
@@ -613,6 +702,46 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
 
       },
       error => { console.log(error); });
+  }
+
+  gravarEPIS(id) {
+    if (!this.novo) {
+      this.RHDICEPIService.deleteAT_OCORRENCIAS_EPI(id).then(
+        res => {
+        },
+        error => { console.log(error); });
+    }
+
+    for (var x in this.epis) {
+      if (this.epis[x].selected) this.gravarEPIS_save(this.epis[x].id, id);
+    }
+    this.gravarCAUSAS(id);
+  }
+
+  gravarEPIS_save(id_epi, id_OCORRENCIA) {
+    this.RHDICEPIService.insertAT_OCORRENCIAS_EPI(id_OCORRENCIA, id_epi).subscribe(
+      response => {
+      }, error => { console.log(error); });
+  }
+
+  gravarCAUSAS(id) {
+    if (!this.novo) {
+      this.ATDICCAUSASACIDENTEService.deleteAT_OCORRENCIAS_CAUSAS_ACIDENTE(id).then(
+        res => {
+        },
+        error => { console.log(error); });
+    }
+
+    for (var x in this.causas_acidente) {
+      if (this.causas_acidente[x].selected) this.gravarCAUSAS_save(this.causas_acidente[x].id, id);
+    }
+    this.gravarACCOES(id);
+  }
+
+  gravarCAUSAS_save(id_causa, id_OCORRENCIA) {
+    this.ATDICCAUSASACIDENTEService.insertAT_OCORRENCIAS_CAUSAS_ACIDENTE(id_OCORRENCIA, id_causa).subscribe(
+      response => {
+      }, error => { console.log(error); });
   }
 
   gravarACCOES(id) {

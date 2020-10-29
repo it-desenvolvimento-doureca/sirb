@@ -17,6 +17,7 @@ import { RCDICCLASSIFICACAOService } from 'app/servicos/rc-dic-classificacao.ser
 import { webUrl } from 'assets/config/webUrl';
 import * as FileSaver from 'file-saver';
 import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
 
 @Component({
   selector: 'app-reclamacao-fornecedor',
@@ -115,6 +116,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   referencia_campo: any = null;
   disEditar: boolean;
   disApagar: boolean;
+  disExportar: boolean;
   disCriar: boolean;
   btanterior: boolean;
   btseguinte: boolean;
@@ -124,6 +126,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   btfechar: boolean;
   bteditar: boolean;
   disFechar: boolean;
+  btexportar: boolean;
 
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
@@ -132,7 +135,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService, private renderer: Renderer, private RCDICTIPOLOGIAService: RCDICTIPOLOGIAService,
     private RCDICCLASSIFICACAOService: RCDICCLASSIFICACAOService, private GERFORNECEDORService: GERFORNECEDORService,
     private RCMOVRECLAMACAOFORNECEDORService: RCMOVRECLAMACAOFORNECEDORService, private location: Location, private sanitizer: DomSanitizer,
-    private UploadService: UploadService) { }
+    private UploadService: UploadService, private RelatoriosService: RelatoriosService) { }
 
   ngOnInit() {
     this.types = [
@@ -152,6 +155,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     this.btseguinte = true;
     this.btcriar = true;
     this.btapagar = true;
+    this.btexportar = true;
     this.btvoltar = true;
     this.btfechar = true;
     this.bteditar = true;
@@ -228,6 +232,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501editar");
       this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501criar");
       this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501apagar");
+      this.disExportar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501exportar");
       this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501apagarficheiros");
       this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501fechar");
 
@@ -239,6 +244,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         this.btseguinte = false;
         this.btanterior = false;
         this.btapagar = true;
+        this.btexportar = true;
         this.btcriar = true;
         this.modoedicao = true;
 
@@ -246,6 +252,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         this.btseguinte = false;
         this.btanterior = false;
         this.btapagar = false;
+        this.btexportar = false;
         this.btcriar = true;
         this.btfechar = false;
         this.globalVar.setduplicar(false);
@@ -1209,5 +1216,19 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
   novarecla() {
     this.router.navigate(['reclamacoesfornecedores/novo']);
+  }
+
+  exportar() {
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+
+    var filenametransfer = "Relatório de Incidência Fornecedor";
+
+    this.RelatoriosService.downloadPDF("pdf", filename, this.numero_RECLAMACAO, 'reclamacao_fornecedor').subscribe(
+      (res) => {
+
+        FileSaver.saveAs(res, filenametransfer);
+      }
+    );
+
   }
 }

@@ -300,6 +300,11 @@ import { SeguimentoFaturacaoAnualComponent } from './paginas/modulo-financeira/s
 import { FINSEGUIMENTOFATURACAOANUALService } from './servicos/fin-seguimento-faturacao-anual.service';
 import { ParametrosSeguimentoComponent } from './paginas/modulo-financeira/parametros-seguimento/parametros-seguimento.component';
 import { FINDICPARAMETROSSEGUIMENTOService } from './servicos/fin-dic-parametros-seguimento.service';
+import { ATDICCAUSASACIDENTEService } from './servicos/at-dic-causas-acidente.service';
+import { RHDICEPIService } from './servicos/rh-dic-epi.service';
+import { CausasAcidenteComponent } from './paginas/modulo-seguranca-trabalho/parametros/causas-acidente/causas-acidente.component';
+import { EpisComponent } from './paginas/modulo-recursos-humanos/parametros/epis/epis.component';
+import { RCMOVRECLAMACAOCLIENTESService } from './servicos/rc-mov-reclamacao-clientes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -437,6 +442,8 @@ const routes: Routes = [
   { path: 'seguimento_faturacao', component: SeguimentoFaturacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Mensal" } },
   { path: 'seguimento_faturacao_anual', component: SeguimentoFaturacaoAnualComponent, canActivate: [LoginService], data: { breadcrumb: "Seguimento Faturação Anual" } },
   { path: 'tipologia_ensaio', component: TipologiaEnsaioComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologias de Ensaio" } },
+  { path: 'causas_acidente', component: CausasAcidenteComponent, canActivate: [LoginService], data: { breadcrumb: "Causas do Acid./Emerg" } },
+  { path: 'epis', component: EpisComponent, canActivate: [LoginService], data: { breadcrumb: "EPI's" } },
   { path: 'producao_fabricas', component: ProducaoFabricasComponent, canActivate: [LoginService], data: { breadcrumb: "Fábricas" } },
   { path: 'producao_programas', component: ProducaoProgramaComponent, canActivate: [LoginService], data: { breadcrumb: "Programas" } },
   { path: 'limites_encomendas', component: ProducaoLimitesEncomendaComponent, canActivate: [LoginService], data: { breadcrumb: "Limites Encomendas" } },
@@ -914,7 +921,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     SectoresAgregadoresComponent,
     GestaoBarrasComponent,
     ValidacoesBastidoresComponent,
-    ParametrosSeguimentoComponent
+    ParametrosSeguimentoComponent,
+    CausasAcidenteComponent,
+    EpisComponent
   ],
   imports: [
     BrowserModule,
@@ -1100,6 +1109,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     GERFAVORITOSService,
     FINSEGUIMENTOFATURACAOANUALService,
     FINDICPARAMETROSSEGUIMENTOService,
+    ATDICCAUSASACIDENTEService,
+    RHDICEPIService,
+    RCMOVRECLAMACAOCLIENTESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

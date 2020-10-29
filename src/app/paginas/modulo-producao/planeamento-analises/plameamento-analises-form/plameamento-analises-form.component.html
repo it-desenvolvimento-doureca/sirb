@@ -166,7 +166,13 @@
                   <div class="btn-group" role="group">
                     <button (click)="ativobt='4';" [class.ativobt]="ativobt == '4'" type="button" id="stars"
                       class="btn " style="border-right: 2px solid white;" href="#tab4" data-toggle="tab">
-                      <div class="hidden-xs texto">Racks</div>
+                      <div class="hidden-xs texto">Racks - Parque</div>
+                    </button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button (click)="ativobt='5';" [class.ativobt]="ativobt == '5'" type="button" id="stars"
+                      class="btn " style="border-right: 2px solid white;" href="#tab5" data-toggle="tab">
+                      <div class="hidden-xs texto">Racks - Montados</div>
                     </button>
                   </div>
                 </div>
@@ -794,6 +800,219 @@
 
                                 <div class="table-row-column collapse in col-md-12"
                                   id="collapseref{{rack.rack}}{{linha.id}}" style="padding: 0;">
+
+                                  <div class="table-row col-md-12" *ngFor="let ref of linha.child"
+                                    style="border-bottom:none;">
+                                    <!-- REFERENCIA -->
+                                    <div class="table-row-column col-md-12 pointer " style="display: flex;">
+                                      <div class=" col-md-4" style="width: 295px;     background: white;"></div>
+
+                                      <div class="col-md-2" style="background: white; text-align: left; width: 230px">
+                                        {{ref.referencia}}
+                                      </div>
+                                      <div class="col-md-6" style="padding: 0; display: contents;">
+                                        <div class="table-row-column col-md-4 tab_cell_p"
+                                          *ngFor="let tttr of ref.valores;"
+                                          style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                          <div class="col-md-12 tab_cell"
+                                            style="text-align: center; padding: 0; height: 100%; background: white;">
+                                            <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;">
+                                              {{tttr.barras_necessarias  | number: '1.0-0'}}
+                                            </div>
+                                            <div class="col-md-6 tab_cell"
+                                              style="padding: 0; text-align: right; background: white;">
+                                              {{tttr.barras_media  | number: '1.2-2'}}
+                                            </div>
+                                          </div>
+
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="tab-pane fade in dashboard" id="tab5">
+
+
+                      <div style="padding: 0; height: 26px;" class="form-group col-md-12 col-lg-12">
+
+                        <form #form id="formReclama_1" (ngSubmit)="carrega_racks_montados_lista()" ngNativeValidate>
+
+                          <div class=" col-md-2" style="padding: 0;">
+                            <p-checkbox [(ngModel)]="filtro_RACK_MONTADOS" [ngModelOptions]="{standalone: true}"
+                              label="Racks a Vermelho" binary="true">
+                            </p-checkbox>
+                          </div>
+
+                          <div class=" col-md-2" style="padding: 0; top: -15px;">
+                            <button type="submit" class="btn btn-success " [disabled]="false"
+                              style="height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class=" col-md-3" style="padding: 0; top: -6px; float:right;">
+
+                            <button *ngIf="!loading4" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                              (click)="download('exportpdf4','racks','loading4')" style="float:right;"></button>
+                            <button *ngIf="loading4" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw"
+                              iconPos="left" label="Export" [disabled]="true" style="float:right;"></button>
+                          </div>
+                        </form>
+                      </div>
+                      <div id="analises_prev_scroll4"
+                        style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; overflow-y: hidden;">
+                        <div id="exportpdf4" style="display: block; min-width: 100px; display: table;">
+                          <div class="table-row table-header"
+                            style="background: #757676; color: white; font-weight: 500; ">
+                            <div class="table-row-column col-md-2"
+                              style="width: 130px; padding-left: 0; padding-right: 0; display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Lista de Racks
+                              <!--input style="font-weight: 100; height: 19px; color: black;" #myInput type="text"
+                            class="form-control2" (input)="filterItem(myInput.value)" /-->
+                            </div>
+                            <div class=" table-row-column col-md-1"
+                              style="width: 70px; padding-left: 0; padding-right: 0; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Nº de Barras</div>
+                            <div class="table-row-column col-md-1"
+                              style="width: 95px; padding-left: 0; padding-right: 0; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Linha</div>
+                            <!--<div class="table-row-column col-md-1">Nº Barras Produzidas</div>-->
+                            <div class="table-row-column col-md-2"
+                              style="width: 230px; padding-left: 0; padding-right: 0;border-right: 1px solid white; border-left: 1px solid white;display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                              Referência</div>
+                            <div class="table-row-column col-md-6"
+                              style="padding: 0; /*width: 40%;*/ width: auto; display: contents;">
+                              <!--[style.width]="((100 / cabecalho.length))+'%'"-->
+                              <div style="min-width: 177px; max-width: 177px; padding: 0;" *ngFor="let cab of cabecalho"
+                                class="table-row-column col-md-12" s>
+                                <div class="table-row-column col-md-12 cell_div"
+                                  style="height: 27px; border-right: 1px solid white; border-bottom: 1px solid white;">
+                                  Week
+                                  {{cab.semana}}</div>
+                                <div class="table-row-column col-md-12"
+                                  style="text-align: right; padding: 0; display: flex;">
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; padding-left: 0; padding-right: 0; display: flex;
+                                    justify-content: center; flex-direction: column;border-right: 1px solid white; border-bottom: 1px solid white; ">
+                                    Barras Necessárias</div>
+                                  <div class="table-row-column col-md-6 cell_div"
+                                    style="text-align: center; display: flex;
+                                    justify-content: center; flex-direction: column;border-right: 1px solid white; border-bottom: 1px solid white;">
+                                    Média / Dia</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!--div id="chartcurtain" [class.classloading]="loading" style="display: none;">
+                        Carregar...
+                      </div>
+                      <div id="chartcurtain" class="classloading" *ngIf="!loading && dados.length == 0">
+                        Sem dados...
+                      </div-->
+                          <div class="table-row col-md-12" *ngFor="let rack_montado of lista_racks_montados"
+                            style="border-bottom: none;">
+
+
+                            <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover2 collapsed"
+                              data-toggle="collapse" id="rack_montado{{rack_montado.rack}}"
+                              [attr.data-target]="'#collapserack_montado'+rack_montado.rack"
+                              (click)="carrega_racks_montados_linhas(rack_montado.rack); " #divrack_montado
+                              style=" display: flex; border-bottom: 1px solid black;"
+                              [class.disabled]="rack_montado.atualiza" [style.background]="rack_montado.cor_rack">
+                              <div class="col-md-2" style="text-align: left; width: 130px;">
+                                <span style="pointer-events: none;"
+                                  *ngIf="!divrack_montado.classList.contains('collapsed')" class="fa fa-minus"
+                                  aria-hidden="true"></span>
+                                <span style="pointer-events: none;"
+                                  *ngIf="divrack_montado.classList.contains('collapsed')" class="fa fa-plus"
+                                  aria-hidden="true"></span> {{rack_montado.rack}}
+                                <div *ngIf="rack_montado.atualiza" class="fa fa-spinner fa-spin"></div>
+                              </div>
+                              <div class="col-md-1" style="width: 70px;">
+                                {{rack_montado.n_barras}}&nbsp;
+                              </div>
+                              <div class="col-md-1" style="width: 95px;">&nbsp;
+                                <!--Linha-->
+                              </div>
+                              <div class="col-md-2" style="width: 230px;">&nbsp;
+                                <!--Referencia-->
+                              </div>
+                              <div class="col-md-6" style="padding: 0; display: contents;">
+                                <div class="table-row-column col-md-4 tab_cell_p"
+                                  *ngFor="let tttx of rack_montado.total_racks;"
+                                  style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                  <div class="col-md-12 tab_cell" style="text-align: center; padding: 0; height: 100%;">
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;"
+                                      [style.background]="tttx.cor_fundo" [style.color]="tttx.color">
+                                      {{tttx.barras_necessarias  | number: '1.0-0'}}
+                                    </div>
+                                    <div class="col-md-6 tab_cell" style="padding: 0; text-align: right;"
+                                      [style.background]="tttx.cor_fundo" [style.color]="tttx.color">
+                                      {{tttx.barras_media  | number: '1.2-2'}}
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+
+                            </div>
+
+                            <div class="table-row collapse col-md-12" id="collapserack_montado{{rack_montado.rack}}"
+                              style=" border-bottom: none;">
+                              <div class="table-row col-md-12" *ngFor="let linha of rack_montado.child"
+                                style="border-bottom: none;">
+                                <!-- LINHA -->
+                                <div class="table-row-column col-md-12 pointer collapse" data-toggle="collapse"
+                                  id="collapselinharack_montado{{rack_montado.rack}}{{linha.id}}" style="display: flex;"
+                                  [attr.data-target]="'#collapserefrack_montado'+rack_montado.rack+linha.id" #divref>
+                                  <div class="col-md-3" style="width: 200px; background: white;"></div>
+
+                                  <div class="col-md-2" [style.background]="rack_montado.cor_linha"
+                                    style=" text-align: left; padding: 0;  width: 95px;">
+                                    <span style="pointer-events: none;" *ngIf="!divref.classList.contains('collapsed')"
+                                      class="fa fa-minus" aria-hidden="true"></span>
+                                    <span style="pointer-events: none;" *ngIf="divref.classList.contains('collapsed')"
+                                      class="fa fa-plus" aria-hidden="true"></span>
+                                    {{linha.linha}}
+                                    <div *ngIf="linha.atualiza" class="fa fa-spinner fa-spin"></div>
+                                  </div>
+                                  <div class="col-md-2" [style.background]="rack_montado.cor_linha"
+                                    style="width: 230px;">
+                                    <!--Ref-->&nbsp;
+                                  </div>
+                                  <div class="col-md-6" style="padding: 0; display: contents;">
+                                    <div class="table-row-column col-md-4 tab_cell_p"
+                                      *ngFor="let tttl of linha.total_racks;"
+                                      style="text-align: right; min-width: 177px; max-width: 177px; padding: 0;">
+                                      <div class="col-md-12 tab_cell"
+                                        style="text-align: center; padding: 0; height: 100%;">
+                                        <div class="col-md-6 tab_cell" [style.background]="rack_montado.cor_linha"
+                                          style="padding: 0; text-align: right;">
+                                          {{tttl.barras_necessarias  | number: '1.0-0'}}
+                                        </div>
+                                        <div class="col-md-6 tab_cell" [style.background]="rack_montado.cor_linha"
+                                          style="padding: 0; text-align: right;">
+                                          {{tttl.barras_media  | number: '1.2-2'}}
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="table-row-column collapse in col-md-12"
+                                  id="collapserefrack_montado{{rack_montado.rack}}{{linha.id}}" style="padding: 0;">
 
                                   <div class="table-row col-md-12" *ngFor="let ref of linha.child"
                                     style="border-bottom:none;">

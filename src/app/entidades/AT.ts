@@ -87,4 +87,22 @@ export class AT_OCORRENCIAS {
     data_ANULACAO: Date;
     estado: string;
     inativo: boolean;
+    vinculo: boolean;
+    dias_PERDIDOS: number;
+    cl_CORTE: boolean;
+    cl_FERIDA: boolean;
+    cl_CONTUSAO: boolean;
+    cl_FRATURA: boolean;
+    cl_HEMATOMA: boolean;
+    cl_LESAO_MUSCULO_ESQUELETICA: boolean;
+    cl_INTOXICACAO_ENVENENAMENTO: boolean;
+    cl_ENTORSE_LUXACAO: boolean;
+    cl_LESAO_OCULAR: boolean;
+    cl_ESMAGAMENTO: boolean;
+    cl_PERFURACAO: boolean;
+    cl_ENTATALAMENTO: boolean;
+    cl_AMPUTACAO: boolean;
+    cl_QUEIMADURA: boolean;
+    cl_OUTRO: boolean;
+    cl_OUTRO_TEXTO: string;
 }

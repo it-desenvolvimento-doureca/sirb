@@ -462,8 +462,10 @@
                                     title="{{v.n_barras_mrp  | number: '1.0-0'}}">
                                     {{v.n_barras_mrp}}</div-->
                                   <div class="col-md-12 tab_cell"
-                                    style="padding: 0 !important; border-left: 1px solid black; text-align: right; background: #C6E0B4; height: 100%;">
+                                    [style.background]="(v.n_barras_plano  != 0)? '#C6E0B4' : 'white'"
+                                    style="padding: 0 !important; border-left: 1px solid black; text-align: right; ; height: 100%; font-weight: bold;">
                                     <input [disabled]="!modoedicao"
+                                      [style.background]="(v.n_barras_plano  != 0)? '#C6E0B4' : 'white'"
                                       (input)="atualizarcampo(v.id,v.n_barras_plano,index_linha,index_mrp_plano)"
                                       style=" height: 100%; width: 100%; text-align: center; padding: 0; border:none; padding-right: 2px;"
                                       [(ngModel)]="v.n_barras_plano" [ngModelOptions]="{standalone: true}"

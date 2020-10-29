@@ -3409,7 +3409,7 @@ textarea:not(.form-control2) {
     padding: 10px ! important;
 }
 
-#tabelaplanos .ui-widget-content {
+#tabelaplanos .ui-widget-content:not(.ui-autocomplete-panel) {
     background: none;
 }
 

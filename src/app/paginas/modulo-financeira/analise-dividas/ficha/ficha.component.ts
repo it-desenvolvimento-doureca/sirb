@@ -303,7 +303,7 @@ export class FichaComponent implements OnInit {
             data_acao: this.formatDate(response[x][0].data_CRIA),
             utilizador: response[x][1],
             descricao: response[x][0].descricao,
-            descricao_pequena: response[x][0].descricao.substring(0, 25),
+            descricao_pequena: (response[x][0].descricao == null) ? '' : response[x][0].descricao.substring(0, 25),
             contacto: response[x][0].contacto,
             origem: response[x][0].origem,
             alerta_data_hora: (response[x][0].gerar_ALERTA == null) ? null : this.formatDate(response[x][0].gerar_ALERTA) + ' ' + new Date(response[x][0].gerar_ALERTA).toLocaleTimeString().slice(0, 5),

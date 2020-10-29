@@ -52,6 +52,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
   total_recursos: any[];
   tipos_acabamento: any[];
   lista_racks: any[];
+  lista_racks_montados = []
   ano: any;
   id_PLANO_LINHA_1;
   id_PLANO_LINHA_2;
@@ -65,12 +66,14 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
   ativobt = '1';
   btatualizardados = true;
   filtro_RACK = true;
+  filtro_RACK_MONTADOS = true;
   doc_blob: any;
   srcelement: any;
   loading: boolean;
   loading1: boolean;
   loading2: boolean;
   loading3: boolean;
+  loading4: boolean;
 
   constructor(private renderer: Renderer, private sanitizer: DomSanitizer, private elementRef: ElementRef, private PRPLANEAMENTOPRODUCAOLINHASService: PRPLANEAMENTOPRODUCAOLINHASService,
     private location: Location, private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService,
@@ -216,6 +219,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
               this.carrega_recursos_humanos();
               this.carrega_tipo_acabamento();
               this.carrega_racks_lista();
+              this.carrega_racks_montados_lista();
             } else {
               //this.loading = false;
             }
@@ -722,6 +726,66 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
   }
 
+  carrega_racks_montados_lista() {
+    this.lista_racks_montados = [];
+
+    var dados = [{ IDS: this.id_PLANO_LINHA_1 + ',' + this.id_PLANO_LINHA_2, FILTRO: this.filtro_RACK_MONTADOS }]
+    this.PRPLANEAMENTOPRODUCAOANALISESService.GET_RACKS_MONTADOS_ANALISES(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          var xcount = 0;
+          for (var x in response) {
+
+
+
+            if (!this.lista_racks_montados.find(item => item.rack == response[x][2])) {
+
+              const valores = this.calcular_semanas_barras();
+              var d_valores = valores.find(item => item.semana == response[x][1] /*&& item.ano == 2020*/);
+
+              if (d_valores) {
+                d_valores.barras_necessarias = response[x][4];
+                d_valores.barras_media = response[x][5];
+                d_valores.cor_fundo = response[x][6];
+                d_valores.color = (response[x][6] == 'red') ? 'white' : '';
+              }
+
+              this.lista_racks_montados.push({
+                rack: response[x][2],
+                n_barras: response[x][3],
+                total_racks: valores,
+                atualiza: false, iconplus: true, child: [],
+                cor_rack: (this.isOdd(xcount)) ? '#FFE699' : '#BDD7EE',
+                cor_linha: (this.isOdd(xcount)) ? '#FFF2CC' : '#DDEBF7'
+              });
+
+              xcount++;
+
+            } else {
+              var linha = this.lista_racks_montados.find(item => item.rack == response[x][2]);
+              var d_valores_2 = linha.total_racks.find(item => item.semana == response[x][1]);
+              if (d_valores_2) {
+                d_valores_2.barras_necessarias = response[x][4];
+                d_valores_2.barras_media = response[x][5];
+                d_valores_2.cor_fundo = response[x][6];
+                d_valores_2.color = (response[x][6] == 'red') ? 'white' : '';
+              }
+            }
+          }
+        } else {
+          //this.loading = false;
+        }
+
+      },
+      error => {
+        //this.loading = false;
+        console.log(error);
+      });
+
+
+  }
+
 
   isOdd(num) { return num % 2; }
 
@@ -823,6 +887,108 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
 
       //this.lista_racks.find(item => item.rack == rack).iconplus = true;
+    }
+
+
+  }
+
+  carrega_racks_montados_linhas(rack) {
+    // this.cars1.find(item => item.id == id).iconplus = !this.cars1.find(item => item.id == id).iconplus;
+    /*this.cars1.find(item => item.id == id).iconplus = true;*/
+
+    if (this.lista_racks_montados.find(item => item.rack == rack).child.length == 0 && !this.lista_racks_montados.find(item => item.rack == rack).atualiza) {
+      this.lista_racks_montados.find(item => item.rack == rack).iconplus = true;
+      this.lista_racks_montados.find(item => item.rack == rack).atualiza = true;
+
+      var dados = [{ IDS: this.id_PLANO_LINHA_1 + ',' + this.id_PLANO_LINHA_2, RACK: rack }]
+      this.PRPLANEAMENTOPRODUCAOANALISESService.GET_RACKS_MONTADOS_REFERENCIAS_ANALISES(dados).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          if (count > 0) {
+
+            for (var x in response) {
+
+              var racklist = this.lista_racks_montados.find(item => item.rack == rack);
+
+              if (!racklist.child.find(item => item.id == response[x][3])) {
+
+                const valores = this.calcular_semanas_barras();
+                var d_valores = valores.find(item => item.semana == response[x][1] /*&& item.ano == 2020*/);
+
+                if (d_valores) {
+                  d_valores.barras_necessarias = response[x][7];
+                  d_valores.barras_media = response[x][8];
+                }
+
+                this.lista_racks_montados.find(item => item.rack == rack).child.push({
+                  id: response[x][3],
+                  linha: response[x][4],
+                  total_racks: valores,
+                  atualiza: false, iconplus: true,
+                  child: []
+                });
+
+
+
+              } else {
+                var linha = racklist.child.find(item => item.id == response[x][3]);
+                var d_valores_2 = linha.total_racks.find(item => item.semana == response[x][1]);
+                if (d_valores_2) {
+                  d_valores_2.barras_necessarias = response[x][7];
+                  d_valores_2.barras_media = response[x][8];
+                }
+              }
+
+              var rack_linha = racklist.child.find(item => item.id == response[x][3]);
+
+              if (rack_linha) {
+                if (!rack_linha.child.find(item => item.referencia == response[x][2])) {
+
+                  const valores2 = this.calcular_semanas_barras();
+                  var d_valores3 = valores2.find(item => item.semana == response[x][1] /*&& item.ano == 2020*/);
+
+                  if (d_valores3) {
+                    d_valores3.barras_necessarias = response[x][5];
+                    d_valores3.barras_media = response[x][6];
+                  }
+
+
+                  rack_linha.child.push({
+                    //id: 1,
+                    referencia: response[x][2],
+                    valores: valores2,
+                  });
+                } else {
+                  var linha2 = rack_linha.child.find(item => item.referencia == response[x][2]);
+                  var d_valores_3 = linha2.valores.find(item => item.semana == response[x][1]);
+                  if (d_valores_3) {
+                    d_valores_3.barras_necessarias = response[x][5];
+                    d_valores_3.barras_media = response[x][6];
+                  }
+                }
+              }
+
+            }
+          } else {
+            //this.loading = false;
+          }
+
+
+          this.lista_racks_montados.find(item => item.rack == rack).atualiza = false;
+          setTimeout(() => {
+            document.getElementById("rack_montado" + rack).classList.remove("collapsed");
+            document.getElementById("collapserack_montado" + rack).classList.remove("collapse");
+            document.getElementById("collapserack_montado" + rack).style.height = "auto";
+            this.lista_racks_montados.find(item => item.rack == rack).iconplus = false;
+          }, 50);
+        },
+        error => {
+          this.lista_racks_montados.find(item => item.rack == rack).atualiza = false;
+          console.log(error);
+        });
+
+
+
     }
 
 

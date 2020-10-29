@@ -156,5 +156,11 @@ export class RC_MOV_RECLAMACAO {
 	step7_DATA: Date;
 	step8_DATA: Date;
 
+	check_SR: boolean;
+	revista_MURO: boolean;
+	impacto_SR: boolean;
+	analise_CAUSAS_PROBLEMA: string;
+	analise_CAUSAS_PROBLEMA_IDIOMA_CLIENTE: string;
+	existem_OUTROS_CLIENTES: boolean;
 
 }

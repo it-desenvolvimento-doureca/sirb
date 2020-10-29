@@ -3977,10 +3977,15 @@
                         <!-- creditos_clientes-->
 
                         <!-- devolucoes -->
-                        <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover2 "
-                          id="devolucoes" #divdevolucoes style=" display: table; /*border-bottom: 1px solid black;*/">
+                        <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover2 collapsed"
+                          id="devolucoes" #divdevolucoes style=" display: table; /*border-bottom: 1px solid black;*/"
+                          data-toggle="collapse" [attr.data-target]="'#collapsedevolucoes'">
                           <div class="tab_head_row"
                             style="text-align: left;  padding-left: 5px;width: 220px;  max-width: 220px; white-space: nowrap; overflow: hidden;">
+                            <span style="pointer-events: none;" *ngIf="!divdevolucoes.classList.contains('collapsed')"
+                              class="fa fa-minus" aria-hidden="true"></span>
+                            <span style="pointer-events: none;" *ngIf="divdevolucoes.classList.contains('collapsed')"
+                              class="fa fa-plus" aria-hidden="true"></span>
                             Devoluções
                             <div *ngIf="atualiza_devolucoes" class="fa fa-spinner fa-spin"></div>
                           </div>
@@ -4025,7 +4030,214 @@
                             {{devolucoes['12'] | number: '1.2-2'}} €
                           </div>
                         </div>
+                        <div class="table-row collapse col-md-12" id="collapsedevolucoes" style=" border-bottom: none;">
 
+                          <!-- Referências -->
+                          <div class="table-row-column col-md-12 pointer collapse collapsed" data-toggle="collapse"
+                            id="referenciadevolucoes" style="display: table;" (click)="carrega_referenciadevolucoes()"
+                            [attr.data-target]="'#collapsereferenciadevolucoes'" #divreferenciadevolucoes>
+
+                            <div class="tab_row"
+                              style="text-align: left;  padding-left: 5px;  width: 220px;  max-width: 220px; white-space: nowrap; overflow: hidden;">
+                              <span style="pointer-events: none;"
+                                *ngIf="!divreferenciadevolucoes.classList.contains('collapsed')" class="fa fa-minus"
+                                aria-hidden="true"></span>
+                              <span style="pointer-events: none;"
+                                *ngIf="divreferenciadevolucoes.classList.contains('collapsed')" class="fa fa-plus"
+                                aria-hidden="true"></span>
+                              Referência
+                              <div *ngIf="atualizareferenciadevolucoes" class="fa fa-spinner fa-spin">
+                              </div>
+                            </div>
+                            <div class="tab_row"
+                              style="width: 81px; max-width: 81px; border-left: 2px solid #000000; border-right: 2px solid #000000;">
+                              &nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+
+                          </div>
+
+                          <div class="table-row-column collapse col-md-12" id="collapsereferenciadevolucoes"
+                            style="padding: 0;">
+
+                            <div class="table-row col-md-12" *ngFor="let referencia1 of referenciasdevolucoes"
+                              style="border-bottom:none;">
+                              <div class="table-row-column col-md-12 pointer " style="display: table;">
+
+                                <div class="tab_row_child" title="{{referencia1.descricao}}"
+                                  style="text-align: left;  padding-left: 5px; width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden;">
+                                  {{referencia1.descricao}}
+                                </div>
+                                <div class="tab_row_child"
+                                  style="width: 81px; max-width: 81px; border-left: 2px solid #000000; border-right: 2px solid #000000;">
+                                  {{referencia1['acumulado'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['1'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['2'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['3'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['4'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['5'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['6'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style="width: 74px; max-width: 74px;">&nbsp;
+                                  {{referencia1['7'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['8'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['9'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['10'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{referencia1['11'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style="width: 74px; max-width: 74px;">&nbsp;
+                                  {{referencia1['12'] | number: '1.2-2'}} €
+                                </div>
+                              </div>
+
+
+                            </div>
+                          </div>
+
+                          <!-- Veículo | Projetorojeto -->
+                          <div class="table-row-column col-md-12 pointer collapse collapsed" data-toggle="collapse"
+                            id="veiculo_projetodevolucoes" style="display: table;"
+                            (click)="carrega_veiculo_projetodevolucoes()"
+                            [attr.data-target]="'#collapseveiculo_projetodevolucoes'" #divveiculo_projetodevolucoes>
+
+                            <div class="tab_row"
+                              style="text-align: left;  padding-left: 5px;  width: 220px;  max-width: 220px; white-space: nowrap; overflow: hidden;">
+                              <span style="pointer-events: none;"
+                                *ngIf="!divveiculo_projetodevolucoes.classList.contains('collapsed')"
+                                class="fa fa-minus" aria-hidden="true"></span>
+                              <span style="pointer-events: none;"
+                                *ngIf="divveiculo_projetodevolucoes.classList.contains('collapsed')" class="fa fa-plus"
+                                aria-hidden="true"></span>
+                              OEM - Veículo - Projeto
+                              <div *ngIf="atualizaveiculo_projetodevolucoes" class="fa fa-spinner fa-spin">
+                              </div>
+                            </div>
+                            <div class="tab_row"
+                              style="width: 81px; max-width: 81px; border-left: 2px solid #000000; border-right: 2px solid #000000;">
+                              &nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+                            <div class="tab_row" style="width: 74px; max-width: 74px;">&nbsp; </div>
+
+                          </div>
+
+                          <div class="table-row-column collapse col-md-12" id="collapseveiculo_projetodevolucoes"
+                            style="padding: 0;">
+
+                            <div class="table-row col-md-12" *ngFor="let veiculo_projeto1 of veiculo_projetosdevolucoes"
+                              style="border-bottom:none;">
+                              <div class="table-row-column col-md-12 pointer " style="display: table;">
+
+                                <div class="tab_row_child" title="{{veiculo_projeto1.descricao}}"
+                                  style="text-align: left;  padding-left: 5px; width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden;">
+                                  {{veiculo_projeto1.descricao}}
+                                </div>
+                                <div class="tab_row_child"
+                                  style="width: 81px; max-width: 81px; border-left: 2px solid #000000; border-right: 2px solid #000000;">
+                                  {{veiculo_projeto1['acumulado'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['1'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['2'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['3'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['4'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['5'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['6'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style="width: 74px; max-width: 74px;">&nbsp;
+                                  {{veiculo_projeto1['7'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['8'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['9'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['10'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style=" width: 74px; max-width: 74px;">
+                                  &nbsp;
+                                  {{veiculo_projeto1['11'] | number: '1.2-2'}} €
+                                </div>
+                                <div class="tab_row_child" style="width: 74px; max-width: 74px;">&nbsp;
+                                  {{veiculo_projeto1['12'] | number: '1.2-2'}} €
+                                </div>
+                              </div>
+
+
+                            </div>
+                          </div>
+
+                        </div>
 
                         <!-- devolucoes-->
 

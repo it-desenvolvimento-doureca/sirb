@@ -281,11 +281,11 @@ export class FormplanosComponent implements OnInit {
     this.carrega_PRIORIDADE();
     this.listar_ambitos();
     this.listar_tipos_accao();
+    if (this.modoedicao) this.artigos();
     if (!this.novo) {
       this.preenchelinhas(true, id);
     } else {
       this.getdadosutlizador();
-      this.artigos();
       this.preenchelinhas(false, id);
     }
 
@@ -517,6 +517,8 @@ export class FormplanosComponent implements OnInit {
               departamento = this.drop_departamentos.find(item => item.value == response[x][0].departamento).label
             }
 
+            var referencia_campo = (response[x][0].referencia == null) ? null : { value: response[x][0].referencia, label: response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA, descricao: response[x][0].design_REFERENCIA }
+
             this.tabelaaccoes.push({
               dados: response[x][0],
               id_PLANO_LINHA: response[x][0].id_PLANO_LINHA, id_ACCAO: response[x][0].id_ACCAO, responsavel: response[x][0].responsavel,
@@ -525,6 +527,10 @@ export class FormplanosComponent implements OnInit {
               id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
               fastresponse: response[x][0].fastresponse, encaminhado: response[x][1], prioridade: response[x][0].prioridade, estado: response[x][0].estado,
               unidade: response[x][0].unidade,
+              filteredreferencias: [],
+              referencia_campo: referencia_campo,
+              referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
+              descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
               departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
             });
 
@@ -678,6 +684,8 @@ export class FormplanosComponent implements OnInit {
       accoes.unidade = this.tabelaaccoes[x].unidade;
       accoes.tipo_ACAO = this.tabelaaccoes[x].tipo_ACAO;
       accoes.item = this.tabelaaccoes[x].item;
+      accoes.referencia = this.tabelaaccoes[x].referencia;
+      accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
       accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
 
       accoes.responsavel = id_resp;
@@ -697,8 +705,10 @@ export class FormplanosComponent implements OnInit {
       if (utz) email_p = utz.email;
 
 
+      var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
+
       if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas);
+        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia);
       } else {
         if (parseInt(x) + 1 == this.tabelaaccoes.length) {
 
@@ -779,7 +789,7 @@ export class FormplanosComponent implements OnInit {
 
   }
 
-  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas) {
+  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia) {
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -822,7 +832,8 @@ export class FormplanosComponent implements OnInit {
           tarefa.prioridade = accoes.prioridade;
           tarefa.observacoes = descricao;
 
-          this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
+          //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
+          this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
         }
       }, error => { console.log(error); });
   }
@@ -868,10 +879,13 @@ export class FormplanosComponent implements OnInit {
   }
 
   adicionar_linha() {
+    var referencia_campo = (this.referencia == null) ? null : { value: this.referencia, label: this.referencia + ' - ' + this.design_REFERENCIA, descricao: this.design_REFERENCIA }
     this.tabelaaccoes.push({
       id_TAREFA: null,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
+      , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
+      descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA,
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1282,10 +1296,11 @@ export class FormplanosComponent implements OnInit {
     accoes.fastresponse = tabelaaccoes.fastresponse;
     accoes.prioridade = tabelaaccoes.prioridade;
     accoes.tipo_ACAO = tabelaaccoes.tipo_ACAO;
+    accoes.design_REFERENCIA = tabelaaccoes.design_REFERENCIA;
+    accoes.referencia = tabelaaccoes.referencia;
     accoes.item = tabelaaccoes.item;
     accoes.estado = estado;
     accoes.responsavel = id_resp;
-
 
 
     if (estado == 'C') {
@@ -1678,6 +1693,33 @@ export class FormplanosComponent implements OnInit {
 
   IrPara(id) {
     this.router.navigateByUrl('tarefas/view?listar=true&id=' + id + "&redirect=" + this.caminho + "/viewkvk\id=" + this.id_PLANO);
+  }
+
+  filterReflinha(event, linha) {
+    linha.filteredreferencias = this.pesquisa(event.query);
+  }
+
+
+  filteronUnselectlinha(event, linha) {
+    linha.design_REFERENCIA = "";
+    linha.referencia = null;
+    linha.descricao_ref = "";
+  }
+
+  filterSelectlinha(event, linha) {
+    var tab = this.drop_artigos.find(item => item.value == event.value)
+    if (tab) {
+      linha.referencia = event.value;
+      linha.design_REFERENCIA = tab.descricao;
+      linha.descricao_ref = event.value + " - " + tab.descricao;
+
+    } else {
+      linha.design_REFERENCIA = "";
+      linha.referencia = null;
+      linha.descricao_ref = "";
+
+    }
+    //this.tabelaaccoes = this.tabelaaccoes.slice();
   }
 
 }

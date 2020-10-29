@@ -292,6 +292,7 @@ export class FormComponent implements OnInit {
           if (response[x][0].estado == 'F') {
             this.btFechar = false;
             this.btAnular = false;
+            this.bteditar = false;
           }
 
           this.n_mrps.push({

@@ -21,4 +21,7 @@ export class PA_MOV_LINHA {
 
     tipo_ACAO: number;
     item: string;
+
+    referencia: string;
+    design_REFERENCIA: string;
 }

@@ -902,7 +902,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"
                         [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_qualidade',true) || router.isActive('/seguranca_trabalho',true) || router.isActive('/reclamacoes_relatorios',true) || router.isActive('/reclamacoesfornecedores',true) || router.isActive('/reclamacoesclientes',true) || router.isActive('/temposresposta',true) 
-                        || router.isActive('/planosacaoqualidade',false) || router.isActive('/rejeicoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) || router.isActive('/tiposocorrencia',true)  || router.isActive('/tipos_ocorrencia',true)||  router.isActive('/tiposnaodetecao',true) }">
+                        || router.isActive('/planosacaoqualidade',false) || router.isActive('/rejeicoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) || router.isActive('/tiposocorrencia',true)  
+                        || router.isActive('/tipos_ocorrencia',true) || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) ||  router.isActive('/tiposnaodetecao',true) }">
                         <h4 class="panel-title">
                             <a id="node5" data-toggle="collapse" data-parent="#accordion" href="#collapsereclamacoes">
                                 <span class="glyphicon glyphicon-list-alt ">
@@ -992,7 +993,8 @@
                                     <td>
                                         <li id="node52" data-toggle="collapse" data-target="#parametrosrecl"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true) ||  router.isActive('/tiposocorrencia',true) ||  router.isActive('/tiposnaodetecao',true) || router.isActive('/temposresposta',true) || router.isActive('/rejeicoes',true) || router.isActive('/accoesreclamacoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) }">
+                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true)  || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) || 
+                                            router.isActive('/tiposocorrencia',true) ||  router.isActive('/tiposnaodetecao',true) || router.isActive('/temposresposta',true) || router.isActive('/rejeicoes',true) || router.isActive('/accoesreclamacoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -1041,6 +1043,13 @@
                                             <li id="node23101" [routerLinkActive]="['active']"
                                                 [routerLink]="['/tipos_ocorrencia']">
                                                 <a>Tipo de Ocorrência Seg.</a>
+                                            </li>
+                                            <li id="node23102" [routerLinkActive]="['active']"
+                                                [routerLink]="['/causas_acidente']">
+                                                <a>Causas do Acid./Emerg.</a>
+                                            </li>
+                                            <li id="node23103" [routerLinkActive]="['active']" [routerLink]="['/epis']">
+                                                <a>EPI's</a>
                                             </li>
                                         </ul>
                                     </td>

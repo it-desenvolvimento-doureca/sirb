@@ -96,7 +96,7 @@
                     class="tabela_gestao_barras cab_tabela_gestao_barras" id="id_tabela_gestao_barras">
                     <p-column *ngIf="modoedicao" [style]="{'width':'22px'}" selectionMode="single"></p-column>
                     <p-column field="ref_BASTIDOR" header="Referência Bastidores" [filter]="true"
-                      [style]="{'width':'100px'}">
+                      [style]="{'width':'150px'}">
                     </p-column>
 
                     <p-column field="id_linha" header="Linha" [style]="{'width':'80px'}">
@@ -209,7 +209,7 @@
                         </tr>
                       </ng-template>
                     </p-column>
-                    <p-column header="Designação da Peça" [style]="{'width':'182px'}">
+                    <p-column header="Designação da Peça" [style]="{'min-width':'182px'}">
                       <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                         <tr *ngFor="let ref of car['referencias']; let index_ref = index">
                           <input [disabled]="true" type="text" class="form-control2" title="{{ref.design_REFERENCIA}}"

@@ -95,6 +95,23 @@ export class FINSEGUIMENTOFATURACAOANUALService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_REFERENCIAS(data) {
+    const url = webUrl.host + '/rest/sirb/GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_REFERENCIAS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_OEM_VEICULO_PROJETO(data) {
+    const url = webUrl.host + '/rest/sirb/GET_SEGUIMENTO_FATURACAO_DEVOLUCOES_OEM_VEICULO_PROJETO';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   GET_SEGUIMENTO_FATURACAO_GENERICO(data, id) {
     data[0].ID_ANALISE = id;
     const url = webUrl.host + '/rest/sirb/GET_SEGUIMENTO_FATURACAO_GENERICO';
