@@ -8,6 +8,19 @@
             <h4 class="title">Funcionários</h4>
           </div>
           <div class="card-content">
+
+            <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+
+                <label>Ativo:</label>
+                <p-triStateCheckbox [(ngModel)]="ativo" [ngModelOptions]="{standalone: true}">
+                </p-triStateCheckbox>
+
+                <button type="submit" class="btn btn-success " [disabled]="loadingtabelageral"
+                  style="margin: -5px 0 0 39px; height: 25px; padding: 0px 10px 0 10px;">Aplicar</button>
+              </form>
+            </div>
+
             <p-dataTable [loading]="loadingtabelafuncionarios" class="tabelalistatarefas tabelafuncionarios"
               [style]="{'min-height':'100px'}" [value]="tabelafuncionarios" dataKey="id" [rows]="25" [paginator]="true"
               [pageLinks]="3" [rowsPerPageOptions]="[25,50,100,'todos']">

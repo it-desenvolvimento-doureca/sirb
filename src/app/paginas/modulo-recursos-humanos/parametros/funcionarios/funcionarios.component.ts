@@ -24,6 +24,7 @@ export class FuncionariosComponent implements OnInit {
   dialogCacifos: boolean;
   old_cacifo: any;
 
+  ativo: any = true;
 
   constructor(private RHDICCACIFOSService: RHDICCACIFOSService, private RHSECTORESService: RHSECTORESService, private RHESTADOSFUNCService: RHESTADOSFUNCService, private globalVar: AppGlobals, private RHFUNCIONARIOSService: RHFUNCIONARIOSService, private renderer: Renderer) { }
 
@@ -126,9 +127,15 @@ export class FuncionariosComponent implements OnInit {
   }
 
   //listar os dados da tabela
+
+  atualizar() {
+    this.listar();
+  }
+
   listar() {
     this.tabelafuncionarios = [];
-    this.RHFUNCIONARIOSService.getAll().subscribe(
+    var data = [{ ATIVO: this.ativo }];
+    this.RHFUNCIONARIOSService.getAll2(data).subscribe(
       response => {
 
 

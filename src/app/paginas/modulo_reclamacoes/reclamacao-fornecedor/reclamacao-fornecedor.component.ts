@@ -1221,7 +1221,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   exportar() {
     var filename = new Date().toLocaleString().replace(/\D/g, '');
 
-    var filenametransfer = "Relatório de Incidência Fornecedor";
+    var filenametransfer = "Relatório de Incidência Fornecedor " + this.titulo.replace("/","_") + "- " + this.designacao_REF;
 
     this.RelatoriosService.downloadPDF("pdf", filename, this.numero_RECLAMACAO, 'reclamacao_fornecedor').subscribe(
       (res) => {

@@ -45,7 +45,7 @@ export class RHFUNCIONARIOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  
+
   getCadencias(data): Observable<RH_FUNCIONARIOS[]> {
     const url = webUrl.host + '/rest/sirb/getRH_FUNCIONARIOSCADENCIA';
     return this.http
@@ -90,6 +90,14 @@ export class RHFUNCIONARIOSService {
     const url = webUrl.host + '/rest/sirb/getRH_FUNCIONARIOS';
     return this.http
       .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getAll2(data): Observable<RH_FUNCIONARIOS[]> {
+    const url = webUrl.host + '/rest/sirb/getRH_FUNCIONARIOS2';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
