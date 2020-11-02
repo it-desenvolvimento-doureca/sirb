@@ -747,9 +747,9 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             var valor = this.drop_rejeicao.find(item => item.value == this.rejeicao).revisao_RECLAMACAO;
             this.obriga_revisao = valor;
             this.devolucao = response[x].devolucao;
-            this.check_SR = response[x].devolucao;
-            this.revista_MURO = response[x].devolucao;
-            this.impacto_SR = response[x].devolucao;
+            this.check_SR = response[x].check_SR;
+            this.revista_MURO = response[x].revista_MURO;
+            this.impacto_SR = response[x].impacto_SR;
             this.observacoes_RECLAMACAO = response[x].observacoes_RECLAMACAO;
             this.numero_ENVIOS_GARANTIDOS = (response[x].numero_ENVIOS_GARANTIDOS == null) ? 0 : response[x].numero_ENVIOS_GARANTIDOS;
             this.envio_GARANTIDO_POR = (response[x].envio_GARANTIDO_POR == null) ? "cliente" : response[x].envio_GARANTIDO_POR;

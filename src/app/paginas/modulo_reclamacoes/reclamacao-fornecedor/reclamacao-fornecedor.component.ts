@@ -535,6 +535,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
               data: response[x][0], id_TAREFA: response[x][0].id_TAREFA, utilizador: response[x][1].nome_UTILIZADOR,
               datacria: datacria, responsavel: response[x][2],
               id: id2, name: response[x][0].nome, id_FICHEIRO: response[x][0].id_FICHEIRO,
+              ordem: response[x][0].ordem,
               src: response[x][0].caminho, type: response[x][0].tipo, datatype: response[x][0].datatype, size: response[x][0].tamanho, descricao: response[x][0].descricao
             });
 
@@ -616,12 +617,13 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       ficheiros.ficheiro_2 = ficheiro.substr(ficheiro.length / 2, ficheiro.length);
       ficheiros.data_ULT_MODIF = new Date();
       ficheiros.utz_ULT_MODIF = this.user;
-
+      ficheiros.ordem = this.getORDEM();
       this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);
 
     } else {
       this.uploadedFiles.push({
         data_CRIA: data, ficheiro: ficheiro,
+        ordem: this.getORDEM(),
         id_TAREFA: null, responsavel: null, utilizador: this.user_nome, datacria: this.formatDate2(data) + " " + new Date(data).toLocaleTimeString(), id_FICHEIRO: null,
         id: null, name: file.name, datatype: file.type, src: nome + '.' + tipo[1], type: type, size: file.size, descricao: this.filedescricao[x]
       });
@@ -856,6 +858,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         ficheiros.datatype = this.uploadedFiles[x].datatype;
         ficheiros.tamanho = this.uploadedFiles[x].size;
         ficheiros.descricao = this.uploadedFiles[x].descricao;
+        ficheiros.ordem = this.uploadedFiles[x].ordem;
         ficheiros.ficheiro_1 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro, this.uploadedFiles[x].ficheiro.length / 2);
         ficheiros.ficheiro_2 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro.length / 2, this.uploadedFiles[x].ficheiro.length);
 
@@ -865,7 +868,11 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         count++;
         if (novo) {
           this.gravarTabelaFicheiros2(ficheiros, count, this.uploadedFiles.length, id);
-        } else if (count == this.uploadedFiles.length) {
+        } else {
+          this.gravarTabelaFicheiros3(ficheiros, count, this.uploadedFiles.length, id);
+        }
+
+        if (count == this.uploadedFiles.length) {
           if (this.novo) {
             this.router.navigate(['reclamacoesfornecedores/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
@@ -889,6 +896,30 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
       }
     } else {
+
+      for (var x in this.uploadedFiles) {
+        var ficheiros = new RC_MOV_RECLAMACAO_FICHEIROS_FORNECEDOR;
+        if (this.uploadedFiles[x].id != null) {
+          ficheiros = this.uploadedFiles[x].data;
+        } else {
+          ficheiros.data_CRIA = this.uploadedFiles[x].data_CRIA;
+          ficheiros.utz_CRIA = this.user;
+          novo = true;
+        }
+        ficheiros.id_RECLAMACAO = id;
+        if (!this.novo) ficheiros.id = this.uploadedFiles[x].id;
+        ficheiros.caminho = this.uploadedFiles[x].src;
+        ficheiros.nome = this.uploadedFiles[x].name;
+        ficheiros.tipo = this.uploadedFiles[x].type;
+        ficheiros.datatype = this.uploadedFiles[x].datatype;
+        ficheiros.tamanho = this.uploadedFiles[x].size;
+        ficheiros.descricao = this.uploadedFiles[x].descricao;
+        ficheiros.ordem = this.uploadedFiles[x].ordem;
+        ficheiros.data_ULT_MODIF = new Date();
+        ficheiros.utz_ULT_MODIF = this.user;
+        if (this.uploadedFiles[x].id != null) this.gravarTabelaFicheiros3(ficheiros, count, this.uploadedFiles.length, id);
+      }
+
       this.displayLoading = false;
       if (this.novo) {
         this.router.navigate(['reclamacoesfornecedores/editar'], { queryParams: { id: id } });
@@ -1040,6 +1071,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         } else if (!this.novo) {
           this.uploadedFiles.push({
             data: res,
+            ordem: this.getORDEM(),
             data_CRIA: ficheiros.data_CRIA, responsavel: null, ficheiro: ficheiros.ficheiro_1 + ficheiros.ficheiro_2,
             id_TAREFA: null, utilizador: this.user_nome, datacria: this.formatDate2(ficheiros.data_CRIA) + " " + new Date(ficheiros.data_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
             id: res.id, name: ficheiros.nome, datatype: ficheiros.datatype, src: ficheiros.caminho, type: ficheiros.tipo, size: ficheiros.tamanho, descricao: ficheiros.descricao
@@ -1048,6 +1080,23 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         }
       },
       error => { console.log(error); });
+  }
+
+
+  gravarTabelaFicheiros3(ficheiros, count, total, id) {
+    this.RCMOVRECLAMACAOFICHEIROSFORNECEDORService.update_ordem(ficheiros).subscribe(
+      res => {
+      },
+      error => { console.log(error); });
+  }
+
+  getORDEM() {
+    var max = 0;
+    for (var x in this.uploadedFiles) {
+      if (this.uploadedFiles[x].ordem > max) { max = this.uploadedFiles[x].ordem }
+    }
+
+    return max + 1;
   }
 
   removeFile(file: File, uploader: FileUpload) {
@@ -1221,7 +1270,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   exportar() {
     var filename = new Date().toLocaleString().replace(/\D/g, '');
 
-    var filenametransfer = "Relatório de Incidência Fornecedor " + this.titulo.replace("/","_") + "- " + this.designacao_REF;
+    var filenametransfer = "Relatório de Incidência Fornecedor " + this.titulo.replace("/", "_") + "- " + this.designacao_REF;
 
     this.RelatoriosService.downloadPDF("pdf", filename, this.numero_RECLAMACAO, 'reclamacao_fornecedor').subscribe(
       (res) => {

@@ -51,7 +51,12 @@ export class RCMOVRECLAMACAOFICHEIROSFORNECEDORService {
       .catch(this.handleError);
   }
 
-
+  update_ordem(data: RC_MOV_RECLAMACAO_FICHEIROS_FORNECEDOR) {
+    return this.http
+      .put(webUrl.host + '/rest/sirb/updateORDEMRC_MOV_RECLAMACAO_FICHEIROS_FORNECEDOR', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
   private extractData(res: Response) {
     let body = res.json();
