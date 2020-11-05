@@ -587,9 +587,8 @@ export class GestaoBarrasComponent implements OnInit {
     for (var x in this.barras) {
       this.barras[x].filtro_refs = "";
       for (var y in this.barras[x].referencias) {
-        this.barras[x].filtro_refs = + ", " + this.barras[x].referencias[y].referencia + " - " + this.barras[x].referencias[y].design_REFERENCIA;
+        this.barras[x].filtro_refs += ", " + this.barras[x].referencias[y].referencia + " - " + this.barras[x].referencias[y].design_REFERENCIA;
       }
-
     }
   }
 

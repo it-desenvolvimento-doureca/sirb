@@ -221,7 +221,7 @@ export class FuncionariosComponent implements OnInit {
         for (var x in response) {
           this.sectores.push({
             value: { cod_SECTOR: response[x][0].cod_SECTOR, chefe: response[x][0].chefe1, cod_TURNO: response[x][0].cod_TURNO },
-            label: response[x][0].cod_SECTOR + " - " + response[x][0].des_SECTOR,
+            label: /*response[x][0].cod_SECTOR + " - " +*/ response[x][0].des_SECTOR,
             cod_SECTOR: response[x][0].cod_SECTOR, chefe: response[x][1], turno: response[x][3]
           });
         }
