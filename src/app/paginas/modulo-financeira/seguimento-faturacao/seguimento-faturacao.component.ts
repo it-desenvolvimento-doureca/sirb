@@ -266,7 +266,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
               objetivo_FATURACAO: response[x][5],
               data: response[x][2] + '-' + response[x][1] + '-1',
               mes_mais_1: (response[x][1] == 12) ? month[0] : month[response[x][1]],
-              mes_mais_2: (response[x][1] == 12) ? month[1] : month[response[x][1] + 1],
+              mes_mais_2: (response[x][1] == 12) ? month[1] : ((response[x][1] == 11) ? month[0] : month[response[x][1] + 1]),
               mes_menos_1: (response[x][1] == 1) ? month[11] : month[response[x][1] - 2],
               mes: month[response[x][1] - 1]
             },

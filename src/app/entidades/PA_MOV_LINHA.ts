@@ -24,4 +24,5 @@ export class PA_MOV_LINHA {
 
     referencia: string;
     design_REFERENCIA: string;
+    causa: string;
 }

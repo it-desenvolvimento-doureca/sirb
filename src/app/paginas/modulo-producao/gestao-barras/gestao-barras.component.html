@@ -255,6 +255,14 @@
                             <span class="glyphicon glyphicon-trash"></span>
                           </button>
                         </tr>
+
+                        <tr *ngIf="car['referencias'].length == 0 && car.id_ORIGEM != null">
+                          <button style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;" type="button"
+                            class="btn btn-warning btn-xs" [disabled]="!modoedicao && !acesso_apagar"
+                            title="Apagar Referência Bastidores" (click)="removerlinha_rack(car.id,car.id_ORIGEM)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </tr>
                       </ng-template>
                     </p-column>
 

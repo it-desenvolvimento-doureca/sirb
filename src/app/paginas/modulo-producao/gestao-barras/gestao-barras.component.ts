@@ -211,6 +211,7 @@ export class GestaoBarrasComponent implements OnInit {
         id: response[x][0],
         //cor_fundo: (this.isOdd(parseInt(x))) ? '#FFE699' : '#BDD7EE',
         ref_BASTIDOR: response[x][1],
+        ref_BASTIDOR_id: response[x][1] + '_' + ('00000000000000' + response[x][0]).substring(('00000000000000' + response[x][0]).length - 10),
         id_linha: response[x][2],
         cor_linha: '',//this.linhas.find(item => item.value == 1).cor,
         plano_BASTIDOR: response[x][3],
@@ -426,11 +427,11 @@ export class GestaoBarrasComponent implements OnInit {
 
   ordernar(array) {
     array.sort((n1, n2) => {
-      if (n1.ref_BASTIDOR > n2.ref_BASTIDOR) {
+      if (n1.ref_BASTIDOR_id > n2.ref_BASTIDOR_id) {
         return 1;
       }
 
-      if (n1.ref_BASTIDOR < n2.ref_BASTIDOR) {
+      if (n1.ref_BASTIDOR_id < n2.ref_BASTIDOR_id) {
         return -1;
       }
 
@@ -451,7 +452,7 @@ export class GestaoBarrasComponent implements OnInit {
           this.PRGESTAOBARRASREFERENCIASService.delete(this.barras[index_barra].referencias[index_ref].id).then(() => {
             this.barras[index_barra].referencias.splice(index_ref, 1);
             if (this.barras[index_barra].referencias.length == 0) {
-              this.adicionarlinha(index_barra);
+              //this.adicionarlinha(index_barra);
             }
             this.atualizar_filtro_ref();
           }, error => {
@@ -462,7 +463,7 @@ export class GestaoBarrasComponent implements OnInit {
         } else {
           this.barras[index_barra].referencias.splice(index_ref, 1);
           if (this.barras[index_barra].referencias.length == 0) {
-            this.adicionarlinha(index_barra);
+            //this.adicionarlinha(index_barra);
           }
           this.atualizar_filtro_ref();
         }
@@ -470,6 +471,30 @@ export class GestaoBarrasComponent implements OnInit {
     });
 
   }
+
+  removerlinha_rack(id, id_ORIGEM) {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Apagar Linha?',
+      header: 'Apagar Registo',
+      icon: 'fa fa-trash',
+      accept: () => {
+        var index_linha = this.barras.findIndex(item => item.id == id);
+        if (id_ORIGEM != null) {
+          this.PRGESTAOBARRASService.delete(id).then(() => {
+            this.barras.splice(index_linha, 1);
+            this.barras = this.barras.slice();
+            this.atualizar_filtro_ref();
+          }, error => {
+            console.log(error);
+            this.router.navigate([this.caminho]);
+          }
+          );
+
+        }
+      }
+    });
+  }
+
 
   adicionarlinha(index) {
     //var index = this.barras.findIndex(item => item.id == id);

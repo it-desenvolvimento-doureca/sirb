@@ -3,6 +3,8 @@ import { DataTable } from 'primeng/primeng';
 import { PAMOVCABService } from 'app/servicos/pa-mov-cab.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-listaacoes',
@@ -23,8 +25,10 @@ export class ListaacoesComponent implements OnInit {
 
   FastResponse = false;
   acoes_em_ATRASO = false;
+  imprimirpdf = false;
 
-  constructor(private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute,
+  @ViewChild("tabeladados") tabeladados: DataTable;
+  constructor(private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute, private RelatoriosService: RelatoriosService,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -57,7 +61,7 @@ export class ListaacoesComponent implements OnInit {
 
 
     //if (this.tipo != "T") {
-    this.estado_filtro = ["Pendente", "Lida", "Em Curso","Planeado"];
+    this.estado_filtro = ["Pendente", "Lida", "Em Curso", "Planeado"];
     this.filtrar(this.estado_filtro, "estado", true, "in");
     // }
 
@@ -68,7 +72,7 @@ export class ListaacoesComponent implements OnInit {
     this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "criar"));
     this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "apagar"));
 
-
+    this.imprimirpdf = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15512imprimir");
 
     this.carregarlista(this.tipo);
   }
@@ -106,7 +110,7 @@ export class ListaacoesComponent implements OnInit {
               id: response[x][0], cor: cor, cor_letra: cor_letra,
               data_objetivo: (response[x][2] == null) ? "" : this.formatDate(response[x][2]),
               utilizador: response[x][5],
-
+              data_cria: (response[x][1] == null) ? "" : this.formatDate(response[x][1]),
               data_acao: response[x][8],
               utilizador_acao: response[x][9],
               departamento: response[x][19],
@@ -116,7 +120,13 @@ export class ListaacoesComponent implements OnInit {
               ambito: response[x][15],
               origem: response[x][4],
               estado: this.geEstadoTarefa(response[x][18]),
-              id_tarefa: response[x][17]
+              id_tarefa: response[x][17],
+              linha: response[x][20],
+              unidade: response[x][21],
+              referencia: response[x][22],
+              item: response[x][23],
+              causa: response[x][24],
+              data_realizado: response[x][25],
             });
           }
 
@@ -237,6 +247,29 @@ export class ListaacoesComponent implements OnInit {
     this.router.navigateByUrl('planosacao/view?id=' + id + "&redirect=listaacoes");
   }
 
+  imprimir(formato, filenametransfer) {
 
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+    //var filenametransfer = "planos_de_acao";
+
+    var data;
+    var dados = [];
+    if (this.tabeladados.filteredValue) {
+      dados = this.tabeladados.filteredValue;
+    } else {
+      dados = this.tabeladados._value;
+    }
+    //console.log(JSON.stringify(dados))
+
+    data = [{ dados: JSON.stringify(dados) }];
+
+    this.RelatoriosService.downloadPDF2(formato, filename, data, filenametransfer, "planos_de_acao").subscribe(
+      (res) => {
+        FileSaver.saveAs(res, filenametransfer);
+        /*this.fileURL = URL.createObjectURL(res);
+        this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
+      }
+    );
+  }
 
 }

@@ -4,8 +4,16 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header"  data-background-color="red">
+          <div class="card-header" data-background-color="red">
             <h4 class="title">Planos de Ação</h4>
+            <a style="cursor: pointer; position: absolute;right: 59px; top: -11px; color: black;"
+              title="Exportar Lista Normal" (click)="imprimir('pdf','planos_de_acao')" *ngIf="imprimirpdf">
+              <i class="material-icons">print</i>
+            </a>
+            <a style="cursor: pointer; position: absolute;right: 112px; top: -11px; color: #009688;"
+              title="Exportar Lista Detalhada" (click)="imprimir('pdf','planos_de_acao_detalhada')" *ngIf="imprimirpdf">
+              <i class="material-icons">print</i>
+            </a>
           </div>
           <div class="card-content">
             <div
@@ -31,7 +39,7 @@
 
 
             <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25" id="tabelaplanoslistaacoes"
-              [rowsPerPageOptions]="[25,50,100,'todos']">
+              #tabeladados [rowsPerPageOptions]="[25,50,100,'todos']">
 
               <p-column [style]="{'width':'20px'}" field="id" header="Nº Plano" [filter]="true" [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">

@@ -9,8 +9,8 @@ export class RelatoriosService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
-  downloadPDF(format, filename, id, relatorio): any {
-    const url = webUrl.host + '/rest/sirb/get/' + format + '/' + filename + '/' + id + '/' + relatorio;
+  downloadPDF(format, filename, id, relatorio, subPasta = "nenhuma"): any {
+    const url = webUrl.host + '/rest/sirb/get/' + format + '/' + filename + '/' + id + '/' + relatorio + '/' + subPasta;
     return this.http.get(url, { responseType: ResponseContentType.Blob }).map(
       (res) => {
         if (format == "pdf") {

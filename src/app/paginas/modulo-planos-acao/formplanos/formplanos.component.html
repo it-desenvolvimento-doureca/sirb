@@ -54,6 +54,12 @@
               <div class="ripple-container"></div>
             </a>
           </li>-->
+          <li [class.disabled]="disImprimir" [hidden]="!btimprimir">
+            <a (click)="imprimir('pdf','planos_de_acao_detalhada_id')">
+              <i class="material-icons">print</i>Imprimir
+              <div class="ripple-container"></div>
+            </a>
+          </li>
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
@@ -324,6 +330,18 @@
                                 (completeMethod)="filterReflinha($event,car)" field="label"
                                 placeholder="Pesquisar Referência..." [minLength]="1">
                               </p-autoComplete>
+                            </th>
+                          </table>
+                          <table style="border: none;">
+                            <th class="ui-state-default ui-unselectable-text"
+                              style="width: 100px; display: table-cell; padding-left: 7px;">
+                              <span class="ui-column-title">CAUSA</span>
+                            </th>
+                            <th style="border-top: none; border-right: none; border-left: none;">
+                              <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;"
+                                [(ngModel)]="car['causa']" [ngModelOptions]="{standalone: true}" type="text"
+                                class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
                             </th>
                           </table>
                         </ng-template>

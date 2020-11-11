@@ -25,6 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import * as FileSaver from 'file-saver';
 import { PADICAMBITOSService } from 'app/servicos/pa-dic-ambitos.service';
 import { GTDICTIPOACAOService } from 'app/servicos/gt-dic-tipo-acao.service';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
 
 @Component({
   selector: 'app-formplanos',
@@ -99,8 +100,10 @@ export class FormplanosComponent implements OnInit {
   disEditar: boolean;
   disCriar: boolean;
   disApagar: boolean;
+  disImprimir: boolean;
   btcriar: boolean;
   btapagar: boolean;
+  btimprimir: boolean;
   btvoltar: boolean;
   bteditar: boolean;
   btLancarPlano: boolean;
@@ -141,7 +144,7 @@ export class FormplanosComponent implements OnInit {
     private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PAMOVFICHEIROSService: PAMOVFICHEIROSService,
     private PAMOVLINHAService: PAMOVLINHAService, private PAMOVCABService: PAMOVCABService, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private sanitizer: DomSanitizer,
     private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private ABDICLINHAService: ABDICLINHAService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService
-    , private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private PADICAMBITOSService: PADICAMBITOSService) { }
+    , private RelatoriosService: RelatoriosService, private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private PADICAMBITOSService: PADICAMBITOSService) { }
 
   ngOnInit() {
 
@@ -158,6 +161,7 @@ export class FormplanosComponent implements OnInit {
     this.globalVar.setdisCriarmanutencao(true);
     this.btcriar = true;
     this.btapagar = true;
+    this.btimprimir = true;
     this.btvoltar = true;
     this.bteditar = true;
     this.btLancarPlano = false;
@@ -217,8 +221,9 @@ export class FormplanosComponent implements OnInit {
 
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
-        this.btapagar = false;
+        //this.btapagar = false;
         this.btapagar = true;
+        this.btimprimir = true;
         this.modoedicao = true;
         this.btControlar = true;
         this.btAprovar = true;
@@ -226,6 +231,7 @@ export class FormplanosComponent implements OnInit {
 
       } else if (urlarray[1].match("novo")) {
         this.btapagar = false;
+        this.btimprimir = false;
         this.btcriar = false;
         this.btLancarPlano = false;
         this.btControlar = false;
@@ -253,6 +259,7 @@ export class FormplanosComponent implements OnInit {
         this.btAprovar = false;
         this.btCancelar = false;
         this.btcriar = true;
+        this.btapagar = true;
       }
     }
 
@@ -270,6 +277,7 @@ export class FormplanosComponent implements OnInit {
     this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "editar");
     this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "criar");
     this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "apagar");
+    this.disImprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "imprimir");
 
     this.disLancarPlano = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "lancarplano");
     this.disControlar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "controloar");
@@ -530,6 +538,7 @@ export class FormplanosComponent implements OnInit {
               filteredreferencias: [],
               referencia_campo: referencia_campo,
               referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
+              causa: response[x][0].causa,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
               departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
             });
@@ -687,6 +696,7 @@ export class FormplanosComponent implements OnInit {
       accoes.referencia = this.tabelaaccoes[x].referencia;
       accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
       accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
+      accoes.causa = this.tabelaaccoes[x].causa;
 
       accoes.responsavel = id_resp;
       var novo = false;
@@ -886,6 +896,7 @@ export class FormplanosComponent implements OnInit {
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
       descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA,
+      causa: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1300,6 +1311,7 @@ export class FormplanosComponent implements OnInit {
     accoes.referencia = tabelaaccoes.referencia;
     accoes.item = tabelaaccoes.item;
     accoes.estado = estado;
+    accoes.causa = tabelaaccoes.causa;
     accoes.responsavel = id_resp;
 
 
@@ -1720,6 +1732,27 @@ export class FormplanosComponent implements OnInit {
 
     }
     //this.tabelaaccoes = this.tabelaaccoes.slice();
+  }
+
+  imprimir(formato, filenametransfer) {
+
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+    //var filenametransfer = "planos_de_acao";
+
+    var data;
+    var dados = [];
+
+    //console.log(JSON.stringify(dados))
+
+    data = [{ dados: JSON.stringify(dados) }];
+
+    this.RelatoriosService.downloadPDF(formato, filename, this.id_PLANO, filenametransfer, "planos_de_acao").subscribe(
+      (res) => {
+        FileSaver.saveAs(res, filenametransfer);
+        /*this.fileURL = URL.createObjectURL(res);
+        this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
+      }
+    );
   }
 
 }
