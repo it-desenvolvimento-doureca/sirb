@@ -45,8 +45,15 @@
               </div>
               <div class="btn-group" role="group">
                 <button (click)="ativobt='6';" [class.ativobt]="ativobt == '6'" type="button" id="favorites" class="btn"
-                  href="#tab6" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  style="border-right: 2px solid white;" href="#tab6" data-toggle="tab"><span
+                    class="glyphicon glyphicon-th" aria-hidden="true"></span>
                   <div class="hidden-xs texto">Evolução de Defeito por Referência</div>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button (click)="ativobt='7';" [class.ativobt]="ativobt == '7'" type="button" id="favorites" class="btn"
+                  href="#tab7" data-toggle="tab"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  <div class="hidden-xs texto">DEFEITOS POR LOTE DE PLÁSTICO</div>
                 </button>
               </div>
             </div>
@@ -990,6 +997,11 @@
 
 
                 </div>
+
+                <div class="tab-pane fade in" id="tab7">
+                  <app-analise-lote-fornecedor></app-analise-lote-fornecedor>
+                </div>
+
               </div>
             </div>
           </div>

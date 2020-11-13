@@ -265,7 +265,7 @@ export class ListaacoesComponent implements OnInit {
 
     this.RelatoriosService.downloadPDF2(formato, filename, data, filenametransfer, "planos_de_acao").subscribe(
       (res) => {
-        FileSaver.saveAs(res, filenametransfer);
+        FileSaver.saveAs(res, 'LISTA DE AÇÕES - PDCA DOURECA');
         /*this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
       }

@@ -145,6 +145,46 @@ export class PEDIDOSPRODUCAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  GET_ANALISE_LOTE_FORNECEDOR_LOTES(data) {
+    const url = webUrl.host + '/rest/sirb/GET_ANALISE_LOTE_FORNECEDOR_LOTES';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_ANALISE_LOTE_FORNECEDOR_REFERENCIAS(data) {
+    const url = webUrl.host + '/rest/sirb/GET_ANALISE_LOTE_FORNECEDOR_REFERENCIAS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_ANALISE_LOTE_FORNECEDOR_FAM(data) {
+    const url = webUrl.host + '/rest/sirb/GET_ANALISE_LOTE_FORNECEDOR_FAM';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_ANALISE_LOTE_FORNECEDOR_DEFEITOS(data) {
+    const url = webUrl.host + '/rest/sirb/GET_ANALISE_LOTE_FORNECEDOR_DEFEITOS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  GET_ANALISE_LOTE_FORNECEDOR_OFREF(data) {
+    const url = webUrl.host + '/rest/sirb/GET_ANALISE_LOTE_FORNECEDOR_OFREF';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
 
   private extractData(res: Response) {
     let body = res.json();

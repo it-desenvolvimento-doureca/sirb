@@ -1748,7 +1748,7 @@ export class FormplanosComponent implements OnInit {
 
     this.RelatoriosService.downloadPDF(formato, filename, this.id_PLANO, filenametransfer, "planos_de_acao").subscribe(
       (res) => {
-        FileSaver.saveAs(res, filenametransfer);
+        FileSaver.saveAs(res, "PLANO DE AÇÕES - PDCA DOURECA");
         /*this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
       }

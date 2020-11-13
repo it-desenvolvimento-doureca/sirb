@@ -305,6 +305,7 @@ import { RHDICEPIService } from './servicos/rh-dic-epi.service';
 import { CausasAcidenteComponent } from './paginas/modulo-seguranca-trabalho/parametros/causas-acidente/causas-acidente.component';
 import { EpisComponent } from './paginas/modulo-recursos-humanos/parametros/epis/epis.component';
 import { RCMOVRECLAMACAOCLIENTESService } from './servicos/rc-mov-reclamacao-clientes.service';
+import { AnaliseLoteFornecedorComponent } from './paginas/modulo-producao/analise-de-rejeicoes/analise-lote-fornecedor/analise-lote-fornecedor.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -923,7 +924,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ValidacoesBastidoresComponent,
     ParametrosSeguimentoComponent,
     CausasAcidenteComponent,
-    EpisComponent
+    EpisComponent,
+    AnaliseLoteFornecedorComponent
   ],
   imports: [
     BrowserModule,
