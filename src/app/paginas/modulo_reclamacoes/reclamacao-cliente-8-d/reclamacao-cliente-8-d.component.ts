@@ -894,6 +894,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           this.getMoradas(this.cliente.id, true);
           this.getArtigos(this.etsnum, true);
           this.carregatabelaFiles(id);
+          this.carregatabelaEquipa(id);
         }
 
       }, error => { console.log(error); });
@@ -950,8 +951,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           }
           this.uploadedFiles = this.uploadedFiles.slice();
         }
-        this.carregatabelaEquipa(id);
-      }, error => { this.carregatabelaEquipa(id); console.log(error); });
+        /*this.carregatabelaEquipa(id);*/
+      }, error => { /*this.carregatabelaEquipa(id); */ console.log(error); });
 
   }
 
@@ -1637,7 +1638,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     } else if (tabela == "tabelapreventiva") {
       var accoes3 = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
 
-      accoes3 = this.tabelaEficacia[index].data;
+      accoes3 = this.tabelapreventiva[index].data;
 
       if (this.tabelapreventiva[index].data_REAL == null || this.tabelapreventiva[index].data_REAL == "") {
         this.tabelapreventiva[index].data_REAL = new Date();
