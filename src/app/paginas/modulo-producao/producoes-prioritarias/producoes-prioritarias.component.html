@@ -48,8 +48,8 @@
                               [suggestions]="car['filteredreferencias']" class="autocompleseguranca"
                               [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
                               emptyMessage="Sem Resultados..." (onUnselect)="filteronUnselect($event,index)"
-                              (onSelect)="filterSelect($event,index)" [ngModelOptions]="{standalone: true}"
-                              (completeMethod)="filterRef($event,index)" field="label" placeholder="Pesquisar..."
+                              (onSelect)="filterSelect($event,index,car['linha'])" [ngModelOptions]="{standalone: true}"
+                              (completeMethod)="filterRef($event,index,car['linha'])" field="label" placeholder="Pesquisar..."
                               [minLength]="1">
                             </p-autoComplete>
                           </ng-template>

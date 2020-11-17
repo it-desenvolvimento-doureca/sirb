@@ -15,6 +15,7 @@ export class RevisoesPrioritariasComponent implements OnInit {
 
   tabela = [];
   artigos: any = [];
+  artigos_sao_bento: any = [];
   user: any;
 
   @ViewChild('inputgravou') inputgravou: ElementRef;
@@ -76,6 +77,19 @@ export class RevisoesPrioritariasComponent implements OnInit {
 
       },
       error => { console.log(error); });
+
+    this.ABDICCOMPONENTEService.getComponentesSaoBento().subscribe(
+      response => {
+        this.artigos_sao_bento = [];
+        for (var x in response) {
+          this.artigos_sao_bento.push({
+            value: response[x].PROREF, label: response[x].PROREF + ' - ' + response[x].PRODES1, DESIGN: response[x].PRODES1
+          });
+        }
+        this.artigos_sao_bento = this.artigos_sao_bento.slice();
+      },
+      error => { console.log(error); });
+
 
 
   }
@@ -187,8 +201,14 @@ export class RevisoesPrioritariasComponent implements OnInit {
   }
 
   //ao alterar nome ref
-  atualizatabelas(event, index) {
-    var tab = this.artigos.find(item => item.value == event.value)
+  atualizatabelas(event, index, linha) {
+    var tab = null;
+    if (linha != 33) {
+      tab = this.artigos.find(item => item.value == event.value);
+    } else {
+      tab = this.artigos_sao_bento.find(item => item.value == event.value);
+    }
+
     if (tab) {
       this.tabela[index].DESIGN = tab.DESIGN;
     } else {
@@ -211,21 +231,35 @@ export class RevisoesPrioritariasComponent implements OnInit {
     } else {
       this.tabela[index].cor_linha = "";
     }
+
+    this.tabela[index].DESIGN = "";
+    this.tabela[index].PROREF = null;
+    this.tabela[index].referencia_campo = null;
+
     this.tabela = this.tabela.slice();
   }
 
-  filterRef(event, index) {
+  filterRef(event, index, linha) {
 
-    this.tabela[index].filteredreferencias = this.pesquisa(event.query);
+    this.tabela[index].filteredreferencias = this.pesquisa(event.query, linha);
   }
 
 
-  pesquisa(text) {
+  pesquisa(text, linha) {
     var result = [];
-    for (var x in this.artigos) {
-      let ref = this.artigos[x];
+    var artigos = [];
+
+    if (linha != 33) {
+      artigos = this.artigos;
+    } else {
+      artigos = this.artigos_sao_bento;
+    }
+
+
+    for (var x in artigos) {
+      let ref = artigos[x];
       if (ref.label.toLowerCase().includes(text.toLowerCase())) {
-        result.push(this.artigos[x]);
+        result.push(artigos[x]);
       }
     }
     return result;
@@ -234,16 +268,24 @@ export class RevisoesPrioritariasComponent implements OnInit {
   filteronUnselect(event, index) {
     this.tabela[index].DESIGN = "";
     this.tabela[index].PROREF = null;
+    this.tabela[index].referencia_campo = null;
   }
 
-  filterSelect(event, index) {
-    var tab = this.artigos.find(item => item.value == event.value)
+  filterSelect(event, index, linha) {
+    var tab = null;
+    if (linha != 33) {
+      tab = this.artigos.find(item => item.value == event.value);
+    } else {
+      tab = this.artigos_sao_bento.find(item => item.value == event.value);
+    }
+
     if (tab) {
       this.tabela[index].PROREF = event.value;
       this.tabela[index].DESIGN = tab.DESIGN;
     } else {
       this.tabela[index].DESIGN = "";
       this.tabela[index].PROREF = null;
+      this.tabela[index].referencia_campo = null;
     }
     this.tabela = this.tabela.slice();
   }

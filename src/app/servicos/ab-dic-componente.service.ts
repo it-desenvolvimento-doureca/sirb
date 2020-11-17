@@ -86,6 +86,14 @@ export class ABDICCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getComponentesSaoBento() {
+    const url = webUrl.host + '/rest/sirb/getComponentesSaoBento';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getReferencias() {
     const url = webUrl.host + '/rest/sirb/getReferencias';
     return this.http
