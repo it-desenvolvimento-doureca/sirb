@@ -370,6 +370,47 @@ export class AnaliseencomendasComponent implements OnInit {
 
   }
 
+  limparfiltros1() {
+    this.programas = null;
+    this.veiculos = null;
+    this.oem = null;
+    this.fabricas = null;
+    this.armazens = null;
+    this.clientes = null;
+    this.referencia_principal = null;
+    this.nome_cliente = null;
+    this.codigo_cliente = null;
+    this.negativos = false;
+    this.campo_ref = null;
+  }
+
+  limparfiltros2() {
+    this.programas_enc = null;
+    this.veiculos_enc = null;
+    this.oem_enc = null;
+    this.fabricas_enc = null;
+    this.armazens_enc = null;
+    this.clientes_enc = null;
+    this.referencia_principal_enc = null;
+    this.nome_cliente_enc = null;
+    this.codigo_cliente_enc = null;
+    this.negativos_enc = false;
+    this.campo_ref_enc = null;
+
+  }
+
+  limparfiltros3() {
+    this.programas_encomendas = null;
+    this.veiculos_encomendas = null;
+    this.oem_encomendas = null;
+    this.fabricas_encomendas = null;
+    this.codigo_cliente_encomendas = null;
+    this.nome_cliente_encomendas = null;
+    this.referencia_principal_encomendas = null;
+    this.campo_ref_encomendas = null;
+
+  }
+
   carregaref() {
     this.loading = true;
     this.dados_referencias = [];
@@ -1110,7 +1151,7 @@ export class AnaliseencomendasComponent implements OnInit {
     var oem = null;
     var fabricas = null;
     var referencia_principal = null;
- 
+
 
     if (this.programas_encomendas != null && this.programas_encomendas.length > 0) { programas = this.programas_encomendas.toString() }
     if (this.veiculos_encomendas != null && this.veiculos_encomendas.length > 0) { veiculos = this.veiculos_encomendas.toString() }
@@ -1169,7 +1210,7 @@ export class AnaliseencomendasComponent implements OnInit {
     var oem = null;
     var fabricas = null;
     var referencia_principal = null;
- 
+
 
     if (this.programas_encomendas != null && this.programas_encomendas.length > 0) { programas = this.programas_encomendas.toString() }
     if (this.veiculos_encomendas != null && this.veiculos_encomendas.length > 0) { veiculos = this.veiculos_encomendas.toString() }

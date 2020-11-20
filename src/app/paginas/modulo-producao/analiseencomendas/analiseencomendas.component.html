@@ -127,8 +127,10 @@
                         </p-checkbox>
                       </div>
                       <div class="table-row-column col-md-1" style="height: 64px;">
-                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading"
-                          style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        <button type="submit" class="btn btn-success " [disabled]="loading"
+                          style="margin: 0px 0 0 0px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Aplicar</button>
+                        <button type="button" (click)="limparfiltros1()" class="btn btn-danger " [disabled]="loading"
+                          style="margin: 4px 0 0 0px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Limpar</button>
                       </div>
 
 
@@ -158,8 +160,8 @@
                   <div class="table-row col-md-12" *ngFor="let ref of dados">
 
                     <!--REF-->
-                    <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover" data-toggle="collapse"
-                      id="referencia{{ref.id}}" [attr.data-target]="'#collapseref'+ref.id"
+                    <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover"
+                      data-toggle="collapse" id="referencia{{ref.id}}" [attr.data-target]="'#collapseref'+ref.id"
                       (click)="getdadosreferencia(ref.id); " style="background: #d9d9d9;" #divref
                       [class.disabled]="ref.atualiza">
                       <div class="col-md-2" style="text-align: left;">
@@ -701,8 +703,10 @@
                         </p-checkbox>
                       </div>
                       <div class="table-row-column col-md-1" style="height: 64px;">
-                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading"
-                          style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        <button type="submit" class="btn btn-success " [disabled]="loading"
+                          style="margin: 0px 0 0 0px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Aplicar</button>
+                        <button type="button" (click)="limparfiltros2()" class="btn btn-danger " [disabled]="loading"
+                          style="margin: 4px 0 0 0px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Limpar</button>
                       </div>
 
                     </form>
@@ -851,10 +855,11 @@
                           [(ngModel)]="fabricas_encomendas" [ngModelOptions]="{standalone: true}">
                         </p-multiSelect>
                       </div>
-                      <div class="table-row-column col-md-1" style="height: 64px;">
-                        <button type="submit" class="btn btn-success " [disabled]="false"
-                          [disabled]="loading_encomendas"
+                      <div class="table-row-column col-md-3" style="height: 64px;">
+                        <button type="submit" class="btn btn-success " [disabled]="loading_encomendas"
                           style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        <button type="button" (click)="limparfiltros3()" class="btn btn-danger " [disabled]="loading"
+                          style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Limpar</button>
                       </div>
                       <div class="table-row-column col-md-1" style="float: right;">
                         <div _ngcontent-c0="" class="scrollleft" style="display: block;"></div>
@@ -979,8 +984,8 @@
                         style=" border-bottom: 1px solid white;">
 
                         <!--CLIENTES-->
-                        <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover" data-toggle="collapse"
-                          id="clientes{{cli.id}}" [attr.data-target]="'#collapsecli'+cli.id"
+                        <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover"
+                          data-toggle="collapse" id="clientes{{cli.id}}" [attr.data-target]="'#collapsecli'+cli.id"
                           (click)="getdadosclientes(cli.id); " style="background: #d9d9d9;" #divref
                           [class.disabled]="cli.atualiza">
                           <div class="col-md-4 " style="padding: 0; width: 20%;">
