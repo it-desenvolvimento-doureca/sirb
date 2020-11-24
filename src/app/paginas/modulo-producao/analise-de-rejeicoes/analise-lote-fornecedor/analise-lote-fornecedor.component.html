@@ -93,11 +93,19 @@
 <div class="table-row col-md-12" style="width: 91.66666667%" *ngIf="referencias.length > 0">
   <div class="table-row table-header" style="background: #59749d; color: white; font-weight: 500; border-bottom: none;">
 
-    <div class="table-row-column col-md-2" style="width: 122px; padding-right: 0; padding-left: 0px;">Cod. Ref.
-      Destino<br>
-    </div>
-    <div class=" table-row-column col-md-3" style="text-align: left; width: calc( 25% + 84px);">Descrição Ref.
+    <!--div class="table-row-column col-md-2" style="min-width: 122px; padding-right: 0; padding-left: 0px;">Cod. Ref.
       Destino
+    </div>
+    <div class=" table-row-column col-md-3" style="text-align: left; min-width: calc( 25% + 84px);">Descrição Ref.
+      Destino
+    </div-->
+    <div class="table-row-column col-md-5" style=" padding-right: 0; padding-left: 0px;">
+      <div class="col-md-4" style="min-width: 122px; padding: 0; padding-left: 0px;">Cod. Ref.
+        Destino
+      </div>
+      <div class=" col-md-8" style="text-align: left;padding: 0; min-width: calc( 25% + 84px);">Descrição Ref.
+        Destino
+      </div>
     </div>
     <div class="table-row-column col-md-1">Fase</div>
     <!--<div class="table-row-column col-md-1">Nº Barras Produzidas</div>-->
@@ -118,7 +126,7 @@
       [attr.data-target]="'#collapseref'+ref.id" (click)="getfamdefeitos(ref.id); " style="background: #c4c4e9;"
       [class.disabled]="ref.atualiza">
 
-      <div class="col-md-5" style="text-align: left;">
+      <div class="col-md-5" style="text-align: left; ">
         <span style="pointer-events: none;" *ngIf="!ref.iconplus" class="fa fa-minus" aria-hidden="true"></span>
         <span style="pointer-events: none;" *ngIf="ref.iconplus" class="fa fa-plus" aria-hidden="true"></span>
         {{ref.brand}}
@@ -155,7 +163,7 @@
         <!-- FAMILIA -->
         <div class="table-row-column col-md-12 pointer" data-toggle="collapse" id="collapsefam{{ref.id}}{{fam.id}}"
           [attr.data-target]="'#collapsetipo'+ref.id+fam.id" (click)="getdefeitos(ref.id,fam.id);">
-          <div class="col-md-6"></div>
+          <div class="col-md-6" ></div>
 
           <div class="col-md-2" style="background: #ccd0d8; text-align: left; border-bottom: 2px solid white;">
             <span style="pointer-events: none;" *ngIf="!fam.iconplus" class="fa fa-minus" aria-hidden="true"></span>
@@ -184,7 +192,7 @@
             <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
               [attr.data-target]="'#collapselote'+ref.id+fam.id+tipo.id" id="collapsedef{{ref.id}}{{fam.id}}{{tipo.id}}"
               (click)="getlote(ref.id,fam.id,tipo.id);">
-              <div class=" col-md-6"></div>
+              <div class=" col-md-6" ></div>
 
               <div class="col-md-3" style="background: aliceblue; text-align: left;">
                 <span style="pointer-events: none;" *ngIf="!tipo.iconplus" class="fa fa-minus"
@@ -208,7 +216,7 @@
             <div class="table-row-column collapse col-md-12" id="collapselote{{ref.id}}{{fam.id}}{{tipo.id}}"
               style="padding: 0;">
               <div class="table-row col-md-12" *ngFor="let lote of tipo.child" style="border: none;">
-                <div class="col-md-6"></div>
+                <div class="col-md-6" ></div>
                 <div class="col-md-3 table-row-column"
                   style="background: whitesmoke; text-align: -webkit-center; border-bottom: 2px solid white;">
                   {{lote.brand}}
