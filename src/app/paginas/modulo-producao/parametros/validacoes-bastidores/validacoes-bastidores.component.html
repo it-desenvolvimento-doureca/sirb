@@ -40,7 +40,7 @@
 
 
 <!-- Modal dados-->
-<p-dialog header="Sectores Agregadores" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+<p-dialog header="Validações Bastidores" [responsive]="true" [positionTop]="0" styleClass="dialognot"
   [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
   [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
 
@@ -50,7 +50,7 @@
       <div class="col-md-12" style="padding: 0;  margin-bottom: 15px; min-height: 200px;">
         <div class="col-md-4" style="padding: 0;">
           <div class="form-group col-md-12">
-            <label for="nome">Descricao</label>
+            <label for="nome">Descrição</label>
             <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="descricao"
               [ngModelOptions]="{standalone: true}" required autocomplete="off" />
           </div>

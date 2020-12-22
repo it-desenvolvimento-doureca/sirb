@@ -67,7 +67,7 @@ export class PlaneamentosFormComponent implements OnInit {
       this.anos.push({ value: x, label: x })
     }
 
-    for (var y = 1; y <= 52; y++) {
+    for (var y = 1; y <= 53; y++) {
       this.semanas.push({ value: y, label: y })
     }
 

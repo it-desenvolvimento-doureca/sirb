@@ -1,0 +1,120 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tipos Auditoria</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column field="descricao" header="Descricão" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+
+
+<!-- Modal dados-->
+<p-dialog header="Tipo Auditoria" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0;  margin-bottom: 15px; min-height: 90px;">
+        <div class="col-md-12" style="padding: 0;">
+          <div class="form-group col-md-12" style="padding: 0;">
+            <label for="nome">Descrição</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="descricao"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+        <div style="padding: 1px 5px 1px 0; width: 200px;" class="form-group col-md-4 ">
+          <label>Ano:</label><br>
+          <p-dropdown (onChange)="alteraAno($event)" [options]="anos" class="droplinha"
+            [style]="{'width':'185px','height':'25px'}" [(ngModel)]="ano" [ngModelOptions]="{standalone: true}"
+            [required]="true">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-md-12" style="padding: 0;  margin-bottom: 15px; min-height: 200px;">
+        <table class="tg">
+          <tr>
+            <th class="tg-wfll" rowspan="2" style="width: 90px;">Quantidades Previstas</th>
+            <th class="tg-wfll">Janeiro</th>
+            <th class="tg-wfll">Fevereiro</th>
+            <th class="tg-wfll">Março</th>
+            <th class="tg-wfll">Abril</th>
+            <th class="tg-wfll">Maio</th>
+            <th class="tg-wfll">Junho</th>
+            <th class="tg-wfll">Julho</th>
+            <th class="tg-wfll">Agosto</th>
+            <th class="tg-wfll">Setembro</th>
+            <th class="tg-wfll">Outubro</th>
+            <th class="tg-wfll">Novembro</th>
+            <th class="tg-wfll">Dezembro</th>
+          </tr>
+
+          <tr *ngFor="let col of tipos_quantidades">
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_1" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_2" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_3" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_4" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_5" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_6" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_7" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_8" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_9" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_10" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_11" [ngModelOptions]="{standalone: true}"></td>
+            <td class="tg-0pky"><input [disabled]="!acesso_editar" type="number" class="form-control2"
+                [(ngModel)]="col.quantidade_MES_12" [ngModelOptions]="{standalone: true}"></td>
+
+          </tr>
+
+        </table>
+      </div>
+
+      <div class="col-md-12">
+        <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+          (click)="dialognovo = false">Fechar</button>
+        <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+          [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+        <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+      </div>
+    </div>
+
+    <p-footer>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-confirmDialog key="conf001" appendTo="body"></p-confirmDialog>

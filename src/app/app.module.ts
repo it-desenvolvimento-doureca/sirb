@@ -306,6 +306,11 @@ import { CausasAcidenteComponent } from './paginas/modulo-seguranca-trabalho/par
 import { EpisComponent } from './paginas/modulo-recursos-humanos/parametros/epis/epis.component';
 import { RCMOVRECLAMACAOCLIENTESService } from './servicos/rc-mov-reclamacao-clientes.service';
 import { AnaliseLoteFornecedorComponent } from './paginas/modulo-producao/analise-de-rejeicoes/analise-lote-fornecedor/analise-lote-fornecedor.component';
+import { AuditoriasComponent } from './paginas/modulo-qualidade/auditorias/auditorias.component';
+import { TipoAuditoriaComponent } from './paginas/modulo-qualidade/parametros/tipo-auditoria/tipo-auditoria.component';
+import { QUADICTIPOSAUDITORIAQTDPREVISTAService } from './servicos/qua-dic-tipos-auditoria-qtd-prevista.service';
+import { QUADICTIPOSAUDITORIAService } from './servicos/qua-dic-tipos-auditoria.service';
+import { QUAMOVAUDITORIASService } from './servicos/qua-mov-auditorias.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -630,6 +635,14 @@ const routes: Routes = [
       { path: 'editar', component: FichaComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
   },
 
+  {
+    path: 'auditorias', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Auditorias" },
+    children: [
+      { path: '', component: AuditoriasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: AuditoriasComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
+  },
+
+  { path: 'tipo_auditoria', component: TipoAuditoriaComponent, canActivate: [LoginService], data: { breadcrumb: "Tipo Auditoria" } },
   { path: 'ambitos', component: AmbitosComponent, canActivate: [LoginService], data: { breadcrumb: "Âmbitos" } },
   { path: 'estadosfuncionarios', component: EstadosfuncionariosComponent, canActivate: [LoginService], data: { breadcrumb: "Estados Funcionários" } },
   { path: 'sectores', component: SectoresComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores" } },
@@ -925,7 +938,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ParametrosSeguimentoComponent,
     CausasAcidenteComponent,
     EpisComponent,
-    AnaliseLoteFornecedorComponent
+    AnaliseLoteFornecedorComponent,
+    AuditoriasComponent,
+    TipoAuditoriaComponent
   ],
   imports: [
     BrowserModule,
@@ -1114,6 +1129,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ATDICCAUSASACIDENTEService,
     RHDICEPIService,
     RCMOVRECLAMACAOCLIENTESService,
+    QUADICTIPOSAUDITORIAQTDPREVISTAService,
+    QUADICTIPOSAUDITORIAService,
+    QUAMOVAUDITORIASService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

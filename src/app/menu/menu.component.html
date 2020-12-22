@@ -900,10 +900,11 @@
                 <!-- MENU RECLAMAÇÕES-->
                 <!---->
                 <div class="panel panel-default">
-                    <div class="panel-heading"
-                        [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_qualidade',true) || router.isActive('/seguranca_trabalho',true) || router.isActive('/reclamacoes_relatorios',true) || router.isActive('/reclamacoesfornecedores',true) || router.isActive('/reclamacoesclientes',true) || router.isActive('/temposresposta',true) 
+                    <div class="panel-heading" [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_qualidade',true) || router.isActive('/seguranca_trabalho',true) || router.isActive('/reclamacoes_relatorios',true) || router.isActive('/reclamacoesfornecedores',true) || router.isActive('/reclamacoesclientes',true) || router.isActive('/temposresposta',true) 
                         || router.isActive('/planosacaoqualidade',false) || router.isActive('/rejeicoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) || router.isActive('/tiposocorrencia',true)  
-                        || router.isActive('/tipos_ocorrencia',true) || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) ||  router.isActive('/tiposnaodetecao',true) }">
+                        || router.isActive('/tipos_ocorrencia',true) || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) ||  router.isActive('/tiposnaodetecao',true) 
+                        || router.isActive('/auditorias',true) || router.isActive('/tipo_auditoria',true)  
+                    }">
                         <h4 class="panel-title">
                             <a id="node5" data-toggle="collapse" data-parent="#accordion" href="#collapsereclamacoes">
                                 <span class="glyphicon glyphicon-list-alt ">
@@ -971,6 +972,14 @@
                                         </ul>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>
+                                        <li id="node55" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/auditorias']">Auditorias</a>
+                                        </li>
+                                    </td>
+                                </tr>
                                 <!--<tr>
                                     <td>
                                         <li id="node55" data-toggle="collapse" data-target="#rrrclam" class="collapsed"
@@ -993,7 +1002,7 @@
                                     <td>
                                         <li id="node52" data-toggle="collapse" data-target="#parametrosrecl"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true)  || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) || 
+                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true)  || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) || router.isActive('/tipo_auditoria',true) || 
                                             router.isActive('/tiposocorrencia',true) ||  router.isActive('/tiposnaodetecao',true) || router.isActive('/temposresposta',true) || router.isActive('/rejeicoes',true) || router.isActive('/accoesreclamacoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
@@ -1050,6 +1059,10 @@
                                             </li>
                                             <li id="node23103" [routerLinkActive]="['active']" [routerLink]="['/epis']">
                                                 <a>EPI's</a>
+                                            </li>
+                                            <li id="node23104" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipo_auditoria']">
+                                                <a>Tipo Auditoria</a>
                                             </li>
                                         </ul>
                                     </td>
