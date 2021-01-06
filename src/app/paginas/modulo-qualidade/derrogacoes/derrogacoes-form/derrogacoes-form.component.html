@@ -1,0 +1,288 @@
+<div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disCriar" [hidden]="!btcriar">
+            <a (click)="novaderrogacao()" [ngClass]="novo ? 'cor_modo' : null">
+              <i class="material-icons">create_new_folder</i>Novo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disEditar" [hidden]="!bteditar">
+            <a (click)="edita()" [ngClass]="(modoedicao && !novo) ? 'cor_modo' : null">
+              <i class="material-icons">mode_edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disFechar" [hidden]="!btfechar">
+            <a (click)="fechar()">
+              <i class="material-icons">close</i>Fechar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
+            <a (click)="apagar()">
+              <i class="material-icons">delete</i>Anular
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <!--li [hidden]="!btanterior" style="display: inline-block; position: fixed; right: 52%;">
+            <a (click)="anterior()">
+              <i class="material-icons">keyboard_arrow_left</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!btseguinte" style="display: inline-block; position: fixed; right: 49%;">
+            <a (click)="seguinte()">
+              <i class="material-icons">keyboard_arrow_right</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Derrogações</h4>
+            <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado:
+              <b>{{texto_estado}}</b>
+              <span *ngIf="data_FECHO != null">({{getResponsavel(utz_FECHO)}} - {{data_FECHO_texto}})</span>
+            </h5>
+
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+                <p-panel header="DETALHES" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <label>Nº:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="id_DERROGACAO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-2">
+                      <label style="display: -webkit-box;">Data Registo:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'55%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:38%; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_CRIA"
+                        [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label style="display: -webkit-box;">Data de Início:</label>
+                      <p-calendar [disabled]="!modoedicao" (onChange)="atualizaDatas($event)"
+                        (onInput)="atualizaDatas($event)" (onSelect)="atualizaDatas($event)"
+                        [style]="{'height':'25px','width':'91%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_INICIO"
+                        [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label style="display: -webkit-box;">Data de Fim:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="data_FIM"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Interna/Externa:</label>
+                      <br>
+                      <p-dropdown [filter]="true" (onChange)="atualizadataRejeicao($event)"
+                        [options]="drop_interna_EXTERNA" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="interna_EXTERNA" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Utilizador de Registo:</label>
+                      <p-dropdown [filter]="true" [options]="drop_utilizadores"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="utz_CRIA"
+                        [ngModelOptions]="{standalone: true}" [disabled]="true" [required]="true"></p-dropdown>
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Emissor:</label>
+                      <p-dropdown [filter]="true" [options]="drop_utilizadores"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="emissor"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Unidade:</label>
+                      <p-dropdown [filter]="true" [options]="unidades"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="unidade"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Setor:</label>
+                      <p-dropdown [filter]="true" [options]="seccoes"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="setor"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-12">
+                      <label>Motivo da derrogação</label>
+                      <textarea [disabled]="!modoedicao " pInputTextarea [(ngModel)]="motivo" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 45px; width: 100%;"></textarea>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-12">
+                      <label>Causa</label>
+                      <textarea [disabled]="!modoedicao " pInputTextarea [(ngModel)]="causa" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 45px; width: 100%;"></textarea>
+                    </div>
+
+                  </div>
+                </p-panel>
+                <p-panel header="DADOS DO CLIENTE" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                      <label>Cliente:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropc (onChange)="getMoradas(dropc.value.id)"
+                        [options]="drop_cliente" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="cliente" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                      <label>Morada Cliente:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropa (onChange)="getArtigos(dropa.value.id)"
+                        [options]="drop_moradas" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="morada_CLIENTE" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao || !(drop_moradas.length > 0)" [required]="true"></p-dropdown>
+                    </div>
+                  </div>
+                </p-panel>
+
+                <p-panel header="DADOS DA REFERÊNCIA" [toggleable]="false" [style]="{'margin-bottom':'20px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
+                      <label>Referência:</label>
+                      <p-dropdown [filter]="true" (onChange)="alteraReferencia($event)" [options]="drop_referencia"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="referencia"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_referencia.length > 0)"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
+                      <label>Designação:</label>
+                      <input [disabled]="!modoedicao || !(drop_referencia.length > 0)" type="text" class="form-control2"
+                        [(ngModel)]="designacao_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-1">
+                      <label>Família:</label>
+                      <input required="true" [disabled]="!modoedicao || !(drop_referencia.length > 0)" type="text"
+                        class="form-control2" [(ngModel)]="familia_REF" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <label>Quant.:</label>
+                      <input [disabled]="!modoedicao" type="number" class="form-control2" [(ngModel)]="qtd"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+
+                  </div>
+                </p-panel>
+              </div>
+
+              <button type="button" (click)="btconcluir()" class="btn btn-success pull-left"
+                [hidden]="novo || !modoedicao || reclamacao_ENCERRADA">Concluir</button>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" #buttongravar>Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Anulado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <h6>{{errovalida}}</h6>
+  </div>
+</p-dialog>
+
+
+
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar" [modal]="true">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
+</p-dialog>
+
+
+<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
+  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
+  [modal]="true">
+  <div class="container">
+    <div class="row">
+      <div id="loading">
+        <ul class="bokeh">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-dialog>

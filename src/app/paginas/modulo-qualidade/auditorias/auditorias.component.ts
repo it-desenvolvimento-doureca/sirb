@@ -226,7 +226,7 @@ export class AuditoriasComponent implements OnInit {
 
           this.dados_linha = this.dados_linha.slice();
           this.atualizatotais(1);
-        }else{
+        } else {
           this.atualizatotais(1);
         }
       }, error => { console.log(error); });
@@ -292,7 +292,7 @@ export class AuditoriasComponent implements OnInit {
     }
 
 
-    this.router.navigate(['auditorias/view']);
+    this.router.navigate(['auditorias']);
 
 
     this.simular(this.inputgravou);
@@ -328,6 +328,7 @@ export class AuditoriasComponent implements OnInit {
         this['totalmes' + i + '_realizadas'] += this.dados_linha[x]['mes' + i + '_realizadas'];
         this['totalmes' + i + '_previstas'] += this.dados_linha[x]['mes' + i + '_previstas'];
 
+        this.dados_linha[x]['mes' + i + '_eficiencia'] = (this.dados_linha[x]['mes' + i + '_previstas'] <= 0) ? 0 : ((this.dados_linha[x]['mes' + i + '_realizadas'] / this.dados_linha[x]['mes' + i + '_previstas']) * 100);
 
         if (i <= mes_atual) {
           this.dados_linha[x].ano_previstas += this.dados_linha[x]['mes' + i + '_previstas'];

@@ -2,6 +2,8 @@
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
+    font-size: 12px;
+    white-space: nowrap;
 }
 
 .tg td {
@@ -25,9 +27,18 @@
 
 .tg .tg-wfll {
     font-weight: bold;
-    background-color: #3765bb;
+    background-color: #385da2;
     text-align: center;
     vertical-align: middle;
+    border-right: 2px solid black;
+}
+
+.tg .tg-wflh {
+    font-weight: bold;
+    background-color: #385da2;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
 }
 
 .tg .tg-6it1 {
@@ -39,7 +50,7 @@
 
 .tg .tg-gy6f {
     font-weight: bold;
-    background-color: #3765bb;
+    background-color: #8EA9DB;
     text-align: center;
     vertical-align: middle;
     max-width: 53px;
@@ -48,7 +59,7 @@
 }
 
 .tg .tg-llyw {
-    background-color: #3765bb;
+    background-color: #385da2;
     text-align: center;
     vertical-align: middle;
     max-width: 59px;
@@ -131,6 +142,7 @@ table input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .colefic {
-    background: #3765bb;
+    background: #8EA9DB;
     text-align: center;
+    border-right: 2px solid black !important
 }

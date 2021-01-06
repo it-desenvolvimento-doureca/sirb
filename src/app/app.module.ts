@@ -311,6 +311,9 @@ import { TipoAuditoriaComponent } from './paginas/modulo-qualidade/parametros/ti
 import { QUADICTIPOSAUDITORIAQTDPREVISTAService } from './servicos/qua-dic-tipos-auditoria-qtd-prevista.service';
 import { QUADICTIPOSAUDITORIAService } from './servicos/qua-dic-tipos-auditoria.service';
 import { QUAMOVAUDITORIASService } from './servicos/qua-mov-auditorias.service';
+import { DerrogacoesComponent } from './paginas/modulo-qualidade/derrogacoes/derrogacoes.component';
+import { DerrogacoesFormComponent } from './paginas/modulo-qualidade/derrogacoes/derrogacoes-form/derrogacoes-form.component';
+import { QUADERROGACOESService } from './servicos/qua-derrogacoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -477,6 +480,15 @@ const routes: Routes = [
       { path: 'view', component: PlameamentoAnalisesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Análise" } },
       { path: 'editar', component: PlameamentoAnalisesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: PlameamentoAnalisesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+
+  {
+    path: 'derrogacoes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Derrogações" },
+    children: [
+      { path: '', component: DerrogacoesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: DerrogacoesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Derrogações" } },
+      { path: 'editar', component: DerrogacoesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: DerrogacoesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
 
   { path: 'producao_veiculos', component: ProducaoVeiculosComponent, canActivate: [LoginService], data: { breadcrumb: "Veículos" } },
@@ -940,7 +952,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     EpisComponent,
     AnaliseLoteFornecedorComponent,
     AuditoriasComponent,
-    TipoAuditoriaComponent
+    TipoAuditoriaComponent,
+    DerrogacoesComponent,
+    DerrogacoesFormComponent
   ],
   imports: [
     BrowserModule,
@@ -1132,6 +1146,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     QUADICTIPOSAUDITORIAQTDPREVISTAService,
     QUADICTIPOSAUDITORIAService,
     QUAMOVAUDITORIASService,
+    QUADERROGACOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

@@ -185,7 +185,7 @@ export class FormSeccoesComponent implements OnInit {
             perf.id_SECCAO = res.id;
             this.inserirtarget(x, perf, res.id);
           }
-
+          this.router.navigate(['seccoes/view'], { queryParams: { id: res.id } });
         },
         error => {
           this.simular(this.inputerro);

@@ -19,6 +19,7 @@ export class GTDICTarefasComponent implements OnInit {
   id_selected: number;
   novazona: boolean;
   datacria;
+  selectedvalues = [];
   utz_cria;
   tipos_tarefas = [{ value: "", label: "Selecionar Tipo" }, { value: "R", label: "Reclamações" }, { value: "A", label: "Amostras" }, { value: "PA", label: "Planos de Acção" }]
 
@@ -90,6 +91,7 @@ export class GTDICTarefasComponent implements OnInit {
   //listar os dados das unidades de dados na tabela
   listar() {
     this.dados = [];
+    this.selectedvalues = [];
     this.RCDICACCOESRECLAMACAOService.getAll().subscribe(
       response => {
         for (var x in response) {

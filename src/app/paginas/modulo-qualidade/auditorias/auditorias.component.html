@@ -32,8 +32,8 @@
                   <div style="padding: 1px 5px 1px 10px; overflow-y: auto;" class="form-group col-md-12">
                     <table class="tg">
                       <tr>
-                        <th class="tg-wfll" rowspan="2">Tipo Auditoria</th>
-                        <th class="tg-wfll" colspan="3">Total {{ano}}</th>
+                        <th class="tg-wflh" rowspan="2">Tipo Auditoria</th>
+                        <th class="tg-wflh" colspan="3">Total {{ano}}</th>
                         <th class="tg-wfll" colspan="3">Janeiro</th>
                         <th class="tg-wfll" colspan="3">Fevereiro</th>
                         <th class="tg-wfll" colspan="3">Março</th>
@@ -49,56 +49,63 @@
 
                       </tr>
                       <tr>
-                        <td class="tg-9rbh">Previstas</td>
-                        <td class="tg-9rbh">Realizadas</td>
-                        <td class="tg-9rbh">Eficiência</td>
+                        <td class="tg-wflh">Previstas</td>
+                        <td class="tg-wflh">Realizadas</td>
+                        <td class="tg-wflh">Eficiência</td>
 
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
                         <td class="tg-gy6f">Previstas</td>
                         <td class="tg-gy6f">Realizadas</td>
-                        <td class="tg-gy6f">Eficiência</td>
+                        <td class="tg-gy6f" style="border-right: 2px solid black;">Eficiência</td>
 
                       </tr>
                       <tr *ngFor="let col of dados_linha">
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none;">{{col.tipo_auditoria}}</td>
+                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                          <b>{{col.tipo_auditoria}}</b>
+                        </td>
 
-                        <td class="tg-0pky"><input [disabled]="true" type="number" class="form-control2"
-                            [(ngModel)]="col.ano_previstas" [ngModelOptions]="{standalone: true}"></td>
-                        <td class="tg-0pky"><input [disabled]="true" type="number" class="form-control2"
-                            [(ngModel)]="col.ano_realizadas" [ngModelOptions]="{standalone: true}"></td>
-                        <td class="tg-0pky">{{col.ano_eficiencia| number: '1.0-0'}}% </td>
+                        <td class="tg-0pky" style="background-color: #FFE699;">
+                          <input [disabled]="true" style="background: none;" type="number" class="form-control2"
+                            [(ngModel)]="col.ano_previstas" [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td class="tg-0pky" style="background-color: #FFF2CC;">
+                          <input [disabled]="true" style="background: none;" type="number" class="form-control2"
+                            [(ngModel)]="col.ano_realizadas" [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td class="tg-wflh" style="border-right: 2px solid black;">{{col.ano_eficiencia| number:
+                          '1.0-0'}}% </td>
 
 
                         <td class="tg-0pky colprev"><input [disabled]="true" type="number" class="form-control2"
@@ -189,58 +196,71 @@
 
                       </tr>
                       <tr>
-                        <td class="tg-wfll">TOTAL</td>
-                        <td class="tg-llyw">{{totalano_previstas}}</td>
-                        <td class="tg-llyw">{{totalano_realizadas}}</td>
-                        <td class="tg-llyw">{{totalano_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-wflh">TOTAL</td>
+                        <td class="tg-wflh">{{totalano_previstas}}</td>
+                        <td class="tg-wflh">{{totalano_realizadas}}</td>
+                        <td class="tg-wflh" style="border-right: 2px solid black;">{{totalano_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes1_previstas}}</td>
                         <td class="tg-llyw">{{totalmes1_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes1_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes1_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes2_previstas}}</td>
                         <td class="tg-llyw">{{totalmes2_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes2_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes2_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes3_previstas}}</td>
                         <td class="tg-llyw">{{totalmes3_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes3_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes3_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes4_previstas}}</td>
                         <td class="tg-llyw">{{totalmes4_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes4_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes4_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes5_previstas}}</td>
                         <td class="tg-llyw">{{totalmes5_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes5_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes5_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes6_previstas}}</td>
                         <td class="tg-llyw">{{totalmes6_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes6_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes6_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes7_previstas}}</td>
                         <td class="tg-llyw">{{totalmes7_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes7_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes7_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes8_previstas}}</td>
                         <td class="tg-llyw">{{totalmes8_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes8_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes8_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes9_previstas}}</td>
                         <td class="tg-llyw">{{totalmes9_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes9_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes9_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes10_previstas}}</td>
                         <td class="tg-llyw">{{totalmes10_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes10_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes10_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes11_previstas}}</td>
                         <td class="tg-llyw">{{totalmes11_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes11_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes11_eficiencia | number:
+                          '1.0-0'}}%</td>
 
                         <td class="tg-llyw">{{totalmes12_previstas}}</td>
                         <td class="tg-llyw">{{totalmes12_realizadas}}</td>
-                        <td class="tg-llyw">{{totalmes12_eficiencia | number: '1.0-0'}}%</td>
+                        <td class="tg-llyw" style="border-right: 2px solid black;">{{totalmes12_eficiencia | number:
+                          '1.0-0'}}%</td>
                       </tr>
                     </table>
                   </div>
