@@ -31,7 +31,11 @@ export class DerrogacoesFormComponent implements OnInit {
   familia_REF;
   user: any;
   novo: boolean;
-
+  displayLoading = false;
+  errovalida;
+  mensagem_verifica;
+  displayvalidacao;
+  
 
   @ViewChild('escondebt') escondebt: ElementRef;
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
