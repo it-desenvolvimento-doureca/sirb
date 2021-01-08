@@ -314,6 +314,7 @@ import { QUAMOVAUDITORIASService } from './servicos/qua-mov-auditorias.service';
 import { DerrogacoesComponent } from './paginas/modulo-qualidade/derrogacoes/derrogacoes.component';
 import { DerrogacoesFormComponent } from './paginas/modulo-qualidade/derrogacoes/derrogacoes-form/derrogacoes-form.component';
 import { QUADERROGACOESService } from './servicos/qua-derrogacoes.service';
+import { GERREFERENCIASFASTRESPONSEREJEICOESService } from './servicos/ger-referencias-fastresponse-rejeicoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1147,6 +1148,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     QUADICTIPOSAUDITORIAService,
     QUAMOVAUDITORIASService,
     QUADERROGACOESService,
+    GERREFERENCIASFASTRESPONSEREJEICOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

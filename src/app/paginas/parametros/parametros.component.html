@@ -488,6 +488,19 @@
                               </div> -->
 
                             </div>
+                            <div class="col-md-12 " style="padding: 6px">
+                              <h5
+                                style="margin: 0; font-weight: 450; background: lightgray; padding: 3px 0 0 8px; color: black;">
+                                Auditorias
+                              </h5>
+                              <hr style="margin: 0px 0 7px 0; border:2; border-top: 2px solid #d5d3d3;" />
+                              <div class="form-group col-md-12" style="padding: 0px 18px 0 0;">
+                                <label for="objetivo_AUDITORIAS">Objetivo:</label>
+                                <input [disabled]="!modoedicao" type="number" class="form-control"
+                                  id="objetivo_AUDITORIAS" [(ngModel)]="objetivo_AUDITORIAS" step="0.01"
+                                  [ngModelOptions]="{standalone: true}" />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

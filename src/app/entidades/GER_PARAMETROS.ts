@@ -26,4 +26,5 @@ export class GER_PARAMETROS {
     sectores_ABSENTISMO: string;
     taxa_ABSENTISMO: number;
     taxa_REJEICAO: number;
+    objetivo_AUDITORIAS: number;
 }

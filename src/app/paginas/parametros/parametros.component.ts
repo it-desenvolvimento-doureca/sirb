@@ -61,6 +61,7 @@ export class ParametrosComponent implements OnInit {
   tempo_PAUSA_TURNOS_CONTINUOS;
   sectores_ABSENTISMO: any;
   taxa_ABSENTISMO: number;
+  objetivo_AUDITORIAS;
   taxa_REJEICAO: number;
   sectores: any[];
 
@@ -161,6 +162,7 @@ export class ParametrosComponent implements OnInit {
           this.modelo_REPORT_PRODUCAO = response[x].modelo_REPORT_PRODUCAO;
           this.sectores_ABSENTISMO = (response[x].sectores_ABSENTISMO == null) ? null : response[x].sectores_ABSENTISMO.split(",");
           this.taxa_ABSENTISMO = response[x].taxa_ABSENTISMO;
+          this.objetivo_AUDITORIAS = response[x].objetivo_AUDITORIAS;
           this.taxa_REJEICAO = response[x].taxa_REJEICAO;
           this.tempo_SINCRO_CARTELAS = response[x].tempo_SINCRO_CARTELAS;
           this.cartelas_ATIVO = response[x].cartelas_ATIVO;
@@ -281,6 +283,7 @@ export class ParametrosComponent implements OnInit {
 
     parametros.sectores_ABSENTISMO = (this.sectores_ABSENTISMO.length > 0) ? this.sectores_ABSENTISMO.toString() : null;
     parametros.taxa_ABSENTISMO = this.taxa_ABSENTISMO;
+    parametros.objetivo_AUDITORIAS = this.objetivo_AUDITORIAS;
     parametros.taxa_REJEICAO = this.taxa_REJEICAO;
 
     parametros.tempo_SINCRO_CARTELAS = this.tempo_SINCRO_CARTELAS;

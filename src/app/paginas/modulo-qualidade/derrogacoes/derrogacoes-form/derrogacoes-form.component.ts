@@ -75,20 +75,23 @@ export class DerrogacoesFormComponent implements OnInit {
   unidades = [{ value: "", label: "Sel. Unidade" }, { value: 1, label: "Formariz" }, { value: 2, label: "São Bento" }];
   seccoes: any[];
   drop_interna_EXTERNA = [{ value: "", label: "Selecionar" }, { value: 'I', label: "Interna" }, { value: 'E', label: "Externa" }];
-  derrogacao_dados: import("c:/Users/it2/Projects/SIRB/src/app/entidades/QUA_DERROGACOES").QUA_DERROGACOES;
+  derrogacao_dados: QUA_DERROGACOES;
   id_DERROGACAO: number;
-  emissor: number;
+  emissor;
   estado: string;
   id_CLIENTE: number;
   interna_EXTERNA: string;
   motivo: string;
   nome_CLIENTE: string;
   qtd: number;
-  setor: number;
-  unidade: number;
+  setor;
+  unidade;
   causa: string;
   data_INICIO: Date;
   data_FIM: string;
+  data_FECHO: Date;
+  data_FECHO_texto;
+  utz_FECHO: number;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private renderer: Renderer,
@@ -166,6 +169,8 @@ export class DerrogacoesFormComponent implements OnInit {
         this.btcriar = true;
       }
     }
+
+    if (!this.novo) { this.carregaDados(true, id); }
 
   }
 
@@ -254,6 +259,7 @@ export class DerrogacoesFormComponent implements OnInit {
             this.emissor = response[x].emissor;
             this.estado = response[x].estado;
             this.etsnum = response[x].etsnum;
+            this.referencia_temp = response[x].referencia;
             this.familia_REF = response[x].familia_REF;
             this.id_CLIENTE = response[x].id_CLIENTE;
             this.interna_EXTERNA = response[x].interna_EXTERNA;
@@ -267,9 +273,12 @@ export class DerrogacoesFormComponent implements OnInit {
             this.causa = response[x].causa;
             this.data_CRIA = new Date(response[x].data_CRIA);
             this.hora_CRIA = new Date(response[x].data_CRIA).toLocaleTimeString().slice(0, 5);
-            this.data_INICIO = response[x].data_INICIO;
+            this.data_INICIO = (response[x].data_INICIO == null) ? null : new Date(response[x].data_INICIO);
             this.data_FIM = response[x].data_FIM;
             this.utz_CRIA = response[x].utz_CRIA;
+            this.data_FECHO = response[x].data_FECHO;
+            this.utz_FECHO = response[x].utz_FECHO;
+            this.data_FECHO_texto = (response[x].data_FECHO == null) ? null : this.formatDate2(response[x].data_FECHO);
 
 
 
@@ -277,6 +286,12 @@ export class DerrogacoesFormComponent implements OnInit {
 
 
             this.texto_estado = this.getESTADO(this.estado);
+
+            if (this.estado == 'R') {
+              this.btapagar = false;
+              this.btfechar = false;
+              this.bteditar = false;
+            }
 
           }
 
@@ -289,6 +304,14 @@ export class DerrogacoesFormComponent implements OnInit {
 
   }
 
+  getResponsavel(id) {
+    if (id != null) var utz = this.drop_utilizadores.find(item => item.value == id);
+    var nome = "---";
+    if (utz) {
+      nome = utz.label;
+    }
+    return nome;
+  }
 
   alteraReferencia(event) {
     this.designacao_REF = "";
@@ -337,7 +360,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
     derrogacao.data_INICIO = this.data_INICIO;
     derrogacao.data_FIM = this.data_FIM;
-    derrogacao.designacao_REF = this.data_FIM;
+    derrogacao.designacao_REF = this.designacao_REF;
     derrogacao.emissor = this.emissor;
 
 
@@ -355,14 +378,14 @@ export class DerrogacoesFormComponent implements OnInit {
 
     derrogacao.motivo = this.motivo;
     derrogacao.qtd = this.qtd;
-    derrogacao.referencia = this.referencia;
+    derrogacao.referencia = this.referencia.valor;
     derrogacao.setor = this.setor;
     derrogacao.unidade = this.unidade;
     derrogacao.causa = this.causa;
 
     derrogacao.data_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
     derrogacao.utz_CRIA = this.utz_CRIA;
-    derrogacao.data_ULT_MODIF = this.user;
+    derrogacao.utz_ULT_MODIF = this.user;
     derrogacao.data_ULT_MODIF = new Date();
 
     if (this.novo) {
@@ -407,7 +430,7 @@ export class DerrogacoesFormComponent implements OnInit {
   //popup apagar
   apagar() {
     this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende apagar?',
+      message: 'Tem a certeza que pretende anular?',
       header: 'Anular Confirmação',
       icon: 'fa fa-trash',
       accept: () => {
@@ -432,6 +455,33 @@ export class DerrogacoesFormComponent implements OnInit {
     });
   }
 
+  //popup fechar
+  fechar() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende fechar?',
+      header: 'Fechar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+        var derrogacao = new QUA_DERROGACOES;
+
+        derrogacao = this.derrogacao_dados;
+
+        derrogacao.utz_FECHO = this.user;
+        derrogacao.data_FECHO = new Date();
+        //derrogacao.inativo = true;
+        derrogacao.estado = "F";
+
+        this.QUADERROGACOESService.update(derrogacao).subscribe(
+          res => {
+            this.router.navigate(['derrogacoes']);
+            this.simular(this.inputgravou);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+
+      }
+
+    });
+  }
 
 
 

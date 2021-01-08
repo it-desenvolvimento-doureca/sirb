@@ -342,8 +342,8 @@
                         </p-checkbox>
                       </div>
 
-                      <div class="table-row-column col-md-10"> <label
-                          style="position: relative; top: -11px;">Referências:</label>
+                      <div class="table-row-column col-md-10">
+                        <label style="position: relative;">Referências:</label>
                         <!--<p-multiSelect [filter]="true" appendTo="body" [options]="referencias"
                           [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
                           [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
@@ -361,7 +361,11 @@
                       <div class="table-row-column col-md-2" style="height: 43px;">
                         <button type="submit" class="btn btn-success " [disabled]="false"
                           [disabled]="loading || loading2"
-                          style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Aplicar</button>
+                        <button type="button" class="btn btn-warning " [disabled]="false"
+                          (click)="abrirdialog_refs_dashboard()"
+                          style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Referências
+                          Fast Response</button>
                       </div>
 
 
@@ -1010,3 +1014,74 @@
     </div>
   </div>
 </div>
+
+
+<p-dialog header="Referências Dashboard" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_dialog" [modal]="true">
+
+  <form id="formReclama66" role="form" ngNativeValidate>
+    <!-- Modal Body -->
+    <div style="display: inline;">
+      <div class="form-group col-md-4">
+        <label for="semana">Dia</label>
+        <p-calendar [style]="{'height':'25px','width':'100%','margin-right': '30px'}" dateFormat="yy-mm-dd"
+          placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+          (onInput)="atualizatabelarefs()" (onSelect)="atualizatabelarefs()" [(ngModel)]="data_dialog"
+          [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
+        </p-calendar>
+      </div>
+
+      <div class="table-row-column col-md-12"> <label style="color: black;">Referência:</label><br>
+        <!--<p-dropdown [filter]="true" appendTo="body" [options]="referencias2"
+          [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+          [(ngModel)]="referencia_func" [ngModelOptions]="{standalone: true}">
+        </p-dropdown>-->
+        <p-autoComplete [(ngModel)]="campo_ref_dash" [suggestions]="filteredreferencia_ref_dash"
+          class="autocompleseguranca" [style]="{'width': '98%', 'height': '25px'}" forceSelection="true"
+          emptyMessage="Sem Resultados..." (onUnselect)="filteronUnselect_ref_dash($event)"
+          (onSelect)="filterSelect_ref_dash($event)" [ngModelOptions]="{standalone: true}" [required]="true"
+          (completeMethod)="filterRef_ref_dash($event)" field="label" placeholder="Pesquisar..." [minLength]="1">
+        </p-autoComplete>
+        <button (click)="add_ref_dash()" type="submit" class="btn btn-success btn-sm">
+          <span class="glyphicon glyphicon-plus"></span> Adicionar
+        </button>
+      </div>
+
+      <div class="col-md-12">
+        <table class="table table-bordered" style="font-size: 13px; height: auto; width: 100%;">
+          <thead class="thead-light">
+            <tr>
+              <th>
+                <b>Referência</b>
+              </th>
+              <th class="thead-light3">
+                <b>Descrição</b>
+              </th>
+              <th style="width: 30px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dados of tabela_refs">
+              <td class="thead-light2">{{dados.referencia}}</td>
+              <td class="thead-light3">{{dados.descricao}}</td>
+              <td class="thead-light3">
+                <button type="button" (click)="eliminar_ref_dash(dados.id)"
+                  class="delete_stage_conf cqpim_button cqpim_small_button font-white bg-red op rounded_2 cqpim_tooltip"
+                  title="Eliminar">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <p-footer>
+      <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+        (click)="display_dialog = false">Fechar</button>
+    </p-footer>
+  </form>
+</p-dialog>

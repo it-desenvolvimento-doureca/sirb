@@ -3,6 +3,8 @@ import { PEDIDOSPRODUCAOService } from 'app/servicos/pedidosproducao.service';
 import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
 import { ConditionalExpr } from '@angular/compiler';
+import { GERREFERENCIASFASTRESPONSEREJEICOESService } from 'app/servicos/ger-referencias-fastresponse-rejeicoes.service';
+import { GER_REFERENCIAS_FASTRESPONSE_REJEICOES } from 'app/entidades/GER_REFERENCIAS_FASTRESPONSE_REJEICOES';
 
 @Component({
   selector: 'app-analise-de-rejeicoes',
@@ -414,6 +416,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   hora_fim3: string;
 
   campo_ref_func: any;
+  campo_ref_dash;
   campo_ref_tab6: any;
   campo_refs: any;
   filteredreferencia_func: any[] = [];
@@ -423,11 +426,18 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   data_ini_tab6: any;
   defeito_tab6: any = null;
   data_fim_tab6: any;
+  data_dialog: Date;
+  display_dialog = false;
+  tabela_refs: any[];
+  referencia_ref_dash;
+  filteredreferencia_ref_dash: any[] = [];
+  user;
 
-  constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService, private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService) { }
+  constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService,
+    private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService, private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
-
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     var d = new Date();
     this.data_fim = this.formatDate(d);
     d.setDate(d.getDate() - 1);
@@ -436,7 +446,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     this.data_ini_func = this.data_ini;
     this.data_ini_tab6 = this.data_ini;
     this.data_fim_tab6 = this.data_fim;
-
+    this.data_dialog = new Date(this.data_ini);
     this.hora_ini = "06:01";
     this.hora_ini_func = "06:01";
     this.hora_fim = "06:00";
@@ -485,7 +495,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
         //this.referencias2.push({ label: 'Selecionar Referência', value: null });
 
         for (var x in response) {
-          this.referencias.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1, value: response[x].PROREF });
+          this.referencias.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1, descricao: response[x].PRODES1, value: response[x].PROREF });
           //this.referencias2.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1, value: response[x].PROREF });
         }
 
@@ -2056,6 +2066,24 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   }
 
 
+  filterRef_ref_dash(event) {
+    this.filteredreferencia_ref_dash = this.pesquisa(event.query);
+  }
+
+  filteronUnselect_ref_dash(event) {
+    this.referencia_ref_dash = null;
+  }
+
+  filterSelect_ref_dash(event) {
+    var tab = this.referencias.find(item => item.value == event.value)
+    if (tab) {
+      this.referencia_ref_dash = event.value;
+    } else {
+      this.referencia_ref_dash = null;
+    };
+  }
+
+
 
 
   filterRef(event) {
@@ -2180,5 +2208,66 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   }
 
 
+  abrirdialog_refs_dashboard() {
+    this.atualizatabelarefs();
+    this.display_dialog = true;
+
+  }
+
+  atualizatabelarefs() {
+    if (this.data_dialog instanceof Date) {
+      this.tabela_refs = [];
+
+      this.GERREFERENCIASFASTRESPONSEREJEICOESService.getByData([{ DATA: this.formatDate(this.data_dialog) }]).subscribe(
+        response => {
+
+          this.tabela_refs = [];
+          for (var x in response) {
+            this.tabela_refs.push({ id: response[x].id, referencia: response[x].referencia, descricao: response[x].descricao });
+          }
+          this.tabela_refs = this.tabela_refs.slice();
+        },
+        error => console.log(error));
+    }
+
+  }
+
+
+  add_ref_dash() {
+    if (this.campo_ref_dash) {
+      var referencia = new GER_REFERENCIAS_FASTRESPONSE_REJEICOES;
+      referencia.descricao = this.campo_ref_dash.descricao;
+      referencia.referencia = this.campo_ref_dash.value;
+      referencia.data_CRIA = new Date();
+      referencia.utz_CRIA = this.user;
+      referencia.data = this.data_dialog;
+      this.save_ref_dash(referencia);
+      this.campo_ref_dash = null;
+      this.referencia_ref_dash = null;
+    }
+
+  }
+
+  save_ref_dash(referencia) {
+    this.GERREFERENCIASFASTRESPONSEREJEICOESService.create(referencia).then(result => {
+      this.tabela_refs.push({ id: result.id, referencia: referencia.referencia, descricao: referencia.descricao });
+      this.tabela_refs = this.tabela_refs.slice();
+    }, error => {
+      console.log(error); /*this.simular(this.inputerro);*/
+    });
+  }
+
+  eliminar_ref_dash(id) {
+    //var index = this.tabela_refs
+    this.GERREFERENCIASFASTRESPONSEREJEICOESService.delete(id).then(result => {
+      var index = this.tabela_refs.findIndex(item => item.id == id);
+      if (index > -1) {
+        this.tabela_refs.splice(index, 1);
+      }
+    }, error => {
+      console.log(error); /*this.simular(this.inputerro);*/
+    });
+
+  }
 
 }

@@ -11,17 +11,17 @@
           <div class="card-content table-responsive">
 
             <p-dataTable (onFilter)="atualizaids()" (onSort)="atualizaids()" [emptyMessage]="mensagemtabela"
-              [style]="{'min-height':'300px'}" [value]="cols" dataKey="id" [rows]="25" [paginator]="true"
+              [style]="{'min-height':'300px'}" [value]="cols" dataKey="id_DERROGACAO" [rows]="25" [paginator]="true"
               [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="N° da derrogação"
-                [style]="{'width':'97px'}">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id_DERROGACAO"
+                header="N° derrogação" [style]="{'width':'97px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="id_manu" #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+                    [(ngModel)]="id_DERROGACAO" #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" filterMatchMode="in" styleclass="text-danger" field="estado"
-                header="Status" [style]="{'width':'150px'}">
+                header="Status" [style]="{'width':'100px'}">
                 <ng-template pTemplate="filter" let-col>
                   <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados"
                     [style]="{'width':'100%'}" (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
@@ -35,87 +35,93 @@
                     [(ngModel)]="data" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data de Início"
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_INICIO"
+                header="Data de Início" [style]="{'width':'132px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="data_INICIO" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_FIM" header="Data de Fim"
                 [style]="{'width':'132px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="data" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                    [(ngModel)]="data_FIM" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data de Fim"
-                [style]="{'width':'132px'}">
-                <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="data" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
-                </ng-template>
-              </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="cliente"
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="interna_EXTERNA"
                 header="Interna / Externa">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="interna_EXTERNA" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="cliente" header="Cliente">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="cliente" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Cliente">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="unidade" header="Unidade">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="unidade" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Unidade">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="emissor" header="Emissor">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
-                </ng-template>
-              </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Emissor">
-                <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="emissor" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
 
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Referência">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="referencia"
+                header="Referência">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="referencia" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Designação">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="designacao_REF"
+                header="Designação">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="designacao_REF" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Família">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="familia_REF" header="Família">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="familia_REF" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Setor">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="setor" header="Setor">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="setor" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Qtd.">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="qtd" header="Qtd.">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="qtd" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada"
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="motivo"
                 header="Motivo da derrogação">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="motivo" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="morada" header="Causa">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="causa" header="Causa">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="morada" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="causa" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
@@ -126,8 +132,8 @@
                   </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
-                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/reclamacoesclientes/view']"
-                    [queryParams]="{ id: car.id }">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/derrogacoes/view']"
+                    [queryParams]="{ id: car.id_DERROGACAO }">
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>

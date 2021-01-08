@@ -17,7 +17,7 @@ export class DerrogacoesComponent implements OnInit {
   filtroval;
   cliente: string;
   data: string;
-  id_manu: string;
+  id_DERROGACAO: string;
   morada: string;
   estados: ({ label: string; value: string; } | { label: string; value: boolean; })[];
   query: any = [];
@@ -32,6 +32,17 @@ export class DerrogacoesComponent implements OnInit {
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
   yearTimeout: any;
+  data_INICIO: string;
+  data_FIM: string;
+  interna_EXTERNA: string;
+  unidade: string;
+  emissor: string;
+  designacao_REF: string;
+  familia_REF: string;
+  setor: string;
+  qtd: string;
+  motivo: string;
+  causa: string;
 
 
   constructor(private QUADERROGACOESService: QUADERROGACOESService, private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
@@ -46,11 +57,22 @@ export class DerrogacoesComponent implements OnInit {
 
       this.dataTableComponent.filters = array;
 
+      this.id_DERROGACAO = (array['id_DERROGACAO'] != undefined) ? array['id_DERROGACAO'].value : "";
+      //this.estado = (array['estado'] != undefined) ? array['estado'].value : "";
       this.data = (array['data'] != undefined) ? array['data'].value : "";
-      this.id_manu = (array['id'] != undefined) ? array['id'].value : "";
-      this.morada = (array['morada'] != undefined) ? array['morada'].value : "";
+      this.data_INICIO = (array['data_INICIO'] != undefined) ? array['data_INICIO'].value : "";
+      this.data_FIM = (array['data_FIM'] != undefined) ? array['data_FIM'].value : "";
+      this.interna_EXTERNA = (array['interna_EXTERNA'] != undefined) ? array['interna_EXTERNA'].value : "";
       this.cliente = (array['cliente'] != undefined) ? array['cliente'].value : "";
+      this.unidade = (array['unidade'] != undefined) ? array['unidade'].value : "";
+      this.emissor = (array['emissor'] != undefined) ? array['emissor'].value : "";
       this.referencia = (array['referencia'] != undefined) ? array['referencia'].value : "";
+      this.designacao_REF = (array['designacao_REF'] != undefined) ? array['designacao_REF'].value : "";
+      this.familia_REF = (array['familia_REF'] != undefined) ? array['familia_REF'].value : "";
+      this.setor = (array['setor'] != undefined) ? array['setor'].value : "";
+      this.qtd = (array['qtd'] != undefined) ? array['qtd'].value : "";
+      this.motivo = (array['motivo'] != undefined) ? array['motivo'].value : "";
+      this.causa = (array['causa'] != undefined) ? array['causa'].value : "";
 
       if (this.filtro2 != null && this.filtro2 != "") {
         var f = this.filtro2.split(',');
@@ -100,21 +122,55 @@ export class DerrogacoesComponent implements OnInit {
         }
         for (var x in response) {
 
-        /*  this.cols.push({
-            id: response[x].id_DERROGACAO, tipo_manu: response[x].,
-            data: this.formatDate(response[x].data_RECLAMACAO), cliente: response[x].nome_CLIENTE, morada: response[x].morada_CLIENTE,
-            referencia: response[x].referencia + ' - ' + response[x].designacao_REF, estado: this.getESTADO(response[x].estado)
-          });*/
+          this.cols.push({
+            id_DERROGACAO: response[x][0].id_DERROGACAO,
+            estado: this.getESTADO(response[x][0].estado),
+            data: this.formatDate(response[x][0].data_CRIA),
+            data_INICIO: this.formatDate(response[x][0].data_INICIO),
+            data_FIM: response[x][0].data_FIM,
+            interna_EXTERNA: this.getinterna_EXTERNA(response[x][0].interna_EXTERNA),
+            cliente: response[x][0].nome_CLIENTE,
+            unidade: this.getUnidade(response[x][0].unidade),
+            emissor: response[x][1],
+            referencia: response[x][0].referencia,
+            designacao_REF: response[x][0].designacao_REF,
+            familia_REF: response[x][0].familia_REF,
+            setor: response[x][2],
+            qtd: response[x][0].qtd,
+            motivo: response[x][0].motivo,
+            causa: response[x][0].causa,
+
+          });
 
         }
         this.cols = this.cols.slice();
 
 
 
-        if (this.filtroval) this.filtrar(this.filtro, "estado", true, "in");
+        if (this.filtroval) {
+          this.filtrar(this.filtro, "estado", true, "in");
+        } else {
+          this.filtrar("Aberto", "estado", true, "in");
+        }
       },
       error => console.log(error));
 
+  }
+
+  getinterna_EXTERNA(valor) {
+    if (valor == "I") {
+      return "INTERNA";
+    } else if (valor == "E") {
+      return "EXTERNA";
+    }
+  }
+
+  getUnidade(valor) {
+    if (valor == 1) {
+      return "Formariz";
+    } else if (valor == 2) {
+      return "São Bento";
+    }
   }
 
   //limpar filtro
@@ -123,11 +179,22 @@ export class DerrogacoesComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
     this.filtro = [];
-    this.id_manu = "";
-    this.morada = "";
+    this.id_DERROGACAO = "";
+    this.estado = "";
     this.data = "";
+    this.data_INICIO = "";
+    this.data_FIM = "";
+    this.interna_EXTERNA = "";
     this.cliente = "";
+    this.unidade = "";
+    this.emissor = "";
     this.referencia = "";
+    this.designacao_REF = "";
+    this.familia_REF = "";
+    this.setor = "";
+    this.qtd = "";
+    this.motivo = "";
+    this.causa = "";
 
     this.dataTableComponent.filter("", "", "");
 
@@ -163,7 +230,7 @@ export class DerrogacoesComponent implements OnInit {
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
       for (var x in array) {
-        ids.push(array[x].id);
+        ids.push(array[x].id_DERROGACAO);
       }
 
       if (array.length == 0) {
@@ -180,7 +247,7 @@ export class DerrogacoesComponent implements OnInit {
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
 
     for (var x in array) {
-      ids.push(array[x].id);
+      ids.push(array[x].id_DERROGACAO);
     }
 
     this.globalVar.setfiltros("derrogacoes_id", ids);
@@ -188,7 +255,7 @@ export class DerrogacoesComponent implements OnInit {
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['derrogacoes/view'], { queryParams: { id: event.data.id } });
+    this.router.navigate(['derrogacoes/view'], { queryParams: { id: event.data.id_DERROGACAO } });
   }
 
   //simular click para mostrar mensagem
