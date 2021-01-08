@@ -432,6 +432,14 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   referencia_ref_dash;
   filteredreferencia_ref_dash: any[] = [];
   user;
+  refs_selected = [];
+  select_table: any;
+  data_dialog2: Date;
+  display_dialog2: boolean;
+  displayvalidacao: boolean;
+  errovalida;
+  filteredItems2: any[];
+  tabela_refs_data: any;
 
   constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService, private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
@@ -447,6 +455,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     this.data_ini_tab6 = this.data_ini;
     this.data_fim_tab6 = this.data_fim;
     this.data_dialog = new Date(this.data_ini);
+    this.data_dialog2 = this.data_dialog;
     this.hora_ini = "06:01";
     this.hora_ini_func = "06:01";
     this.hora_fim = "06:00";
@@ -597,6 +606,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
 
           for (var x in response) {
             this.cars1.push({
+              desc_proref: response[x][1],
               id: parseInt(x) + 1, brand: response[x][0] + ' - ' + response[x][1], proref: response[x][0], areadef: response[x][10],
               fase: response[x][2], areapeca: response[x][3], produzidas: response[x][4], defeito: response[x][5], areprod: response[x][6], barras: response[x][9],
               objetivov: (response[x][7]), percdefeitov: response[x][8], media: response[x][11],
@@ -2226,6 +2236,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
             this.tabela_refs.push({ id: response[x].id, referencia: response[x].referencia, descricao: response[x].descricao });
           }
           this.tabela_refs = this.tabela_refs.slice();
+          this.assignCopy2();
         },
         error => console.log(error));
     }
@@ -2241,17 +2252,26 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
       referencia.data_CRIA = new Date();
       referencia.utz_CRIA = this.user;
       referencia.data = this.data_dialog;
-      this.save_ref_dash(referencia);
+      if (!this.tabela_refs.find(item => item.referencia == referencia.referencia)) {
+        this.save_ref_dash(referencia);
+      } else {
+        this.errovalida = "Referência já existe para este dia!";
+        this.displayvalidacao = true;
+      }
+
       this.campo_ref_dash = null;
       this.referencia_ref_dash = null;
     }
 
   }
 
-  save_ref_dash(referencia) {
+  save_ref_dash(referencia, add = true) {
     this.GERREFERENCIASFASTRESPONSEREJEICOESService.create(referencia).then(result => {
-      this.tabela_refs.push({ id: result.id, referencia: referencia.referencia, descricao: referencia.descricao });
-      this.tabela_refs = this.tabela_refs.slice();
+      if (add) {
+        this.tabela_refs.push({ id: result.id, referencia: referencia.referencia, descricao: referencia.descricao });
+        this.tabela_refs = this.tabela_refs.slice();
+        this.assignCopy2();
+      }
     }, error => {
       console.log(error); /*this.simular(this.inputerro);*/
     });
@@ -2263,6 +2283,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
       var index = this.tabela_refs.findIndex(item => item.id == id);
       if (index > -1) {
         this.tabela_refs.splice(index, 1);
+        this.assignCopy2();
       }
     }, error => {
       console.log(error); /*this.simular(this.inputerro);*/
@@ -2270,4 +2291,61 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
 
   }
 
+  save_refs(save) {
+    if (save) {
+      console.log(this.refs_selected)
+      this.GERREFERENCIASFASTRESPONSEREJEICOESService.getByData([{ DATA: this.formatDate(this.data_dialog2) }]).subscribe(
+        response => {
+
+          for (var x in this.refs_selected) {
+            var referencia = new GER_REFERENCIAS_FASTRESPONSE_REJEICOES;
+            referencia.descricao = this.refs_selected[x].desc_proref;
+            referencia.referencia = this.refs_selected[x].proref;
+            referencia.data_CRIA = new Date();
+            referencia.utz_CRIA = this.user;
+            referencia.data = this.data_dialog2;
+            if (!response.find(item => item.referencia == referencia.referencia)) this.save_ref_dash(referencia, false);
+          }
+          this.display_dialog2 = false;
+        },
+        error => { console.log(error); this.display_dialog2 = false; });
+    } else {
+      this.display_dialog2 = true;
+    }
+  }
+
+
+  selecttable() {
+    if (this.select_table) {
+      /*for (var x in this.dados) {
+        this.refs_selected.push(this.dados[x])
+      }*/
+      this.refs_selected = this.dados;
+    } else {
+      this.refs_selected = [];
+    }
+  }
+
+
+  assignCopy2() {
+    this.filteredItems2 = Object.assign([], this.tabela_refs);
+    this.tabela_refs_data = this.filteredItems2;
+
+  }
+
+  filterItem2(value) {
+    if (!value) {
+      this.assignCopy2();
+
+    } else {
+
+    }
+    this.filteredItems2 = Object.assign([], this.tabela_refs).filter(
+      item => item.referencia.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
+
+    this.tabela_refs_data = this.filteredItems2;
+
+    //console.log(this.filteredItems);
+  }
 }
