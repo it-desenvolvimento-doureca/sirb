@@ -295,6 +295,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   drop_linguas;
   numero_RECLAMACAO_RELATORIO: any;
   drop_cliente_tabela: any[];
+  display_ref_cliente: boolean;
+  filteredreferencia: any[];
+  referencias = [];
+  referencia_filter: any;
+  campo_ref: any;
+
+  drop_cliente_pesquisa: any[];
+  cliente_pesquisa: any;
+
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService,
@@ -4538,6 +4547,89 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         },
         error => { console.log(error); this.simular(this.inputerro2); this.displayLoading = false; });
     }
+  }
+
+  procurar_cliente() {
+    if (this.referencias.length <= 0) {
+      this.ABDICCOMPONENTEService.getReferencias().subscribe(
+        response => {
+          this.referencias = [];
+          for (var x in response) {
+            this.referencias.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1, descricao: response[x].PRODES1, value: response[x].PROREF });
+          }
+          this.referencias = this.referencias.slice();
+        },
+        error => {
+          console.log(error);
+        });
+    }
+
+    this.display_ref_cliente = true;
+    this.referencia_filter = null;
+    this.campo_ref = null;
+    this.filteredreferencia = [];
+    this.cliente_pesquisa = null;
+  }
+
+  filterRef(event) {
+    this.filteredreferencia = this.pesquisa(event.query);
+  }
+
+  pesquisa(text) {
+    var result = [];
+    for (var x in this.referencias) {
+      let ref = this.referencias[x];
+      if (ref.label.toLowerCase().includes(text.toLowerCase())) {
+        result.push(this.referencias[x]);
+      }
+    }
+    return result;
+  }
+
+  filteronUnselect(event) {
+    this.referencia_filter = null;
+    this.drop_cliente_pesquisa = [];
+    this.cliente_pesquisa = null;
+  }
+
+  filterSelect(event) {
+    var tab = this.referencias.find(item => item.value == event.value)
+    if (tab) {
+      this.referencia_filter = event.value;
+
+      this.ABDICCOMPONENTEService.getMoradaClientePorReferencia(this.referencia_filter).subscribe(
+        response => {
+          this.drop_cliente_pesquisa = [];
+          var count = Object.keys(response).length;
+          if (count > 0) {
+            this.drop_cliente_pesquisa.push({ label: 'Sel. Cliente/Morada', value: "" });
+            for (var x in response) {
+              this.drop_cliente_pesquisa.push({ label: response[x].NOME_CLIENTE + ' / ' + response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { FAMCOD: response[x].FAMCOD, ETSNUM: response[x].ETSNUM, id: response[x].CLICOD, nome: response[x].NOME_CLIENTE } });
+            }
+            //this.cliente_pesquisa = this.drop_cliente_pesquisa[0];
+          } else {
+
+          }
+        }, error => {
+          console.log(error);
+        });
+    } else {
+      //this.referencia_func = null;
+    };
+  }
+
+  alterar_cliente() {
+    //console.log(this.referencia_filter)
+    //cliente_pesquisa
+    //morada_pesquisa
+    //drop_morada_pesquisa
+    //drop_cliente_pesquisa
+    this.cliente = this.drop_cliente.find(item => item.value.id == this.cliente_pesquisa.id).value;
+    this.referencia_temp = this.referencia_filter;
+    this.familia_REF = this.cliente_pesquisa.FAMCOD;
+    this.getMoradas(this.cliente_pesquisa.id, true);
+    this.getArtigos(this.cliente_pesquisa.ETSNUM, true);
+    this.display_ref_cliente = false;
   }
 
 }

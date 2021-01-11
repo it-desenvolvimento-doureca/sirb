@@ -416,8 +416,9 @@ export class ListaComponent implements OnInit {
       } catch (error) {
 
       }
-      this.grafico_debts();
     }
+
+    this.grafico_debts();
   }
 
   grafigo_circular(totalacordo, total91dias, total6190dias, total3160dias, total31dias, totalnaovencido) {
@@ -478,45 +479,102 @@ chart.draw(data, options);
   }
 
   grafico_debts() {
-    this.FINANALISEDIVIDASService.GET_DIVIDAS_LISTA_RESUMO_KAM([]).subscribe(
-      response => {
-        var count = Object.keys(response).length;
-        var labels = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        for (var x in response) {
-          labels.push(response[x][0] + ": " + response[x][6] + "%");
-          /* data1.push((response[x][2] < 0) ? 0 : response[x][2]);
-           data2.push((response[x][3] < 0) ? 0 : response[x][3]);
-           data3.push((response[x][4] < 0) ? 0 : response[x][4]);
-           data4.push((response[x][5] < 0) ? 0 : response[x][5]);*/
-          data1.push((response[x][2] < 0) ? response[x][2] : response[x][2]);
-          data2.push((response[x][3] < 0) ? response[x][3] : response[x][3]);
-          data3.push((response[x][4] < 0) ? response[x][4] : response[x][4]);
-          data4.push((response[x][5] < 0) ? response[x][5] : response[x][5]);
+
+    if (this.dataTableComponent.filteredValue != null) {
+      var array = this.dataTableComponent.filteredValue;
+      var dados_kam = [];
+      for (var x in array) {
+        var kam = null;
+
+        if (dados_kam.find(item => item.kam == array[x].kam)) {
+          kam = dados_kam.find(item => item.kam == array[x].kam);
+          kam.menos_31_dias = kam.menos_31_dias + array[x].menos_31_dias;
+          kam.entre_31_60 = kam.entre_31_60 + array[x].entre_31_60;
+          kam.entre_62_90 = kam.entre_62_90 + array[x].entre_62_90;
+          kam.maior_91_dias = kam.maior_91_dias + array[x].maior_91_dias;
+        } else {
+          dados_kam.push({ kam: array[x].kam, menos_31_dias: array[x].menos_31_dias, entre_31_60: array[x].entre_31_60, entre_62_90: array[x].entre_62_90, maior_91_dias: array[x].maior_91_dias })
         }
+      }
 
 
-        this.data1 = {
-          labels: labels,
-          datasets: [
-            {
-              label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data1,
-            },
-            {
-              label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2,
-            },
-            {
-              label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3,
-            },
-            {
-              label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data4,
-            }
-          ]
-        };
-      });
+      var labels = [];
+      var data1 = [];
+      var data2 = [];
+      var data3 = [];
+      var data4 = [];
+      for (var y in dados_kam) {
+        data1.push(dados_kam[y].menos_31_dias);
+        data2.push(dados_kam[y].entre_31_60);
+        data3.push(dados_kam[y].entre_62_90);
+        data4.push(dados_kam[y].maior_91_dias);
+
+        var total = ((dados_kam[y].menos_31_dias + dados_kam[y].entre_31_60 + dados_kam[y].entre_62_90 + dados_kam[y].maior_91_dias)
+          / (this.total91dias + this.total6190dias + this.total3160dias + this.total31dias)) * 100;
+        var total2 = total.toFixed(0);
+        total = parseFloat(total2);
+
+        labels.push(dados_kam[y].kam + ": " + total + "%");
+      }
+
+      this.data1 = {
+        labels: labels,
+        datasets: [
+          {
+            label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data1,
+          },
+          {
+            label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2,
+          },
+          {
+            label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3,
+          },
+          {
+            label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data4,
+          }
+        ]
+      };
+    } else {
+      this.FINANALISEDIVIDASService.GET_DIVIDAS_LISTA_RESUMO_KAM([]).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          var labels = [];
+          var data1 = [];
+          var data2 = [];
+          var data3 = [];
+          var data4 = [];
+          for (var x in response) {
+            labels.push(response[x][0] + ": " + response[x][6] + "%");
+            /* data1.push((response[x][2] < 0) ? 0 : response[x][2]);
+             data2.push((response[x][3] < 0) ? 0 : response[x][3]);
+             data3.push((response[x][4] < 0) ? 0 : response[x][4]);
+             data4.push((response[x][5] < 0) ? 0 : response[x][5]);*/
+            data1.push((response[x][2] < 0) ? response[x][2] : response[x][2]);
+            data2.push((response[x][3] < 0) ? response[x][3] : response[x][3]);
+            data3.push((response[x][4] < 0) ? response[x][4] : response[x][4]);
+            data4.push((response[x][5] < 0) ? response[x][5] : response[x][5]);
+          }
+
+
+          this.data1 = {
+            labels: labels,
+            datasets: [
+              {
+                label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data1,
+              },
+              {
+                label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2,
+              },
+              {
+                label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3,
+              },
+              {
+                label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data4,
+              }
+            ]
+          };
+        });
+    }
   }
 
 
@@ -927,7 +985,7 @@ chart.draw(data, options);
     this.average_due = (count_average_due == 0) ? 0 : (average_due / count_average_due);
     this.total_dev = ((this.total3160dias + this.total6190dias + this.total91dias) / this.totaldividavenc) * 100;
 
-    //this.carregagraficos();
+    this.carregagraficos();
   }
 }
 

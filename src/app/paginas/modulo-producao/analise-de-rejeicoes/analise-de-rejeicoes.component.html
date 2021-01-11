@@ -1022,9 +1022,10 @@
 </div>
 
 
-<p-dialog header="Referências Fast Response" [responsive]="true" [positionTop]="0" styleClass="dialognot"
-  [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_dialog" [modal]="true">
+<p-dialog id="display_dialog" header="Referências Fast Response" [responsive]="true" [positionTop]="0"
+  styleClass="dialognot" [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_dialog"
+  [modal]="true">
 
   <form id="formReclama66" role="form" ngNativeValidate>
     <!-- Modal Body -->
@@ -1095,9 +1096,10 @@
 </p-dialog>
 
 
-<p-dialog header="Data Referências Fast Response" [responsive]="true" [positionTop]="0" styleClass="dialognot"
-  [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_dialog2" [modal]="true">
+<p-dialog id="display_dialog2" header="Data Referências Fast Response" [responsive]="true" [positionTop]="0"
+  styleClass="dialognot" [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_dialog2"
+  [modal]="true">
 
   <form id="formReclama661" role="form" (ngSubmit)="save_refs(true)" ngNativeValidate>
     <!-- Modal Body -->
@@ -1122,8 +1124,9 @@
 
 
 
-<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
+<p-dialog (onHide)="onHide()" id="displayvalidacao" header="Aviso" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displayvalidacao" [modal]="true">
   <div style="width: 80vw; text-align: -webkit-center;">
     <h6>{{errovalida}}</h6>
   </div>

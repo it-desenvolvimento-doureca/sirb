@@ -9,7 +9,8 @@
             <h4 style="position: absolute;" class="title">Reclamações Cliente</h4>
             <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado:
               <b>{{texto_estado}}</b>
-              <span *ngIf="data_FECHO != null">({{getResponsavel(utz_FECHO)}} - {{data_FECHO_texto}})</span></h5>
+              <span *ngIf="data_FECHO != null">({{getResponsavel(utz_FECHO)}} - {{data_FECHO_texto}})</span>
+            </h5>
             <button [disabled]="novo || disimprimir" title="Imprimir" type="button"
               style="color: black; float:right; margin-top: -19px;" class="btn btn-white btn-round btn-just-icon btPT "
               (click)="imprimir('reclamacao_cliente8D_PT',numero_RECLAMACAO_RELATORIO)">
@@ -221,11 +222,16 @@
                 <p-panel header="DADOS DA REFERÊNCIA" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
                   <div style="display: inline-block; width: 100%;">
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
-                      <label>Referência:</label>
+                      <label>Referência:</label><br>
                       <p-dropdown [filter]="true" (onChange)="alteraReferencia($event)" [options]="drop_referencia"
-                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="referencia"
+                        [style]="{'width':'88%','height':'25px','background':'white'}" [(ngModel)]="referencia"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_referencia.length > 0)"
                         [required]="true"></p-dropdown>
+                      <button (click)="procurar_cliente()" [disabled]="!modoedicao " type="button" class="btn btn-sm"
+                        title="Procurar por Referência" id="plus-btn121"
+                        style="padding: 0; float: right; width: 10%; margin: 0 0 0 3px; height: 25px; ">
+                        <i class="fa fa-search"></i>
+                      </button>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
@@ -1856,8 +1862,7 @@
                       <div class="">
 
                         <div class="input-group col-md-12" style="padding-left: 11px;">
-                          <form style="width: 100%; " (ngSubmit)="concluirEtapa(7)"
-                            ngNativeValidate>
+                          <form style="width: 100%; " (ngSubmit)="concluirEtapa(7)" ngNativeValidate>
                             <span class="input-group-btn" style="padding: 0; width: 15%; display: block; float: left;">
                               <button [disabled]="!modoedicao || step7CONCLUIDO || duplica" class="btn btn-success"
                                 type="submit" style="width: 100%;">Concluir
@@ -2738,4 +2743,34 @@
     </div>
   </form>
 
+</p-dialog>
+
+
+<p-dialog id="display_ref_cliente" header="Procurar por Referência" [responsive]="true" [positionTop]="0"
+  styleClass="dialognot" [style]="{'max-height':'96vh','min-width':'80%','max-width':'80%','overflow': 'auto'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_ref_cliente"
+  [modal]="true">
+
+  <form id="formReclama661" role="form" (ngSubmit)="alterar_cliente()" ngNativeValidate>
+    <!-- Modal Body -->
+    <div class="table-row-column col-md-12"> <label style="color: black;">Referência:</label><br>
+      <p-autoComplete [(ngModel)]="campo_ref" [suggestions]="filteredreferencia" class="autocompleseguranca"
+        [style]="{'width': '100%', 'height': '25px'}" forceSelection="true" emptyMessage="Sem Resultados..."
+        (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)" [ngModelOptions]="{standalone: true}"
+        [required]="true" (completeMethod)="filterRef($event)" field="label" placeholder="Pesquisar..." [minLength]="1">
+      </p-autoComplete>
+    </div>
+    <div class="table-row-column col-md-12"> <label style="color: black;">Cliente / Morada:</label><br>
+      <p-dropdown [filter]="true" [options]="drop_cliente_pesquisa" appendTo="body"
+        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="cliente_pesquisa"
+        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+    </div>
+
+    <p-footer>
+      <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">
+        Confirmar </button>
+      <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+        (click)="display_ref_cliente = false">Fechar</button>
+    </p-footer>
+  </form>
 </p-dialog>

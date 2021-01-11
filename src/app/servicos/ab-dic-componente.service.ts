@@ -127,6 +127,14 @@ export class ABDICCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getMoradaClientePorReferencia(proref) {
+    const url = webUrl.host + '/rest/sirb/getMoradaClientePorReferencia/' + proref;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getEtiquetas(data) {
     return this.http
       .post(webUrl.host + '/rest/sirb/getEtiquetas', data, { headers: this.headers })

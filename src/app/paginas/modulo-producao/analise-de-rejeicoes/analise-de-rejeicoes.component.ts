@@ -440,6 +440,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   errovalida;
   filteredItems2: any[];
   tabela_refs_data: any;
+  display_dialog_true: boolean;
 
   constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService, private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
@@ -2256,6 +2257,10 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
         this.save_ref_dash(referencia);
       } else {
         this.errovalida = "Referência já existe para este dia!";
+        if (this.display_dialog) {
+          this.display_dialog_true = true;
+          this.display_dialog = false;
+        }
         this.displayvalidacao = true;
       }
 
@@ -2347,5 +2352,12 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     this.tabela_refs_data = this.filteredItems2;
 
     //console.log(this.filteredItems);
+  }
+
+  onHide() {
+    if (this.display_dialog_true) {
+      this.display_dialog_true = false;
+      this.display_dialog = true;
+    }
   }
 }
