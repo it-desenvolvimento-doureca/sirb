@@ -10,28 +10,29 @@
           </div>
           <div class="card-content table-responsive">
 
-            <p-dataTable [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
+            <p-dataTable [value]="cols" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
+              (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="ID">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="id" #v (ngModelChange)="filtrar(v.value,col.field,false)"
-                    type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="id"
+                    #v (ngModelChange)="filtrar(v.value,col.field,false)" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nome" header="Nome">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="nome" #v (ngModelChange)="filtrar(v.value,col.field)"
-                    type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="nome" #v (ngModelChange)="filtrar(v.value,col.field)" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo" header="Tipo">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="tipo" #v (ngModelChange)="filtrar(v.value,col.field)"
-                    type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="tipo" #v (ngModelChange)="filtrar(v.value,col.field)" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" styleclass="text-danger" field="cisterna" header="Cisterna">
                 <ng-template let-car="rowData" pTemplate="body">
-                  <i *ngIf="car.cisterna == false" class="material-icons" style="color: red;">close</i>
+                  <i *ngIf="car.cisterna != true" class="material-icons" style="color: red;">close</i>
                   <i *ngIf="car.cisterna == true" class="material-icons" style="color: green;">check</i>
                 </ng-template>
               </p-column>
@@ -43,7 +44,8 @@
                   </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
-                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/componentes/view']" [queryParams]="{ id: car.id }">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/componentes/view']"
+                    [queryParams]="{ id: car.id }">
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>
