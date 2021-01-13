@@ -246,6 +246,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
 
     this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_ANOS(dados).subscribe(
       response => {
+        var dia = 15;
         for (var x in response) {
           if (response[x][2] == this.ano) {
             this.ano2['acumulado'] = response[x][3];
@@ -254,10 +255,11 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
             this.ano1['acumulado'] = response[x][3];
             this.ano1[response[x][1]] = response[x][0];
           }
+          dia = response[x][4];
         }
         this.atualiza_ano1 = false;
         this.atualiza_ano2 = false;
-        this.calcular_totais();
+        this.calcular_totais(dia);
         this.carregagraficos();
       }, error => {
         console.log(error);
@@ -269,12 +271,14 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     //2	Trading  
     this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_GENERICO(dados, 2).subscribe(
       response => {
+        var dia = 15;
         for (var x in response) {
           this.trading['acumulado'] = response[x][3];
           this.trading[response[x][1]] = response[x][0];
+          dia = response[x][4];
         }
         this.atualiza_trading = false;
-        this.calcular_totais();
+        this.calcular_totais(dia);
         this.carregagraficos();
       }, error => {
         console.log(error);
@@ -285,12 +289,14 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     //3	100% SubContrato   
     this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_GENERICO(dados, 3).subscribe(
       response => {
+        var dia = 15;
         for (var x in response) {
           this.subcontrato['acumulado'] = response[x][3];
           this.subcontrato[response[x][1]] = response[x][0];
+           dia = response[x][4];
         }
         this.atualiza_subcontrato = false;
-        this.calcular_totais();
+        this.calcular_totais(dia);
         this.carregagraficos();
       }, error => {
         console.log(error);
@@ -419,6 +425,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     //13	Total Realizado  (docs a crédito/valor negativo)
     this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_TOTAL_REALIZADO(dados).subscribe(
       response => {
+        var dia = 15;
         for (var x in response) {
           if (response[x][2] == this.ano) {
             this.total_realizado_ano2['acumulado'] = response[x][3];
@@ -427,11 +434,12 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
             this.total_realizado_ano1['acumulado'] = response[x][3];
             this.total_realizado_ano1[response[x][1]] = response[x][0];
           }
+          dia = response[x][4];
         }
         this.atualiza_total_realizado_ano1 = false;
         this.atualiza_total_realizado_ano2 = false;
         this.carregagraficos();
-        this.calcular_totais();
+        this.calcular_totais(dia);
       }, error => {
         console.log(error);
         this.atualiza_total_realizado_ano1 = false;
@@ -442,13 +450,15 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
     //	Budget  
     this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_BUDGET(dados).subscribe(
       response => {
+        var dia = 15;
         for (var x in response) {
           this.budget['acumulado'] = response[x][3];
           this.budget[response[x][1]] = response[x][0];
+          dia = response[x][4];
         }
         this.atualiza_budget = false;
         this.carregagraficos();
-        this.calcular_totais();
+        this.calcular_totais(dia);
       }, error => {
         console.log(error);
         this.atualiza_budget = false;
@@ -1690,13 +1700,13 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
   }
 
 
-  calcular_totais() {
+  calcular_totais(dia) {
 
 
     var data_atual = new Date();
     var data_total = null;
 
-    if (data_atual.getDate() >= 15) {
+    if (data_atual.getDate() >= dia) {
       data_total = new Date(data_atual.getUTCFullYear(), data_atual.getMonth(), 0);
     } else {
       data_total = new Date(data_atual.getUTCFullYear(), data_atual.getMonth() - 1, 0);

@@ -2220,6 +2220,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
 
 
   abrirdialog_refs_dashboard() {
+    this.data_dialog = this.data_ini;
     this.atualizatabelarefs();
     this.display_dialog = true;
 
@@ -2298,7 +2299,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
 
   save_refs(save) {
     if (save) {
-      console.log(this.refs_selected)
+      //console.log(this.refs_selected)
       this.GERREFERENCIASFASTRESPONSEREJEICOESService.getByData([{ DATA: this.formatDate(this.data_dialog2) }]).subscribe(
         response => {
 
@@ -2312,9 +2313,11 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
             if (!response.find(item => item.referencia == referencia.referencia)) this.save_ref_dash(referencia, false);
           }
           this.display_dialog2 = false;
+          this.refs_selected = [];
         },
         error => { console.log(error); this.display_dialog2 = false; });
     } else {
+      this.data_dialog2 = this.data_ini;
       this.display_dialog2 = true;
     }
   }
