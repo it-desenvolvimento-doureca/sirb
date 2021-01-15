@@ -418,9 +418,10 @@
 
                 <!-- MENU Financeira -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
+                    <div class="panel-heading"
+                        [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
                     || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)   || router.isActive('/seguimento_faturacao_anual',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true)
-                      || router.isActive('/tipos_documento',true) ">
+                    || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) ">
                         <h4 class="panel-title">
                             <a id="node160" data-toggle="collapse" data-parent="#accordion" href="#collapseFinanceira">
                                 <span class="fa fa-line-chart" style="margin-right: 12px;">
@@ -470,7 +471,7 @@
                                     <td>
                                         <li id="node1602" data-toggle="collapse" data-target="#parametrosrecursos"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true) || router.isActive('/tipos_documento',true) }">
+                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true) || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -514,6 +515,10 @@
                                             <li id="node830" [routerLinkActive]="['active']"
                                                 [routerLink]="['/parametros_seguimento_faturacao_anual']">
                                                 <a>Segui. Faturação Anual</a>
+                                            </li>
+                                            <li id="node1612" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_absentismo_financeira']">
+                                                <a>Sectores/Absentismo</a>
                                             </li>
                                         </ul>
                                     </td>
@@ -648,7 +653,7 @@
                         || router.isActive('/producao',true) || router.isActive('/controloassiduidade_producao',true) || router.isActive('/pausas_p',true) || router.isActive('/tiposcacifos_p',true) || router.isActive('/cacifos_p',true) || router.isActive('/estadosfuncionarios_p',true) || router.isActive('/sectores_p',true) 
                         || router.isActive('/turnosrecursos_p',true) || router.isActive('/funcionarios_p',true) || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
                         || router.isActive('/semanas_analise',true) || router.isActive('/planeamento_producao',true) || router.isActive('/planeamento_analises',true)
-                        || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) ">
+                        || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) || router.isActive('/sectores_absentismo',true)  ">
                         <h4 class="panel-title">
                             <a id="node9" data-toggle="collapse" data-parent="#accordion" href="#collapseProducao">
                                 <span class="fa fa-building-o" style="margin-right: 12px;">
@@ -761,7 +766,7 @@
                                             || router.isActive('/estadosfuncionarios_p',true)|| router.isActive('/pausas_p',true)  || router.isActive('/tiposcacifos_p',true)|| router.isActive('/cacifos_p',true)  || router.isActive('/sectores_p',true) 
                                             || router.isActive('/turnosrecursos_p',true) 
                                             || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
-                                            || router.isActive('/semanas_analise',true) || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true)}">
+                                            || router.isActive('/semanas_analise',true) || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) || router.isActive('/sectores_absentismo',true)}">
 
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
@@ -862,6 +867,10 @@
                                             <li id="node9216" [routerLinkActive]="['active']"
                                                 [routerLink]="['/validacoes_bastidores']">
                                                 <a>Validações Bastidores</a>
+                                            </li>
+                                            <li id="node1612_10" [routerLinkActive]="['active']"
+                                                [routerLink]="['/sectores_absentismo']">
+                                                <a>Sectores/Absentismo</a>
                                             </li>
 
                                         </ul>

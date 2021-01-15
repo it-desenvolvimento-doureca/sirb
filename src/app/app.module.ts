@@ -315,6 +315,9 @@ import { DerrogacoesComponent } from './paginas/modulo-qualidade/derrogacoes/der
 import { DerrogacoesFormComponent } from './paginas/modulo-qualidade/derrogacoes/derrogacoes-form/derrogacoes-form.component';
 import { QUADERROGACOESService } from './servicos/qua-derrogacoes.service';
 import { GERREFERENCIASFASTRESPONSEREJEICOESService } from './servicos/ger-referencias-fastresponse-rejeicoes.service';
+import { SectoresAbsentismoComponent } from './paginas/modulo-recursos-humanos/parametros/sectores-absentismo/sectores-absentismo.component';
+import { RHDICSECTORESABSENTISMOService } from './servicos/rh-dic-sectores-absentismo.service';
+import { RHDICSECTORESABSENTISMOLINHAService } from './servicos/rh-dic-sectores-absentismo-linha.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -464,6 +467,9 @@ const routes: Routes = [
   { path: 'semanas_analise', component: SemanasAnaliseComponent, canActivate: [LoginService], data: { breadcrumb: "Nº Semanas Análise" } },
   { path: 'sectores_agregadores', component: SectoresAgregadoresComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores Agregadores" } },
   { path: 'validacoes_bastidores', component: ValidacoesBastidoresComponent, canActivate: [LoginService], data: { breadcrumb: "Validações Bastidores" } },
+
+  { path: 'sectores_absentismo', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
+  { path: 'sectores_absentismo_financeira', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
 
   {
     path: 'planeamento_producao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Produção" },
@@ -955,7 +961,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     AuditoriasComponent,
     TipoAuditoriaComponent,
     DerrogacoesComponent,
-    DerrogacoesFormComponent
+    DerrogacoesFormComponent,
+    SectoresAbsentismoComponent
   ],
   imports: [
     BrowserModule,
@@ -1149,6 +1156,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     QUAMOVAUDITORIASService,
     QUADERROGACOESService,
     GERREFERENCIASFASTRESPONSEREJEICOESService,
+    RHDICSECTORESABSENTISMOService,
+    RHDICSECTORESABSENTISMOLINHAService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
