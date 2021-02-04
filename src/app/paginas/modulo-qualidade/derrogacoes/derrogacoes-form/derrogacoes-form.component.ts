@@ -35,7 +35,7 @@ export class DerrogacoesFormComponent implements OnInit {
   errovalida;
   mensagem_verifica;
   displayvalidacao;
-  
+
 
   @ViewChild('escondebt') escondebt: ElementRef;
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
@@ -569,7 +569,8 @@ export class DerrogacoesFormComponent implements OnInit {
   }
 
   backClicked() {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['derrogacoes']);
   }
 
 

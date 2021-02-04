@@ -853,6 +853,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
                   rack_linha.child.push({
                     //id: 1,
                     referencia: response[x][2],
+                    desc_referencia: response[x][9],
                     valores: valores2,
                   });
                 } else {
@@ -956,6 +957,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
                   rack_linha.child.push({
                     //id: 1,
                     referencia: response[x][2],
+                    desc_referencia: response[x][9],
                     valores: valores2,
                   });
                 } else {

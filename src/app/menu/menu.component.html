@@ -93,7 +93,7 @@
                 <!-- MENU Comercial -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="router.isActive('/planosacaoComercial',false) || router.isActive('/analiseencomendas',false) ||
+                        [class.active]="router.isActive('/planosacaoComercial',false) || router.isActive('/analiseencomendas',false) || router.isActive('/analise_clientes',false) ||
                         router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
                                             router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true)">
                         <h4 class="panel-title">
@@ -116,6 +116,13 @@
                                     <td>
                                         <li id="node1582" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/analiseencomendas']">Análise Encomendas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1584" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analise_clientes']">Análise Clientes</a>
                                         </li>
                                     </td>
                                 </tr>

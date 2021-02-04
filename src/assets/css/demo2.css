@@ -5761,11 +5761,18 @@ body>.ui-dropdown-panel {
     line-height: 25px !important
 }
 
+/*.tooltip_barras {
+    max-width: none !important;
+}*/
+
+.tooltip_ficha {
+    max-width: 12.5em;
+}
+
 .ui-tooltip {
     position: absolute;
     display: none;
     padding: .25em .5em;
-    max-width: 12.5em;
     display: flex !important;
 }
 

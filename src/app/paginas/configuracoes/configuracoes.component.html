@@ -4563,6 +4563,17 @@
                                 </label>
                               </li>
                               <li>
+                                <input type="checkbox" id="node-158-1-23" class="parent" />
+                                <label>
+                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node1584"
+                                    [(ngModel)]="checkbox.node1584" />
+                                  <span></span>
+                                </label>
+                                <label for="node-158-1-23" class="parametros">
+                                  Análise Clientes
+                                </label>
+                              </li>
+                              <li>
                                 <input type="checkbox" class="parent" id="node-158-1-33" />
                                 <label>
                                   <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node1583"
@@ -5377,7 +5388,7 @@
 
 
                         <!-- Módulo Stocks-->
-                        <ul *ngIf="id_modulo==9">
+                        <ul *ngIf="id_modulo==12">
                           <ng-template #recursiveList3 let-list3>
                             <li *ngFor="let item of list3">
                               <input type="checkbox" id="node-s{{item.id}}" class="parent"

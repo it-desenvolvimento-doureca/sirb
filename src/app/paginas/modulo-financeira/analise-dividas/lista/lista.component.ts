@@ -13,6 +13,7 @@ import { DataTable } from 'primeng/primeng';
   styleUrls: ['./lista.component.css']
 })
 export class ListaComponent implements OnInit {
+  clientes_seleccionados = [];
   mensagemtabela: string;
   tabela: any[] = [];
   totalprazopag = 0;
@@ -282,9 +283,10 @@ export class ListaComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
     var array = this.globalVar.getfiltros("lista_dividas");
+    var array_se = this.globalVar.getfiltros("lista_dividas_selecionadaos");
+    this.clientes_seleccionados = (array_se != undefined) ? array_se : [];
+
     if (array) {
-
-
       this.dataTableComponent.filters = array;
 
       this.kam = (array['kam'] != undefined) ? array['kam'].value : "";
@@ -300,7 +302,6 @@ export class ListaComponent implements OnInit {
       this.entre_62_90 = (array['entre_62_90'] != undefined) ? array['entre_62_90'].value : "";
       this.maior_91_dias = (array['maior_91_dias'] != undefined) ? array['maior_91_dias'].value : "";
       this.acordo = (array['acordo'] != undefined) ? array['acordo'].value : "";
-
     }
 
     var sorttab = this.globalVar.getfiltros("lista_dividas_sorttabela");
@@ -480,8 +481,9 @@ chart.draw(data, options);
 
   grafico_debts() {
 
-    if (this.dataTableComponent.filteredValue != null) {
+    if (this.dataTableComponent.filteredValue != null || this.clientes_seleccionados.length > 0) {
       var array = this.dataTableComponent.filteredValue;
+      if (this.clientes_seleccionados.length > 0) array = this.clientes_seleccionados;
       var dados_kam = [];
       for (var x in array) {
         var kam = null;
@@ -899,25 +901,38 @@ chart.draw(data, options);
     this.entre_62_90 = "";
     this.maior_91_dias = "";
     this.acordo = "";
+    this.clientes_seleccionados = [];
 
     this.dataTableComponent.reset();
 
     this.multiSortMeta = [];
     this.globalVar.setfiltros("lista_dividas_sorttabela", "limpar");
     this.globalVar.setfiltros("lista_dividas", null);
+    this.globalVar.setfiltros("lista_dividas_selecionadaos", null);
     this.dataTableComponent.value = this.tabela;
     this.dataTableComponent.reset();
 
     this.dataTableComponent.filter("", "", "");
 
+    setTimeout(() => {
+      this.clientes_seleccionados = [];
+    }, 50);
+
   }
 
 
-  atualizatotais(event = null) {
+  atualizatotais(event = null, ckeckbox = false) {
 
     if (event != null) this.globalVar.setfiltros("lista_dividas_sorttabela", event);
 
-    this.updatetotais();
+    if (!ckeckbox) this.updatetotais();
+
+    if (ckeckbox) {
+      setTimeout(() => {
+        this.globalVar.setfiltros("lista_dividas_selecionadaos", this.clientes_seleccionados);
+        this.updatetotais();
+      }, 50);
+    }
     //this.globalVar.setfiltros("reclamacaocliente_id", ids);
   }
 
@@ -925,6 +940,7 @@ chart.draw(data, options);
     var ids = [];
     var array = this.dataTableComponent._value;
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
+    if (this.clientes_seleccionados.length > 0) array = this.clientes_seleccionados;
 
     var totalprazopag = 0;
     var totalprazoatraso = 0;

@@ -265,7 +265,7 @@
                             <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="descricao"
                               header="Descrição da Ação" [style]="{'width':'90px'}">
                               <ng-template let-col let-car="rowData" pTemplate="body">
-                                <span pTooltip="{{car['descricao']}}"
+                                <span pTooltip="{{car['descricao']}}" tooltipStyleClass="tooltip_ficha"
                                   style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;">{{car[col.field]}}</span>
                               </ng-template>
                             </p-column>

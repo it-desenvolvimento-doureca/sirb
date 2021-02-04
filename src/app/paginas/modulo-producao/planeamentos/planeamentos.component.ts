@@ -22,7 +22,7 @@ export class PlaneamentosComponent implements OnInit {
   ngOnInit() {
 
     this.estado = "Ativo";
-    
+
     this.globalVar.setvoltar(false);
     this.globalVar.seteditar(false);
     this.globalVar.setapagar(false);
@@ -62,10 +62,14 @@ export class PlaneamentosComponent implements OnInit {
         //se existir banhos com o id
         if (count > 0) {
           for (var x in response) {
+
+            var str = "0" + response[x][0].semana;
+            var semana = str.substring(str.length - 2, str.length);
+
             this.dados.push({
               id_PLANEAMENTO: response[x][0].id_PLANEAMENTO,
               data_registo: (response[x][0].data_CRIA == null) ? "" : this.formatDate(response[x][0].data_CRIA),
-              ano: response[x][0].ano, linha: response[x][0].linha, semana: response[x][0].semana
+              ano: response[x][0].ano, linha: response[x][0].linha, semana: semana
               , cor: response[x][1]
               , estado: (response[x][0].inativo) ? "Inativo" : "Ativo"
               //numero: response[x].numero_PESSOA,

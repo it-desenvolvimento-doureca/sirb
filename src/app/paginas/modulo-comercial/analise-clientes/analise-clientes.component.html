@@ -1,0 +1,782 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Análise de Clientes</h4>
+            <!--button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+              (click)="download()" style="float:right; top: -15px; position: absolute; right: 23px;"></button>
+            <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+              label="Export" [disabled]="true"
+              style="float:right; top: -15px; position: absolute; right: 23px;"></button-->
+          </div>
+          <div class="card-content">
+
+            <div class="">
+              <div
+                style="padding: 1px 0px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                class="form-group col-md-12 col-lg-12 filtros_analiseencomendas_3">
+                <form #form id="formReclama2" (ngSubmit)="atualizar_clientes()" ngNativeValidate>
+
+                  <div class="table-row-column col-md-2" style="height: 64px; padding-left: 6px;">
+                    <label>Analysis Week:</label><br>
+                    <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                      [(ngModel)]="ano_analise" [ngModelOptions]="{standalone: true}" [required]="true" appendTo="body">
+                    </p-dropdown>
+                    <p-dropdown [filter]="true" [options]="semanas" [style]="{'width':'40%','height': '25px'}"
+                      [(ngModel)]="semana_analise" [ngModelOptions]="{standalone: true}" [required]="true"
+                      appendTo="body"></p-dropdown>
+                  </div>
+                  <div class="table-row-column col-md-1" style="height: 64px;"> <label>Client code:</label><br>
+                    <input type="text" class="form-control2" [(ngModel)]="codigo_cliente_clientes" style="width: 90%;"
+                      [ngModelOptions]="{standalone: true}" placeholder="" />
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Customer Name:</label><br>
+                    <input type="text" class="form-control2" [(ngModel)]="nome_cliente_clientes"
+                      [ngModelOptions]="{standalone: true}" placeholder="" />
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Reference:</label><br>
+                    <p-autoComplete [(ngModel)]="campo_ref_clientes" [suggestions]="filteredreferencias_clientes"
+                      class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                      emptyMessage="Sem Resultados..." (onUnselect)="filteronUnselect_clientes($event)"
+                      (onSelect)="filterSelect_clientes($event)" [ngModelOptions]="{standalone: true}"
+                      (completeMethod)="filterRef_clientes($event)" field="label" placeholder="Pesquisar..."
+                      [minLength]="1">
+                    </p-autoComplete>
+                  </div>
+                  <!--div class="table-row-column col-md-2" style="height: 64px;"> <label>Lista Clientes:</label><br>
+                        <p-multiSelect [filter]="true" appendTo="body" [options]="lista_clientes"
+                          [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                          [(ngModel)]="clientes" [ngModelOptions]="{standalone: true}">
+                        </p-multiSelect>
+                      </div-->
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Program:</label><br>
+                    <p-multiSelect [filter]="true" appendTo="body" [options]="lista_programas"
+                      [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                      [(ngModel)]="programas_clientes" [ngModelOptions]="{standalone: true}">
+                    </p-multiSelect>
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Vehicle:</label><br>
+                    <p-multiSelect [filter]="true" appendTo="body" [options]="lista_veiculos"
+                      [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                      [(ngModel)]="veiculos_clientes" [ngModelOptions]="{standalone: true}">
+                    </p-multiSelect>
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>OEM:</label><br>
+                    <p-multiSelect [filter]="true" appendTo="body" [options]="lista_oem"
+                      [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                      [(ngModel)]="oem_clientes" [ngModelOptions]="{standalone: true}">
+                    </p-multiSelect>
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Factories:</label><br>
+                    <p-multiSelect [filter]="true" appendTo="body" [options]="lista_fabricas"
+                      [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                      [(ngModel)]="fabricas_clientes" [ngModelOptions]="{standalone: true}">
+                    </p-multiSelect>
+                  </div>
+                  <div class="table-row-column col-md-2" style="height: 64px;"> <label>Line:</label><br>
+                    <p-dropdown [filter]="true" appendTo="body" [options]="linhas"
+                      [style]="{'width':'200px','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                      [(ngModel)]="linha_clientes" [ngModelOptions]="{standalone: true}">
+                    </p-dropdown>
+                  </div>
+                  <div class="table-row-column col-md-3" style="height: 64px;">
+                    <button type="submit" class="btn btn-success " [disabled]="loading_clientes"
+                      style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">To apply</button>
+                    <button type="button" (click)="limparfiltros3()" class="btn btn-danger " [disabled]="loading"
+                      style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Reset</button>
+                  </div>
+                  <!--div class="table-row-column col-md-1" style="float: right;">
+                    <div _ngcontent-c0="" class="scrollleft" style="display: block;"></div>
+                    <div _ngcontent-c0="" class="scrollright" style="display: block;"></div>
+                  </div-->
+                </form>
+              </div>
+              <div id="cabsize3" [class.classloading]="loading_clientes" style="display: none; top: 32px !important;">
+              </div>
+
+              <div id="analises_prev_scroll"
+                style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; padding-bottom: 10px;">
+                <div style="display: block;">
+                  <div class="table-row table-header cab_analiseencomendas_3"
+                    style="background: #757676; color: white; font-weight: 500;">
+                    <div class="table-row-column col-md-5" style="padding: 0; width: 40%; height: 40px;">
+                      <div class="table-row-column col-md-3 center_div cell_div" style="height: 100%;">Client Code
+                        <!--br>
+                      <input style="font-weight: 100; height: 19px; color: black;" #myInput type="text"
+                        class="form-control2" (input)="filterItem(myInput.value)" /-->
+                      </div>
+                      <div class="table-row-column col-md-9 center_div cell_div"
+                        style="text-align: left; height: 100%;">Name
+                        Cliente
+                      </div>
+                      <!--div class="table-row-column col-md-12 cell_div" style="text-align: right;  background: black;">
+                        TOTAIS:
+                      </div-->
+                    </div>
+                    <div class="table-row-column col-md-7" style="padding: 0; width: 60%; height: 40px;">
+                      <div class="center_div cell_div table-row-column col-md-3"
+                        style="height: 100%;text-align: right; padding-right: 10px; width: 20%; padding: 0;">
+                        Ordered
+                      </div>
+                      <div class="center_div cell_div table-row-column col-md-3"
+                        style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
+                        Delay
+                      </div>
+                      <div class="center_div cell_div table-row-column col-md-3"
+                        style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
+                        Ordered Week {{semana_analise+1}}
+                      </div>
+                      <div class="center_div cell_div table-row-column col-md-3"
+                        style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
+                        Ordered Week {{semana_analise+2}}
+                      </div>
+                      <div class="center_div cell_div table-row-column col-md-3"
+                        style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
+                        Ordered Week {{semana_analise+3}}
+                      </div>
+                      <!--TOTAIS-->
+                      <!--<div class="table-row-column col-md-3" style="text-align: right; width: 23%; padding: 0;">
+                        <div class="table-row-column col-md-4 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_real | number: '1.2-2'}} €</div>
+                        <div class="table-row-column col-md-4 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_atraso | number: '1.2-2'}} €</div>
+                        <div class="table-row-column col-md-4 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_variacao | number: '1.2-2'}} €</div>
+                      </div>
+                      <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_prev_1 | number: '1.2-2'}} €</div>
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_variacao_1 | number: '1.2-2'}} €</div>
+                      </div>
+                      <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_prev_2 | number: '1.2-2'}} €</div>
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_variacao_2 | number: '1.2-2'}} €</div>
+                      </div>
+                      <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_prev_3 | number: '1.2-2'}} €</div>
+                        <div class="table-row-column col-md-6 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_variacao_3 | number: '1.2-2'}} €</div>
+                      </div>
+                      <div class="table-row-column col-md-3" style="text-align: right; width: 17%; padding: 0;">
+                        <div class="table-row-column col-md-12 cell_div"
+                          style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
+                          {{total_prev_4 | number: '1.2-2'}} €</div>
+                        <!--div class="table-row-column col-md-6 cell_div" style="text-align: right;">Variação</div>
+                      </div>-->
+                      <!--FIM TOTAIS-->
+
+                    </div>
+
+                  </div>
+
+                  <div id="chartcurtain" [class.classloading]="loading_clientes" style="display: none;">
+                    Loading...
+                  </div>
+                  <div id="chartcurtain" class="classloading"
+                    *ngIf="!loading_clientes && analises_clientes.length == 0">
+                    No data...
+                  </div>
+                  <div class="table-row col-md-12 linhas" *ngFor="let cli of analises_clientes"
+                    style=" border-bottom: 1px solid white;">
+
+                    <!--CLIENTES-->
+                    <div class="table-row-column col-md-12 pointer referenciacol referenciacol_hover"
+                      data-toggle="collapse" id="clientes{{cli.id}}" [attr.data-target]="'#collapsecli'+cli.id"
+                      (click)="getdadosclientes(cli.id); " style="background: #d9d9d9;" #divref
+                      [class.disabled]="cli.atualiza">
+                      <div class="col-md-4 " style="padding: 0; width: 40%;">
+                        <div class="col-md-3 tab_cell" style="text-align: left; padding-left: 5px; padding-right: 0px;">
+                          <span style="pointer-events: none;" *ngIf="!cli.iconplus" class="fa fa-minus"
+                            aria-hidden="true"></span>
+                          <span style="pointer-events: none;" *ngIf="cli.iconplus" class="fa fa-plus"
+                            aria-hidden="true"></span> {{cli.n_cliente}}
+                          <div *ngIf="cli.atualiza" class="fa fa-spinner fa-spin"></div>
+                        </div>
+                        <!--div class=" table-row-column col-md-5" style="text-align: left; padding: 0;">
+                              {{cli.estabelecimento}}</div-->
+                        <div class="table-row-column col-md-9 tab_cell" title="{{cli.nome_cliente}}"
+                          style="text-align: left; padding: 0; white-space: nowrap;">
+                          {{cli.nome_cliente}}
+                        </div>
+                      </div>
+                      <div class="col-md-8" style="padding: 0; width: 60%;">
+                        <div class="table-row-column col-md-4 tab_cell"
+                          style="text-align: right;padding-right: 10px; width: 20%;">
+                          {{cli.real | number: '1.2-2'}} €
+                        </div>
+                        <div class="table-row-column col-md-4 tab_cell"
+                          style="text-align: right;padding-right: 10px; width: 20%;">
+                          {{cli.atraso | number: '1.2-2'}} € </div>
+                        <div class="table-row-column col-md-4 tab_cell"
+                          style="text-align: right;padding-right: 10px; width: 20%;">
+                          {{cli.atraso | number: '1.2-2'}} € </div>
+                        <div class="table-row-column col-md-4 tab_cell"
+                          style="text-align: right;padding-right: 10px; width: 20%;">
+                          {{cli.atraso | number: '1.2-2'}} € </div>
+                        <div class="table-row-column col-md-4 tab_cell"
+                          style="text-align: right;padding-right: 10px; width: 20%; ">
+                          {{cli.atraso | number: '1.2-2'}} € </div>
+
+                      </div>
+                    </div>
+
+
+
+                    <div class="table-row collapse col-md-12" id="collapsecli{{cli.id}}">
+                      <!-- ATRASOS -->
+                      <!--div class="table-row col-md-12" style="background: white;">
+                        <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
+                          id="collapseatraso{{cli.id}}" style="font-weight: 500;"
+                          [attr.data-target]="'#collapseatrasos'+cli.id+'atrasos'"
+                          (click)="cli.iconplusatrasos = !cli.iconplusatrasos" #divatraso>
+                          <div class="col-md-12 " style="padding: 0 0 0 5%; text-align: left; background: white;">
+                            ATRASOS
+                          </div>
+                          <div class="col-md-4" style="padding: 0; width: 20%;">
+                            <div class="col-md-3">&nbsp;</div>
+                            <div class="col-md-4 tab_cell" style="background: #ccd0d8; text-align: left;">
+                              <span style="pointer-events: none;" *ngIf="!divatraso.classList.contains('collapsed')"
+                                class="fa fa-minus" aria-hidden="true"></span>
+                              <span style="pointer-events: none;" *ngIf="divatraso.classList.contains('collapsed')"
+                                class="fa fa-plus" aria-hidden="true"></span>
+                              Cód Referência
+                              <div *ngIf="cli.atualizaatrasos" class="fa fa-spinner fa-spin"></div>
+                            </div>
+                            <div class="col-md-5 tab_cell" style="background: #ccd0d8; text-align: left;">
+                              Desig. Referência
+                            </div>
+                          </div>
+                          <div class="col-md-8" style="padding: 0; width: 80%;">
+                            <div class="col-md-1 tab_cell" style="background: #ccd0d8; width:  6%;">
+                              Estado
+                            </div>
+                            <div class="col-md-1 tab_cell" style="background: #ccd0d8;text-align: center; width:  5%;">
+                              Quant.
+                            </div>
+                            <div class="col-md-1 tab_cell" style="background: #ccd0d8;text-align: center; width:  6%;">
+                              Stock
+                            </div>
+                            <div class="col-md-4 tab_cell" style="background: #ccd0d8; width: 6%;">
+                              Valor
+                            </div>
+                            <div class="col-md-4" style="background: #ccd0d8; width:  77%;">
+                              &nbsp;
+                            </div>
+                          </div>
+                        </div>
+                      </div-->
+
+                      <!--div class="table-row-column collapse col-md-12" id="collapseatrasos{{cli.id}}atrasos"
+                        style="padding: 0; background: white;">
+                        <div class="table-row col-md-12" *ngFor="let atraso of cli.atrasos" style="border-bottom:none;">
+                          < dados ATRASOS >
+                          <div class="table-row-column col-md-12 pointer" data-toggle="collapse">
+                            <div class="col-md-4" style="padding: 0; width: 20%;">
+                              <div class="col-md-3"></div>
+                              <div class="col-md-4 tab_cell" style="background: aliceblue; text-align: left; ">
+                                {{atraso.referencia}}
+                              </div>
+                              <div title="{{atraso.design}}" class="col-md-5 tab_cell"
+                                style="background: aliceblue; text-align: left;  white-space: nowrap;">
+                                {{atraso.design}}
+                              </div>
+                            </div>
+                            <div class="col-md-8" style="padding: 0; width: 80%;">
+                              <div class="col-md-3 tab_cell" title=" {{atraso.estado}}"
+                                style="background: aliceblue;text-align: center;  width: 6%;  white-space: nowrap;">
+                                {{atraso.estado}}
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 5%;">
+                                {{atraso.quant | number: '1.0-0'}}
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 6%;">
+                                {{atraso.stock | number: '1.2-2'}}€
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width:6%;">
+                                {{atraso.valor | number: '1.2-2'}}€
+                              </div>
+                              <div class="col-md-4" style="background: aliceblue; width:  77%;">
+                                &nbsp;
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div-->
+
+
+                      <!-- ATRASOS  FIM -->
+
+                      <!-- referenciaS -->
+
+                      <div class="table-row col-md-12" style="border-top: 3px solid white; background: white;">
+                        <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                          id="collapsereferencia{{cli.id}}"
+                          style="font-weight: 500;  display: flex;align-items: center;justify-content: center;background: #203764; font-size: 11px;"
+                          [attr.data-target]="'#collapsereferencias'+cli.id+'referencias'"
+                          (click)="cli.iconplusreferencias = !cli.iconplusreferencias" #divreferencia>
+                          <div class="col-md-4" style="padding: 0; width: 20%; ">
+                            <!--div class="col-md-3">&nbsp;</div-->
+                            <div class="col-md-5 tab_cell" style=" text-align: left; color: white;">
+                              <span style="pointer-events: none;" *ngIf="!divreferencia.classList.contains('collapsed')"
+                                class="fa fa-minus" aria-hidden="true"></span>
+                              <span style="pointer-events: none;" *ngIf="divreferencia.classList.contains('collapsed')"
+                                class="fa fa-plus" aria-hidden="true"></span>
+                              Ref. Cod.
+                              <div *ngIf="cli.atualizareferencias" class="fa fa-spinner fa-spin"></div>
+                            </div>
+                            <div class="col-md-7 tab_cell" style=" text-align: left; border-right: none; color: white;">
+                              Reference Desig.
+                            </div>
+                          </div>
+                          <div class="col-md-8"
+                            style="padding: 0; width: 80%; display: flex;align-items: center;justify-content: center;">
+                            <!--div class="col-md-1 tab_cell" style=" width: 12%; color:white; border-left: none;">
+                              &nbsp;
+                            </div-->
+                            <div class="col-md-1 tab_cell" style="width: 12%; color:white; padding: 0 4px 0 4px;">
+                              Plastic Part Supplier
+                            </div>
+                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Line
+                            </div>
+                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Quantity of {{ano_analise}}
+                            </div>
+
+                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Current Stock
+                            </div>
+                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Delays
+                            </div>
+                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Total Ordered Week {{semana_analise}}
+                            </div>
+                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Balance
+                            </div>
+
+                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Ordered Week {{semana_analise + 1}}
+                            </div>
+                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Ordered Week {{semana_analise + 2}}
+                            </div>
+                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Ordered Week {{semana_analise + 3}}
+                            </div>
+                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Customer Stock
+                            </div>
+
+                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                              Customer Stock Date
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="table-row-column collapse pointer col-md-12"
+                        id="collapsereferencias{{cli.id}}referencias" style="padding: 0; background: white;">
+                        <div class="table-row col-md-12" *ngFor="let referencia of cli.referencias"
+                          style="border-bottom:1px solid #d2d2d273; font-size: 11px;">
+                          <!-- dados referenciaS -->
+                          <div class="table-row-column col-md-12"
+                            style="display: flex; background: aliceblue; padding-left: 0; padding-bottom: 1px; padding-top: 1px;">
+
+                            <div class="col-md-4  pointer collapsed" data-toggle="collapse" #divreferencias
+                              (click)="getdadosreferencias(cli.id,referencia.id); "
+                              [attr.data-target]="'#collapsereferencias'+cli.id+'_'+referencia.id"
+                              [class.disabled]="referencia.atualiza"
+                              style="padding: 0; width: 20%; display: flex; align-items: center;">
+                              <div class=" col-md-5 tab_cell"
+                                style="background: aliceblue; text-align: left;  white-space: nowrap; "
+                                title="{{referencia.referencia}}">
+                                <span style="pointer-events: none; margin-right: 3px;"
+                                  *ngIf="!divreferencias.classList.contains('collapsed')" class="fa fa-minus"
+                                  aria-hidden="true"></span>
+                                <span style="pointer-events: none; margin-right: 3px;"
+                                  *ngIf="divreferencias.classList.contains('collapsed')" class="fa fa-plus"
+                                  aria-hidden="true"></span>{{referencia.referencia}}
+                                <div *ngIf="referencia.atualiza" class="fa fa-spinner fa-spin"></div>
+
+                              </div>
+                              <div class="col-md-7 tab_cell" title="{{referencia.design}}"
+                                style="background: aliceblue; text-align: left; white-space: nowrap; ">
+                                {{referencia.design}}
+                              </div>
+                            </div>
+                            <div class="col-md-8" style="padding: 0; width: 80%; display: flex; align-items: center;">
+
+                              <div class="col-md-5 tab_cell" title="{{referencia.fornecedor}}"
+                                style="background: aliceblue; text-align: left; white-space: nowrap; width: 12%; padding: 0 4px 0 4px;">
+                                {{referencia.fornecedor}}
+                              </div>
+                              <div class="col-md-5 tab_cell" title="{{referencia.design}}"
+                                style="background: aliceblue; text-align: left; white-space: nowrap; width: 8%; padding: 0px 1px 0 1px;">
+                                <p-dropdown [filter]="true" appendTo="body" [options]="linhas"
+                                  [style]="{'width':'100%','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                                  [(ngModel)]="referencia.linha" [ngModelOptions]="{standalone: true}">
+                                </p-dropdown>
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 1px 0 1px;">
+                                <!--(keyup)="etiq.numero = maxNumber($event)"-->
+                                <input min="0" max="9999999999" maxlength="10" type="number"
+                                  style=" height: 27px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
+                                  [(ngModel)]="referencia.quant" [ngModelOptions]="{standalone: true}">
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.stock | number: '1.2-2'}}
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.atraso | number: '1.2-2'}}€
+                              </div>
+
+
+                              <div class="col-md-3 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc }}€ &nbsp;
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.saldo | number: '1.0-0'}}€
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc1 | number: '1.2-2'}}€
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc2 | number: '1.2-2'}}€
+                              </div>
+
+                              <div class="col-md-3 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc3| number: '1.2-2'}}€ &nbsp;
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 1px 0 1px;">
+                                <input min="0" max="9999999999" maxlength="10" type="number"
+                                  style=" height: 27px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
+                                  [(ngModel)]="referencia.stock_cliente" [ngModelOptions]="{standalone: true}">
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 6px 0px 1px;">
+                                <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaaa-mm-dd"
+                                  [style]="{'height':'27px'}" [monthNavigator]="true" [yearNavigator]="true"
+                                  yearRange="2000:2050" [(ngModel)]="referencia.data_stock"
+                                  [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="table-row collapse col-md-12" style="border-bottom: 1px solid white;"
+                            id="collapsereferencias{{cli.id}}_{{referencia.id}}">
+                            <!-- OEM -->
+                            <div class="table-row col-md-12" style="border-bottom: 2px solid white">
+                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                                id="collapseoem{{cli.id}}_{{referencia.id}}oems1"
+                                style="font-weight: 500; border-bottom: 1px solid white;"
+                                [attr.data-target]="'#collapseoems'+cli.id+'_'+referencia.id+'oems1'"
+                                (click)="referencia.iconplusoem = !referencia.iconplusoem" #divoem2>
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+
+                                <div class="col-md-2 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; width: 16.4%;">
+                                  <span style="pointer-events: none;" *ngIf="!divoem2.classList.contains('collapsed')"
+                                    class="fa fa-minus" aria-hidden="true"></span>
+                                  <span style="pointer-events: none;" *ngIf="divoem2.classList.contains('collapsed')"
+                                    class="fa fa-plus" aria-hidden="true"></span>
+                                  OEM
+                                  <div *ngIf="referencia.atualizaoem" class="fa fa-spinner fa-spin"></div>
+                                </div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; border-right: none;">
+                                  Vehicle
+                                </div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #444546;color:white; border-left: none; width: 7.66%;">
+                                  &nbsp;
+                                </div>
+                                <div class="col-md-3 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; width: 20%;">
+                                  Program/Proj.
+                                </div>
+                                <div class="col-md-4" style="background: #444546; color:white; width: 38.93%; ">
+                                  &nbsp;
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapseoems{{cli.id}}_{{referencia.id}}oems1" style="padding: 0;">
+                              <div class="table-row col-md-12" *ngFor="let oem of referencia.oem"
+                                style="border-bottom:none;">
+                                <!-- dados oem -->
+                                <div class="table-row-column col-md-12 pointer" data-toggle="collapse">
+                                  <div class="col-md-1" style="width: 8.666667%;"></div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 16.4%;">
+                                    {{oem.nome}}
+                                  </div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 16%;">
+                                    {{oem.veiculo}}
+                                  </div>
+                                  <div class="col-md-3 tab_cell"
+                                    style="background: aliceblue;text-align: left; width: 20%;">
+                                    {{oem.programa}}
+                                  </div>
+                                  <div class="col-md-4" style="background: aliceblue; width: 38.93%; ">
+                                    &nbsp;
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- OEM  FIM -->
+
+                            <!-- FABRICAS -->
+                            <div class="table-row col-md-12" style="border-bottom: 2px solid white">
+                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                                id="collapsefab{{cli.id}}_{{referencia.id}}fabricas1" style="font-weight: 500;"
+                                [attr.data-target]="'#collapsefabricas'+cli.id+'_'+referencia.id+'fabricas1'"
+                                (click)="referencia.iconplusfab = !referencia.iconplusfab" #divfab2>
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+
+                                <div class="col-md-2 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; width: 16.4%;">
+                                  <span style="pointer-events: none;" *ngIf="!divfab2.classList.contains('collapsed')"
+                                    class="fa fa-minus" aria-hidden="true"></span>
+                                  <span style="pointer-events: none;" *ngIf="divfab2.classList.contains('collapsed')"
+                                    class="fa fa-plus" aria-hidden="true"></span>
+                                  Factories
+                                  <div *ngIf="referencia.atualizafab" class="fa fa-spinner fa-spin"></div>
+                                </div>
+                                <div class="col-md-1 tab_cell" style="background: #444546; color:white;">
+                                  %
+                                </div>
+                                <div class="col-md-1 tab_cell" style="background: #444546;color:white; width: 7.65%;">
+                                  &nbsp;
+                                </div>
+                                <div class="col-md-3 tab_cell"
+                                  style="background: #444546;color:white; text-align: left;     width: 20%;">
+                                  Program/Proj.
+                                </div>
+                                <div class="col-md-1" style="background: #444546;color:white;">
+                                  &nbsp;
+                                </div>
+                                <div class="col-md-3" style="background: #444546; width: 30.6%;">
+                                  &nbsp;
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapsefabricas{{cli.id}}_{{referencia.id}}fabricas1" style="padding: 0;">
+                              <div class="table-row col-md-12" *ngFor="let fab of referencia.fabricas"
+                                style="border-bottom:none;">
+                                <!-- dados fabricas -->
+                                <div class="table-row-column col-md-12 pointer" data-toggle="collapse">
+                                  <div class="col-md-1" style="width: 8.666667%;"></div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 16.4%;">
+                                    {{fab.nome}}
+                                  </div>
+                                  <div class="col-md-1 tab_cell" style="background: aliceblue; ">
+                                    {{fab.percentagem}} %
+                                  </div>
+                                  <div class="col-md-1" style="background: aliceblue;     width: 7.65%;">
+                                    &nbsp;
+                                  </div>
+                                  <div class="col-md-3 tab_cell"
+                                    style="background: aliceblue; text-align: left;     width: 20%;">
+                                    {{fab.programa}}
+                                  </div>
+                                  <div class="col-md-1" style="background: aliceblue;">
+                                    &nbsp;
+                                  </div>
+                                  <div class="col-md-3" style="background: aliceblue; width: 30.6%;">
+                                    &nbsp;
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- FABRICAS  FIM -->
+
+                            <!-- observacoes -->
+                            <div class="table-row col-md-12" style="border-bottom: 2px solid white">
+                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                                id="collapseobser{{cli.id}}_{{referencia.id}}observacoes1"
+                                style="font-weight: 500; border-bottom: 0px  solid white;"
+                                [attr.data-target]="'#collapseobservacoes'+cli.id+'_'+referencia.id+'observacoes1'"
+                                (click)="referencia.iconplusobservacoes = !referencia.iconplusobservacoes"
+                                #divobservacoes2>
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+
+                                <div class="col-md-2 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; width:  91.333333%;">
+                                  <span style="pointer-events: none;"
+                                    *ngIf="!divobservacoes2.classList.contains('collapsed')" class="fa fa-minus"
+                                    aria-hidden="true"></span>
+                                  <span style="pointer-events: none;"
+                                    *ngIf="divobservacoes2.classList.contains('collapsed')" class="fa fa-plus"
+                                    aria-hidden="true"></span>
+                                  Remarks
+                                  <div *ngIf="referencia.atualizaobservacoes" class="fa fa-spinner fa-spin"></div>
+                                </div>
+
+                              </div>
+                            </div>
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapseobservacoes{{cli.id}}_{{referencia.id}}observacoes1" style="padding: 0;">
+                              <div class="table-row col-md-12">
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #ccd0d8; text-align: left; border-right: none; width: 22.83333325%;">
+                                  <b>User</b>
+                                </div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #ccd0d8;text-align: left;  border-left: none; width: 22.83333325%;">
+                                  <b>Date/Time</b>
+                                </div>
+                                <div class="col-md-3 tab_cell"
+                                  style="background: #ccd0d8;text-align: left; width: 22.83333325%;">
+                                  <b>Description</b>
+                                </div>
+                                <div class="col-md-4" style="background: #ccd0d8;  width: 22.83333325%; ">
+                                  &nbsp;
+                                </div>
+                              </div>
+
+                              <div class="table-row col-md-12" *ngFor="let obs of referencia.observacoes"
+                                style="border-bottom:none;">
+                                <!-- dados observacoes -->
+                                <div class="table-row-column col-md-12 pointer" data-toggle="collapse">
+                                  <div class="col-md-1" style="width: 8.666667%;"></div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 22.83333325%;">
+                                    {{obs.UTILIZADOR}}
+                                  </div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 22.83333325%;">
+                                    {{obs.DATA_HORA}}
+                                  </div>
+                                  <div class="col-md-3 tab_cell"
+                                    style="background: aliceblue;text-align: left; width: 22.83333325%;">
+                                    {{obs.DESCRICAO}}
+                                  </div>
+                                  <div class="col-md-4" style="background: aliceblue; width: 22.83333325%; ">
+                                    &nbsp;
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- observacoes  FIM -->
+
+                            <!-- accoes -->
+                            <div class="table-row col-md-12" style="border-bottom: 2px solid white">
+                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                                id="collapseacc{{cli.id}}_{{referencia.id}}accoes1"
+                                style="font-weight: 500; border-bottom: 0px solid white;"
+                                [attr.data-target]="'#collapseaccoes'+cli.id+'_'+referencia.id+'accoes1'"
+                                (click)="referencia.iconplusaccoes = !referencia.iconplusaccoes" #divaccoes2>
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+
+                                <div class="col-md-2 tab_cell"
+                                  style="background: #444546;color:white; text-align: left; width: 91.333333%;">
+                                  <span style="pointer-events: none;"
+                                    *ngIf="!divaccoes2.classList.contains('collapsed')" class="fa fa-minus"
+                                    aria-hidden="true"></span>
+                                  <span style="pointer-events: none;" *ngIf="divaccoes2.classList.contains('collapsed')"
+                                    class="fa fa-plus" aria-hidden="true"></span>
+                                  Actions
+                                  <div *ngIf="referencia.atualizaaccoes" class="fa fa-spinner fa-spin"></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="table-row-column collapse col-md-12"
+                              id="collapseaccoes{{cli.id}}_{{referencia.id}}accoes1" style="padding: 0;">
+                              <div class="table-row col-md-12">
+                                <div class="col-md-1" style="width: 8.666667%;"></div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #ccd0d8; text-align: left; border-right: none; width: 22.83333325%;">
+                                  <b>Action Plan / Task</b>
+                                </div>
+                                <div class="col-md-1 tab_cell"
+                                  style="background: #ccd0d8;text-align: left; border-left: none; width: 22.83333325%;">
+                                  <b>Who</b>
+                                </div>
+                                <div class="col-md-3 tab_cell"
+                                  style="background: #ccd0d8;text-align: left; width: 22.83333325%;">
+                                  <b>Date</b>
+                                </div>
+                                <div class="col-md-4" style="background: #ccd0d8;  width: 22.83333325%; ">
+                                  <b>Status</b>
+                                </div>
+                              </div>
+
+                              <div class="table-row col-md-12" *ngFor="let accao of referencia.accoes"
+                                style="border-bottom:none;">
+                                <!-- dados accoes -->
+                                <div class="table-row-column col-md-12 pointer" data-toggle="collapse">
+                                  <div class="col-md-1" style="width: 8.666667%;"></div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 22.83333325%;">
+                                    {{accao.DESCRICAO}}
+                                  </div>
+                                  <div class="col-md-2 tab_cell"
+                                    style="background: aliceblue; text-align: left; width: 22.83333325%;">
+                                    {{accao.QUEM}}
+                                  </div>
+                                  <div class="col-md-3 tab_cell"
+                                    style="background: aliceblue;text-align: left; width: 22.83333325%;">
+                                    {{accao.DATA}}
+                                  </div>
+                                  <div class="col-md-4" style="background: aliceblue; width: 22.83333325%; ">
+                                    {{accao.ESTADO_TEXTO}}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- accoes  FIM -->
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- referencias  FIM -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

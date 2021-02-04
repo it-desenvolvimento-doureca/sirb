@@ -99,7 +99,7 @@
                       [style]="{'width':'150px'}">
                     </p-column>
 
-                    <p-column field="id_linha" header="Linha" [style]="{'width':'80px'}">
+                    <p-column field="nome_linha" header="Linha" [style]="{'width':'80px'}" [filter]="true">
                       <ng-template let-col="rowData" let-index="rowIndex" pTemplate="body">
                         <p-dropdown [style.background]="col.cor_linha" appendTo="body"
                           (onChange)="alteracorlinha($event,col.id); linhas_update(col.id)" [options]="linhas"

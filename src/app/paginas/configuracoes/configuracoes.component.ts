@@ -76,7 +76,7 @@ export class ConfiguracoesComponent implements OnInit {
     if (this.id_modulo == null) modulo = 0;
     if (modulo == 10 || modulo == 18) {
       this.carregaSectores();
-    } else if (modulo == 9) {
+    } else if (modulo == 12) {
       this.carregaArmazens();
     }
 

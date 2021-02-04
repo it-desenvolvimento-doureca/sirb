@@ -213,6 +213,7 @@ export class GestaoBarrasComponent implements OnInit {
         ref_BASTIDOR: response[x][1],
         ref_BASTIDOR_id: response[x][1] + '_' + ('00000000000000' + response[x][0]).substring(('00000000000000' + response[x][0]).length - 10),
         id_linha: response[x][2],
+        nome_linha: (this.linhas.find(item => item.value == response[x][2])) ? 'Linha ' + response[x][2] : this.linhas.find(item => item.value == response[x][2]).label,
         cor_linha: '',//this.linhas.find(item => item.value == 1).cor,
         plano_BASTIDOR: response[x][3],
         quant_TOTAL_BAST: response[x][4],

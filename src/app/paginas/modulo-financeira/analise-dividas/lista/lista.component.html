@@ -138,8 +138,10 @@
                 </div>
                 <div class="tab-pane fade in" id="tab2">
                   <p-dataTable [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}" [value]="tabela"
-                    dataKey="id" class="tabela_analise_dividas cab_tabela_analise_dividas"
-                    (onFilter)="atualizatotais($event)" (onSort)="atualizatotais($event)">
+                    dataKey="n_cliente" class="tabela_analise_dividas cab_tabela_analise_dividas"
+                    [(selection)]="clientes_seleccionados" (onFilter)="atualizatotais($event)"
+                    (onRowSelect)="atualizatotais(null,true)" (onRowUnselect)="atualizatotais(null,true)"
+                    (onSort)="atualizatotais($event)">
 
                     <p-header>
                       <tr style="width: 100%; display: table; height: 35px;">
@@ -175,7 +177,7 @@
                       </tr>
 
                     </p-header>
-
+                    <p-column [style]="{'width':'20px'}" selectionMode="multiple"></p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="kam" header="KAM"
                       [style]="{'width':'78px'}">
                       <ng-template pTemplate="filter" let-col>
@@ -233,7 +235,8 @@
                       <ng-template let-col let-car="rowData" pTemplate="header">PRAZO MÉDIO ATRASO<br>AVG PAYMENT
                         DELAY
                         <br>
-                        (Last 6 months)</ng-template>
+                        (Last 6 months)
+                      </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="total_divida"
                       header="TOTAL DÍVIDA TOTAL DEBT" [style]="{'width':'70px'}">

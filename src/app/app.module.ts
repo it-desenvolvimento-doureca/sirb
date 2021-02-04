@@ -318,6 +318,11 @@ import { GERREFERENCIASFASTRESPONSEREJEICOESService } from './servicos/ger-refer
 import { SectoresAbsentismoComponent } from './paginas/modulo-recursos-humanos/parametros/sectores-absentismo/sectores-absentismo.component';
 import { RHDICSECTORESABSENTISMOService } from './servicos/rh-dic-sectores-absentismo.service';
 import { RHDICSECTORESABSENTISMOLINHAService } from './servicos/rh-dic-sectores-absentismo-linha.service';
+import { AnaliseClientesComponent } from './paginas/modulo-comercial/analise-clientes/analise-clientes.component';
+import { COANALISECLIENTESService } from './servicos/co-analise-clientes.service';
+import { COANALISECLIENTESQUANTIDADEService } from './servicos/co-analise-clientes-quantidade.service';
+import { COANALISECLIENTESOBSERVACOESService } from './servicos/co-analise-clientes-observacoes.service';
+import { COANALISECLIENTESACCOESService } from './servicos/co-analise-clientes-accoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -470,6 +475,7 @@ const routes: Routes = [
 
   { path: 'sectores_absentismo', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
   { path: 'sectores_absentismo_financeira', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
+  { path: 'analise_clientes', component: AnaliseClientesComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Clientes" } },
 
   {
     path: 'planeamento_producao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Produção" },
@@ -962,7 +968,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     TipoAuditoriaComponent,
     DerrogacoesComponent,
     DerrogacoesFormComponent,
-    SectoresAbsentismoComponent
+    SectoresAbsentismoComponent,
+    AnaliseClientesComponent
   ],
   imports: [
     BrowserModule,
@@ -1158,6 +1165,10 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     GERREFERENCIASFASTRESPONSEREJEICOESService,
     RHDICSECTORESABSENTISMOService,
     RHDICSECTORESABSENTISMOLINHAService,
+    COANALISECLIENTESOBSERVACOESService,
+    COANALISECLIENTESQUANTIDADEService,
+    COANALISECLIENTESACCOESService,
+    COANALISECLIENTESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
