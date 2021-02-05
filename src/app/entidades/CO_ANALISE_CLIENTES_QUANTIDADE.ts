@@ -1,7 +1,7 @@
 export class CO_ANALISE_CLIENTES_QUANTIDADE {
     id: number;
     clicod: string;
-    etsbun: string;
+    etsnum: string;
     proref: string;
     ano: number;
     utz_CRIA: number;

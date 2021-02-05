@@ -28,7 +28,7 @@
                       [(ngModel)]="semana_analise" [ngModelOptions]="{standalone: true}" [required]="true"
                       appendTo="body"></p-dropdown>
                   </div>
-                  <div class="table-row-column col-md-1" style="height: 64px;"> <label>Client code:</label><br>
+                  <div class="table-row-column col-md-1" style="height: 64px;"> <label>Customer Code:</label><br>
                     <input type="text" class="form-control2" [(ngModel)]="codigo_cliente_clientes" style="width: 90%;"
                       [ngModelOptions]="{standalone: true}" placeholder="" />
                   </div>
@@ -81,6 +81,11 @@
                       [(ngModel)]="linha_clientes" [ngModelOptions]="{standalone: true}">
                     </p-dropdown>
                   </div>
+                  <div class="table-row-column col-md-3" style="padding-top: 12px;"> <br>
+                    <p-checkbox [(ngModel)]="todos" [ngModelOptions]="{standalone: true}" label="All Customers"
+                      binary="true">
+                    </p-checkbox>
+                  </div>
                   <div class="table-row-column col-md-3" style="height: 64px;">
                     <button type="submit" class="btn btn-success " [disabled]="loading_clientes"
                       style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">To apply</button>
@@ -102,14 +107,13 @@
                   <div class="table-row table-header cab_analiseencomendas_3"
                     style="background: #757676; color: white; font-weight: 500;">
                     <div class="table-row-column col-md-5" style="padding: 0; width: 40%; height: 40px;">
-                      <div class="table-row-column col-md-3 center_div cell_div" style="height: 100%;">Client Code
+                      <div class="table-row-column col-md-3 center_div cell_div" style="height: 100%;">Customer Code
                         <!--br>
                       <input style="font-weight: 100; height: 19px; color: black;" #myInput type="text"
                         class="form-control2" (input)="filterItem(myInput.value)" /-->
                       </div>
                       <div class="table-row-column col-md-9 center_div cell_div"
-                        style="text-align: left; height: 100%;">Name
-                        Cliente
+                        style="text-align: left; height: 100%;">Customer Name
                       </div>
                       <!--div class="table-row-column col-md-12 cell_div" style="text-align: right;  background: black;">
                         TOTAIS:
@@ -126,56 +130,56 @@
                       </div>
                       <div class="center_div cell_div table-row-column col-md-3"
                         style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
-                        Ordered Week {{semana_analise+1}}
+                        Order Week {{semana_analise+1}}
                       </div>
                       <div class="center_div cell_div table-row-column col-md-3"
                         style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
-                        Ordered Week {{semana_analise+2}}
+                        Order Week {{semana_analise+2}}
                       </div>
                       <div class="center_div cell_div table-row-column col-md-3"
                         style="height: 100%;text-align: right;padding-right: 10px; width: 20%; padding: 0;">
-                        Ordered Week {{semana_analise+3}}
+                        Order Week {{semana_analise+3}}
                       </div>
                       <!--TOTAIS-->
                       <!--<div class="table-row-column col-md-3" style="text-align: right; width: 23%; padding: 0;">
                         <div class="table-row-column col-md-4 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_real | number: '1.2-2'}} €</div>
+                          {{total_real | number: '1.0-0'}} €</div>
                         <div class="table-row-column col-md-4 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_atraso | number: '1.2-2'}} €</div>
+                          {{total_atraso | number: '1.0-0'}} €</div>
                         <div class="table-row-column col-md-4 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_variacao | number: '1.2-2'}} €</div>
+                          {{total_variacao | number: '1.0-0'}} €</div>
                       </div>
                       <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_prev_1 | number: '1.2-2'}} €</div>
+                          {{total_prev_1 | number: '1.0-0'}} €</div>
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_variacao_1 | number: '1.2-2'}} €</div>
+                          {{total_variacao_1 | number: '1.0-0'}} €</div>
                       </div>
                       <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_prev_2 | number: '1.2-2'}} €</div>
+                          {{total_prev_2 | number: '1.0-0'}} €</div>
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_variacao_2 | number: '1.2-2'}} €</div>
+                          {{total_variacao_2 | number: '1.0-0'}} €</div>
                       </div>
                       <div class="table-row-column col-md-3" style="text-align: right; width: 20%; padding: 0;">
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_prev_3 | number: '1.2-2'}} €</div>
+                          {{total_prev_3 | number: '1.0-0'}} €</div>
                         <div class="table-row-column col-md-6 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_variacao_3 | number: '1.2-2'}} €</div>
+                          {{total_variacao_3 | number: '1.0-0'}} €</div>
                       </div>
                       <div class="table-row-column col-md-3" style="text-align: right; width: 17%; padding: 0;">
                         <div class="table-row-column col-md-12 cell_div"
                           style="text-align: right; font-size: 12px !important;  background: black; padding-right: 2px;">
-                          {{total_prev_4 | number: '1.2-2'}} €</div>
+                          {{total_prev_4 | number: '1.0-0'}} €</div>
                         <!--div class="table-row-column col-md-6 cell_div" style="text-align: right;">Variação</div>
                       </div>-->
                       <!--FIM TOTAIS-->
@@ -217,20 +221,20 @@
                       <div class="col-md-8" style="padding: 0; width: 60%;">
                         <div class="table-row-column col-md-4 tab_cell"
                           style="text-align: right;padding-right: 10px; width: 20%;">
-                          {{cli.real | number: '1.2-2'}} €
+                          {{cli.real | number: '1.0-0'}}
                         </div>
                         <div class="table-row-column col-md-4 tab_cell"
                           style="text-align: right;padding-right: 10px; width: 20%;">
-                          {{cli.atraso | number: '1.2-2'}} € </div>
+                          {{cli.atraso | number: '1.0-0'}} </div>
                         <div class="table-row-column col-md-4 tab_cell"
                           style="text-align: right;padding-right: 10px; width: 20%;">
-                          {{cli.atraso | number: '1.2-2'}} € </div>
+                          {{cli.prev1 | number: '1.0-0'}} </div>
                         <div class="table-row-column col-md-4 tab_cell"
                           style="text-align: right;padding-right: 10px; width: 20%;">
-                          {{cli.atraso | number: '1.2-2'}} € </div>
+                          {{cli.prev2 | number: '1.0-0'}} </div>
                         <div class="table-row-column col-md-4 tab_cell"
                           style="text-align: right;padding-right: 10px; width: 20%; ">
-                          {{cli.atraso | number: '1.2-2'}} € </div>
+                          {{cli.prev3 | number: '1.0-0'}} </div>
 
                       </div>
                     </div>
@@ -262,16 +266,16 @@
                             </div>
                           </div>
                           <div class="col-md-8" style="padding: 0; width: 80%;">
-                            <div class="col-md-1 tab_cell" style="background: #ccd0d8; width:  6%;">
+                            <div class="col-md-1 tab_cell" style="background: #ccd0d8; width: 7%;">
                               Estado
                             </div>
                             <div class="col-md-1 tab_cell" style="background: #ccd0d8;text-align: center; width:  5%;">
                               Quant.
                             </div>
-                            <div class="col-md-1 tab_cell" style="background: #ccd0d8;text-align: center; width:  6%;">
+                            <div class="col-md-1 tab_cell" style="background: #ccd0d8;text-align: center; width: 7%;">
                               Stock
                             </div>
-                            <div class="col-md-4 tab_cell" style="background: #ccd0d8; width: 6%;">
+                            <div class="col-md-4 tab_cell" style="background: #ccd0d8; width:7%;">
                               Valor
                             </div>
                             <div class="col-md-4" style="background: #ccd0d8; width:  77%;">
@@ -298,7 +302,7 @@
                             </div>
                             <div class="col-md-8" style="padding: 0; width: 80%;">
                               <div class="col-md-3 tab_cell" title=" {{atraso.estado}}"
-                                style="background: aliceblue;text-align: center;  width: 6%;  white-space: nowrap;">
+                                style="background: aliceblue;text-align: center;  width:7%;  white-space: nowrap;">
                                 {{atraso.estado}}
                               </div>
                               <div class="col-md-4 tab_cell"
@@ -306,12 +310,12 @@
                                 {{atraso.quant | number: '1.0-0'}}
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 6%;">
-                                {{atraso.stock | number: '1.2-2'}}€
+                                style="background: aliceblue;text-align: right;  width:7%;">
+                                {{atraso.stock | number: '1.0-0'}}€
                               </div>
                               <div class="col-md-4 tab_cell"
                                 style="background: aliceblue;text-align: right;  width:6%;">
-                                {{atraso.valor | number: '1.2-2'}}€
+                                {{atraso.valor | number: '1.0-0'}}€
                               </div>
                               <div class="col-md-4" style="background: aliceblue; width:  77%;">
                                 &nbsp;
@@ -351,46 +355,49 @@
                             <!--div class="col-md-1 tab_cell" style=" width: 12%; color:white; border-left: none;">
                               &nbsp;
                             </div-->
-                            <div class="col-md-1 tab_cell" style="width: 12%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-1 tab_cell"
+                              style="width: 12%; color:white; padding: 0 4px 0 10px; text-align: left;">
                               Plastic Part Supplier
                             </div>
-                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-1 tab_cell" style="width:8%; color:white; padding: 0 4px 0 4px;">
                               Line
                             </div>
-                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
-                              Quantity of {{ano_analise}}
+                            <div class="col-md-4 tab_cell" style=" width:8%; color:white; padding: 0 4px 0 4px;">
+                              Qtd of {{ano_analise}}
                             </div>
 
-                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-1 tab_cell" style=" width:8%; color:white; padding: 0 4px 0 4px;">
                               Current Stock
                             </div>
-                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-1 tab_cell" style="width:5%; color:white; padding: 0 4px 0 4px;">
                               Delays
                             </div>
-                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
-                              Total Ordered Week {{semana_analise}}
+                            <div class="col-md-1 tab_cell" style="width:10%; color:white; padding: 0 4px 0 4px;">
+                              Total Order Week {{semana_analise}}
                             </div>
-                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-4 tab_cell" style=" width:6%; color:white; padding: 0 4px 0 4px;">
                               Balance
                             </div>
 
-                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
-                              Ordered Week {{semana_analise + 1}}
+                            <div class="col-md-1 tab_cell" style=" width:8%; color:white; padding: 0 4px 0 4px;">
+                              Order Week {{semana_analise + 1}}
                             </div>
-                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
-                              Ordered Week {{semana_analise + 2}}
+                            <div class="col-md-1 tab_cell" style="width:8%; color:white; padding: 0 4px 0 4px;">
+                              Order Week {{semana_analise + 2}}
                             </div>
-                            <div class="col-md-1 tab_cell" style="width: 8%; color:white; padding: 0 4px 0 4px;">
-                              Ordered Week {{semana_analise + 3}}
+                            <div class="col-md-1 tab_cell" style="width:8%; color:white; padding: 0 4px 0 4px;">
+                              Order Week {{semana_analise + 3}}
                             </div>
-                            <div class="col-md-4 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-4 tab_cell" style=" width:8%; color:white; padding: 0 4px 0 4px;">
                               Customer Stock
                             </div>
 
-                            <div class="col-md-1 tab_cell" style=" width: 8%; color:white; padding: 0 4px 0 4px;">
+                            <div class="col-md-1 tab_cell" style=" width:11%; color:white; padding: 0 4px 0 4px;">
                               Customer Stock Date
                             </div>
-
+                            <div class="col-md-4" style="  color:white; width: 45px; ">
+                              &nbsp;
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -401,7 +408,7 @@
                           style="border-bottom:1px solid #d2d2d273; font-size: 11px;">
                           <!-- dados referenciaS -->
                           <div class="table-row-column col-md-12"
-                            style="display: flex; background: aliceblue; padding-left: 0; padding-bottom: 1px; padding-top: 1px;">
+                            style="display: flex; background: aliceblue; padding-left: 0; padding-bottom: 1px; padding-top: 1px; padding-right: 2px;">
 
                             <div class="col-md-4  pointer collapsed" data-toggle="collapse" #divreferencias
                               (click)="getdadosreferencias(cli.id,referencia.id); "
@@ -428,66 +435,72 @@
                             <div class="col-md-8" style="padding: 0; width: 80%; display: flex; align-items: center;">
 
                               <div class="col-md-5 tab_cell" title="{{referencia.fornecedor}}"
-                                style="background: aliceblue; text-align: left; white-space: nowrap; width: 12%; padding: 0 4px 0 4px;">
+                                style="background: aliceblue; text-align: left; white-space: nowrap; width: 12%; padding: 0 4px 0 10px;">
                                 {{referencia.fornecedor}}
                               </div>
                               <div class="col-md-5 tab_cell" title="{{referencia.design}}"
-                                style="background: aliceblue; text-align: left; white-space: nowrap; width: 8%; padding: 0px 1px 0 1px;">
+                                style="background: aliceblue; text-align: left; white-space: nowrap; width:8%; padding: 0px 1px 0 1px;">
                                 <p-dropdown [filter]="true" appendTo="body" [options]="linhas"
-                                  [style]="{'width':'100%','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                                  [style]="{'width':'100%','height':'24px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
                                   [(ngModel)]="referencia.linha" [ngModelOptions]="{standalone: true}">
                                 </p-dropdown>
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 1px 0 1px;">
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0px 1px 0 1px;">
                                 <!--(keyup)="etiq.numero = maxNumber($event)"-->
                                 <input min="0" max="9999999999" maxlength="10" type="number"
-                                  style=" height: 27px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
+                                  style=" height: 24px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
                                   [(ngModel)]="referencia.quant" [ngModelOptions]="{standalone: true}">
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.stock | number: '1.2-2'}}
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0 4px 0 4px;">
+                                {{referencia.stock | number: '1.0-0'}}
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.atraso | number: '1.2-2'}}€
+                                style="background: aliceblue;text-align: right;  width:5%; padding: 0 4px 0 4px;">
+                                {{referencia.atraso | number: '1.0-0'}}
                               </div>
 
 
                               <div class="col-md-3 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.enc }}€ &nbsp;
+                                style="background: aliceblue;text-align: right;  width:10%; padding: 0 4px 0 4px;">
+                                {{referencia.enc | number: '1.0-0'}} &nbsp;
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.saldo | number: '1.0-0'}}€
+                                style="background: aliceblue;text-align: right;  width:6%; padding: 0 4px 0 4px;">
+                                {{referencia.saldo | number: '1.0-0'}}
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.enc1 | number: '1.2-2'}}€
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc1 | number: '1.0-0'}}
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.enc2 | number: '1.2-2'}}€
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc2 | number: '1.0-0'}}
                               </div>
 
                               <div class="col-md-3 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0 4px 0 4px;">
-                                {{referencia.enc3| number: '1.2-2'}}€ &nbsp;
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0 4px 0 4px;">
+                                {{referencia.enc3| number: '1.0-0'}} &nbsp;
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 1px 0 1px;">
+                                style="background: aliceblue;text-align: right;  width:8%; padding: 0px 1px 0 1px;">
                                 <input min="0" max="9999999999" maxlength="10" type="number"
-                                  style=" height: 27px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
+                                  style=" height: 24px; width: 100%; border: 1px solid #ccc3c3; border-radius: 3px; text-align: right;"
                                   [(ngModel)]="referencia.stock_cliente" [ngModelOptions]="{standalone: true}">
                               </div>
                               <div class="col-md-4 tab_cell"
-                                style="background: aliceblue;text-align: right;  width: 8%; padding: 0px 6px 0px 1px;">
-                                <p-calendar dateFormat="yy-mm-dd" class="inputcalen" placeholder="aaaa-mm-dd"
-                                  [style]="{'height':'27px'}" [monthNavigator]="true" [yearNavigator]="true"
-                                  yearRange="2000:2050" [(ngModel)]="referencia.data_stock"
+                                style="background: aliceblue;text-align: right;  width:11%; padding: 0px 22px 0px 1px;">
+                                <p-calendar dateFormat="yy-mm-dd" class="inputcalen2" placeholder="aaaa-mm-dd"
+                                  [style]="{'height':'24px'}" [monthNavigator]="true" [yearNavigator]="true"
+                                  yearRange="2000:2050" [(ngModel)]="referencia.data_stock" appendTo="body"
                                   [ngModelOptions]="{standalone: true}" [showIcon]="true"></p-calendar>
+                              </div>
+                              <div class="col-md-4 tab_cell"
+                                style=" text-align: right;  width:45px; padding: 0px 2px 0px 1px;">
+                                <a (click)="gravardados(cli.id,referencia.id);"
+                                  style="padding: 6px 0 2px 11px; margin: 0;" class="btn btn-success"><span
+                                    class="glyphicon glyphicon-floppy-disk"></span></a>
                               </div>
 
                             </div>
@@ -627,16 +640,16 @@
 
                             <!-- observacoes -->
                             <div class="table-row col-md-12" style="border-bottom: 2px solid white">
-                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                              <div class="table-row-column col-md-12 pointer "
                                 id="collapseobser{{cli.id}}_{{referencia.id}}observacoes1"
-                                style="font-weight: 500; border-bottom: 0px  solid white;"
-                                [attr.data-target]="'#collapseobservacoes'+cli.id+'_'+referencia.id+'observacoes1'"
-                                (click)="referencia.iconplusobservacoes = !referencia.iconplusobservacoes"
-                                #divobservacoes2>
+                                style="font-weight: 500; border-bottom: 0px  solid white;">
                                 <div class="col-md-1" style="width: 8.666667%;"></div>
 
-                                <div class="col-md-2 tab_cell"
-                                  style="background: #444546;color:white; text-align: left; width:  91.333333%;">
+                                <div class="col-md-3 tab_cell collapsed" data-toggle="collapse"
+                                  [attr.data-target]="'#collapseobservacoes'+cli.id+'_'+referencia.id+'observacoes1'"
+                                  (click)="referencia.iconplusobservacoes = !referencia.iconplusobservacoes"
+                                  #divobservacoes2
+                                  style="background: #444546;color:white; text-align: left; width:  21.333333%; height: 21.5px;">
                                   <span style="pointer-events: none;"
                                     *ngIf="!divobservacoes2.classList.contains('collapsed')" class="fa fa-minus"
                                     aria-hidden="true"></span>
@@ -644,7 +657,14 @@
                                     *ngIf="divobservacoes2.classList.contains('collapsed')" class="fa fa-plus"
                                     aria-hidden="true"></span>
                                   Remarks
+
                                   <div *ngIf="referencia.atualizaobservacoes" class="fa fa-spinner fa-spin"></div>
+                                </div>
+                                <div class="col-md-3 tab_cell "
+                                  style="background: #444546;color:white; text-align: left; width: 70%;">
+                                  <a (click)="addObservacoes(cli.id,referencia.id);"
+                                    style="padding: 2px 0 0px 8px;margin: 0 0 2px 0;font-size: 11px;"
+                                    class="btn btn-warning">Add <span class="glyphicon glyphicon-plus"></span></a>
                                 </div>
 
                               </div>
@@ -681,15 +701,17 @@
                                     {{obs.UTILIZADOR}}
                                   </div>
                                   <div class="col-md-2 tab_cell"
-                                    style="background: aliceblue; text-align: left; width: 22.83333325%;">
+                                    style="background: aliceblue; text-align: left; width: 12.83333325%;">
                                     {{obs.DATA_HORA}}
                                   </div>
                                   <div class="col-md-3 tab_cell"
                                     style="background: aliceblue;text-align: left; width: 22.83333325%;">
                                     {{obs.DESCRICAO}}
                                   </div>
-                                  <div class="col-md-4" style="background: aliceblue; width: 22.83333325%; ">
-                                    &nbsp;
+                                  <div class="col-md-4" style="background: aliceblue; width: 32.83333325%; ">
+                                    <a (click)="editObservacoes(cli.id,referencia.id,obs.ID);"
+                                      style="padding: 2px 0 0px 8px;margin: 0 0 2px 0;font-size: 11px; float: right;"
+                                      class="btn btn-default"> <span class="glyphicon glyphicon-pencil"></span></a>
                                   </div>
                                 </div>
                               </div>
@@ -698,15 +720,15 @@
 
                             <!-- accoes -->
                             <div class="table-row col-md-12" style="border-bottom: 2px solid white">
-                              <div class="table-row-column col-md-12 pointer collapsed" data-toggle="collapse"
+                              <div class="table-row-column col-md-12 pointer "
                                 id="collapseacc{{cli.id}}_{{referencia.id}}accoes1"
-                                style="font-weight: 500; border-bottom: 0px solid white;"
-                                [attr.data-target]="'#collapseaccoes'+cli.id+'_'+referencia.id+'accoes1'"
-                                (click)="referencia.iconplusaccoes = !referencia.iconplusaccoes" #divaccoes2>
+                                style="font-weight: 500; border-bottom: 0px solid white;">
                                 <div class="col-md-1" style="width: 8.666667%;"></div>
 
-                                <div class="col-md-2 tab_cell"
-                                  style="background: #444546;color:white; text-align: left; width: 91.333333%;">
+                                <div class="col-md-3 tab_cell collapsed" data-toggle="collapse"
+                                  [attr.data-target]="'#collapseaccoes'+cli.id+'_'+referencia.id+'accoes1'"
+                                  (click)="referencia.iconplusaccoes = !referencia.iconplusaccoes" #divaccoes2
+                                  style="background: #444546;color:white; text-align: left; width: 21.333333%; height: 21px;">
                                   <span style="pointer-events: none;"
                                     *ngIf="!divaccoes2.classList.contains('collapsed')" class="fa fa-minus"
                                     aria-hidden="true"></span>
@@ -714,6 +736,12 @@
                                     class="fa fa-plus" aria-hidden="true"></span>
                                   Actions
                                   <div *ngIf="referencia.atualizaaccoes" class="fa fa-spinner fa-spin"></div>
+                                </div>
+                                <div class="col-md-3 tab_cell "
+                                  style="background: #444546;color:white; text-align: left; width: 70%;">
+                                  <a (click)="addAccao(cli.id,referencia.id);"
+                                    style="padding: 2px 0 0px 8px;margin: 0 0 2px 0;font-size: 11px;"
+                                    class="btn btn-warning">Add <span class="glyphicon glyphicon-plus"></span></a>
                                 </div>
                               </div>
                             </div>
@@ -731,11 +759,14 @@
                                   <b>Who</b>
                                 </div>
                                 <div class="col-md-3 tab_cell"
-                                  style="background: #ccd0d8;text-align: left; width: 22.83333325%;">
+                                  style="background: #ccd0d8;text-align: left; width: 12.83333325%;">
                                   <b>Date</b>
                                 </div>
                                 <div class="col-md-4" style="background: #ccd0d8;  width: 22.83333325%; ">
                                   <b>Status</b>
+                                </div>
+                                <div class="col-md-4" style="background: #ccd0d8;  width: 10%; ">
+                                  &nbsp;
                                 </div>
                               </div>
 
@@ -753,12 +784,18 @@
                                     {{accao.QUEM}}
                                   </div>
                                   <div class="col-md-3 tab_cell"
-                                    style="background: aliceblue;text-align: left; width: 22.83333325%;">
+                                    style="background: aliceblue;text-align: left; width: 12.83333325%;">
                                     {{accao.DATA}}
                                   </div>
                                   <div class="col-md-4" style="background: aliceblue; width: 22.83333325%; ">
                                     {{accao.ESTADO_TEXTO}}
                                   </div>
+                                  <div class="col-md-4" style="background: aliceblue; width: 10%; ">
+                                    <a (click)="editAccao(cli.id,referencia.id,accao.ID);"
+                                      style="padding: 2px 0 0px 8px;margin: 0 0 2px 0;font-size: 11px; float: right;"
+                                      class="btn btn-default"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                  </div>
+
                                 </div>
                               </div>
                             </div>
@@ -780,3 +817,80 @@
       </div>
     </div>
   </div>
+
+
+
+  <p-dialog appendTo="body" header="Remarks" width="800" [(visible)]="displayObs" [draggable]="false" modal="modal"
+    [responsive]="true">
+    <form role="form" ngNativeValidate (ngSubmit)="saveOBS()">
+      <div class="col-md-12">
+        <div class="form-group form-black label-floating">
+          <label style="font-size: 14px;">Description</label><br>
+          <input type="text" [(ngModel)]="descricao_observacao" [ngModelOptions]="{standalone: true}"
+            style=" width: 100%;" class="form-control2" id="usr23" required>
+        </div>
+      </div>
+      <p-footer>
+        <div class="col-md-12" style="text-align: center; margin-top: 10px;">
+          <button type="submit" pButton icon="fa-check" class="ui-button-success" label="Save"></button>
+          <button type="button" pButton icon="fa-close" (click)="displayObs=false" label="Close"></button>
+          <button type="button" pButton icon="fa-trash" [hidden]="novo" class="ui-button-danger"
+            (click)="deleteOBSERVACAO()" label="Delete"></button>
+        </div>
+      </p-footer>
+    </form>
+  </p-dialog>
+
+  <p-dialog appendTo="body" header="Actions" width="800" [(visible)]="displayAcao" [draggable]="false" modal="modal"
+    [responsive]="true">
+    <form role="form" ngNativeValidate (ngSubmit)="saveACCAO()">
+      <div class="col-md-6">
+        <div class="form-group form-black label-floating">
+          <label style="font-size: 14px;">Action Plan/Task</label><br>
+          <input type="text" [(ngModel)]="descricao_acao" [ngModelOptions]="{standalone: true}" class="form-control2"
+            id="usr" style=" width: 100%;" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group form-black label-floating">
+          <label style="font-size: 14px;">Who</label> <br>
+          <input type="text" [(ngModel)]="quem_acao" [ngModelOptions]="{standalone: true}" class="form-control2"
+            id="usr2" style=" width: 100%;" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group form-black label-floating">
+          <label style="font-size: 14px;">Date</label> <br>
+          <p-calendar dateFormat="yy-mm-dd" required class="inputcalen" placeholder="aaaa-mm-dd"
+            [style]="{'width':'100%','height':'27px'}" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="2000:2050" [(ngModel)]="data_accao" appendTo="body" [ngModelOptions]="{standalone: true}"
+            [showIcon]="true">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group form-black label-floating">
+          <label style="font-size: 14px;">Status</label> <br>
+          <p-dropdown [filter]="true" [options]="estados" [style]="{'width':'100%','height': '27px'}"
+            [(ngModel)]="estado_acao" [ngModelOptions]="{standalone: true}" [required]="true" appendTo="body">
+          </p-dropdown>
+        </div>
+      </div>
+      <p-footer>
+        <div class="col-md-12" style="text-align: center; margin-top: 10px;">
+          <button type="submit" pButton icon="fa-check" class="ui-button-success" label="Save"></button>
+          <button type="button" pButton icon="fa-close" (click)="displayAcao=false" label="Close"></button>
+          <button type="button" pButton icon="fa-trash" [hidden]="novo" class="ui-button-danger" (click)="deleteACCAO()"
+            label="Delete"></button>
+        </div>
+      </p-footer>
+    </form>
+  </p-dialog>
+
+  <button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+    onclick="demo.showNotification('top','right','Saved Successfully!',2)"></button>
+
+  <button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+    onclick="demo.showNotification('top','right','ERROR!! Record has not been saved!',4)"></button>
+
+  <p-confirmDialog key="conf001" acceptLabel="Yes" rejectLabel="No" appendTo="body"></p-confirmDialog>

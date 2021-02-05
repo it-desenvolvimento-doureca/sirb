@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer } from '@angular/core';
 import { GERDICPROJCABService } from 'app/servicos/ger-dic-proj-cab.service';
 import { GERDICPROGRAMAService } from 'app/servicos/ger-dic-programa.service';
 import { GERDICFABRICAService } from 'app/servicos/ger-dic-fabrica.service';
@@ -11,6 +11,11 @@ import { COANALISECLIENTESACCOESService } from 'app/servicos/co-analise-clientes
 import { COANALISECLIENTESOBSERVACOESService } from 'app/servicos/co-analise-clientes-observacoes.service';
 import { COANALISECLIENTESQUANTIDADEService } from 'app/servicos/co-analise-clientes-quantidade.service';
 import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
+import { CO_ANALISE_CLIENTES } from 'app/entidades/CO_ANALISE_CLIENTES';
+import { CO_ANALISE_CLIENTES_QUANTIDADE } from 'app/entidades/CO_ANALISE_CLIENTES_QUANTIDADE';
+import { CO_ANALISE_CLIENTES_ACCOES } from 'app/entidades/CO_ANALISE_CLIENTES_ACCOES';
+import { CO_ANALISE_CLIENTES_OBSERVACOES } from 'app/entidades/CO_ANALISE_CLIENTES_OBSERVACOES';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
   selector: 'app-analise-clientes',
@@ -19,6 +24,7 @@ import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
 })
 export class AnaliseClientesComponent implements OnInit {
   analises_clientes: any[] = [];
+  loading = false;
   loading_clientes: boolean;
   referencia_principal_clientes: any;
   filteredreferencias_clientes: any[] = [];
@@ -42,14 +48,33 @@ export class AnaliseClientesComponent implements OnInit {
   campo_ref_clientes: any;
   linhas: any[];
   linha_clientes;
+  user: any;
+  id_REF: any;
+  index: number;
+  displayObs: boolean;
+  novo: boolean;
+  descricao_observacao: string;
+  estado_acao: any;
+  data_accao: any;
+  quem_acao: any;
+  descricao_acao: any;
+  displayAcao: boolean;
+  estados = [{ label: "Select Status", value: "" }, { label: "Ready", value: 'R' }, { label: "Pending", value: 'P' }];
+  todos = false;
+  @ViewChild('inputgravou') inputgravou: ElementRef;
+  @ViewChild('inputerro') inputerro: ElementRef;
+  accao: CO_ANALISE_CLIENTES_ACCOES;
+  observacao: CO_ANALISE_CLIENTES_OBSERVACOES;
 
   constructor(private GERDICPROJCABService: GERDICPROJCABService, private COANALISECLIENTESService: COANALISECLIENTESService, private elementRef: ElementRef,
     private COANALISECLIENTESACCOESService: COANALISECLIENTESACCOESService, private COANALISECLIENTESOBSERVACOESService: COANALISECLIENTESOBSERVACOESService, private COANALISECLIENTESQUANTIDADEService: COANALISECLIENTESQUANTIDADEService,
     private GERDICPROGRAMAService: GERDICPROGRAMAService, private GERDICFABRICAService: GERDICFABRICAService, private ABDICLINHAService: ABDICLINHAService
-    , private GERDICVEICULOService: GERDICVEICULOService, private GERDICOEMService: GERDICOEMService, private route: ActivatedRoute,
-    private router: Router, private location: Location) { }
+    , private GERDICVEICULOService: GERDICVEICULOService, private GERDICOEMService: GERDICOEMService, private route: ActivatedRoute, private confirmationService: ConfirmationService,
+    private router: Router, private location: Location, private renderer: Renderer) { }
 
   ngOnInit() {
+
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
     var ano;
     var semana;
@@ -245,10 +270,11 @@ export class AnaliseClientesComponent implements OnInit {
       year = (new Date()).getFullYear();
     }
 
-
+    var todos = 0;
+    if (this.todos) todos = 1;
 
     var data = [{
-      SEMANA: week, ANO: year, COD_CLIENTE: codigo_cliente,
+      SEMANA: week, ANO: year, COD_CLIENTE: codigo_cliente, TODOS: todos,
       NOME_CLIENTE: nome_cliente, PROREF: this.referencia_principal_clientes,
       PROGRAMAS: programas, VEICULOS: veiculos, OEM: oem, FABRICAS: fabricas, LINHA: (this.linha_clientes != null && this.linha_clientes != '') ? this.linha_clientes : null
     }];
@@ -268,7 +294,10 @@ export class AnaliseClientesComponent implements OnInit {
               atualiza: false, iconplus: true,
               atualizarefs: false, iconplusrefs: true,
               real: response[x][4],
-              atraso: response[x][4],
+              atraso: response[x][5],
+              prev1: response[x][6],
+              prev2: response[x][7],
+              prev3: response[x][8],
               referencias: [],
             });
 
@@ -438,9 +467,9 @@ export class AnaliseClientesComponent implements OnInit {
               data_cria_quant: (response[x][18] == null) ? null : new Date(response[x][18]),
               utz_cria_quant: response[x][19],
               quant: response[x][17],
-              saldo: response[x][20] - response[x][6] - response[x][5],
+              saldo: response[x][20] - response[x][6] - response[x][21],
 
-              enc: response[x][5],
+              enc: response[x][21],
               enc1: response[x][7],
               enc2: response[x][8],
               enc3: response[x][9],
@@ -514,7 +543,7 @@ export class AnaliseClientesComponent implements OnInit {
     this.analises_clientes[index].referencias[index_ref].iconplusobservacoes = true;
     this.analises_clientes[index].referencias[index_ref].atualizaobservacoes = true;
     var data = [{ PROREF: PROREF, COD_CLIENTE: COD_CLIENTE, ETSNUM: ETSNUM }];
-
+    this.analises_clientes[index].referencias[index_ref].observacoes = [];
     this.COANALISECLIENTESOBSERVACOESService.GET_ANALISE_CLIENTES_OBSERVACOES(data).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -524,7 +553,7 @@ export class AnaliseClientesComponent implements OnInit {
               ID: response[x][0], CLICOD: response[x][1], ETSNUM: response[x][2], PROREF: response[x][3],
               DESCRICAO: response[x][4], UTZ_CRIA: response[x][5], DATA_CRIA: response[x][6], UTZ_MODIF: response[x][7], DATA_MODIF: response[x][8],
               UTILIZADOR: response[x][9],
-              DATA_HORA: (response[x][6] != null) ? (this.formatDate(this.formatDate(response[x][6]) + " " + new Date(response[x][6]).toLocaleTimeString())) : null,
+              DATA_HORA: (response[x][6] != null) ? (this.formatDate(response[x][6]) + " " + new Date(response[x][6]).toLocaleTimeString()) : null,
             });
           }
 
@@ -548,7 +577,7 @@ export class AnaliseClientesComponent implements OnInit {
     this.analises_clientes[index].referencias[index_ref].iconplusaccoes = true;
     this.analises_clientes[index].referencias[index_ref].atualizaaccoes = true;
     var data = [{ PROREF: PROREF, COD_CLIENTE: COD_CLIENTE, ETSNUM: ETSNUM }];
-
+    this.analises_clientes[index].referencias[index_ref].accoes = [];
     this.COANALISECLIENTESACCOESService.GET_ANALISE_CLIENTES_ACCOES(data).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -579,10 +608,10 @@ export class AnaliseClientesComponent implements OnInit {
 
   getestadoaccao(valor) {
     var estado = '';
-    if (valor == 'C') {
-      estado = 'Pronto';
+    if (valor == 'R') {
+      estado = 'Ready';
     } else {
-      estado = 'Pendente';
+      estado = 'Pending';
     }
 
     return estado;
@@ -725,4 +754,284 @@ export class AnaliseClientesComponent implements OnInit {
     }
     return result;
   }
+
+
+  gravardados(id_cli, id) {
+    var index = this.analises_clientes.findIndex(item => item.id == id_cli);
+    this.analises_clientes[index].referencias.find(item => item.id == id).iconplus = !this.analises_clientes[index].referencias.find(item => item.id == id).iconplus;
+    var PROREF = this.analises_clientes[index].referencias.find(item => item.id == id).referencia;
+    var COD_CLIENTE = this.analises_clientes[index].referencias.find(item => item.id == id).id_cliente;
+    var ETSNUM = this.analises_clientes[index].referencias.find(item => item.id == id).etsnum;
+
+    var id1 = this.analises_clientes[index].referencias.find(item => item.id == id).id_quant;
+    var id2 = this.analises_clientes[index].referencias.find(item => item.id == id).id_stock;
+    var quantidade = this.analises_clientes[index].referencias.find(item => item.id == id).quant;
+    var data_cria_quant = this.analises_clientes[index].referencias.find(item => item.id == id).data_cria_quant;
+    var utz_cria_quant = this.analises_clientes[index].referencias.find(item => item.id == id).utz_cria_quant;
+    var data_STOCK_CLIENTE = this.analises_clientes[index].referencias.find(item => item.id == id).data_stock;
+    var stock_CLIENTE = this.analises_clientes[index].referencias.find(item => item.id == id).stock_cliente;
+    var id_LINHA = this.analises_clientes[index].referencias.find(item => item.id == id).linha;
+    var data_cria_stock = this.analises_clientes[index].referencias.find(item => item.id == id).data_cria_stock;
+    var utz_cria_stock = this.analises_clientes[index].referencias.find(item => item.id == id).utz_cria_stock;
+
+    this.insertstock(PROREF, COD_CLIENTE, ETSNUM, id2, data_STOCK_CLIENTE, stock_CLIENTE, id_LINHA, data_cria_stock, utz_cria_stock, index, id);
+    this.insertqtd(PROREF, COD_CLIENTE, ETSNUM, id1, quantidade, data_cria_quant, utz_cria_quant, index, id);
+
+  }
+
+
+  insertstock(proref, clicod, etsnum, id, data_STOCK_CLIENTE, stock_CLIENTE, id_LINHA, data_cria, utz_cria, index, id_ref) {
+
+    var stock = new CO_ANALISE_CLIENTES;
+
+    stock.id = id;
+    stock.data_CRIA = data_cria;
+    stock.utz_CRIA = utz_cria;
+    if (id == null) {
+      stock.data_CRIA = new Date();
+      stock.utz_CRIA = this.user;
+    }
+    stock.data_MODIF = new Date();
+    stock.utz_MODIF = this.user;
+
+    stock.clicod = clicod;
+    stock.proref = proref;
+    stock.etsnum = etsnum;
+    stock.data_STOCK_CLIENTE = data_STOCK_CLIENTE;
+    stock.stock_CLIENTE = stock_CLIENTE;
+    stock.id_LINHA = id_LINHA;
+
+    this.COANALISECLIENTESService.update(stock).subscribe(
+      res => {
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).id_stock = res.id;
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).data_cria_stock = res.data_CRIA;
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).utz_cria_stock = res.utz_CRIA;
+        this.simular(this.inputgravou);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
+  }
+
+  insertqtd(proref, clicod, etsnum, id, quantidade, data_cria, utz_cria, index, id_ref) {
+    var qtd = new CO_ANALISE_CLIENTES_QUANTIDADE;
+
+    qtd.id = id;
+    qtd.data_CRIA = data_cria;
+    qtd.utz_CRIA = utz_cria;
+    if (id == null) {
+      qtd.data_CRIA = new Date();
+      qtd.utz_CRIA = this.user;
+    }
+    qtd.data_MODIF = new Date();
+    qtd.utz_MODIF = this.user;
+
+    qtd.clicod = clicod;
+    qtd.proref = proref;
+    qtd.etsnum = etsnum;
+    qtd.ano = this.ano_analise;
+    qtd.quantidade = quantidade;
+
+    this.COANALISECLIENTESQUANTIDADEService.update(qtd).subscribe(
+      res => {
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).id_quant = res.id;
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).data_cria_quant = res.data_CRIA;
+        this.analises_clientes[index].referencias.find(item => item.id == id_ref).utz_cria_quant = res.utz_CRIA;
+        // this.simular(this.inputgravou);
+      },
+      error => { console.log(error); /*this.simular(this.inputerro);*/ });
+  }
+
+  addObservacoes(id_cli, id) {
+    this.index = this.analises_clientes.findIndex(item => item.id == id_cli);
+    this.id_REF = id;
+    this.displayObs = true;
+    this.novo = true;
+    this.descricao_observacao = "";
+  }
+
+  addAccao(id_cli, id) {
+    this.index = this.analises_clientes.findIndex(item => item.id == id_cli);
+    this.id_REF = id;
+    this.novo = true;
+    this.estado_acao = null;
+    this.data_accao = null;
+    this.quem_acao = null;
+    this.descricao_acao = null;
+    this.displayAcao = true;
+  }
+
+  saveOBS() {
+    var observacao = new CO_ANALISE_CLIENTES_OBSERVACOES;
+    if (this.novo) {
+      observacao.data_CRIA = new Date();
+      observacao.utz_CRIA = this.user;
+    } else {
+      observacao = this.observacao;
+    }
+
+    var PROREF = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).referencia;
+    var COD_CLIENTE = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).id_cliente;
+    var ETSNUM = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).etsnum;
+
+    observacao.data_MODIF = new Date();
+    observacao.utz_MODIF = this.user;
+    observacao.descricao = this.descricao_observacao;
+    observacao.etsnum = ETSNUM;
+    observacao.clicod = COD_CLIENTE;
+    observacao.proref = PROREF;
+
+    this.COANALISECLIENTESOBSERVACOESService.update(observacao).subscribe(
+      res => {
+        this.carregaOBSERVACOES(this.index, this.id_REF, PROREF, COD_CLIENTE, ETSNUM);
+        this.displayObs = false;
+        this.simular(this.inputgravou);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
+
+  }
+  saveACCAO() {
+    var accao = new CO_ANALISE_CLIENTES_ACCOES;
+    if (this.novo) {
+      accao.data_CRIA = new Date();
+      accao.utz_CRIA = this.user;
+    } else {
+      accao = this.accao;
+    }
+
+    var PROREF = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).referencia;
+    var COD_CLIENTE = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).id_cliente;
+    var ETSNUM = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).etsnum;
+
+    accao.data_MODIF = new Date();
+    accao.utz_MODIF = this.user;
+    accao.descricao = this.descricao_acao;
+    accao.data = this.data_accao;
+    accao.quem = this.quem_acao;
+    accao.estado = this.estado_acao;
+    accao.etsnum = ETSNUM;
+    accao.clicod = COD_CLIENTE;
+    accao.proref = PROREF;
+
+    this.COANALISECLIENTESACCOESService.update(accao).subscribe(
+      res => {
+        this.carregaACCOES(this.index, this.id_REF, PROREF, COD_CLIENTE, ETSNUM);
+        this.displayAcao = false;
+        this.simular(this.inputgravou);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
+  }
+
+  //simular click para mostrar mensagem
+  simular(element) {
+    let event = new MouseEvent('click', { bubbles: true });
+    this.renderer.invokeElementMethod(
+      element.nativeElement, 'dispatchEvent', [event]);
+  }
+
+
+  editObservacoes(id_cli, id_ref, id) {
+    this.index = this.analises_clientes.findIndex(item => item.id == id_cli);
+    this.id_REF = id_ref;
+    var index_ref = this.analises_clientes[this.index].referencias.findIndex(item => item.id == id_ref);
+    var observacao = this.analises_clientes[this.index].referencias[index_ref].observacoes.find(item => item.ID == id);
+
+    var observacao_data = new CO_ANALISE_CLIENTES_OBSERVACOES;
+    observacao_data.id = observacao.ID;
+    observacao_data.data_CRIA = observacao.DATA_CRIA;
+    observacao_data.utz_CRIA = observacao.UTZ_CRIA;
+    observacao_data.descricao = observacao.DESCRICAO;
+    observacao_data.etsnum = observacao.ETSNUM;
+    observacao_data.clicod = observacao.CLICOD;
+    observacao_data.proref = observacao.PROREF;
+
+    this.observacao = observacao_data;
+
+    this.displayObs = true;
+    this.novo = false;
+    this.descricao_observacao = observacao.DESCRICAO;
+
+  }
+
+  editAccao(id_cli, id_ref, id) {
+    this.index = this.analises_clientes.findIndex(item => item.id == id_cli);
+    var index_ref = this.analises_clientes[this.index].referencias.findIndex(item => item.id == id_ref);
+    var accao = this.analises_clientes[this.index].referencias[index_ref].accoes.find(item => item.ID == id);
+
+
+    var accao_data = new CO_ANALISE_CLIENTES_ACCOES;
+    accao_data.data_CRIA = accao.DATA_CRIA;
+    accao_data.utz_CRIA = accao.UTZ_CRIA;
+    accao_data.id = accao.ID;
+    accao_data.descricao = accao.DESCRICAO;
+    accao_data.data = accao.DATA;
+    accao_data.quem = accao.QUEM;
+    accao_data.estado = accao.ESTADO;
+    accao_data.etsnum = accao.ETSNUM;
+    accao_data.clicod = accao.CLICOD;
+    accao_data.proref = accao.PROREF;
+
+    this.accao = accao_data;
+
+    this.id_REF = id_ref;
+    this.novo = false;
+    this.estado_acao = accao.ESTADO;
+    this.data_accao = accao.DATA;
+    this.quem_acao = accao.QUEM;
+    this.descricao_acao = accao.DESCRICAO;
+    this.displayAcao = true;
+
+  }
+
+
+  deleteACCAO() {
+    this.displayAcao = false;
+    setTimeout(() => {
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to delete?',
+        header: 'Delete',
+        icon: 'fa fa-trash',
+        key: 'conf001',
+        accept: () => {
+
+          var PROREF = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).referencia;
+          var COD_CLIENTE = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).id_cliente;
+          var ETSNUM = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).etsnum;
+
+          this.COANALISECLIENTESACCOESService.delete(this.accao.id).then(result => {
+            this.carregaACCOES(this.index, this.id_REF, PROREF, COD_CLIENTE, ETSNUM);
+            this.displayAcao = false;
+          }, error => { console.log(error); });
+        }, reject: () => {
+          this.displayAcao = true;
+        }
+      });
+    }, 100);
+  }
+
+  deleteOBSERVACAO() {
+    this.displayObs = false;
+    setTimeout(() => {
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to delete?',
+        header: 'Delete',
+        icon: 'fa fa-trash',
+        key: 'conf001',
+        accept: () => {
+
+          var PROREF = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).referencia;
+          var COD_CLIENTE = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).id_cliente;
+          var ETSNUM = this.analises_clientes[this.index].referencias.find(item => item.id == this.id_REF).etsnum;
+
+          this.COANALISECLIENTESOBSERVACOESService.delete(this.observacao.id).then(result => {
+            this.carregaOBSERVACOES(this.index, this.id_REF, PROREF, COD_CLIENTE, ETSNUM);
+            this.displayObs = false;
+          }, error => { console.log(error); });
+        }, reject: () => {
+          this.displayObs = true;
+        }
+      });
+    }, 100);
+  }
+
 }
+
+

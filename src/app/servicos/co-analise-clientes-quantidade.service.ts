@@ -47,9 +47,8 @@ export class COANALISECLIENTESQUANTIDADEService {
   update(data: CO_ANALISE_CLIENTES_QUANTIDADE) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateCO_ANALISE_CLIENTES_QUANTIDADE', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
-      .catch(this.handleError);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
   }
 
 

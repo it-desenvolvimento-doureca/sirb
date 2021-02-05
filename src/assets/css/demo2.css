@@ -5400,6 +5400,10 @@ input[type="file"]:not(.form-control2):not(.fileinput) {
     height: 27px;
 }
 
+.inputcalen2 .ui-inputtext {
+    height: 24px;
+}
+
 .tabelabanhosaditivos .ui-datatable-header {
     padding: 0 !important;
 }
