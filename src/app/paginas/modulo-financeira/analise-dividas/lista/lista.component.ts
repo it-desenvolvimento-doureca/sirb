@@ -410,14 +410,14 @@ export class ListaComponent implements OnInit {
       this.grafigo_circular(this.totalacordo, this.total91dias, this.total6190dias, this.total3160dias, this.total31dias, this.totalnaovencido);
     }*/
 
-    if (carrega) {
-      try {
-        this.grafico_top15();
-        //this.grafigo_circular(this.totalacordo, this.total91dias, this.total6190dias, this.total3160dias, this.total31dias, this.totalnaovencido);
-      } catch (error) {
+    //if (carrega) {
+    try {
+      this.grafico_top15();
+      //this.grafigo_circular(this.totalacordo, this.total91dias, this.total6190dias, this.total3160dias, this.total31dias, this.totalnaovencido);
+    } catch (error) {
 
-      }
     }
+    // }
 
     this.grafico_debts();
   }
@@ -654,44 +654,119 @@ chart.draw(data, options);
 }*/
 
   grafico_top15() {
-    this.FINANALISEDIVIDASService.GET_DIVIDAS_LISTA_TOP_15_DIVIDAS([]).subscribe(
-      response => {
-        var count = Object.keys(response).length;
-        var labels = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        for (var x in response) {
-          labels.push(response[x][0] /*+ ": " + response[x][6] + "%"*/);
-          data1.push((response[x][2] < 0) ? response[x][2] : response[x][2]);
-          data2.push((response[x][3] < 0) ? response[x][3] : response[x][3]);
-          data3.push((response[x][4] < 0) ? response[x][4] : response[x][4]);
-          data4.push((response[x][5] < 0) ? response[x][5] : response[x][5]);
+
+    if (this.dataTableComponent.filteredValue != null || this.clientes_seleccionados.length > 0) {
+      var array = this.dataTableComponent.filteredValue;
+      if (this.clientes_seleccionados.length > 0) array = this.clientes_seleccionados;
+      var dados_cliente = [];
+      var labels = [];
+      var data11 = [];
+      var data22 = [];
+      var data33 = [];
+      var data44 = [];
+
+      for (var x in array) {
+        var cliente = null;
+
+        if (dados_cliente.find(item => item.n_cliente == array[x].n_cliente)) {
+          cliente = dados_cliente.find(item => item.n_cliente == array[x].n_cliente);
+          cliente.menos_31_dias = cliente.menos_31_dias + array[x].menos_31_dias;
+          cliente.entre_31_60 = cliente.entre_31_60 + array[x].entre_31_60;
+          cliente.entre_62_90 = cliente.entre_62_90 + array[x].entre_62_90;
+          cliente.maior_91_dias = cliente.maior_91_dias + array[x].maior_91_dias;
+          cliente.total = cliente.total + (array[x].entre_31_60 + array[x].menos_31_dias + array[x].entre_62_90 + array[x].maior_91_dias);
+        } else {
+          dados_cliente.push({
+            nome_cliente: array[x].nome_cliente, cliente: array[x].n_cliente, menos_31_dias: array[x].menos_31_dias,
+            entre_31_60: array[x].entre_31_60, entre_62_90: array[x].entre_62_90, maior_91_dias: array[x].maior_91_dias,
+            total: (array[x].entre_31_60 + array[x].entre_62_90 + array[x].menos_31_dias + array[x].maior_91_dias)
+          });
         }
 
+      }
 
-        this.data2 = {
-          labels: labels,
-          datasets: [
-            {
-              label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data1,
-            },
-            {
-              label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2,
-            },
-            {
-              label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3,
-            },
-            {
-              label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data4,
-            }
-          ]
-        };
-
-        this.myInnerHeight = (this.data2.datasets[0].data.length * 25);
+      dados_cliente.sort(function (a, b) {
+        var keyA = (a.total),
+          keyB = (b.total);
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
       });
 
+      var count = 0;
+      for (var y in dados_cliente) {
+        count++;
+        if (count <= 15) {
+          data11.push(dados_cliente[y].menos_31_dias);
+          data22.push(dados_cliente[y].entre_31_60);
+          data33.push(dados_cliente[y].entre_62_90);
+          data44.push(dados_cliente[y].maior_91_dias);
+
+          labels.push(dados_cliente[y].nome_cliente);
+        }
+      }
+
+
+      this.data2 = {
+        labels: labels,
+        datasets: [
+          {
+            label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data11,
+          },
+          {
+            label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data22,
+          },
+          {
+            label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data33,
+          },
+          {
+            label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data44,
+          }
+        ]
+      };
+
+      this.myInnerHeight = ((this.data2.datasets[0].data.length * 25) > 200) ? (this.data2.datasets[0].data.length * 25) : 200;
+    } else {
+
+
+      this.FINANALISEDIVIDASService.GET_DIVIDAS_LISTA_TOP_15_DIVIDAS([]).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          var labels = [];
+          var data1 = [];
+          var data2 = [];
+          var data3 = [];
+          var data4 = [];
+          for (var x in response) {
+            labels.push(response[x][0] /*+ ": " + response[x][6] + "%"*/);
+            data1.push((response[x][2] < 0) ? response[x][2] : response[x][2]);
+            data2.push((response[x][3] < 0) ? response[x][3] : response[x][3]);
+            data3.push((response[x][4] < 0) ? response[x][4] : response[x][4]);
+            data4.push((response[x][5] < 0) ? response[x][5] : response[x][5]);
+          }
+
+
+          this.data2 = {
+            labels: labels,
+            datasets: [
+              {
+                label: '0 to 30 DAYS', backgroundColor: 'green', borderColor: 'green', data: data1,
+              },
+              {
+                label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2,
+              },
+              {
+                label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3,
+              },
+              {
+                label: '> 91 DAYS', backgroundColor: 'red', borderColor: 'red', data: data4,
+              }
+            ]
+          };
+
+          this.myInnerHeight = (this.data2.datasets[0].data.length * 25);
+        });
+    }
   }
 
   /*grafico_top15() {
@@ -705,7 +780,7 @@ chart.draw(data, options);
             labels.push(response[x][1]);
             data.push((response[x][2] < 0) ? 0 : response[x][2]);
           }
-
+ 
           this.data2 = {
             labels: labels,
             datasets: [
@@ -715,10 +790,10 @@ chart.draw(data, options);
             ]
           };
         }
-
+ 
         this.myInnerHeight = (this.data2.datasets[0].data.length * 25);
       });
-
+ 
   }*/
 
 
