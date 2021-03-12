@@ -219,7 +219,7 @@ export class ParametrosComponent implements OnInit {
         for (var x in response) {
           this.postos.push({
             id_POSTO: response[x].id_POSTO, descricao: response[x].descricao, ip_POSTO: response[x].ip_POSTO, impressora: response[x].impressora,
-            ip_IMPRESSORA: response[x].ip_IMPRESSORA, nome_IMPRESSORA: response[x].nome_IMPRESSORA
+            ip_IMPRESSORA: response[x].ip_IMPRESSORA, nome_IMPRESSORA: response[x].nome_IMPRESSORA,nome_IMPRESSORA_SILVER: response[x].nome_IMPRESSORA_SILVER
           });
         }
         this.postos = this.postos.slice();

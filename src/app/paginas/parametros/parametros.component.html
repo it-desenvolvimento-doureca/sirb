@@ -259,13 +259,23 @@
                                       placeholder="" appendTo="body" />
                                   </ng-template>
                                 </p-column>
-                                <p-column [editable]="true" field="nome_IMPRESSORA" header="NOME IMPRESSORA">
+                                <p-column [editable]="true" field="nome_IMPRESSORA" header="IMPRESSORA WINDOWS">
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{car[col.field] }}
                                   </ng-template>
                                   <ng-template let-col let-car="rowData" pTemplate="editor">
                                     <input [disabled]="!modoedicao" type="text" class="form-control"
                                       [(ngModel)]="car['nome_IMPRESSORA']" [ngModelOptions]="{standalone: true}"
+                                      placeholder="" appendTo="body" />
+                                  </ng-template>
+                                </p-column>
+                                <p-column [editable]="true" field="nome_IMPRESSORA_SILVER" header="IMPRESSORA SILVER">
+                                  <ng-template let-col let-car="rowData" pTemplate="body">
+                                    {{car[col.field] }}
+                                  </ng-template>
+                                  <ng-template let-col let-car="rowData" pTemplate="editor">
+                                    <input [disabled]="!modoedicao" type="text" class="form-control"
+                                      [(ngModel)]="car['nome_IMPRESSORA_SILVER']" [ngModelOptions]="{standalone: true}"
                                       placeholder="" appendTo="body" />
                                   </ng-template>
                                 </p-column>

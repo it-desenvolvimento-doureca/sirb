@@ -4,5 +4,6 @@ export class GER_POSTOS {
     ip_POSTO: string;
     impressora: string;
     nome_IMPRESSORA: string;
+    nome_IMPRESSORA_SILVER: string;
     ip_IMPRESSORA: string;
 }
