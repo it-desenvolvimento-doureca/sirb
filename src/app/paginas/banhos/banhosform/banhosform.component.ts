@@ -31,7 +31,7 @@ export class BanhosformComponent implements OnInit {
   manutencoesnaoprogramadas: boolean = false;
   manutencaoreposicao: boolean = false;
   useremail: any;
-  email_para: any ="";
+  email_para: any = "";
   celula: any;
   estados;
   results;
@@ -338,8 +338,9 @@ export class BanhosformComponent implements OnInit {
             if (response[x][0].quantidade_DEFEITO != null) quantidade_DEFEITO = response[x][0].quantidade_DEFEITO.toLocaleString(undefined, { minimumFractionDigits: 3 }).replace(/\s/g, '');
 
             this.banhos_aditivos.push({
-              valor_DOSE1: valor_DOSE1, valor_DOSE2: valor_DOSE2, valor_DOSE3: valor_DOSE3, valor_DOSE4: valor_DOSE4, valor_DOSE5: valor_DOSE5,quantidade_DEFEITO:quantidade_DEFEITO,
-              manutencoesnaoprogramadas: response[x][0].manutencaonaoprogramada, id_banho: response[x][0].id_BANHO, pos: this.pos2, ID_BANHO_ADITIVO: response[x][0].id_BANHO_ADITIVO, nome_aditivo: response[x][1].nome_COMPONENTE, ID_ADITIVO: response[x][0].id_ADITIVO, medida1: response[x][2], medida2: response[x][3], ID_UNIDADE1: response[x][0].id_UNIDADE1, ID_UNIDADE2: response[x][0].id_UNIDADE2
+              valor_DOSE1: valor_DOSE1, valor_DOSE2: valor_DOSE2, valor_DOSE3: valor_DOSE3, valor_DOSE4: valor_DOSE4, valor_DOSE5: valor_DOSE5, quantidade_DEFEITO: quantidade_DEFEITO,
+              manutencoesnaoprogramadas: response[x][0].manutencaonaoprogramada, id_banho: response[x][0].id_BANHO, pos: this.pos2, ID_BANHO_ADITIVO: response[x][0].id_BANHO_ADITIVO, nome_aditivo: response[x][1].nome_COMPONENTE, ID_ADITIVO: response[x][0].id_ADITIVO, medida1: response[x][2], medida2: response[x][3], ID_UNIDADE1: response[x][0].id_UNIDADE1, ID_UNIDADE2: response[x][0].id_UNIDADE2,
+              obs: response[x][0].observacoes
             }); this.pos2++;
           }
           this.banhos_aditivos = this.banhos_aditivos.slice();
@@ -492,7 +493,7 @@ export class BanhosformComponent implements OnInit {
   //adicionar nova linha aditivos do Banho
   novalinha_aditivo() {
     this.banhos_aditivos.push({
-      valor_DOSE1: null, valor_DOSE2: null, valor_DOSE3: null, valor_DOSE4: null, valor_DOSE5: null,
+      valor_DOSE1: null, valor_DOSE2: null, valor_DOSE3: null, valor_DOSE4: null, valor_DOSE5: null, obs: null,
       manutencoesnaoprogramadas: false, pos: this.pos2, ID_BANHO_ADITIVO: "", nome_aditivo: "", ID_ADITIVO: "", medida1: "", medida2: "", ID_UNIDADE1: null, ID_UNIDADE2: null
     });
     this.banhos_aditivos = this.banhos_aditivos.slice();
@@ -536,6 +537,7 @@ export class BanhosformComponent implements OnInit {
             banhos_aditivos.valor_DOSE3 = valor_DOSE3;
             banhos_aditivos.valor_DOSE4 = valor_DOSE4;
             banhos_aditivos.valor_DOSE5 = valor_DOSE5;
+            banhos_aditivos.observacoes = this.banhos_aditivos[x].obs;
             banhos_aditivos.quantidade_DEFEITO = quantidade_DEFEITO;
 
             this.ABDICBANHOADITIVOService.create(banhos_aditivos).subscribe(
@@ -669,7 +671,8 @@ export class BanhosformComponent implements OnInit {
         banhos_aditivos.valor_DOSE3 = valor_DOSE3;
         banhos_aditivos.valor_DOSE4 = valor_DOSE4;
         banhos_aditivos.valor_DOSE5 = valor_DOSE5;
-        banhos_aditivos.quantidade_DEFEITO= quantidade_DEFEITO;
+        banhos_aditivos.observacoes = this.banhos_aditivos[x].obs;
+        banhos_aditivos.quantidade_DEFEITO = quantidade_DEFEITO;
 
         this.ABDICBANHOADITIVOService.update(banhos_aditivos).then(() => {
           this.banhosaditivos(id);

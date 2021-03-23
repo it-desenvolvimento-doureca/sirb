@@ -338,9 +338,15 @@
                     </p-column>
 
                     <!-- DOSES FIM -->
-                    <p-column [style]="{'width':'16%','font-size': '12px'}" field="manutencoesnaoprogramadas" header="UTILIZA NAS MANUTENÇÕES NÃO PROGRAMADAS">
+                    <p-column [style]="{'width':'8%','font-size': '12px'}" field="manutencoesnaoprogramadas" header="UTILIZA NAS MANUTENÇÕES NÃO PROGRAMADAS">
                       <ng-template pTemplate="body" let-col let-row="rowData ">
                         <p-checkbox [disabled]="!modoedicao" [(ngModel)]="row[col.field]" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="obs" header="OBS" [style]="{'font-size': '12px'}">
+                      <ng-template pTemplate="body" let-col let-row="rowData ">
+                        <input style="height: 31.2px; text-align: left; background: white;" type="text" class="form-control" [(ngModel)]="row['obs']"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </ng-template>
                     </p-column>
                     <p-column styleClass="col-button" [style]="{'width':'4%'}">

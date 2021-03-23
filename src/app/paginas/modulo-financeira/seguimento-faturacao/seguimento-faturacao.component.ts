@@ -173,7 +173,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
   valida_Producao_Planeada() {
     for (var x in this.tabela_dados) {
       if (parseInt(x) + 1 < this.tabela_dados.length) {
-        if (this.tabela_dados[parseInt(x)].semana_producao_planeada == this.tabela_dados[parseInt(x) + 1].semana_producao_planeada) {
+        if (parseInt(x) < 2 && this.tabela_dados[parseInt(x)].semana_producao_planeada == this.tabela_dados[parseInt(x) + 1].semana_producao_planeada) {
           this.tabela_dados[x].semana_producao_planeada = null;
           this.tabela_dados[x].barras_mes_m1_1 = null;
           this.tabela_dados[x].barras_mes_m1_2 = null;
@@ -186,6 +186,11 @@ export class SeguimentoFaturacaoComponent implements OnInit {
           this.tabela_dados[x].barras_mes_2 = null;
           this.tabela_dados[x].total_barras = null;
         }
+      } else if (parseInt(x) > 2 && this.tabela_dados[parseInt(x)].semana_producao_planeada == this.tabela_dados[parseInt(x) - 1].semana_producao_planeada) {
+        this.tabela_dados[x].semana_producao_planeada = null;
+        this.tabela_dados[x].barras_mes_m1_1 = null;
+        this.tabela_dados[x].barras_mes_m1_2 = null;
+        this.tabela_dados[x].total_barras_m1 = null;
       }
 
     }
