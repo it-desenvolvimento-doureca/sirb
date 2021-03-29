@@ -5,6 +5,8 @@ import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
 import { ConditionalExpr } from '@angular/compiler';
 import { GERREFERENCIASFASTRESPONSEREJEICOESService } from 'app/servicos/ger-referencias-fastresponse-rejeicoes.service';
 import { GER_REFERENCIAS_FASTRESPONSE_REJEICOES } from 'app/entidades/GER_REFERENCIAS_FASTRESPONSE_REJEICOES';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-analise-de-rejeicoes',
@@ -441,8 +443,9 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   filteredItems2: any[];
   tabela_refs_data: any;
   display_dialog_true: boolean;
+  exporta_dados: boolean;
 
-  constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService,
+  constructor(private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICLINHAService: ABDICLINHAService, private RelatoriosService: RelatoriosService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService, private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
@@ -585,6 +588,39 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     //console.log(this.filteredItems);
   }
 
+
+  exportar() {
+    this.exporta_dados = true;
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+    //var filenametransfer = "planos_de_acao";
+
+    var data;
+    var dados = [];
+
+    //console.log(JSON.stringify(dados))
+
+    var objetivos_gerais = 0;
+    var refs = null;
+    if (this.referencia.length > 0) refs = this.referencia.toString();
+    if (this.objetivos_gerais) objetivos_gerais = 1;
+
+    data = [{
+      TIPO_AREA: this.area_peca, DATA_INI: this.formatDate(this.data_ini),
+      HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
+      DATA_FIM: this.formatDate(this.data_fim), LINHA: this.linha, PROREF: refs, CHECK1: objetivos_gerais, FAM: null
+    }];
+
+    this.RelatoriosService.downloadPDFPOST('xlsx', filename, 0, "Analise_Rejeicoes_Por_Referencia", "producao", data).subscribe(
+      (res) => {
+        FileSaver.saveAs(res, 'Análise Dados por Referência');
+        /*this.fileURL = URL.createObjectURL(res);
+        this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
+        this.exporta_dados = false;
+      }, error => {
+        this.exporta_dados = false;
+      });
+  }
+
   carregaref() {
     this.loading = true;
     this.cars1 = [];
@@ -622,6 +658,7 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
         this.loading = false;
       });
   }
+
 
   getfamdefeitos(id) {
     this.cars1.find(item => item.id == id).iconplus = !this.cars1.find(item => item.id == id).iconplus;

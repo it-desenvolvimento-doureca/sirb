@@ -25,6 +25,21 @@ export class RelatoriosService {
   }
 
 
+  downloadPDFPOST(format, filename, id, relatorio, subPasta, data): any {
+    const url = webUrl.host + '/rest/sirb/getFILEPOST/' + format + '/' + filename + '/' + id + '/' + relatorio + '/' + subPasta;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers, responseType: ResponseContentType.Blob }).map(
+      (res) => {
+        if (format == "pdf") {
+          return new Blob([res.blob()], { type: 'application/pdf' });
+        } else if (format == "xlsx") {
+          return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        } else if (format == "docx") {
+          return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        }
+
+      });
+  }
+
   downloadPDF2(format, filename, data, relatorio, subPasta): any {
     const url = webUrl.host + '/rest/sirb/getFileJSON/' + format + '/' + filename + '/' + relatorio + '/' + subPasta;
     return this.http.post(url, JSON.stringify(data), { headers: this.headers, responseType: ResponseContentType.Blob }).map(

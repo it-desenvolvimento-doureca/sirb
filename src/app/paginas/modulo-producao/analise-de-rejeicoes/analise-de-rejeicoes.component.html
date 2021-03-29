@@ -358,7 +358,8 @@
                       </div>
 
 
-                      <div class="table-row-column col-md-2" style="height: 43px;">
+                      <div class="table-row-column col-md-2" style="height: 104px;">
+
                         <button type="submit" class="btn btn-success " [disabled]="false"
                           [disabled]="loading || loading2"
                           style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Aplicar</button>
@@ -370,6 +371,11 @@
                           [hidden]="this.refs_selected.length <= 0"
                           style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">
                           Gravar Ref. Fast Response</button>
+                        <button type="button" class="btn btn-default" [disabled]="exporta_dados" (click)="exportar()"
+                          icon="fa-save"
+                          style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">
+                          Exportar Dados</button>
+
                       </div>
 
 
