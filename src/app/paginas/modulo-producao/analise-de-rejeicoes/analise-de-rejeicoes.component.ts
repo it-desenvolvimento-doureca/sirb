@@ -1949,9 +1949,12 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
           }];
           this.myInnerHeight3 = (this.data1_3[0].datasets[0].data.length * 25);
           this.data_3 = this.data1_3[0];
+        } else {
+          this.data_3 = [];
         }
         this.loading3 = false;
       }, error => {
+        this.data_3 = [];
         this.loading3 = false;
       });
   }

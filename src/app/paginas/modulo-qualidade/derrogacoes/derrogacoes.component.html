@@ -27,6 +27,9 @@
                     [style]="{'width':'100%'}" (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
                     styleClass="ui-column-filter"></p-multiSelect>
                 </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span [style.color]="car['cor']" title="{{car['estado'] }}">{{car['estado'] }}</span>
+                </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data registo"
                 [style]="{'width':'132px'}">

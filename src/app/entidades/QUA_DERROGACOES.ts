@@ -1,29 +1,29 @@
-export class QUA_DERROGACOES
-{
-      id_DERROGACAO : number;
-      data_INICIO : Date;
-      data_FIM : string;
-      interna_EXTERNA : string;
-      emissor : number;
-      unidade : number;
-      setor : number;
-      id_CLIENTE : number;
-      nome_CLIENTE : string;
-      morada_CLIENTE : string;
-      etsnum : string;
-      referencia : string;
-      designacao_REF : string;
-      familia_REF : string;
-      qtd : number;
-      motivo : string;
-      causa : string;
-      estado : string;
-      utz_FECHO : number;
-      data_FECHO : Date;
-      utz_CRIA : number;
-      data_CRIA : Date;
-      utz_ULT_MODIF : number;
-      data_ULT_MODIF : Date;
-      data_ANULACAO : Date;
-      utz_ANULACAO : number;
+export class QUA_DERROGACOES {
+      id_DERROGACAO: number;
+      data_INICIO: Date;
+      data_FIM: Date;
+      interna_EXTERNA: string;
+      emissor: number;
+      unidade: number;
+      setor: number;
+      id_CLIENTE: number;
+      nome_CLIENTE: string;
+      morada_CLIENTE: string;
+      etsnum: string;
+      referencia: string;
+      designacao_REF: string;
+      familia_REF: string;
+      qtd: number;
+      motivo: string;
+      causa: string;
+      estado: string;
+      utz_FECHO: number;
+      data_FECHO: Date;
+      utz_CRIA: number;
+      data_CRIA: Date;
+      utz_ULT_MODIF: number;
+      data_ULT_MODIF: Date;
+      data_ANULACAO: Date;
+      utz_ANULACAO: number;
+      plano_ACOES: boolean;
 }

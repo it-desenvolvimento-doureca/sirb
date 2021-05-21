@@ -323,6 +323,9 @@ import { COANALISECLIENTESService } from './servicos/co-analise-clientes.service
 import { COANALISECLIENTESQUANTIDADEService } from './servicos/co-analise-clientes-quantidade.service';
 import { COANALISECLIENTESOBSERVACOESService } from './servicos/co-analise-clientes-observacoes.service';
 import { COANALISECLIENTESACCOESService } from './servicos/co-analise-clientes-accoes.service';
+import { QUADERROGACOESACOESService } from './servicos/qua-derrogacoes-acoes.service';
+import { QUADERROGACOESFICHEIROSService } from './servicos/qua-derrogacoes-ficheiros.service';
+import { QUADERROGACOESPLANOSACCOESService } from './servicos/qua-derrogacoes-planos-accoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1169,6 +1172,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     COANALISECLIENTESQUANTIDADEService,
     COANALISECLIENTESACCOESService,
     COANALISECLIENTESService,
+    QUADERROGACOESACOESService,
+    QUADERROGACOESFICHEIROSService,
+    QUADERROGACOESPLANOSACCOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

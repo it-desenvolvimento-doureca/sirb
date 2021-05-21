@@ -2935,7 +2935,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         } else if (count == this.tabelaEnviosGarantidos.length) {
           if (this.novo) {
             this.displayLoading = false;
-            this.crisaTarefas(id, 5);
+            this.criarTarefas(id, 5);
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -2949,10 +2949,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             }
             this.simular(this.inputgravou);
@@ -2965,7 +2965,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       // console.log("FIM")
       this.displayLoading = false;
       if (this.novo) {
-        this.crisaTarefas(id, 5);
+        this.criarTarefas(id, 5);
         this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
         this.simular(this.inputnotifi);
       } else {
@@ -2978,10 +2978,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           });
 
         if (back != 0) {
-          this.crisaTarefas(id, 5);
+          this.criarTarefas(id, 5);
           this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
         } else {
-          this.crisaTarefas(id, 5);
+          this.criarTarefas(id, 5);
           this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
         }
         this.simular(this.inputgravou);
@@ -2996,7 +2996,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (count == total) {
           if (this.novo) {
             this.displayLoading = false;
-            this.crisaTarefas(id, 5);
+            this.criarTarefas(id, 5);
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -3010,10 +3010,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             }
             this.simular(this.inputgravou);
@@ -3026,7 +3026,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         if (count == total) {
           if (this.novo) {
             this.displayLoading = false;
-            this.crisaTarefas(id, 5);
+            this.criarTarefas(id, 5);
             this.router.navigate(['reclamacoesclientes/editar'], { queryParams: { id: id } });
             this.simular(this.inputnotifi);
           } else {
@@ -3040,10 +3040,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               });
 
             if (back != 0) {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id, redirect: back } });
             } else {
-              this.crisaTarefas(id, 5);
+              this.criarTarefas(id, 5);
               this.router.navigate(['reclamacoesclientes/view'], { queryParams: { id: id } });
             };
             this.simular(this.inputgravou);
@@ -4254,7 +4254,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   //atualiza ou cria tarefa
-  crisaTarefas(id, modulo) {
+  criarTarefas(id, modulo) {
     var link = webUrl.host + '/#/tarefas/view?id=';
     /*this.GTMOVTAREFASService.getAtulizaTarefasd(id, modulo, link).subscribe(
       response => {

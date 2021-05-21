@@ -85,7 +85,9 @@ export class DerrogacoesComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.cols = [];
-    this.estados = [{ label: "Aberto", value: "Aberto" }, { label: "Fechado", value: "Fechado" }, { label: "Anulado", value: "Anulado" }];
+    this.estados = [{ label: "Pendente", value: "Pendente" }, { label: "Em Curso", value: "Em Curso" }
+      , { label: "Validado", value: "Validado" }
+      , { label: "Expirado", value: "Expirado" }, { label: "Anulado", value: "Anulado" }];
 
 
     this.globalVar.setvoltar(false);
@@ -139,7 +141,7 @@ export class DerrogacoesComponent implements OnInit {
             qtd: response[x][0].qtd,
             motivo: response[x][0].motivo,
             causa: response[x][0].causa,
-
+            cor: this.getcolor(response[x][0].estado)
           });
 
         }
@@ -203,14 +205,34 @@ export class DerrogacoesComponent implements OnInit {
 
 
   getESTADO(estado) {
-    if (estado == "A") {
-      return "Aberto";
-    } else if (estado == "F") {
-      return "Fechado";
-    } else if (estado == "R") {
+    if (estado == "P") {
+      return "Pendente";
+    } else if (estado == "E") {
+      return "Em Curso";
+    } else if (estado == "V") {
+      return "Validado";
+    } else if (estado == "U") {
+      return "Expirado";
+    } else if (estado == "A") {
       return "Anulado";
     }
   }
+
+
+  getcolor(estado) {
+    if (estado == "P") {
+      return "orange";
+    } else if (estado == "E") {
+      return "yellow";
+    } else if (estado == "V") {
+      return "green";
+    } else if (estado == "U") {
+      return "red";
+    } else if (estado == "A") {
+      return "black";
+    }
+  }
+
 
   //filtro coluna linha
   filtrar(value, coluna, fil = false, filtro = "contains") {

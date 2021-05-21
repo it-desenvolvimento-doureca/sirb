@@ -150,6 +150,8 @@ export class TarefasComponent implements OnInit {
           title3: "Tarefas não lidas: " + res[x][5] + ', Total Tarefas: ' + res[x][6] + ', Tarefas Encaminhadas: ' + res[x][7],
           planosacao: res[x][8] + ' ( ' + res[x][9] + ' ) - ' + res[x][10],
           title4: "Tarefas não lidas: " + res[x][8] + ', Total Tarefas: ' + res[x][9] + ', Tarefas Encaminhadas: ' + res[x][10],
+          derrogacoes: res[x][11] + ' ( ' + res[x][12] + ' ) - ' + res[x][13],
+          title5: "Tarefas não lidas: " + res[x][11] + ', Total Tarefas: ' + res[x][12] + ', Tarefas Encaminhadas: ' + res[x][13],
         });
       }
 

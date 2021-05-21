@@ -17,6 +17,8 @@ import { RC_MOV_RECLAMACAO_FICHEIROS } from 'app/entidades/RC_MOV_RECLAMACAO_FIC
 import { RCMOVRECLAMACAOFICHEIROSService } from 'app/servicos/rc-mov-reclamacao-ficheiros.service';
 import { GT_MOV_FICHEIROS } from 'app/entidades/GT_MOV_FICHEIROS';
 import { GTMOVFICHEIROSService } from 'app/servicos/gt-mov-ficheiros.service';
+import { QUA_DERROGACOES_PLANOS_ACCOES } from 'app/entidades/QUA_DERROGACOES_PLANOS_ACCOES';
+import { QUADERROGACOESPLANOSACCOESService } from 'app/servicos/qua-derrogacoes-planos-accoes.service';
 
 @Component({
   selector: 'app-paginatarefa',
@@ -89,8 +91,9 @@ export class PaginatarefaComponent implements OnInit {
   listar: any;
   mototivoRejeicao_texto: any;
   justificacao_ALTERACAO_ESTADO: any;
+  sub_modulo: any;
 
-  constructor(private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
+  constructor(private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
@@ -244,7 +247,7 @@ export class PaginatarefaComponent implements OnInit {
         this.justificacao_ALTERACAO_ESTADO = resp[x][32];
         var step = "";
         var nome_step = "";
-        if (resp[x][28] == 5) {
+        if (resp[x][28] == 5 && resp[x][29] != 'D') {
           switch (resp[x][27]) {
             case 'I':
               step = "step-3";
@@ -267,6 +270,9 @@ export class PaginatarefaComponent implements OnInit {
 
           this.origem = "Reclamações de Clientes : " + resp[x][15] + nome_step;
           this.caminho_origem = "#/reclamacoesclientes/view?id=" + resp[x][15] + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
+        } else if (resp[x][28] == 5 && resp[x][29] == 'D') {
+          this.origem = "Derrogação : " + resp[x][15];
+          this.caminho_origem = "#/derrogacoes/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 10) {
           this.origem = "Amostra : " + resp[x][15];
           this.caminho_origem = "#/producao/amostras/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
@@ -333,9 +339,10 @@ export class PaginatarefaComponent implements OnInit {
 
       }
       this.modulo = resp[x][28];
+      this.sub_modulo = resp[x][29];
 
       this.globalVar.setfiltros("reclamacaocliente_id", ids);
-      if (resp[x][28] == 5) {
+      if (resp[x][28] == 5 && resp[x][29] != 'D') {
         this.carregatabelaFiles_RECLAMACAO(id);
       } else {
         this.carregatabelaFiles_TAREFA(id);
@@ -473,7 +480,7 @@ export class PaginatarefaComponent implements OnInit {
             this.displayEncaminhar = false;
 
           } else {
-            if (this.modulo == 5) {
+            if (this.modulo == 5 && this.sub_modulo != 'D') {
               this.gravarTabelaFicheiros_RECLAMACAO(tarefa.id_TAREFA, encaminhado, this.id_RECLAMACAO);
             } else {
               this.gravarTabelaFicheiros_TAREFA(tarefa.id_TAREFA, encaminhado);
@@ -890,7 +897,13 @@ export class PaginatarefaComponent implements OnInit {
 
         this.GTMOVTAREFASService.update(tarefa).then(response => {
           this.displayMotivoRejeicao = false;
-          if (tarefa.id_MODULO == 5) this.alterarEstadoPLANO(tarefa.id_CAMPO, estado);
+
+          if (tarefa.id_MODULO == 5 && this.sub_modulo != 'D') {
+            this.alterarEstadoPLANO(tarefa.id_CAMPO, estado);
+          } else if (tarefa.id_MODULO == 5 && this.sub_modulo == 'D') {
+            this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, estado);
+          }
+
           for (var x in data_logs) {
             var logs = new GT_LOGS;
             logs.id_TAREFA = id;
@@ -951,6 +964,41 @@ export class PaginatarefaComponent implements OnInit {
         }
 
         this.RCMOVRECLAMACAOPLANOACCOESCORRETIVASService.update(accoes).subscribe(
+          res => {
+
+          },
+          error => { console.log(error); });
+      }
+    },
+      error => { console.log(error); });
+
+  }
+
+
+  alterarEstadoPLANODERROGACAO(id, estado) {
+
+    this.QUADERROGACOESPLANOSACCOESService.getbyid(id).subscribe(res => {
+
+      var count = Object.keys(res).length;
+      if (count > 0) {
+        var accoes = new QUA_DERROGACOES_PLANOS_ACCOES;
+        accoes = res[0];
+        if (estado == "C") {
+          accoes.concluido_UTZ = this.user;
+          accoes.concluido_DATA = new Date();
+          accoes.data_REAL = new Date();
+          accoes.estado = estado;
+        } else if (estado == "A") {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        } else {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        }
+
+        this.QUADERROGACOESPLANOSACCOESService.update(accoes).subscribe(
           res => {
 
           },
@@ -1172,7 +1220,7 @@ export class PaginatarefaComponent implements OnInit {
       /*});*/
       this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
     } else {
-      if (this.modulo == 5) {
+      if (this.modulo == 5 && this.sub_modulo != 'D') {
         this.apaga_ficheiro_RECLAMACAO(tab, index);
       } else {
         this.apaga_ficheiro_TAREFA(tab, index);

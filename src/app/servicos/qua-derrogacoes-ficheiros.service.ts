@@ -2,33 +2,33 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
 import { webUrl } from 'assets/config/webUrl';
-import { QUA_DERROGACOES } from 'app/entidades/QUA_DERROGACOES';
+import 'rxjs/Rx';
+import { QUA_DERROGACOES_FICHEIROS } from 'app/entidades/QUA_DERROGACOES_FICHEIROS';
 
 @Injectable()
-export class QUADERROGACOESService {
-
+export class QUADERROGACOESFICHEIROSService {
   handleError: any;
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
-  create(data: QUA_DERROGACOES) {
+  create(data: QUA_DERROGACOES_FICHEIROS) {
     return this.http
-      .post(webUrl.host + '/rest/sirb/createQUA_DERROGACOES', JSON.stringify(data), { headers: this.headers })
+      .post(webUrl.host + '/rest/sirb/createQUA_DERROGACOES_FICHEIROS', JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll(): Observable<QUA_DERROGACOES[]> {
-    const url = webUrl.host + '/rest/sirb/getQUA_DERROGACOES';
+  getbyidDERROGACAO(id): Observable<QUA_DERROGACOES_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getQUA_DERROGACOES_FICHEIROSbyidDERROGACAO/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-
-  getById(ip): Observable<QUA_DERROGACOES[]> {
-    const url = webUrl.host + '/rest/sirb/getQUA_DERROGACOESbyid/' + ip;
+  getAll(): Observable<QUA_DERROGACOES_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getQUA_DERROGACOES_FICHEIROS';
     return this.http
       .get(url)
       .map(this.extractData)
@@ -37,31 +37,21 @@ export class QUADERROGACOESService {
 
   delete(id) {
     return this.http
-      .delete(webUrl.host + '/rest/sirb/deleteQUA_DERROGACOES/' + id + '')
+      .delete(webUrl.host + '/rest/sirb/deleteQUA_DERROGACOES_FICHEIROS/' + id + '')
       .toPromise()
       .then(res => res)
       .catch(this.handleError);
   }
 
-  update(data: QUA_DERROGACOES) {
+  update(data: QUA_DERROGACOES_FICHEIROS) {
     return this.http
-      .put(webUrl.host + '/rest/sirb/updateQUA_DERROGACOES', JSON.stringify(data), { headers: this.headers })
+      .put(webUrl.host + '/rest/sirb/updateQUA_DERROGACOES_FICHEIROS', JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch(this.handleError);
   }
-
-
-  atualizaestadosaccoes(id, modulo) {
-    return this.http
-      .get(webUrl.host + '/rest/sirb/deleteQUA_DERROGACOESUPDATEESTADOS/' + id + '/' + modulo)
-      .map(this.extractData)
-      .catch((error: any) => Observable.throw('Server error'));
-  }
-
 
   private extractData(res: Response) {
     let body = res.json();
     return body;
   }
-
 }

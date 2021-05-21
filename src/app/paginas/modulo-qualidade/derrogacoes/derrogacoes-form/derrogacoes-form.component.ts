@@ -4,11 +4,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
 import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, FileUpload } from 'primeng/primeng';
 import { Location } from '@angular/common';
 import { GERSECCAOService } from 'app/servicos/ger-seccao.service';
 import { QUADERROGACOESService } from 'app/servicos/qua-derrogacoes.service';
 import { QUA_DERROGACOES } from 'app/entidades/QUA_DERROGACOES';
+import { webUrl } from 'assets/config/webUrl';
+import * as FileSaver from 'file-saver';
+import { UploadService } from 'app/servicos/upload.service';
+import { QUA_DERROGACOES_FICHEIROS } from 'app/entidades/QUA_DERROGACOES_FICHEIROS';
+import { QUADERROGACOESFICHEIROSService } from 'app/servicos/qua-derrogacoes-ficheiros.service';
+import { QUADERROGACOESACOESService } from 'app/servicos/qua-derrogacoes-acoes.service';
+import { GT_LOGS } from 'app/entidades/GT_LOGS';
+import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
+import { GT_MOV_TAREFAS } from 'app/entidades/GT_MOV_TAREFAS';
+import { QUA_DERROGACOES_PLANOS_ACCOES } from 'app/entidades/QUA_DERROGACOES_PLANOS_ACCOES';
+import { QUADERROGACOESPLANOSACCOESService } from 'app/servicos/qua-derrogacoes-planos-accoes.service';
+import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
+import { GERGRUPOService } from 'app/servicos/ger-grupo.service';
+import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
 
 @Component({
   selector: 'app-derrogacoes-form',
@@ -35,8 +49,10 @@ export class DerrogacoesFormComponent implements OnInit {
   errovalida;
   mensagem_verifica;
   displayvalidacao;
+  uploadedFiles: any[] = [];
+  campo_x: any;
 
-
+  @ViewChild('fileInput') fileInput: FileUpload;
   @ViewChild('escondebt') escondebt: ElementRef;
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
   @ViewChild('inputgravou') inputgravou: ElementRef;
@@ -47,15 +63,9 @@ export class DerrogacoesFormComponent implements OnInit {
   @ViewChild('alteraeditar') alteraeditar: ElementRef;
   @ViewChild('alteraeditar2') alteraeditar2: ElementRef;
   @ViewChild('alteracancelar') alteracancelar: ElementRef;
-
+  @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
 
   hora_CRIA: string;
-  tabelaaccoescorretivas: any[] = [];
-  tabelaEficacia: any[] = [];
-  responsabilidade_ATRASO4_DESCRICAO: string;
-  responsabilidade_ATRASO6_DESCRICAO: string;
-
-
 
   user_nome: any;
   adminuser: any;
@@ -70,9 +80,13 @@ export class DerrogacoesFormComponent implements OnInit {
   btexportar: boolean;
   btvoltar: boolean;
   btfechar: boolean;
+  btpendente: boolean;
+  btEmCurso: boolean;
   bteditar: boolean;
   disEditar: boolean;
   disApagar: boolean;
+  disPendente: boolean;
+  disEmCurso: boolean;
   disFechar: boolean;
   disCriar: boolean;
   texto_estado: string;
@@ -91,17 +105,37 @@ export class DerrogacoesFormComponent implements OnInit {
   setor;
   unidade;
   causa: string;
+  plano_ACOES = false;
   data_INICIO: Date;
-  data_FIM: string;
+  data_FIM: Date;
   data_FECHO: Date;
   data_FECHO_texto;
   utz_FECHO: number;
+  srcelement;
+  nomeficheiro: any;
+  type: any;
+  filedescricao: any[] = [];
+  tabelaaccoes: any = [];
+  drop_accoes: any = [];
+  id_selected: number;
+  descricaoeng: string;
+  descricaopt: string;
+  descricaofr: string;
+  displayAddAccao: boolean;
+  drop_utilizadores2: any;
+  drop_utilizadores_acoes: any[] = [];
+  acessoadicionarACCAO = false;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private renderer: Renderer,
     private route: ActivatedRoute, private location: Location, private GERSECCAOService: GERSECCAOService,
     private QUADERROGACOESService: QUADERROGACOESService,
-    private sanitizer: DomSanitizer, private router: Router) { }
+    private QUADERROGACOESFICHEIROSService: QUADERROGACOESFICHEIROSService,
+    private QUADERROGACOESACOESService: QUADERROGACOESACOESService,
+    private GTMOVTAREFASService: GTMOVTAREFASService,
+    private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService,
+    private GERGRUPOService: GERGRUPOService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService,
+    private sanitizer: DomSanitizer, private router: Router, private UploadService: UploadService) { }
 
   ngOnInit() {
 
@@ -112,7 +146,8 @@ export class DerrogacoesFormComponent implements OnInit {
     this.btapagar = true;
     this.btexportar = true;
     this.btvoltar = true;
-    this.btfechar = true;
+    this.btfechar = false;
+    this.btpendente = false;
     this.bteditar = true;
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
@@ -142,6 +177,9 @@ export class DerrogacoesFormComponent implements OnInit {
       this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561criar");
       this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561anular");
       this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561fechar");
+      this.disPendente = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561pendente");
+      this.disEmCurso = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561emcurso");
+      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561dicionarACCAO");
       //this.globalVar.setdi(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node561duplicar"));
     }
 
@@ -157,6 +195,8 @@ export class DerrogacoesFormComponent implements OnInit {
         this.btapagar = false
         this.btcriar = true;
         this.btfechar = false;
+        this.btpendente = false;
+        this.btEmCurso = false;
         this.novo = true;
         this.bteditar = false;
         this.modoedicao = true;
@@ -166,7 +206,7 @@ export class DerrogacoesFormComponent implements OnInit {
         this.data_CRIA = new Date();
         this.hora_CRIA = new Date().toLocaleTimeString().slice(0, 5);
         this.utz_CRIA = this.user;
-        this.texto_estado = this.getESTADO('A');
+        this.texto_estado = this.getESTADO('P');
         this.carregaDados(false, null);
 
       } else if (urlarray[1].match("view")) {
@@ -188,10 +228,12 @@ export class DerrogacoesFormComponent implements OnInit {
           this.seccoes.push({ label: response[x].descricao, value: response[x].id })
         }
         this.carregaUtilizadores(inicia, id);
+        this.carregaUtilizadores_acoes(inicia, id);
       },
       error => {
         console.log(error);
         this.carregaUtilizadores(inicia, id);
+        this.carregaUtilizadores_acoes(inicia, id);
       });
   }
 
@@ -275,10 +317,11 @@ export class DerrogacoesFormComponent implements OnInit {
             this.setor = response[x].setor;
             this.unidade = response[x].unidade;
             this.causa = response[x].causa;
+            this.plano_ACOES = response[x].plano_ACOES;
             this.data_CRIA = new Date(response[x].data_CRIA);
             this.hora_CRIA = new Date(response[x].data_CRIA).toLocaleTimeString().slice(0, 5);
             this.data_INICIO = (response[x].data_INICIO == null) ? null : new Date(response[x].data_INICIO);
-            this.data_FIM = response[x].data_FIM;
+            this.data_FIM = (response[x].data_FIM == null) ? null : new Date(response[x].data_FIM);
             this.utz_CRIA = response[x].utz_CRIA;
             this.data_FECHO = response[x].data_FECHO;
             this.utz_FECHO = response[x].utz_FECHO;
@@ -291,9 +334,33 @@ export class DerrogacoesFormComponent implements OnInit {
 
             this.texto_estado = this.getESTADO(this.estado);
 
-            if (this.estado == 'R') {
+            if (this.estado == 'A') {
               this.btapagar = false;
               this.btfechar = false;
+              this.btpendente = false;
+              this.btEmCurso = false;
+              this.bteditar = false;
+            }
+
+            if (this.estado == 'U') {
+              this.btpendente = true;
+              this.btEmCurso = false;
+              this.btfechar = false;
+            }
+            if (this.estado == 'P') {
+              this.btEmCurso = true;
+              this.btpendente = false;
+            }
+
+            if (this.estado == 'E') {
+              this.btfechar = true;
+              this.btEmCurso = false;
+              this.btpendente = false;
+            }
+
+            if (this.estado == 'P' || this.estado == 'E') {
+              this.bteditar = true;
+            } else {
               this.bteditar = false;
             }
 
@@ -301,7 +368,8 @@ export class DerrogacoesFormComponent implements OnInit {
 
           this.getMoradas(this.cliente.id, true);
           this.getArtigos(this.etsnum, true);
-
+          this.carregatabelaFiles(id);
+          this.carregatabelasaccoes(id);
         }
 
       }, error => { console.log(error); })
@@ -386,6 +454,7 @@ export class DerrogacoesFormComponent implements OnInit {
     derrogacao.setor = this.setor;
     derrogacao.unidade = this.unidade;
     derrogacao.causa = this.causa;
+    derrogacao.plano_ACOES = this.plano_ACOES;
 
     derrogacao.data_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
     derrogacao.utz_CRIA = this.utz_CRIA;
@@ -393,10 +462,11 @@ export class DerrogacoesFormComponent implements OnInit {
     derrogacao.data_ULT_MODIF = new Date();
 
     if (this.novo) {
-      derrogacao.estado = "A";
+      derrogacao.estado = "P";
       this.QUADERROGACOESService.create(derrogacao).subscribe(
         res => {
-          this.router.navigate(['derrogacoes/editar'], { queryParams: { id: res.id_DERROGACAO } });
+          this.gravarTabelaFicheiros(res.id_DERROGACAO);
+          //this.router.navigate(['derrogacoes/editar'], { queryParams: { id: res.id_DERROGACAO } });
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
 
@@ -412,7 +482,8 @@ export class DerrogacoesFormComponent implements OnInit {
       //console.log(reclamacao)
       this.QUADERROGACOESService.update(derrogacao).subscribe(
         res => {
-          this.router.navigate(['derrogacoes/view'], { queryParams: { id: id } });
+          this.gravarTabelaAccoes(id);
+          //this.router.navigate(['derrogacoes/view'], { queryParams: { id: id } });
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
 
@@ -445,10 +516,12 @@ export class DerrogacoesFormComponent implements OnInit {
         derrogacao.utz_ANULACAO = this.user;
         derrogacao.data_ANULACAO = new Date();
         //derrogacao.inativo = true;
-        derrogacao.estado = "R";
+        derrogacao.estado = "A";
 
         this.QUADERROGACOESService.update(derrogacao).subscribe(
           res => {
+            this.QUADERROGACOESService.atualizaestadosaccoes(derrogacao.id_DERROGACAO, 5).subscribe(
+              res => { }, error => { console.log(error); });
             this.router.navigate(['derrogacoes']);
             this.simular(this.inputapagar);
           },
@@ -462,8 +535,8 @@ export class DerrogacoesFormComponent implements OnInit {
   //popup fechar
   fechar() {
     this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende fechar?',
-      header: 'Fechar Confirmação',
+      message: 'Tem a certeza que pretende validar?',
+      header: 'Validar Confirmação',
       icon: 'fa fa-close',
       accept: () => {
         var derrogacao = new QUA_DERROGACOES;
@@ -473,7 +546,7 @@ export class DerrogacoesFormComponent implements OnInit {
         derrogacao.utz_FECHO = this.user;
         derrogacao.data_FECHO = new Date();
         //derrogacao.inativo = true;
-        derrogacao.estado = "F";
+        derrogacao.estado = "V";
 
         this.QUADERROGACOESService.update(derrogacao).subscribe(
           res => {
@@ -487,7 +560,65 @@ export class DerrogacoesFormComponent implements OnInit {
     });
   }
 
+  //popup pendente
+  pendente() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende passar o estado para Pendente?',
+      header: 'Validar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+        var derrogacao = new QUA_DERROGACOES;
 
+        derrogacao = this.derrogacao_dados;
+
+        derrogacao.utz_ULT_MODIF = this.user;
+        derrogacao.data_ULT_MODIF = new Date();
+        //derrogacao.inativo = true;
+        derrogacao.estado = "P";
+
+        this.QUADERROGACOESService.update(derrogacao).subscribe(
+          res => {
+            this.inicia(this.id_DERROGACAO);
+            //this.router.navigate(['derrogacoes']);
+            this.simular(this.inputgravou);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+
+      }
+
+    });
+  }
+
+
+
+  //popup emcurso
+  emCurso() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende passar o estado para Em Curso?',
+      header: 'Validar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+        var derrogacao = new QUA_DERROGACOES;
+
+        derrogacao = this.derrogacao_dados;
+
+        derrogacao.utz_ULT_MODIF = this.user;
+        derrogacao.data_ULT_MODIF = new Date();
+        //derrogacao.inativo = true;
+        derrogacao.estado = "E";
+
+        this.QUADERROGACOESService.update(derrogacao).subscribe(
+          res => {
+            this.inicia(this.id_DERROGACAO);
+            //this.router.navigate(['derrogacoes']);
+            this.simular(this.inputgravou);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+
+      }
+
+    });
+  }
 
   //ao alterar cliente atualiza morada
   getMoradas(event, mor = false) {
@@ -555,12 +686,30 @@ export class DerrogacoesFormComponent implements OnInit {
   }
 
   getESTADO(estado) {
-    if (estado == "A") {
-      return "Aberto";
-    } else if (estado == "F") {
-      return "Fechado";
-    } else if (estado == "R") {
+    if (estado == "P") {
+      return "Pendente";
+    } else if (estado == "E") {
+      return "Em Curso";
+    } else if (estado == "V") {
+      return "Validado";
+    } else if (estado == "U") {
+      return "Expirado";
+    } else if (estado == "A") {
       return "Anulado";
+    }
+  }
+
+  getcolor(estado) {
+    if (estado == "P") {
+      return "orange";
+    } else if (estado == "E") {
+      return "yellow";
+    } else if (estado == "V") {
+      return "green";
+    } else if (estado == "U") {
+      return "red";
+    } else if (estado == "A") {
+      return "black";
     }
   }
 
@@ -603,4 +752,750 @@ export class DerrogacoesFormComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
+
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+    this.srcelement = "";
+    if (type == "pdf" || type == 'txt') {
+      if (ficheiro == null) {
+
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+      } else {
+        /*var blob = new Blob([ficheiro], { type: datatype });
+        var blobUrl = URL.createObjectURL(blob);*/
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+      }
+    }
+    if (ficheiro == null) {
+      this.srcelement = webUrl.link + srcelement;
+    } else {
+      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+    }
+    if (type == "excel" || type == "word") {
+      this.download(nomeficheiro, srcelement, datatype, ficheiro)
+    } else if (type == "msg") {
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro)
+    }
+    else {
+      this.nomeficheiro = nomeficheiro;
+      this.type = type;
+      this.display = true;
+    }
+
+  }
+
+  removeFile(file: File, uploader: FileUpload) {
+    const index = uploader.files.indexOf(file);
+    uploader.remove(index);
+  }
+
+  download(nome, filename, datatype, ficheiro) {
+    if (ficheiro == null) {
+      this.UploadService.download("report", filename, datatype).subscribe(
+        (res) => {
+          /*var fileURL: any = URL.createObjectURL(res);
+          fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          var myWindow = window.open(fileURL, "", "width=200,height=100");*/
+          // myWindow.close();
+          FileSaver.saveAs(res, nome);
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        }
+      );
+    } else {
+
+      const downloadLink = document.createElement("a");
+
+      downloadLink.href = ficheiro;
+      downloadLink.download = nome;
+      downloadLink.click();
+    }
+  }
+  downloadTXT(nomeficheiro, filename, ficheiro) {
+    if (ficheiro == null) {
+      this.UploadService.downloadTXT(filename).subscribe(
+        (res) => {
+          var fileURL = URL.createObjectURL(res);
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          this.nomeficheiro = nomeficheiro;
+          this.type = 'txt';
+          this.display = true;
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        });
+    } else {
+      this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
+        (res) => {
+          var fileURL = URL.createObjectURL(res);
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          this.nomeficheiro = nomeficheiro;
+          this.type = 'txt';
+          this.display = true;
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        });
+    }
+  }
+
+  removerficheiro(index) {
+    var tab = this.uploadedFiles[index];
+    if (tab.id == null) {
+      /*this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
+        (res) => { });*/
+      this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
+    } else {
+      this.QUADERROGACOESFICHEIROSService.delete(tab.id).then(
+        res => {
+          //alterar ficheiro de pasta
+          /* this.UploadService.alterarlocalizacaoFicheiro("report", tab.src, tab.datatype).subscribe(
+             (res) => { });*/
+          this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+    }
+
+  }
+
+
+
+  onUpload(event) {
+    //let files: FileList = event.files;
+    this.fileInput.progress = 0;
+    this.campo_x = 0;
+    var x = 0;
+    for (let file of event.files) {
+
+      this.fileInput.progress = ((this.campo_x + 1) / event.files.length) * 100;
+      // const index = files.indexOf(files[x]);
+      var type = "img";
+      var str = file.type;
+      var tipo = file.name.split(".");
+
+      if (str.toLowerCase().indexOf("pdf") >= 0) {
+        type = "pdf";
+      } else if (str.toLowerCase().indexOf("audio") >= 0) {
+        type = "audio";
+      } else if (str.toLowerCase().indexOf("video") >= 0) {
+        type = "video";
+      } else if (str.toLowerCase().indexOf("excel") >= 0 || str.toLowerCase().indexOf("sheet") >= 0) {
+        type = "excel";
+      } else if (str.toLowerCase().indexOf("word") >= 0) {
+        type = "word";
+      } else if (str.toLowerCase().indexOf("text") >= 0) {
+        type = "txt";
+      } else if (tipo[1] == "msg") {
+        type = "msg";
+      }
+      var nome = this.formatDate() + x;
+
+      this.filetoBASE64(file, nome, event, type, x)
+
+
+
+      //  this.fileupoad(file, nome, event, type, x, ficheiro);
+      x++;
+    }
+
+  }
+  filetoBASE64(file, nome, event, type, x) {
+    var myReader: FileReader = new FileReader();
+    myReader.onloadend = (event2: Event) => {
+      // you can perform an action with readed data here
+      this.fileupoad(file, nome, event, type, x, myReader.result);
+    }
+
+    myReader.readAsDataURL(file);
+  }
+
+
+  fileupoad(file, nome, event, type, x, ficheiro) {
+
+    var tipo = file.name.split(".");
+    var data = new Date();
+
+    if (!this.novo) {
+      var ficheiros = new QUA_DERROGACOES_FICHEIROS;
+      ficheiros.data_CRIA = data;
+      ficheiros.utz_CRIA = this.user;
+      ficheiros.id_DERROGACAO = this.id_DERROGACAO;
+      ficheiros.caminho = nome + '.' + tipo[1];
+      ficheiros.nome = file.name;
+      ficheiros.tipo = type;
+      ficheiros.datatype = file.type;
+      ficheiros.tamanho = file.size;
+      ficheiros.descricao = this.filedescricao[x];
+      ficheiros.ficheiro_1 = ficheiro.substr(ficheiro, ficheiro.length / 2);
+      ficheiros.ficheiro_2 = ficheiro.substr(ficheiro.length / 2, ficheiro.length);
+      ficheiros.data_ULT_MODIF = new Date();
+      ficheiros.utz_ULT_MODIF = this.user;
+
+      this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);
+
+    } else {
+      this.uploadedFiles.push({
+        data_CRIA: data, ficheiro: ficheiro,
+        id_TAREFA: null, responsavel: null, utilizador: this.user_nome, datacria: this.formatDate2(data) + " " + new Date(data).toLocaleTimeString(), id_FICHEIRO: null,
+        id: null, name: file.name, datatype: file.type, src: nome + '.' + tipo[1], type: type, size: file.size, descricao: this.filedescricao[x]
+      });
+    }
+
+    this.uploadedFiles = this.uploadedFiles.slice();
+    if (this.campo_x + 1 == event.files.length) {
+      this.fileInput.files = [];
+      this.filedescricao = [];
+      this.fileInput.progress = 0;
+    }
+    this.campo_x++;
+
+  }
+
+
+
+  gravarTabelaFicheiros2(ficheiros, count, total, id) {
+    this.QUADERROGACOESFICHEIROSService.update(ficheiros).subscribe(
+      res => {
+
+        this.uploadedFiles.push({
+          data_CRIA: ficheiros.data_CRIA, ficheiro: ficheiros.ficheiro_1 + ficheiros.ficheiro_2,
+          utilizador: this.user_nome, datacria: this.formatDate2(ficheiros.data_CRIA) + " " + new Date(ficheiros.data_CRIA).toLocaleTimeString(),
+          id: res.id, name: ficheiros.nome, datatype: ficheiros.datatype, src: ficheiros.caminho, type: ficheiros.tipo, size: ficheiros.tamanho, descricao: ficheiros.descricao
+        });
+        this.uploadedFiles = this.uploadedFiles.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  gravarTabelaFicheiros(id) {
+    if (this.novo && this.uploadedFiles && this.uploadedFiles.length > 0) {
+      var count = 0;
+      for (var x in this.uploadedFiles) {
+        var ficheiros = new QUA_DERROGACOES_FICHEIROS;
+        var novo = false;
+        if (this.uploadedFiles[x].id != null) {
+          ficheiros = this.uploadedFiles[x].data;
+        } else {
+          ficheiros.data_CRIA = this.uploadedFiles[x].data_CRIA;
+          ficheiros.utz_CRIA = this.user;
+          novo = true;
+        }
+        ficheiros.id_DERROGACAO = id;
+        if (!this.novo) ficheiros.id = this.uploadedFiles[x].id;
+        ficheiros.caminho = this.uploadedFiles[x].src;
+        ficheiros.nome = this.uploadedFiles[x].name;
+        ficheiros.tipo = this.uploadedFiles[x].type;
+        ficheiros.datatype = this.uploadedFiles[x].datatype;
+        ficheiros.tamanho = this.uploadedFiles[x].size;
+        ficheiros.descricao = this.uploadedFiles[x].descricao;
+        ficheiros.ficheiro_1 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro, this.uploadedFiles[x].ficheiro.length / 2);
+        ficheiros.ficheiro_2 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro.length / 2, this.uploadedFiles[x].ficheiro.length);
+
+        ficheiros.data_ULT_MODIF = new Date();
+        ficheiros.utz_ULT_MODIF = this.user;
+
+        count++;
+        if (novo) {
+          this.gravarTabelaFicheiros2(ficheiros, count, this.uploadedFiles.length, id);
+        }
+
+        if (count == this.uploadedFiles.length) {
+          if (this.novo) {
+            //this.router.navigate(['derrogacoes/editar'], { queryParams: { id: id } });
+            this.gravarTabelaAccoes(id);
+            //this.simular(this.inputnotifi);
+          }
+        }
+
+      }
+    }
+
+  }
+
+  carregatabelaFiles(id) {
+    this.uploadedFiles = [];
+
+    this.QUADERROGACOESFICHEIROSService.getbyidDERROGACAO(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+
+            var id2 = null;
+            var data_at = new Date();
+            var datacria = this.formatDate2(response[x][0].data_CRIA) + " " + new Date(response[x][0].data_CRIA).toLocaleTimeString();
+
+            id2 = response[x][0].id;
+
+            if (response[x][0].id_FICHEIRO != null) id2 = "f110" + response[x][0].id_FICHEIRO;
+            this.uploadedFiles.push({
+              data_CRIA: data_at, ficheiro: response[x][0].ficheiro_1 + response[x][0].ficheiro_2,
+              data: response[x][0], id_TAREFA: response[x][0].id_TAREFA, utilizador: response[x][1].nome_UTILIZADOR,
+              datacria: datacria, responsavel: response[x][2],
+              id: id2, name: response[x][0].nome, id_FICHEIRO: response[x][0].id_FICHEIRO,
+              src: response[x][0].caminho, type: response[x][0].tipo, datatype: response[x][0].datatype, size: response[x][0].tamanho, descricao: response[x][0].descricao
+            });
+
+
+          }
+          this.uploadedFiles = this.uploadedFiles.slice();
+        }
+
+      }, error => { console.log(error); });
+
+  }
+
+  isImage(file: File) {
+    return /^image\//.test(file.type);
+  }
+
+  fileImage(file: File) {
+    var str = file.type;
+    if (str.toLowerCase().indexOf("pdf") >= 0) {
+      return "assets/img/file-pdf.png";
+    } else if (str.toLowerCase().indexOf("excel") >= 0 || str.toLowerCase().indexOf("sheet") >= 0) {
+      return "assets/img/file-excel.png";
+    } else if (str.toLowerCase().indexOf("word") >= 0) {
+      return "assets/img/file-word.png";
+    } else {
+      return "assets/img/file.png";
+    }
+  }
+
+
+  /****ACCOES */
+
+  adicionar_linha(tabela) {
+    if (tabela == "tabelaaccoes") {
+
+      this.tabelaaccoes.push({
+        obriga_EVIDENCIAS: false,
+        area: "", id: null, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null,
+        nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: null
+      });
+      this.tabelaaccoes = this.tabelaaccoes.slice();
+    }
+
+
+  }
+
+  apagar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoes") {
+      var tab = this.tabelaaccoes[index];
+      if (tab.id == null) {
+        this.tabelaaccoes = this.tabelaaccoes.slice(0, index).concat(this.tabelaaccoes.slice(index + 1));
+        //this.atualiza_ordem(tabela);
+      } else {
+
+        var accoes1 = new QUA_DERROGACOES_PLANOS_ACCOES;
+        accoes1 = this.tabelaaccoes[index].data;
+        this.tabelaaccoes[index].estado = 'A';
+        this.tabelaaccoes[index].nome_estado = this.geEstado('A');
+        accoes1.estado = 'A';
+        accoes1.data_ULT_MODIF = new Date();
+        accoes1.utz_ULT_MODIF = this.user;
+        this.gravarTabelaAccoes2(accoes1, 1, 2, 0, false, index, true);
+      }
+    }
+  }
+
+
+
+  finalizar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoes") {
+      var accoes = new QUA_DERROGACOES_PLANOS_ACCOES;
+
+      accoes = this.tabelaaccoes[index].data;
+
+      if (this.tabelaaccoes[index].data_REAL == null || this.tabelaaccoes[index].data_REAL == "") {
+        this.tabelaaccoes[index].data_REAL = new Date();
+      }
+      accoes.data_REAL = this.tabelaaccoes[index].data_REAL;
+      accoes.concluido_DATA = new Date();
+      accoes.concluido_UTZ = this.user;
+      accoes.estado = 'C';
+
+      this.tabelaaccoes[index].estado = 'C';
+      this.tabelaaccoes[index].nome_estado = this.geEstado('C');
+
+      this.gravarTabelaAccoes2(accoes, 1, 2, 0, true, index, true);
+
+    }
+  }
+
+  gravarTabelaAccoes2(accoes, count, total, id, finaliza = false, index = 0, atualizatarefa = false) {
+    this.QUADERROGACOESPLANOSACCOESService.update(accoes).subscribe(
+      res => {
+        if (atualizatarefa) {
+          this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
+        } else {
+          this.criarTarefas(res.id, 5);
+        }
+
+
+        if (finaliza) this.tabelaaccoes[index].concluido_UTZ = this.user;
+      },
+      error => { console.log(error); });
+  }
+
+  atualizaestadoTarefa(id, estado) {
+    if (id != null) {
+      this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
+
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa = response[0]
+
+          var data_logs = [];
+
+
+          if (tarefa.estado != estado) {
+            data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+          }
+
+          tarefa.estado = estado;
+          if (estado == "C") {
+            tarefa.utz_CONCLUSAO = this.user;
+            tarefa.data_CONCLUSAO = new Date();
+          } else if (estado == "A") {
+            tarefa.utz_ANULACAO = this.user;
+            tarefa.data_ANULACAO = new Date();
+          }
+
+
+          this.GTMOVTAREFASService.update(tarefa).then(response => {
+            for (var x in data_logs) {
+              var logs = new GT_LOGS;
+              logs.id_TAREFA = id;
+              logs.utz_CRIA = this.user;
+              logs.data_CRIA = new Date();
+              logs.descricao = data_logs[x].descricao;
+              this.criaLogs(logs);
+            }
+
+
+          }, error => {
+            console.log(error);
+
+          });
+        }
+      }, error => {
+        console.log(error);
+        this.simular(this.inputerro);
+      });
+    }
+  }
+
+  criaLogs(log) {
+    this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {
+    }, error => {
+      console.log(error);
+
+    });
+  }
+
+  IrPara(id, responsavel) {
+
+    var id_r = null;
+    if (responsavel.toString().charAt(0) == 'u') {
+      id_r = responsavel.substr(1);
+    }
+
+    var modo = 'view';
+    if (this.modoedicao) modo = 'editar';
+    //if (this.adminuser || this.user == this.utz_CRIA || id_r == this.user) {
+    this.router.navigateByUrl('tarefas/view?id=' + id + "&redirect=derrogacoes/" + modo + "kvk\id=" + this.id_DERROGACAO);
+    //}
+  }
+
+  //atualiza ou cria tarefa
+  criarTarefas(id, modulo) {
+    var link = webUrl.host + '/#/tarefas/view?id=';
+    /*this.GTMOVTAREFASService.getAtulizaTarefasd(id, modulo, link).subscribe(
+      response => {
+
+      }, error => { console.log(error); });*/
+    this.GTMOVTAREFASService.getAtualizaTarefaDerrogacoes(id, modulo, link).subscribe(
+      response => {
+
+      }, error => { console.log(error); });
+  }
+
+  gravarTabelaAccoes(id) {
+    if (this.tabelaaccoes && this.tabelaaccoes.length > 0) {
+
+      var count = 0;
+      for (var x in this.tabelaaccoes) {
+        count++;
+        if (this.tabelaaccoes[x].responsavel != null && this.tabelaaccoes[x].responsavel != "" && this.tabelaaccoes[x].descricao != null && this.tabelaaccoes[x].descricao != "") {
+          var accoes = new QUA_DERROGACOES_PLANOS_ACCOES;
+          var novo = false;
+          if (this.tabelaaccoes[x].id != null) {
+            accoes = this.tabelaaccoes[x].data;
+          } else {
+            novo = true;
+            accoes.data_CRIA = new Date();
+            accoes.utz_CRIA = this.user;
+          }
+
+          accoes.id = this.tabelaaccoes[x].id;
+          accoes.id_DERROGACAO = id;
+          accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCOES;
+          accoes.tipo = "A";
+          accoes.observacoes = this.tabelaaccoes[x].observacoes;
+          accoes.estado = "P";
+          accoes.obriga_EVIDENCIAS = this.tabelaaccoes[x].obriga_EVIDENCIAS;
+
+
+          //var data = this.tabelaaccoesimediatas[x].data_REAL;
+          //accoes.data_REAL = (data!=null && data != "" )? new Date(data) : null;
+          accoes.data_PREVISTA = new Date(this.tabelaaccoes[x].data_PREVISTA);
+
+          var id_resp = this.tabelaaccoes[x].responsavel;
+          var tipo = "u";
+          if (this.tabelaaccoes[x].responsavel.charAt(0) == 'u' || this.tabelaaccoes[x].responsavel.charAt(0) == 'g') {
+            tipo = this.tabelaaccoes[x].responsavel.charAt(0);
+            id_resp = this.tabelaaccoes[x].responsavel.substr(1);
+          }
+
+          accoes.responsavel = id_resp;
+          accoes.tipo_RESPONSAVEL = tipo;
+
+
+          accoes.data_ULT_MODIF = new Date();
+          accoes.utz_ULT_MODIF = this.user;
+
+          if (novo) {
+            this.gravarTabelaAccoes2(accoes, count, this.tabelaaccoes.length, id);
+          }
+
+        }
+      }
+    } else {
+
+    }
+
+    if (this.novo) {
+      this.router.navigate(['derrogacoes/editar'], { queryParams: { id: id } });
+      this.simular(this.inputnotifi);
+    } else {
+      this.router.navigate(['derrogacoes/view'], { queryParams: { id: id } });
+      this.simular(this.inputnotifi);
+    }
+  }
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+  carregatabelasaccoes(id) {
+
+    this.tabelaaccoes = [];
+
+    this.QUADERROGACOESPLANOSACCOESService.getbyidderrogacao(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            var tipo = response[x].tipo_RESPONSAVEL;
+            var data_real = null;
+
+            var id2 = null;
+
+            id2 = response[x].id;
+
+            if (response[x].data_REAL != null) {
+              data_real = new Date(response[x].data_REAL);
+            }
+
+            var estados = response[x].estado
+
+            var accao = null;
+            if (this.drop_accoes.find(item => item.value == response[x].id_ACCAO)) {
+              accao = this.drop_accoes.find(item => item.value == response[x].id_ACCAO).label
+            }
+            if (response[x].tipo == "A") {
+              this.tabelaaccoes.push({
+                obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
+                data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
+                id: id2, data_REAL: data_real, data_PREVISTA: new Date(response[x].data_PREVISTA),
+                responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
+              });
+
+            }
+
+          }
+
+          this.tabelaaccoes = this.tabelaaccoes.slice();
+        }
+
+      }, error => {
+        console.log(error);
+      });
+  }
+
+
+  nomeACCAO(event) {
+    var id = event.value;
+    var data = this.drop_accoes.find(item => item.value == id);
+    var nome = "---";
+
+    if (data) {
+      nome = data.label;
+    }
+    return nome;
+  }
+
+  carregaaccoes(inicia, id, continua = true) {
+    this.drop_accoes = [];
+    this.RCDICACCOESRECLAMACAOService.getAll_TIPO("D").subscribe(
+      response => {
+        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+
+        for (var x in response) {
+          this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
+        }
+
+        this.drop_accoes = this.drop_accoes.slice();
+        if (continua) this.carregaGrupos(inicia, id);
+      },
+      error => { console.log(error); if (continua) this.carregaGrupos(inicia, id); });
+  }
+
+  carregaGrupos(inicia, id) {
+    this.GERGRUPOService.getAll().subscribe(
+      response => {
+        var grupo = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].descricao, value: "g" + response[x].id });
+          //this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
+        }
+        this.drop_utilizadores_acoes.push({ label: "Grupos", itens: grupo });
+
+        this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
+
+
+      },
+      error => { console.log(error); });
+  }
+
+
+  carregaUtilizadores_acoes(inicia, id) {
+    this.drop_utilizadores_acoes = [];
+    this.drop_utilizadores2 = [];
+    this.GERUTILIZADORESService.getAll().subscribe(
+      response => {
+        this.drop_utilizadores2.push({ label: "Selecionar Utilizador", value: "" });
+        var grupo = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
+          this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+        }
+        this.drop_utilizadores_acoes.push({ label: "Utilizadores", itens: grupo });
+
+        this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
+        this.drop_utilizadores2 = this.drop_utilizadores2.slice();
+        this.carregaaccoes(inicia, id);
+      },
+      error => { console.log(error); this.carregaaccoes(inicia, id); });
+  }
+
+  alterarEmail2(index, event, tabela) {
+    if (event.target.value.toString().includes("u")) {
+      var id = event.target.value.toString().replace("u", "");
+      if (tabela == "tabelaaccoes") {
+        this.tabelaaccoes[index].area = this.drop_utilizadores2.find(item => item.value == id).area;
+      }
+    } else {
+      if (tabela == "tabelaaccoes") {
+        this.tabelaaccoes[index].area = "";
+      }
+    }
+  }
+
+  /* ADICIONAR ACÇÕES*/
+  //abre popup para adicionar acções
+  showDialogToAdd() {
+    //this.novo = true;
+    this.id_selected = 0;
+    this.descricaoeng = "";
+    this.descricaopt = "";
+    this.descricaofr = "";
+    this.displayAddAccao = true;
+  }
+  //gravar unidade de ACÇÕES
+  gravardados() {
+    var ACCOES_RECLAMACAO = new GT_DIC_TAREFAS;
+    ACCOES_RECLAMACAO.descricao_ENG = this.descricaoeng;
+    ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
+    ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
+    ACCOES_RECLAMACAO.utz_ULT_MODIF = this.user;
+    ACCOES_RECLAMACAO.tipo_TAREFA = "D";
+    ACCOES_RECLAMACAO.data_ULT_MODIF = new Date();
+
+    ACCOES_RECLAMACAO.utz_CRIA = this.user;
+    ACCOES_RECLAMACAO.data_CRIA = new Date();
+    this.RCDICACCOESRECLAMACAOService.create(ACCOES_RECLAMACAO).subscribe(response => {
+      this.carregaaccoes(0, false, false);
+      this.displayAddAccao = false;
+      this.simular(this.inputgravou);
+    },
+      error => { console.log(error); this.simular(this.inputerro); });
+
+  }
+
+  //devolve node responsavel
+  getResponsavelaccoes(id) {
+    if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
+    if (id != null && id.toString().includes("u")) {
+      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Utilizadores").itens;
+      utz = utz2.find(item => item.value == id);
+    } else if (id != null && id.toString().includes("g")) {
+      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Grupos").itens;
+      utz = utz2.find(item => item.value == id);
+    }
+    var nome = "---";
+    if (utz) {
+      nome = utz.label;
+    }
+    return nome;
+  }
+
+  /******* */
 }

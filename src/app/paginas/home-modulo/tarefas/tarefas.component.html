@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
 
-      <div class="col-md-8 col-lg-8 col-sm-12">
+      <div class="col-md-9 col-lg-9 col-sm-12">
         <div class="card">
           <div class="card-header" data-background-color="gray">
             <h4 class="title">Tarefas</h4>
@@ -16,13 +16,14 @@
               <p-headerColumnGroup>
                 <p-row>
                   <p-column header="Nome Tarefa" rowspan="2"></p-column>
-                  <p-column [style]="{'width':'460px'}" header="Origem" colspan="4"></p-column>
+                  <p-column [style]="{'width':'500px'}" header="Origem" colspan="5"></p-column>
                 </p-row>
                 <p-row>
-                  <p-column header="Reclamações Clientes" colspan="1"></p-column>
-                  <p-column header="Reclamações Fornecedores" colspan="1"></p-column>
-                  <p-column header="Amostras" colspan="1"></p-column>
-                  <p-column header="Planos de Ação" colspan="1"></p-column>
+                  <p-column [style]="{'padding':'0'}" header="Reclamações Clientes" colspan="1"></p-column>
+                  <p-column [style]="{'padding':'0'}" header="Reclamações Fornecedores" colspan="1"></p-column>
+                  <p-column [style]="{'padding':'0'}" header="Amostras" colspan="1"></p-column>
+                  <p-column [style]="{'padding':'0'}" header="Planos de Ação" colspan="1"></p-column>
+                  <p-column [style]="{'padding':'0'}" header="Derrogações" colspan="1"></p-column>
                 </p-row>
               </p-headerColumnGroup>
 
@@ -51,17 +52,22 @@
                   <span title="{{car['title4'] }}">{{car['planosacao'] }}</span>
                 </ng-template>
               </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="derrogacoes">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span title="{{car['title5'] }}">{{car['derrogacoes'] }}</span>
+                </ng-template>
+              </p-column>
             </p-dataTable>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4 col-lg-4 col-sm-12">
+      <div class="col-md-3 col-lg-3 col-sm-12">
         <div class="card">
           <div class="card-header" data-background-color="gray">
             <h4 class="title">Filtros</h4>
           </div>
-          <div class="card-content table-responsive" style="display: initial;">
+          <div class="card-content table-responsive" style="display: contents;">
             <form #form id="formReclama" (ngSubmit)="atualizar()">
               <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                 <label>Tarefas:</label>
@@ -88,15 +94,15 @@
                 <div class="ui-g-12" style="float: left; margin-left: 10px;">
                   <p-checkbox name="group4" value="g" label="Grupo" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
-                <div class="ui-g-12" style="float: left; margin-left: 10px;">
+                <div class="ui-g-12" style="float: left;/*margin-left: 10px;*/">
                   <p-checkbox name="group4" value="s" label="Sector" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
-                <div class="ui-g-12" style="float: left; /*margin-left: 10px;*/">
+                <div class="ui-g-12" style="float: left;  margin-left: 10px;">
                   <p-checkbox name="group4" value="t" label="Todas" [(ngModel)]="tipo_utl"></p-checkbox>
                 </div>
               </div>
 
-              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-11 col-lg-11">
                 <label style="display: -webkit-box;">Data Atribuição Entre:</label>
                 <p-calendar [style]="{'height':'25px','width':'35%','margin-right': '44px'}" dateFormat="yy-mm-dd"
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
@@ -109,7 +115,7 @@
                 </p-calendar>
               </div>
 
-              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-11 col-lg-11">
                 <label style="display: -webkit-box;">Prazo Conclusão Entre:</label>
                 <p-calendar [style]="{'height':'25px','width':'35%','margin-right': '44px'}" dateFormat="yy-mm-dd"
                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"

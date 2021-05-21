@@ -21,12 +21,25 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disFechar" [hidden]="!btfechar">
-            <a (click)="fechar()">
-              <i class="material-icons">close</i>Fechar
+          <li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
+            <a (click)="emCurso()">
+              <i class="material-icons">schedule_send</i>Em Curso
               <div class="ripple-container"></div>
             </a>
           </li>
+          <li [class.disabled]="disFechar" [hidden]="!btfechar">
+            <a (click)="fechar()">
+              <i class="material-icons">done</i>Validar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disPendente" [hidden]="!btpendente">
+            <a (click)="pendente()">
+              <i class="material-icons">history</i>Pendente
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Anular
@@ -58,7 +71,7 @@
           <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
             <h4 style="position: absolute;" class="title">Derrogações</h4>
             <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 36px; " class="title">Estado:
-              <b>{{texto_estado}}</b>
+              <b [style.color]="getcolor(estado)">{{texto_estado}}</b>
               <span *ngIf="data_FECHO != null && estado == 'F'">({{getResponsavel(utz_FECHO)}} -
                 {{data_FECHO_texto}})</span>
             </h5>
@@ -96,12 +109,6 @@
                         yearRange="2000:2050" [(ngModel)]="data_INICIO" [ngModelOptions]="{standalone: true}"
                         [showIcon]="true" [required]="true"></p-calendar>
                     </div>
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
-                      <label style="display: -webkit-box;">Data de Fim:</label>
-                      <input placeholder="yyyy-mm-dd ou texto" [disabled]="!modoedicao" type="text"
-                        class="form-control2" [(ngModel)]="data_FIM" [ngModelOptions]="{standalone: true}">
-                    </div>
-
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
                       <label>Interna/Externa:</label>
@@ -109,6 +116,19 @@
                       <p-dropdown [filter]="true" [options]="drop_interna_EXTERNA"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="interna_EXTERNA"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 52px;" class="form-group col-md-6 col-lg-3">
+                      <label style="display: -webkit-box;">Data de Fim:</label>
+                      <!--input placeholder="yyyy-mm-dd ou texto" [disabled]="!modoedicao" type="text"
+                        [required]="interna_EXTERNA == 'I'" class="form-control2" [(ngModel)]="data_FIM"
+                        [ngModelOptions]="{standalone: true}"-->
+                      <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'91%'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="data_FIM" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="true"
+                        [required]="interna_EXTERNA == 'I' || (interna_EXTERNA == 'E' && estado != 'P' && estado != 'A')">
+                      </p-calendar>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
@@ -151,7 +171,11 @@
                       <textarea [disabled]="!modoedicao " pInputTextarea [(ngModel)]="causa" class="form-control2"
                         [ngModelOptions]="{standalone: true}" style="height: 45px; width: 100%;"></textarea>
                     </div>
-
+                    <div class="form-group col-md-4">
+                      <label for="plano_ACOES">Plano de Ações</label>
+                      <p-checkbox [disabled]="!modoedicao" [(ngModel)]="plano_ACOES" binary="true"
+                        [ngModelOptions]="{standalone: true}"></p-checkbox>
+                    </div>
                   </div>
                 </p-panel>
                 <p-panel header="DADOS DO CLIENTE" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
@@ -176,7 +200,7 @@
                   </div>
                 </p-panel>
 
-                <p-panel header="DADOS DA REFERÊNCIA" [toggleable]="false" [style]="{'margin-bottom':'20px'}">
+                <p-panel header="DADOS DA REFERÊNCIA" [toggleable]="false">
                   <div style="display: inline-block; width: 100%;">
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
                       <label>Referência:</label>
@@ -208,6 +232,238 @@
 
                   </div>
                 </p-panel>
+
+
+                <p-panel *ngIf="plano_ACOES" header="AÇÕES" [toggleable]="false">
+                  <div style="display: inline-block; width: 100%;">
+                    <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
+                      styleClass="ExcelTable2007">
+                      <p-column [style]="{'width':'45px'}" styleClass="heading" field="ordem">
+                        <ng-template let-col let-car="rowData" styleClass="heading" pTemplate="body">
+                          <!-- {{car[col.field] }}º-->
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="descricao" [style]="{'width':'380px'}" header="PLANO AÇÃO">
+
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car['descricao'] }}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
+                          <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
+                            [options]="drop_accoes" [style]="{'width':'80%','height':'25px','background':'white'}"
+                            [(ngModel)]="car['id_ACCOES']" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao  ||  car['id'] != null" appendTo="body" [required]="true">
+                          </p-dropdown>
+
+                          <button type="button" class="btn btn-success btn-xs"
+                            [disabled]="!modoedicao || !acessoadicionarACCAO  ||  car['id'] != null" title="Adicionar"
+                            (click)="showDialogToAdd()">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                        </ng-template>
+
+                      </p-column>
+                      <p-column [editable]="true" field="responsavel" header="RESPONSÁVEL">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{getResponsavelaccoes(car[col.field]) }}
+                        </ng-template>
+                        <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
+                          <select (change)="alterarEmail2(index,$event,'tabelaaccoes')"
+                            [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
+                            [ngModelOptions]=" {standalone: true}" class="form-control2">
+                            <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores_acoes">
+                              <option [selected]="f.value == car['responsavel']" [value]="f.value"
+                                *ngFor="let f of i.itens">{{f.label}}</option>
+                            </optgroup>
+                          </select>
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="area" [style]="{'width':'85px'}" header="ÁREA">
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <input [disabled]="!modoedicao ||  car['id'] != null" [(ngModel)]="car['area']"
+                            [ngModelOptions]="{standalone: true}"
+                            class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
+                            type="text">
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="data_PREVISTA" header="DATA PREVISTA">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] | date: 'yyyy-MM-dd'}}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['data_PREVISTA']" appendTo="body" [ngModelOptions]="{standalone: true}">
+                          </p-calendar>
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="data_REAL" header="DATA REAL">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] | date: 'yyyy-MM-dd'}}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <p-calendar [disabled]="!modoedicao ||   car['data_REAL'] != null || car['estado'] == 'C'"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['data_REAL']" appendTo="body" [ngModelOptions]=" {standalone: true}">
+                          </p-calendar>
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [editable]="false" field="nome_estado" header="ESTADO">
+                        <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                          <span *ngIf="car['id_TAREFA']==null" class="ui-cell-data">{{car['nome_estado']}}</span>
+                          <a *ngIf="car['id_TAREFA']!=null" (click)="IrPara(car['id_TAREFA'],car['responsavel'])"
+                            class="ui-cell-data">{{car['nome_estado']}}</a>
+                        </ng-template>
+                      </p-column>
+
+                      <p-column [editable]="true" field="observacoes" header="OBSERVAÇÕES">
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <input [disabled]="!modoedicao ||  car['id'] != null" [(ngModel)]="car['observacoes']"
+                            [ngModelOptions]="{standalone: true}"
+                            class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
+                            type="text">
+                        </ng-template>
+                      </p-column>
+
+                      <p-column>
+                        <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                          <button type="button" class="btn btn-default btn-xs"
+                            [disabled]="!modoedicao || car['id'] !=null" title="Obriga a Evidências"
+                            (click)="car['obriga_EVIDENCIAS'] = !car['obriga_EVIDENCIAS']">
+                            <span [hidden]="car['obriga_EVIDENCIAS']" class="glyphicon glyphicon-unchecked"></span>
+                            <span [hidden]="!car['obriga_EVIDENCIAS']" class="glyphicon glyphicon-check"></span>
+                          </button>
+
+                          <button type="button" class="btn btn-danger btn-xs"
+                            [disabled]="!modoedicao ||  car['estado'] == 'A' || car['estado'] == 'C'  " title="Apagar"
+                            (click)="apagar_linha('tabelaaccoes', index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+
+                          <button type="button" class="btn btn-success btn-xs"
+                            [disabled]="!modoedicao || car['id'] ==null ||  car['estado'] == 'A' || car['estado'] == 'C'"
+                            title="Finalizar" (click)="finalizar_linha('tabelaaccoes', index)">
+                            <span [hidden]="car['concluido_UTZ'] != null" class="glyphicon glyphicon-unchecked"></span>
+                            <span [hidden]="car['concluido_UTZ'] == null" class="glyphicon glyphicon-check"></span>
+                          </button>
+                        </ng-template>
+                      </p-column>
+                      <p-footer [style]="{'text-align':'center'}">
+                        <a (click)="adicionar_linha('tabelaaccoes')" [class.disabled]="!modoedicao  "
+                          style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                          <i class="material-icons">add</i> Adicionar
+                        </a>
+                      </p-footer>
+                    </p-dataTable>
+                  </div>
+                </p-panel>
+
+                <p-panel header="DOCUMENTOS" [toggleable]="false" [style]="{'margin-bottom':'20px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="form-group col-md-4 col-lg-4">
+                      <p-fileUpload [disabled]="!modoedicao" #fileInput name="myfile[]" customUpload="true"
+                        (uploadHandler)="onUpload($event)" multiple="multiple" maxFileSize="10000000"
+                        invalidFileSizeMessageSummary="{0}: Tamanho do ficheiro inválido, "
+                        invalidFileTypeMessageDetail="tipos de ficheiros permitidos: {0}."
+                        invalidFileSizeMessageDetail="O tamanho máximo do upload é {0}."
+                        invalidFileTypeMessageSummary="{0}: tipo de ficheiro inválido, " chooseLabel="Selecionar"
+                        uploadLabel="Carregar" cancelLabel="Cancelar">
+                        <ng-template let-file pTemplate="file">
+                          <div class="ui-fileupload-row">
+                            <div>
+                              <img [src]="file.objectURL" *ngIf="isImage(file)" [width]="25" />
+                              <img [src]="fileImage(file)" *ngIf="!isImage(file)" [width]="25" />
+                            </div>
+                            <div>{{file.name}}</div>
+                            <input type="text" placeholder="Descrição" style="margin-top: 9px;" class="form-control2"
+                              [(ngModel)]="filedescricao[fileInput.files.indexOf(file)]"
+                              [ngModelOptions]="{standalone: true}">
+                            <div>
+                              <button icon="fa-close" pButton type="button" label="Remove"
+                                (click)="removeFile(file, fileInput)"></button>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                          <div style="text-align: -webkit-center; width: 100%; color: gainsboro;">Upload Files</div>
+                        </ng-template>
+                      </p-fileUpload>
+                    </div>
+
+                    <div class="form-group col-md-8 col-lg-8">
+                      <!-- <div *ngIf="uploadedFiles.length">
+                        <div *ngFor="let file of uploadedFiles" class="ui-fileupload-row" style="float: left;border: 1px solid blue;">
+                          <div>{{file.file.name}}</div>
+                          <div>{{file.file.size}} bytes</div>
+                          <div>{{file.descricao}} bytes</div>
+                          <div>
+                            <button icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                              <span class="ui-button-icon-left ui-c fa fa-fw fa-close"></span>
+                              <span class="ui-button-text ui-c">ui-btn</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>-->
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="uploadedFiles"
+                        styleClass="ExcelTable2007">
+                        <p-column [style]="{'width':'20%'}" [editable]="false" field="name"
+                          styleClass="ExcelTable2007tdname" header="NOME">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['name'] }}">{{car['name'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'10%'}" [editable]="false" field="tamanho"
+                          styleClass="ExcelTable2007tdname" header="TAMANHO">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title=" {{car['size'] }} bytes"> {{car['size'] }} bytes</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'10%'}" [editable]="false" field="descricao"
+                          styleClass="ExcelTable2007tdname" header="DESCRIÇÃO">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['descricao']}}">{{car['descricao']}}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'15%'}" [editable]="false" field="datacria" header="DATA">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['datacria']}}">{{car['datacria']}}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'10%'}" [editable]="false" field="utilizador"
+                          styleClass="ExcelTable2007tdname" header="UTILIZADOR">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['utilizador']}}">{{car['utilizador']}}</span>
+                          </ng-template>
+                        </p-column>
+
+                        <p-column [style]="{'width':'105px'}" [editable]="false" field="descricao" header="">
+                          <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                            <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
+                              (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro)">
+                              <i class="glyphicon glyphicon-zoom-in"></i>
+                            </button>
+                            <a class="btn btn-primary btn-xs" title="Download"
+                              (click)="download(car.name,car.src,car.datatype,car.ficheiro)" target="_blank"
+                              style="padding: 3px 0px 3px 12px; margin: 0;">
+                              <i class="glyphicon glyphicon-download"></i>
+                            </a>
+                            <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
+                              class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                              (click)="removerficheiro(index)">
+                              <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                          </ng-template>
+                        </p-column>
+                      </p-dataTable>
+                    </div>
+
+
+                  </div>
+                </p-panel>
+
               </div>
               <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
                 [hidden]="!modoedicao">Cancelar</button>
@@ -281,4 +537,66 @@
       </div>
     </div>
   </div>
+</p-dialog>
+
+
+<p-dialog [header]="nomeficheiro" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display"
+  [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Your
+      browser does not support the audio element.</audio>
+    <iframe *ngIf="( type == 'txt')  && display" class="embed-responsive-item"
+      style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [src]="srcelement" type="application/pdf"
+      scale="aspect" frameborder="0"></iframe>
+    <div *ngIf="(type == 'pdf' )  && display" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;">
+      <object *ngIf="(type == 'pdf' )  && display" class="embed-responsive-item"
+        style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [data]="srcelement" type="application/pdf"
+        scale="aspect" frameborder="0"></object>
+    </div>
+    <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
+    <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Video
+      format or MIME type is not supported</video>
+  </div>
+</p-dialog>
+
+
+<!-- ADICIONAR ACÇÔES -->
+
+<!-- Modal dados-->
+
+<p-dialog header="Ações de Reclamações" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayAddAccao" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+    <!-- Modal Body -->
+    <div class="">
+      <div class="form-group">
+        <label for="descricao">Descrição PT</label>
+        <input autocomplete="off" type="text" class="form-control2" id="descricaopt" [(ngModel)]="descricaopt"
+          [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Português" required />
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição ENG</label>
+        <input autocomplete="off" type="text" class="form-control2" id="descricaoeng" [(ngModel)]="descricaoeng"
+          [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Inglês" />
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição FR</label>
+        <input autocomplete="off" type="text" class="form-control2" id="descricaofr" [(ngModel)]="descricaofr"
+          [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Francês" />
+      </div>
+    </div>
+    <!-- Modal Footer -->
+    <div class="">
+      <button type="button" class="btn btn-default" (click)="displayAddAccao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>
