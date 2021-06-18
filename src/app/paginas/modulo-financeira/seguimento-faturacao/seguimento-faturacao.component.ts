@@ -351,7 +351,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
 
     var img_logo = new Image()
     img_logo.src = 'assets/img/logo_doureca.png'
-    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17);
+    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17,'','FAST');
 
     var tab1 = document.getElementById('tab1');
     var printer_1 = document.getElementById('printer_1');
@@ -377,7 +377,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(img);
       const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight);
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight,'','FAST');
 
       document.getElementById('printer_1').removeChild(document.getElementById('tab1_1'));
 
@@ -390,7 +390,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
     doc.setFont('helvetica')
     doc.setFontType('bold')
     doc.text("DOURECA - Sistema de Gestão Integrado de Informação da Doureca", 425, 20, null, null, "center");
-    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17);
+    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17,'','FAST');
     doc.setFont('times')
 
     doc.text("Pág. 2/2", 800, 580, null, null, "right");
@@ -405,7 +405,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(imgs);
       const pdfWidths = doc.internal.pageSize.getWidth() - 2 * bufferXs;
       const pdfHeights = (imgProps.height * pdfWidths) / imgProps.width;
-      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined);
+      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined,'FAST');
       //doc.save('test.pdf');
     });
 

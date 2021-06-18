@@ -85,7 +85,7 @@ export class AnaliseLoteFornecedorComponent implements OnInit {
           this.carregaref(uniqueOfs.toString());
           //this.assignCopy()
         }
-        //this.loading = false;
+        this.loading = false;
 
       }, error => {
         this.loading = false;

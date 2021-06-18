@@ -1148,7 +1148,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
     var img_logo = new Image()
     img_logo.src = 'assets/img/logo_doureca.png'
-    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17);
+    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17,'','FAST');
 
     /*var tab1 = document.getElementById('tab1');
     var printer_1 = document.getElementById('printer_1');
@@ -1174,7 +1174,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(img);
       const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight);
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight,'','FAST');
 
       //document.getElementById(id).removeChild(document.getElementById('tab1_1'));
 

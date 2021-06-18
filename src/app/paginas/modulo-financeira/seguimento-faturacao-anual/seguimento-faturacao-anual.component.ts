@@ -1903,9 +1903,9 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
 
       var img_logo = new Image()
       img_logo.src = 'assets/img/logo_doureca.png'
-      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10);
+      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
 
-      doc.addImage(img, 'PNG', 2, 20, pageWidth - 4, 0);
+      doc.addImage(img, 'PNG', 2, 20, pageWidth - 4, 0,'','FAST');
       if (pagecount > 0) {
         var j = 1;
         while (j != pagecount) {
@@ -1923,7 +1923,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
           var img_logo = new Image()
           img_logo.src = 'assets/img/logo_doureca.png'
           doc.addImage(img_logo, 'PNG', 10, 5, 50, 10);*/
-          doc.addImage(img, 'PNG', 2, -(j * pageHeight) + 25, pageWidth - 4, 0);
+          doc.addImage(img, 'PNG', 2, -(j * pageHeight) + 25, pageWidth - 4, 0,'','FAST');
           j++;
         }
       }
@@ -1979,7 +1979,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
 
       var img_logo = new Image()
       img_logo.src = 'assets/img/logo_doureca.png'
-      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10);
+      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
 
       var imgs = canvas.toDataURL("image/png");
       const bufferXs = 5;
@@ -1987,7 +1987,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(imgs);
       const pdfWidths = doc.internal.pageSize.getWidth() - 2 * bufferXs;
       const pdfHeights = (imgProps.height * pdfWidths) / imgProps.width;
-      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined);
+      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined,'FAST');
       //doc.save('test.pdf');
     });
 
