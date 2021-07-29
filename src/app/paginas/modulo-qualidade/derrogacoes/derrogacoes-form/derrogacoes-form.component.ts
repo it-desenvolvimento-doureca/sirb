@@ -23,6 +23,8 @@ import { QUADERROGACOESPLANOSACCOESService } from 'app/servicos/qua-derrogacoes-
 import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
 import { GERGRUPOService } from 'app/servicos/ger-grupo.service';
 import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
+import { QUADERROGACOESEQUIPAService } from 'app/servicos/qua-derrogacoes-equipa.service';
+import { QUA_DERROGACOES_EQUIPA } from 'app/entidades/QUA_DERROGACOES_EQUIPA';
 
 @Component({
   selector: 'app-derrogacoes-form',
@@ -125,6 +127,9 @@ export class DerrogacoesFormComponent implements OnInit {
   drop_utilizadores2: any;
   drop_utilizadores_acoes: any[] = [];
   acessoadicionarACCAO = false;
+  tabelaEquipa: any;
+  displaygrupos: boolean;
+  tabelagrupos: any[];
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private renderer: Renderer,
@@ -133,6 +138,7 @@ export class DerrogacoesFormComponent implements OnInit {
     private QUADERROGACOESFICHEIROSService: QUADERROGACOESFICHEIROSService,
     private QUADERROGACOESACOESService: QUADERROGACOESACOESService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
+    private QUADERROGACOESEQUIPAService: QUADERROGACOESEQUIPAService,
     private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService,
     private GERGRUPOService: GERGRUPOService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService,
     private sanitizer: DomSanitizer, private router: Router, private UploadService: UploadService) { }
@@ -370,6 +376,7 @@ export class DerrogacoesFormComponent implements OnInit {
           this.getArtigos(this.etsnum, true);
           this.carregatabelaFiles(id);
           this.carregatabelasaccoes(id);
+          this.carregatabelaEquipa(id);
         }
 
       }, error => { console.log(error); })
@@ -466,6 +473,7 @@ export class DerrogacoesFormComponent implements OnInit {
       this.QUADERROGACOESService.create(derrogacao).subscribe(
         res => {
           this.gravarTabelaFicheiros(res.id_DERROGACAO);
+          this.gravarTabelaEquipa(res.id_DERROGACAO);
           //this.router.navigate(['derrogacoes/editar'], { queryParams: { id: res.id_DERROGACAO } });
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
@@ -483,6 +491,7 @@ export class DerrogacoesFormComponent implements OnInit {
       this.QUADERROGACOESService.update(derrogacao).subscribe(
         res => {
           this.gravarTabelaAccoes(id);
+          this.gravarTabelaEquipa(id);
           //this.router.navigate(['derrogacoes/view'], { queryParams: { id: id } });
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
@@ -522,6 +531,21 @@ export class DerrogacoesFormComponent implements OnInit {
           res => {
             this.QUADERROGACOESService.atualizaestadosaccoes(derrogacao.id_DERROGACAO, 5).subscribe(
               res => { }, error => { console.log(error); });
+
+            var email_para = [];
+            for (var x in this.tabelaEquipa) {
+
+              if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
+
+                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                  email_para.push(this.tabelaEquipa[x].email);
+              }
+            }
+            this.enviarEventoResponsaveis(derrogacao.data_INICIO, derrogacao.data_FIM, derrogacao.id_DERROGACAO, derrogacao.nome_CLIENTE, derrogacao.referencia + " - " + derrogacao.designacao_REF,
+              "Ao Alterar Estado Derrogação", email_para.toString(), derrogacao.motivo, derrogacao.causa, this.getESTADO(derrogacao.estado));
+
+
+
             this.router.navigate(['derrogacoes']);
             this.simular(this.inputapagar);
           },
@@ -550,6 +574,20 @@ export class DerrogacoesFormComponent implements OnInit {
 
         this.QUADERROGACOESService.update(derrogacao).subscribe(
           res => {
+
+            var email_para = [];
+            for (var x in this.tabelaEquipa) {
+
+              if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
+
+                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                  email_para.push(this.tabelaEquipa[x].email);
+              }
+            }
+            this.enviarEventoResponsaveis(derrogacao.data_INICIO, derrogacao.data_FIM, derrogacao.id_DERROGACAO, derrogacao.nome_CLIENTE, derrogacao.referencia + " - " + derrogacao.designacao_REF,
+              "Ao Alterar Estado Derrogação", email_para.toString(), derrogacao.motivo, derrogacao.causa, this.getESTADO(derrogacao.estado));
+
+
             this.router.navigate(['derrogacoes']);
             this.simular(this.inputgravou);
           },
@@ -609,6 +647,19 @@ export class DerrogacoesFormComponent implements OnInit {
 
         this.QUADERROGACOESService.update(derrogacao).subscribe(
           res => {
+
+            var email_para = [];
+            for (var x in this.tabelaEquipa) {
+
+              if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
+
+                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                  email_para.push(this.tabelaEquipa[x].email);
+              }
+            }
+            this.enviarEventoResponsaveis(derrogacao.data_INICIO, derrogacao.data_FIM, derrogacao.id_DERROGACAO, derrogacao.nome_CLIENTE, derrogacao.referencia + " - " + derrogacao.designacao_REF,
+              "Ao Alterar Estado Derrogação", email_para.toString(), derrogacao.motivo, derrogacao.causa, this.getESTADO(derrogacao.estado));
+
             this.inicia(this.id_DERROGACAO);
             //this.router.navigate(['derrogacoes']);
             this.simular(this.inputgravou);
@@ -1402,9 +1453,10 @@ export class DerrogacoesFormComponent implements OnInit {
     this.GERGRUPOService.getAll().subscribe(
       response => {
         var grupo = [];
+        this.tabelagrupos = [];
         for (var x in response) {
           grupo.push({ label: response[x].descricao, value: "g" + response[x].id });
-          //this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
+          this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
         }
         this.drop_utilizadores_acoes.push({ label: "Grupos", itens: grupo });
 
@@ -1498,4 +1550,206 @@ export class DerrogacoesFormComponent implements OnInit {
   }
 
   /******* */
+
+
+
+  /* equipa */
+  carregatabelaEquipa(id) {
+    this.tabelaEquipa = [];
+
+    this.QUADERROGACOESEQUIPAService.getbyidreclamacao(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        var grupo = []
+        if (count > 0) {
+          for (var x in response) {
+            var id2 = null;
+            grupo.push({ label: this.getNomeUser(response[x].id_UTZ), value: "u" + response[x].id_UTZ });
+            this.tabelaEquipa.push({
+              data: response[x],
+              id: id2, responsavel: response[x].id_UTZ,
+              area: response[x].area, email: response[x].email, telefone: response[x].telefone
+            });
+
+          }
+          this.drop_utilizadores.unshift({ label: "Utilizadores", itens: grupo });
+
+
+          this.tabelaEquipa = this.tabelaEquipa.slice();
+        }
+
+      }, error => { console.log(error); });
+  }
+
+  adicionar_tabelaEquipa() {
+    this.tabelaEquipa.push({ id: null, responsavel: null, area: "", email: "", telefone: "" });
+    this.tabelaEquipa = this.tabelaEquipa.slice();
+  }
+
+
+  apagar_tabelaEquipa(index) {
+
+    var tab = this.tabelaEquipa[index];
+    if (tab.id == null) {
+      this.tabelaEquipa = this.tabelaEquipa.slice(0, index).concat(this.tabelaEquipa.slice(index + 1));
+    } else {
+      this.QUADERROGACOESEQUIPAService.delete(tab.id).then(
+        res => {
+          this.tabelaEquipa = this.tabelaEquipa.slice(0, index).concat(this.tabelaEquipa.slice(index + 1));
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+    }
+
+  }
+
+
+
+  //adicionar utilizadores à tabela equipa
+  escolhergrupo(car) {
+
+    this.GERGRUPOService.getByidUsers(car.value).subscribe(
+      response => {
+        //console.log(response)
+
+        for (var x in response) {
+          if (!this.tabelaEquipa.find(item => item.responsavel == response[x][0])) {
+            this.tabelaEquipa.push({
+              data: response[x],
+              id: null, responsavel: response[x][0],
+              area: response[x][15], email: response[x][3], telefone: response[x][14]
+            });
+
+            var utz2 = this.drop_utilizadores.find(item => item.label == "Utilizadores");
+            if (utz2) {
+
+            } else {
+              this.drop_utilizadores.unshift({ label: "Utilizadores", itens: [] })
+            }
+            var utz3 = this.drop_utilizadores.find(item => item.label == "Utilizadores");
+            utz3.itens.push({
+              label: response[x][2], value: response[x][0],
+              email: response[x][3], area: response[x][15], telefone: response[x][14]
+            });
+
+          }
+        }
+
+
+
+        this.tabelaEquipa = this.tabelaEquipa.slice();
+        this.displaygrupos = false;
+      },
+      error => {
+        console.log(error);
+
+      });
+  }
+
+
+  //Ao alterar combobos responsavel na equipa atualiza email
+  alterarEmail(index, event) {
+    this.tabelaEquipa[index].email = this.drop_utilizadores2.find(item => item.value == event.value).email;
+    this.tabelaEquipa[index].telefone = this.drop_utilizadores2.find(item => item.value == event.value).telefone;
+    this.tabelaEquipa[index].area = this.drop_utilizadores2.find(item => item.value == event.value).area;
+
+    var grupo = [];
+    grupo.push({ label: this.getNomeUser(event.value), value: "u" + event.value });
+    var pp = this.drop_utilizadores.find(item => item.label == "Utilizadores");
+    if (pp) {
+      pp.itens = [];
+      for (var x in this.tabelaEquipa) {
+        pp.itens.push({ label: this.getNomeUser(this.tabelaEquipa[x].responsavel), value: "u" + this.tabelaEquipa[x].responsavel })
+      }
+    } else {
+      this.drop_utilizadores.unshift({ label: "Utilizadores", itens: grupo });
+    }
+  }
+
+  getNomeUser(id) {
+    var utz = null
+
+    if (id != null) utz = this.drop_utilizadores2.find(item => item.value == id);
+
+    var nome = "";
+    if (id != null && utz) {
+      nome = utz.label;
+    }
+    return nome;
+  }
+
+
+  gravarTabelaEquipa(id) {
+    if (this.tabelaEquipa && this.tabelaEquipa.length > 0) {
+
+      var count = 0;
+      var email_para = [];
+      for (var x in this.tabelaEquipa) {
+
+        var equipa = new QUA_DERROGACOES_EQUIPA;
+        if (this.tabelaEquipa[x].id != null) {
+          equipa = this.tabelaEquipa[x].data;
+        } else {
+          equipa.data_CRIA = new Date();
+          equipa.utz_CRIA = this.user;
+        }
+
+
+        equipa.area = this.tabelaEquipa[x].area;
+        equipa.id_UTZ = this.tabelaEquipa[x].responsavel;
+        equipa.email = this.tabelaEquipa[x].email;
+        equipa.telefone = this.tabelaEquipa[x].telefone;
+        equipa.id_DERROGACAO = id;
+
+        equipa.data_ULT_MODIF = new Date();
+        equipa.utz_ULT_MODIF = this.user;
+
+        count++;
+        if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
+          this.gravarTabelaEquipa2(equipa, count, this.tabelaEquipa.length, id);
+          if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+            email_para.push(this.tabelaEquipa[x].email);
+        } else if (count == this.tabelaEquipa.length) {
+
+        }
+
+      }
+
+    } else {
+
+    }
+  }
+
+  gravarTabelaEquipa2(equipa, count, total, id) {
+    this.QUADERROGACOESEQUIPAService.update(equipa).then(
+      res => {
+        if (count == total) {
+
+        }
+      },
+      error => { console.log(error); if (count == total) { } });
+  }
+
+
+  enviarEventoResponsaveis(data_INICIO, data_FIM, id_DERROGACAO, cliente, referencia, MOMENTO, email_para, motivo, causa, estado) {
+    if (motivo == null) {
+      motivo = "";
+    }
+    if (causa == null) {
+      causa = "";
+    }
+    var dados = "{motivo::" + motivo + "\n/link::" + webUrl.host + '/#/reclamacoesclientes/view?id=' + id_DERROGACAO
+      + "\n/numero_derrogacao::" + id_DERROGACAO + "\n/cliente::" + cliente
+      + "\n/data_fim::" + new Date(data_FIM).toLocaleDateString() + "\n/referencia::" + referencia
+      + "\n/estado::" + estado
+      + "\n/data_inicio::" + new Date(data_INICIO).toLocaleDateString() + "\n/causa::" + causa + "}";
+
+
+    var data = [{ MODULO: 5, MOMENTO: MOMENTO, PAGINA: "Derrogações", ESTADO: true, DADOS: dados, EMAIL_PARA: email_para }];
+
+    this.UploadService.verficaEventos(data).subscribe(result => {
+    }, error => {
+      console.log(error);
+    });
+  }
+  /****** */
 }

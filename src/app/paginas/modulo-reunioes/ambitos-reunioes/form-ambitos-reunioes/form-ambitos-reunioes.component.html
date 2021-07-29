@@ -1,0 +1,420 @@
+<div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disCriar" [hidden]="!btcriar">
+            <a (click)="novaambito()" [ngClass]="novo ? 'cor_modo' : null">
+              <i class="material-icons">create_new_folder</i>Novo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disEditar" [hidden]="!bteditar">
+            <a (click)="edita()" [ngClass]="(modoedicao && !novo) ? 'cor_modo' : null">
+              <i class="material-icons">mode_edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
+            <a (click)="emCurso()">
+              <i class="material-icons">schedule_send</i>Em Curso
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disFechar" [hidden]="!btfechar">
+            <a (click)="fechar()">
+              <i class="material-icons">done</i>Validar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disPendente" [hidden]="!btpendente">
+            <a (click)="pendente()">
+              <i class="material-icons">history</i>Pendente
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
+            <a (click)="apagar()">
+              <i class="material-icons">delete</i>Anular
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <!--li [hidden]="!btanterior" style="display: inline-block; position: fixed; right: 52%;">
+            <a (click)="anterior()">
+              <i class="material-icons">keyboard_arrow_left</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!btseguinte" style="display: inline-block; position: fixed; right: 49%;">
+            <a (click)="seguinte()">
+              <i class="material-icons">keyboard_arrow_right</i>
+              <div class="ripple-container"></div>
+            </a>
+          </li-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Âmbitos Reunião</h4>
+
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+                <p-panel header="DETALHES" [toggleable]="false"
+                  [style]="{'margin-bottom':'0px','margin-bottom':'10px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <label>Nº:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="id_AMBITO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
+                      <label>Descrição</label>
+                      <input [disabled]="!modoedicao" [required]="true" type="text" class="form-control2"
+                        [(ngModel)]="descricao" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
+                      <label>Meio Realização</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="meio_REALIZACAO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <label>Tempo Estimado</label>
+                      <input [disabled]="!modoedicao" type="time" class="form-control2" [(ngModel)]="tempo_ESTIMADO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Prazo para Disponibilização da ATA (dias)</label>
+                      <input [disabled]="!modoedicao" type="number" class="form-control2" [(ngModel)]="prazo_DISP_ATA"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-9">
+                      <label>Link de Acesso à Reunião</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="link_REUNIAO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <!--div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-2">
+                      <label style="display: -webkit-box;">Data/Hora Início:</label>
+                      <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'55%'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="false" [required]="true"></p-calendar>
+                      <input [disabled]="!modoedicao" style="width:38%; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="hora_CRIA" [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-2">
+                      <label style="display: -webkit-box;">Data/Hora Última Realizada:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'55%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:38%; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_CRIA"
+                        [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-2">
+                      <label style="display: -webkit-box;">Data/Hora Próxima Realizada:</label>
+                      <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'55%'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="false" [required]="true"></p-calendar>
+                      <input [disabled]="!modoedicao" style="width:38%; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="hora_CRIA" [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div-->
+
+
+                  </div>
+                </p-panel>
+
+                <p-panel header="PERIOCIDADE" [toggleable]="false" [style]="{'margin-bottom':'10px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="container col-md-6" style="padding: 0;">
+                      <div class="panel panel-default" style="margin: 0;">
+                        <div class="panel-heading">Intervalo da Repetição</div>
+                        <div class="panel-body" style="min-height: 135px;">
+                          <div class="form-group col-md-6">
+                            <label style="width: 70px;" for="assunto">Data início:</label>
+                            <p-calendar [style]="{'width':'120px','padding':'0px 5px'}" dateFormat="yy-mm-dd"
+                              placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                              yearRange="2000:2050" [(ngModel)]="data_INICIO" [ngModelOptions]="{standalone: true}"
+                              [showIcon]="true" [disabled]="!modoedicao" required="true"></p-calendar>
+                            <br>
+                            <label style="width: 75px; margin-top: 15px;" for="assunto">Hora:</label>
+                            <input [disabled]="!modoedicao" style="width:80px; padding: 5px 4px;"
+                              [(ngModel)]="hora_INICIO" [ngModelOptions]="{standalone: true}" type="time"
+                              class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <p-radioButton [disabled]="!modoedicao" value="1" label="Sem data de fim"
+                              [(ngModel)]="tipo_FIM" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <br>
+                            <p-radioButton [disabled]="!modoedicao" value="2" label="Termina após:"
+                              [(ngModel)]="tipo_FIM" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <input type="text"
+                              style="background: white;width: 10%; height: 31px; border: 1px solid #e5e5e5; text-align: center; display: initial;"
+                              class="form-control" [(ngModel)]="ocorrencias" [ngModelOptions]="{standalone: true}"
+                              [disabled]="!modoedicao" id="ocrr" [required]="tipo_FIM == 2 ? true : null ">
+                            <label for="ocrr">ocorrências</label>
+                            <br>
+                            <p-radioButton [disabled]="!modoedicao" value="3" label="Data fim:" [(ngModel)]="tipo_FIM"
+                              [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <p-calendar [style]="{'width':'120px','padding':'0px 5px'}" dateFormat="yy-mm-dd"
+                              placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                              yearRange="2000:2050" [(ngModel)]="data_FINAL" [ngModelOptions]="{standalone: true}"
+                              [showIcon]="true" [required]="tipo_FIM == 3 ? true : null " [disabled]="!modoedicao">
+                            </p-calendar>
+                          </div>
+                          <div *ngIf="!novo" class="form-group col-md-12" style="font-size: 12px; padding: 0;">
+                            <b>Número Ocorrências:</b> {{total_OCORRENCIAS}}
+                            <b style="margin-left: 15px;">Data Última Ocorrência: </b>{{data_ULTIMA_REALIZADA}}
+                            <b style="margin-left: 15px;">Data Próxima Ocorrência: </b> {{data_PROXIMA_REALIZADA}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="container col-md-6" style="padding: 0;">
+                      <div class="panel panel-default" style="margin: 0;">
+                        <div class="panel-heading"> Padrão de Repetição</div>
+                        <div class="panel-body" style="min-height: 135px;">
+                          <div class="form-group col-md-4" style="border-right: 1px solid #e2e2e2; height: 133px;">
+                            <!--<p-radioButton [disabled]="!modoedicao" value="val0" [(ngModel)]="tipo_REPETICAO" label="Uma vez" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                          <br>-->
+                            <p-radioButton [disabled]="!modoedicao" value="1" [(ngModel)]="tipo_REPETICAO"
+                              label="Diário" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <br>
+                            <p-radioButton [disabled]="!modoedicao" value="2" [(ngModel)]="tipo_REPETICAO"
+                              label="Semanal" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <br>
+                            <p-radioButton [disabled]="!modoedicao" value="3" [(ngModel)]="tipo_REPETICAO"
+                              label="Mensal" [ngModelOptions]="{standalone: true}"></p-radioButton>
+                            <br>
+                            <p-radioButton [disabled]="!modoedicao" value="4" [(ngModel)]="tipo_REPETICAO" label="Anual"
+                              [ngModelOptions]="{standalone: true}"></p-radioButton>
+                          </div>
+                          <div class="form-group col-md-8">
+                            <div class="col-md-12" style="padding-bottom: 0;">
+                              <label for="rptir">Repetir a cada</label>
+                              <input id="rptir" type="text"
+                                style="background: white;width: 10%; height: 31px; border: 1px solid #e5e5e5; text-align: center; display: initial;"
+                                class="form-control" [(ngModel)]="repetir" [ngModelOptions]="{standalone: true}"
+                                [disabled]="!modoedicao" required>
+                              <label *ngIf="tipo_REPETICAO == '1'">dias</label>
+                              <label *ngIf="tipo_REPETICAO == '2'">semanas</label>
+                              <label *ngIf="tipo_REPETICAO == '3'">meses</label>
+                              <label *ngIf="tipo_REPETICAO == '4'">anos</label>
+                            </div>
+                            <div class="col-md-12" *ngIf="tipo_REPETICAO == '2'">
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="1" [(ngModel)]="dias_SEMANA" label="Segunda"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="2" [(ngModel)]="dias_SEMANA" label="Terça"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="3" [(ngModel)]="dias_SEMANA" label="Quarta"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="4" [(ngModel)]="dias_SEMANA" label="Quinta"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="5" [(ngModel)]="dias_SEMANA" label="Sexta"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="6" [(ngModel)]="dias_SEMANA" label="Sábado"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                              <div class="col-md-3" style="padding: 0;">
+                                <p-checkbox [disabled]="!modoedicao" value="7" [(ngModel)]="dias_SEMANA" label="Domingo"
+                                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </p-panel>
+
+                <p-panel header="PARTICIPANTES" [toggleable]="false" [style]="{'margin-bottom':'10px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <span class="input-group-btn" style="padding: 0; width: 30%; display: block; font-size: 12px;">
+                      <button [disabled]="!modoedicao" (click)="displaygrupos = true" class="btn btn-default"
+                        type="button" style="width: 100%;">Adicionar
+                        a partir de um Grupo</button>
+                    </span>
+                    <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaParticipantes"
+                      styleClass="ExcelTable2007">
+                      <p-column [editable]="true" field="utilizador" header="Participante">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{getParticipante(car[col.field])}}
+                        </ng-template>
+                        <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
+                          <p-dropdown [filter]="true" appendTo="body" [options]="drop_Participantes"
+                            (onChange)="alterarEmail(index,$event)"
+                            [style]="{'width':'100%','height':'25px','background':'white'}"
+                            [(ngModel)]="car['utilizador']" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="email" header="Email">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] }}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="car['email']"
+                            [ngModelOptions]="{standalone: true}" appendTo="body" style="width: 100%; float: left;" />
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{ 'width':'50px'}">
+                        <ng-template let-index="rowIndex" pTemplate="body">
+                          <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                            (click)="apagar_tabelaParticipantes(index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </ng-template>
+                      </p-column>
+                      <p-footer [style]="{'text-align':'center'}">
+                        <a (click)="adicionar_tabelaParticipantes()" [class.disabled]="!modoedicao"
+                          style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                          <i class="material-icons">add</i> Adicionar
+                        </a>
+                      </p-footer>
+                    </p-dataTable>
+                  </div>
+                </p-panel>
+
+              </div>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Anulado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <h6>{{errovalida}}</h6>
+  </div>
+</p-dialog>
+
+
+
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar" [modal]="true">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
+</p-dialog>
+
+
+<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
+  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
+  [modal]="true">
+  <div class="container">
+    <div class="row">
+      <div id="loading">
+        <ul class="bokeh">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- POPUP GRUPOS -->
+
+<p-dialog header="Grupos" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displaygrupos" [modal]="true">
+
+  <p-dataTable (onRowDblclick)="escolhergrupo($event.data)"
+    [style]="{'width':'100%','max-height':'67vh','overflow':'auto'}" [value]="tabelagrupos" styleClass="ExcelTable2007"
+    [rows]="15" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[15,25,50,100,'todos']">
+    <p-column [sortable]="true" [filter]="true" field="label" header="DESIGNAÇÃO">
+    </p-column>
+    <p-column [style]="{'width':'65px'}">
+      <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+        <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao" title="Escolher"
+          (click)="escolhergrupo(car)">
+          <span class="glyphicon glyphicon-play-circle"></span>
+        </button>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="displaygrupos = false">Fechar</button>
+  </p-footer>
+</p-dialog>

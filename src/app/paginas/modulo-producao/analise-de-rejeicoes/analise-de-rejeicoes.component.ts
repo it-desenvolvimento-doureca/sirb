@@ -2201,9 +2201,19 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     //hora_ini_tab6
 
     //hora_fim_tab6
+
+
+    var referencias = null;
+    for (var x in this.campo_ref_tab6) {
+      if (parseInt(x) == 0) {
+        referencias = this.campo_ref_tab6[x].value
+      } else {
+        referencias += ',' + this.campo_ref_tab6[x].value
+      }
+    }
     var data = [{
       DATA_INI: this.formatDate(this.data_ini_tab6), DATA_FIM: this.formatDate(this.data_fim_tab6),
-      REF: this.referencia_tab6, DEFEITO: this.defeito_tab6,
+      REF: referencias/*this.referencia_tab6*/, DEFEITO: this.defeito_tab6,
 
     }];
     //QUERY_REJEICOES

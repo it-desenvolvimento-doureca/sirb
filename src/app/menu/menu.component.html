@@ -65,6 +65,52 @@
 
                 </div>
 
+                <!-- MENU REUNIAO -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [class.active]="router.isActive('reunioes',true) || router.isActive('ambitos_reunioes',true)">
+                        <h4 class="panel-title">
+                            <a id="node162" data-toggle="collapse" data-parent="#accordion" href="#collapseReunioes">
+                                <span class="fa fa-list-ul" style="margin-right: 12px;">
+                                </span>Reuniões</a>
+                        </h4>
+                    </div>
+                    <div id="collapseReunioes" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+
+                                <tr>
+                                    <td>
+                                        <li id="node16211" data-toggle="collapse" data-target="#Reunioes"
+                                            class="collapsed" [routerLink]="['/reunioes']"
+                                            [ngClass]="{ 'active':  router.isActive('/reunioes',true) }">
+                                            <a>Fichas de Reunião</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node16210" data-toggle="collapse" data-target="#parametrosReunioes"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active':  router.isActive('/ambitos_reunioes',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosReunioes">
+                                            <li id="node162101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ambitos_reunioes']">
+                                                <a>Âmbitos de Reunião</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!---->
                 <!-- MENU ANÁLISES GESTÃO -->
                 <div class="panel panel-default">

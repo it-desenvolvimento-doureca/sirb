@@ -971,10 +971,11 @@
                       </div>
 
 
-                      <div class="table-row-column col-md-2"> <label>Referência:</label><br>
+                      <div class="table-row-column col-md-6"> <label>Referência:</label><br>
                         <p-autoComplete [(ngModel)]="campo_ref_tab6" [suggestions]="filteredreferencia_tab6"
-                          class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}"
-                          forceSelection="true" emptyMessage="Sem Resultados..." [required]="true"
+                          inputId="autocompleteinput" class="autocompleseguranca"
+                          [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                          emptyMessage="Sem Resultados..." [required]="true" multiple="true"
                           (onUnselect)="filteronUnselect_tab6($event)" (onSelect)="filterSelect_tab6($event)"
                           [ngModelOptions]="{standalone: true}" (completeMethod)="filterRef_tab6($event)" field="label"
                           placeholder="Pesquisar..." [minLength]="1">

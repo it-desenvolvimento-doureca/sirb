@@ -10,7 +10,7 @@ import { HomeComponent } from './paginas/home/home.component';
 import { RouterComponent } from "app/router.component";
 import { FornecedoresComponent } from './paginas/fornecedores/fornecedores.component';
 import { TinasComponent } from './paginas/tinas/tinas.component';
-import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule, OverlayPanelModule, TriStateCheckboxModule, TooltipModule } from 'primeng/primeng';
+import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule, OverlayPanelModule, TriStateCheckboxModule, TooltipModule, TabViewModule } from 'primeng/primeng';
 import { AppGlobals } from "app/menu/sidebar.metadata";
 import { FormComponent } from './paginas/fornecedores/form/form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -326,6 +326,18 @@ import { COANALISECLIENTESACCOESService } from './servicos/co-analise-clientes-a
 import { QUADERROGACOESACOESService } from './servicos/qua-derrogacoes-acoes.service';
 import { QUADERROGACOESFICHEIROSService } from './servicos/qua-derrogacoes-ficheiros.service';
 import { QUADERROGACOESPLANOSACCOESService } from './servicos/qua-derrogacoes-planos-accoes.service';
+import { QUADERROGACOESEQUIPAService } from './servicos/qua-derrogacoes-equipa.service';
+import { FichaManutencaoComponent } from './paginas/modulo-manutencao/ficha-manutencao/ficha-manutencao.component';
+import { FichaEquipamentoComponent } from './paginas/modulo-manutencao/tabelas/ficha-equipamento/ficha-equipamento.component';
+import { AmbitosReunioesComponent } from './paginas/modulo-reunioes/ambitos-reunioes/ambitos-reunioes.component';
+import { FormAmbitosReunioesComponent } from './paginas/modulo-reunioes/ambitos-reunioes/form-ambitos-reunioes/form-ambitos-reunioes.component';
+import { ReunioesComponent } from './paginas/modulo-reunioes/reunioes/reunioes.component';
+import { ReunioesFormComponent } from './paginas/modulo-reunioes/reunioes/reunioes-form/reunioes-form.component';
+import { REUAMBITOSREUNIOESService } from './servicos/reu-ambitos-reunioes.service';
+import { REUAMBITOSREUNIOESPARTICIPANTESService } from './servicos/reu-ambitos-reunioes-participantes.service';
+import { REUREUNIOESService } from './servicos/reu-reunioes.service';
+import { REUREUNIOESPARTICIPANTESService } from './servicos/reu-reunioes-participantes.service';
+import { REUREUNIOESFICHEIROSService } from './servicos/reu-reunioes-ficheiros.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -745,6 +757,8 @@ const routes: Routes = [
   { path: 'tiposcacifos_p', component: TipoCacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Cacifo" } },
   { path: 'locais', component: LocaisComponent, canActivate: [LoginService], data: { breadcrumb: "Locais" } },
   { path: 'feriados', component: FeriadosComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
+  { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
+  { path: 'ficha_equipamento', component: FichaEquipamentoComponent, /*canActivate: [LoginService],*/ data: { breadcrumb: "Equipamentos" } },
 
   {
     path: 'reclamacoesclientes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Reclamações Cliente" },
@@ -796,6 +810,22 @@ const routes: Routes = [
       { path: 'editar', component: GestaoBarrasComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: GestaoBarrasComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
+  {
+    path: 'reunioes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Fichas de Reunião" },
+    children: [
+      { path: '', component: ReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: ReunioesFormComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: ReunioesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: ReunioesFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'ambitos_reunioes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Âmbitos de Reuniões" },
+    children: [
+      { path: '', component: AmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -814,6 +844,10 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
 @NgModule({
   declarations: [
     AppComponent,
+    ReunioesFormComponent,
+    AmbitosReunioesComponent,
+    FormAmbitosReunioesComponent,
+    ReunioesComponent,
     LoginComponent,
     RodapeComponent,
     CabecalhoComponent,
@@ -972,7 +1006,13 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DerrogacoesComponent,
     DerrogacoesFormComponent,
     SectoresAbsentismoComponent,
-    AnaliseClientesComponent
+    AnaliseClientesComponent,
+    FichaManutencaoComponent,
+    FichaEquipamentoComponent,
+    AmbitosReunioesComponent,
+    FormAmbitosReunioesComponent,
+    ReunioesComponent,
+    ReunioesFormComponent
   ],
   imports: [
     BrowserModule,
@@ -1175,6 +1215,12 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     QUADERROGACOESACOESService,
     QUADERROGACOESFICHEIROSService,
     QUADERROGACOESPLANOSACCOESService,
+    QUADERROGACOESEQUIPAService,
+    REUAMBITOSREUNIOESService,
+    REUAMBITOSREUNIOESPARTICIPANTESService,
+    REUREUNIOESService,
+    REUREUNIOESPARTICIPANTESService,
+    REUREUNIOESFICHEIROSService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
