@@ -1563,7 +1563,7 @@ export class DerrogacoesFormComponent implements OnInit {
         var grupo = []
         if (count > 0) {
           for (var x in response) {
-            var id2 = null;
+            var id2 = response[x].id;
             grupo.push({ label: this.getNomeUser(response[x].id_UTZ), value: "u" + response[x].id_UTZ });
             this.tabelaEquipa.push({
               data: response[x],

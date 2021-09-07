@@ -5932,3 +5932,13 @@ body>.ui-dropdown-panel {
 .tabela_analise_dividas tbody td {
     font-weight: 500;
 }
+
+.tabela_analise_envios th {
+    font-size: 12px;
+}
+
+.tabela_analise_envios td {
+    font-size: 10.5px;
+    vertical-align: middle !important;
+    padding: 1px 2px 3px 2px !important;
+}

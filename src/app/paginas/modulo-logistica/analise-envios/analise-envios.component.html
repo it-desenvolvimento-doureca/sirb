@@ -1,0 +1,24 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title"> Análise de Envios</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}" [value]="dados"
+              class="tabela_analise_envios" dataKey="consign_NO" [rows]="25" [paginator]="true" [pageLinks]="3"
+              [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column *ngFor="let col of cols" [style]="{'width': col.width}" [sortable]="true" [filter]="true"
+                [field]="col.field" [header]="col.header"></p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

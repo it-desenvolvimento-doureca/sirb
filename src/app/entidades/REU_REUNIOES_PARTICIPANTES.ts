@@ -3,4 +3,5 @@ export class REU_REUNIOES_PARTICIPANTES {
     id_REUNIAO: number;
     id_UTILIZADOR: number;
     email: string;
+    presente: boolean;
 }

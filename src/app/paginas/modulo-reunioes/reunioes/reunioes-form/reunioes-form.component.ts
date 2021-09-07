@@ -78,6 +78,7 @@ export class ReunioesFormComponent implements OnInit {
   ambitos: any[];
   data_REUNIAO;
   hora_REUNIAO;
+  responsavel: any;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private renderer: Renderer,
@@ -200,6 +201,7 @@ export class ReunioesFormComponent implements OnInit {
 
           this.local = response[0].local;
           this.ambito = response[0].id_AMBITO;
+          this.responsavel = response[0].responsavel;
           this.duracao = (response[0].duracao == null) ? null : response[0].duracao.slice(0, 5);
 
           this.utz_CRIA = response[0].utz_CRIA;
@@ -261,6 +263,7 @@ export class ReunioesFormComponent implements OnInit {
     reuniao.id_AMBITO = this.ambito;
     reuniao.duracao = this.duracao;
     reuniao.local = this.local;
+    reuniao.responsavel = this.responsavel;
 
 
     reuniao.hora_REUNIAO = this.data_REUNIAO;
@@ -278,6 +281,23 @@ export class ReunioesFormComponent implements OnInit {
         res => {
           this.gravarTabelaFicheiros(res.id_REUNIAO);
           this.gravarTabelaParticipantes(res.id_REUNIAO);
+
+          var email_para = [];
+          for (var x in this.tabelaParticipantes) {
+
+            if (this.tabelaParticipantes[x].utilizador != null && this.tabelaParticipantes[x].utilizador != "") {
+
+              if (this.tabelaParticipantes[x].id == null && this.tabelaParticipantes[x].email != "" && this.tabelaParticipantes[x].email != null && (email_para.indexOf(this.tabelaParticipantes[x].email) < 0))
+                email_para.push(this.tabelaParticipantes[x].email);
+            }
+          }
+          var ambito = '';
+          if (this.ambitos.find(item => item.value == reuniao.id_AMBITO)) {
+            ambito = this.ambitos.find(item => item.value == reuniao.id_AMBITO).label;
+          }
+
+          this.enviarEventoResponsaveis(reuniao.assunto, reuniao.descricao, res.id_REUNIAO, ambito, "Ao Criar Ficha de Reunião", email_para.toString(), reuniao.data_REUNIAO)
+
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
 
@@ -317,6 +337,7 @@ export class ReunioesFormComponent implements OnInit {
 
         equipa.id_UTILIZADOR = this.tabelaParticipantes[x].utilizador;
         equipa.email = this.tabelaParticipantes[x].email;
+        equipa.presente = this.tabelaParticipantes[x].presente;
         equipa.id_REUNIAO = id;
 
 
@@ -474,11 +495,11 @@ export class ReunioesFormComponent implements OnInit {
 
             this.tabelaParticipantes.push({
               data: response[x],
-              id: response[x].id, utilizador: response[x].id_UTILIZADOR, email: response[x].email
+              id: response[x].id, utilizador: response[x].id_UTILIZADOR, email: response[x].email, presente: response[x].presente
             });
 
           }
-          this.drop_Participantes.unshift({ label: "Utilizadores", itens: grupo });
+
 
 
           this.tabelaParticipantes = this.tabelaParticipantes.slice();
@@ -500,13 +521,10 @@ export class ReunioesFormComponent implements OnInit {
             var id2 = null;
 
             this.tabelaParticipantes.push({
-              id: null, utilizador: response[x].id_UTILIZADOR, email: response[x].email
+              id: null, utilizador: response[x].id_UTILIZADOR, email: response[x].email, presente: false
             });
 
           }
-          this.drop_Participantes.unshift({ label: "Utilizadores", itens: grupo });
-
-
           this.tabelaParticipantes = this.tabelaParticipantes.slice();
         }
 
@@ -514,7 +532,7 @@ export class ReunioesFormComponent implements OnInit {
   }
 
   adicionar_tabelaParticipantes() {
-    this.tabelaParticipantes.push({ id: null, utilizador: null, email: '' });
+    this.tabelaParticipantes.push({ id: null, utilizador: null, email: '', presente: false });
     this.tabelaParticipantes = this.tabelaParticipantes.slice();
   }
 
@@ -547,7 +565,7 @@ export class ReunioesFormComponent implements OnInit {
           if (!this.tabelaParticipantes.find(item => item.utilizador == response[x][0])) {
             this.tabelaParticipantes.push({
               data: response[x],
-              id: null, utilizador: response[x][0], email: response[x][3]
+              id: null, utilizador: response[x][0], email: response[x][3], presente: false
 
             });
 
@@ -576,21 +594,23 @@ export class ReunioesFormComponent implements OnInit {
   }
 
 
-  enviarEventoResponsaveis(data_INICIO, data_FIM, id_DERROGACAO, cliente, referencia, MOMENTO, email_para, motivo, causa, estado) {
-    if (motivo == null) {
-      motivo = "";
+
+  enviarEventoResponsaveis(assunto, descricao, numero_reuniao, ambito, MOMENTO, email_para, data_REUNIAO) {
+    if (descricao == null) {
+      descricao = "";
     }
-    if (causa == null) {
-      causa = "";
+    if (assunto == null) {
+      assunto = "";
     }
-    var dados = "{motivo::" + motivo + "\n/link::" + webUrl.host + '/#/reclamacoesclientes/view?id=' + id_DERROGACAO
-      + "\n/numero_ambito::" + id_DERROGACAO + "\n/cliente::" + cliente
-      + "\n/data_fim::" + new Date(data_FIM).toLocaleDateString() + "\n/referencia::" + referencia
-      + "\n/estado::" + estado
-      + "\n/data_inicio::" + new Date(data_INICIO).toLocaleDateString() + "\n/causa::" + causa + "}";
+    var dados = "{ link::" + webUrl.host + '/#/reunioes/view?id=' + numero_reuniao
+      + "\n/numero_reuniao::" + numero_reuniao
+      + "\n/descricao::" + descricao
+      + "\n/assunto::" + assunto
+      + "\n/data_reuniao::" + new Date(data_REUNIAO).toLocaleDateString()
+      + "\n/ambito::" + ambito + "}";
 
 
-    var data = [{ MODULO: 5, MOMENTO: MOMENTO, PAGINA: "Derrogações", ESTADO: true, DADOS: dados, EMAIL_PARA: email_para }];
+    var data = [{ MODULO: 19, MOMENTO: MOMENTO, PAGINA: "Ficha de Reunião", ESTADO: true, DADOS: dados, EMAIL_PARA: email_para }];
 
     this.UploadService.verficaEventos(data).subscribe(result => {
     }, error => {

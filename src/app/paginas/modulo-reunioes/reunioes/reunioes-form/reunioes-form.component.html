@@ -21,7 +21,7 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
+          <!--li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
             <a (click)="emCurso()">
               <i class="material-icons">schedule_send</i>Em Curso
               <div class="ripple-container"></div>
@@ -38,7 +38,7 @@
               <i class="material-icons">history</i>Pendente
               <div class="ripple-container"></div>
             </a>
-          </li>
+          </li-->
 
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
@@ -86,24 +86,29 @@
                         [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
                       <label>Assunto</label>
                       <input [disabled]="!modoedicao" [required]="true" type="text" class="form-control2"
                         [(ngModel)]="assunto" [ngModelOptions]="{standalone: true}">
                     </div>
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
                       <label>Âmbito</label>
                       <p-dropdown [filter]="true" [options]="ambitos" (onChange)="atualiza_participantes($event)"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="ambito"
                         [ngModelOptions]="{standalone: true}" [disabled]="!novo" [required]="true"></p-dropdown>
                     </div>
-
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Responsável</label>
+                      <p-dropdown [filter]="true" appendTo="body" [options]="drop_Participantes"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="responsavel"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                    </div>
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
                       <label>Duração</label>
                       <input [disabled]="!modoedicao" type="time" class="form-control2" [(ngModel)]="duracao"
                         placeholder="hh:mm" [ngModelOptions]="{standalone: true}">
                     </div>
-                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-3">
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 col-lg-4">
                       <label style="display: -webkit-box;">Data/Hora Reunião:</label>
                       <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'55%'}"
                         dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
@@ -157,6 +162,16 @@
                         <ng-template let-col let-car="rowData" pTemplate="editor">
                           <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="car['email']"
                             [ngModelOptions]="{standalone: true}" appendTo="body" style="width: 100%; float: left;" />
+                        </ng-template>
+                      </p-column>
+                      <p-column [editable]="true" field="presente" header="Presente"  [style]="{ 'width':'100px'}">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <i *ngIf="car.presente != true" class="material-icons" style="color: red;">close</i>
+                          <i *ngIf="car.presente == true" class="material-icons" style="color: green;">check</i>
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <p-checkbox [disabled]="!modoedicao" [(ngModel)]="car['presente']" binary="true"
+                            [ngModelOptions]="{standalone: true}"></p-checkbox>
                         </ng-template>
                       </p-column>
                       <p-column [style]="{ 'width':'50px'}">
@@ -312,48 +327,10 @@
 <button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
 <button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
 
-<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
-  <div style="width: 80vw; text-align: -webkit-center;">
-    <h6>{{errovalida}}</h6>
-  </div>
-</p-dialog>
+ 
+ 
 
-
-
-
-<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar" [modal]="true">
-  <form role="form">
-    <!-- Modal Body -->
-    <div style="padding: 0px 50px 0px 50px">
-      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
-    </div>
-    <!-- Modal Footer -->
-    <div class="" style="text-align: -webkit-center;">
-      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
-
-    </div>
-  </form>
-</p-dialog>
-
-
-<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
-  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
-  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
-  [modal]="true">
-  <div class="container">
-    <div class="row">
-      <div id="loading">
-        <ul class="bokeh">
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</p-dialog>
+ 
 
 <!-- POPUP GRUPOS -->
 

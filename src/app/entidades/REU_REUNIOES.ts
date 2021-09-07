@@ -15,4 +15,5 @@ export class REU_REUNIOES {
 
       data_REUNIAO: Date;
       hora_REUNIAO: string;
+      responsavel: number;
 }

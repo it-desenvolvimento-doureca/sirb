@@ -71,7 +71,7 @@
                         [class.active]="router.isActive('reunioes',true) || router.isActive('ambitos_reunioes',true)">
                         <h4 class="panel-title">
                             <a id="node162" data-toggle="collapse" data-parent="#accordion" href="#collapseReunioes">
-                                <span class="fa fa-list-ul" style="margin-right: 12px;">
+                                <span class="fa fa-users" style="margin-right: 12px;">
                                 </span>Reuniões</a>
                         </h4>
                     </div>
@@ -252,7 +252,7 @@
                         <h4 class="panel-title">
                             <a id="node0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                 <span class="glyphicon glyphicon-list-alt ">
-                                </span>Engenharia de Processos</a>
+                                </span>Engenharia Processos</a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse">
@@ -609,7 +609,7 @@
                 <!-- MENU Logística -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]=" router.isActive('/pedidosdaproducao',true) || router.isActive('planosacaologistica',true) || router.isActive('objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true)">
+                        [class.active]=" router.isActive('/pedidosdaproducao',true) || router.isActive('analiseenvios',true) || router.isActive('planosacaologistica',true) || router.isActive('objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true)">
                         <h4 class="panel-title">
                             <a id="node100" data-toggle="collapse" data-parent="#accordion" href="#collapseLogistica">
                                 <span class="fa fa-truck" style="margin-right: 12px;">
@@ -623,6 +623,13 @@
                                     <td>
                                         <li id="node1011" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaologistica']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11111" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analiseenvios']">Análise de Envios</a>
                                         </li>
                                     </td>
                                 </tr>

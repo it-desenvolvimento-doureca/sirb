@@ -338,6 +338,8 @@ import { REUAMBITOSREUNIOESPARTICIPANTESService } from './servicos/reu-ambitos-r
 import { REUREUNIOESService } from './servicos/reu-reunioes.service';
 import { REUREUNIOESPARTICIPANTESService } from './servicos/reu-reunioes-participantes.service';
 import { REUREUNIOESFICHEIROSService } from './servicos/reu-reunioes-ficheiros.service';
+import { AnaliseEnviosComponent } from './paginas/modulo-logistica/analise-envios/analise-envios.component';
+import { FICHEIROTNTService } from './servicos/ficheiro-tnt.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -702,7 +704,10 @@ const routes: Routes = [
   { path: 'teste3', component: ProdutosComponent, canActivate: [LoginService], data: { breadcrumb: "Teste3" } },
   //{ path: 'reclamacao', component: ReclamacaoCliente8DComponent, canActivate: [LoginService], data: { breadcrumb: "Reclamação Cliente" } },
   { path: 'calendario', component: CalendarioComponent, canActivate: [LoginService], data: { breadcrumb: "Calendário" } },
+  {
+    path: 'analiseenvios', component: AnaliseEnviosComponent, canActivate: [LoginService], data: { breadcrumb: "Análise de Envios" },
 
+  },
 
   {
     path: 'tarefas', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Tarefas" },
@@ -1012,7 +1017,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     AmbitosReunioesComponent,
     FormAmbitosReunioesComponent,
     ReunioesComponent,
-    ReunioesFormComponent
+    ReunioesFormComponent,
+    AnaliseEnviosComponent
   ],
   imports: [
     BrowserModule,
@@ -1221,6 +1227,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     REUREUNIOESService,
     REUREUNIOESPARTICIPANTESService,
     REUREUNIOESFICHEIROSService,
+    FICHEIROTNTService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

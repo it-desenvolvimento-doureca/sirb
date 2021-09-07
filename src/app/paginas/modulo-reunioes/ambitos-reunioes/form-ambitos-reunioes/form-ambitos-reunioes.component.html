@@ -21,7 +21,7 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
+          <!--li [class.disabled]="disEmCurso" [hidden]="!btEmCurso">
             <a (click)="emCurso()">
               <i class="material-icons">schedule_send</i>Em Curso
               <div class="ripple-container"></div>
@@ -38,7 +38,7 @@
               <i class="material-icons">history</i>Pendente
               <div class="ripple-container"></div>
             </a>
-          </li>
+          </li-->
 
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
@@ -351,48 +351,9 @@
 <button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
 <button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>
 
-<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayvalidacao" [modal]="true">
-  <div style="width: 80vw; text-align: -webkit-center;">
-    <h6>{{errovalida}}</h6>
-  </div>
-</p-dialog>
+ 
 
-
-
-
-<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [dismissableMask]="true"
-  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar" [modal]="true">
-  <form role="form">
-    <!-- Modal Body -->
-    <div style="padding: 0px 50px 0px 50px">
-      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
-    </div>
-    <!-- Modal Footer -->
-    <div class="" style="text-align: -webkit-center;">
-      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
-
-    </div>
-  </form>
-</p-dialog>
-
-
-<p-dialog [responsive]="true" [closable]="false" styleClass="dialogloading" [positionTop]="0"
-  [style]="{'max-height':'99vh','background': 'transparent','border': 'none','box-shadow': 'none'}"
-  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayLoading"
-  [modal]="true">
-  <div class="container">
-    <div class="row">
-      <div id="loading">
-        <ul class="bokeh">
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</p-dialog>
+ 
 
 <!-- POPUP GRUPOS -->
 
