@@ -1,0 +1,274 @@
+.card {
+    /*margin-top: 20px;
+    padding: 30px;*/
+    background-color: rgba(214, 224, 226, 0.2);
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.card.hovercard .card-background {
+    height: 130px;
+}
+
+.card-background img {
+    -webkit-filter: blur(25px);
+    -moz-filter: blur(25px);
+    -o-filter: blur(25px);
+    -ms-filter: blur(25px);
+    filter: blur(25px);
+    margin-left: -100px;
+    margin-top: -200px;
+    min-width: 130%;
+}
+
+.card.hovercard .useravatar {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+}
+
+.card.hovercard .useravatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+}
+
+.card.hovercard .card-info {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+}
+
+.card.hovercard .card-info .card-title {
+    padding: 0 5px;
+    font-size: 20px;
+    line-height: 1;
+    color: #262626;
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.card.hovercard .card-info {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+.btn-pref .btn {
+    -webkit-border-radius: 0 !important;
+}
+
+.ativobt {
+    background: brown;
+}
+
+.ativobt .text_ative {
+    color: red;
+}
+
+.active {
+    color: black !important;
+}
+
+.numbers {
+    padding-left: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 17px;
+    border: 2px solid #3434348a;
+    border-radius: 5px;
+}
+
+.numbers .card-title {
+    color: #C55A11;
+}
+
+.cab_valores {
+    padding: 0;
+    font-size: 12px;
+}
+
+.cab_valores .cab_v {
+    width: 6%;
+    padding: 2px 0px 3px 6px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.cab_valores .cab_t {
+    width: 11%;
+    padding: 2px 0px 3px 6px;
+    background: #c8cacc;
+    font-weight: 600;
+}
+
+.cab_cliente .cab_h {
+    background: #c8cacc;
+    padding: 0;
+    /*min-width: 115px;*/
+    min-width: 78px;
+    text-align: center;
+}
+
+.cab_cliente td {
+    padding: 0;
+    /*text-align: center;*/
+    text-align: right;
+    padding-right: 5px;
+}
+
+.cab_cliente {
+    padding: 0 !important;
+}
+
+.cab_cliente label {
+    /*width: 59px;*/
+    color: black;
+}
+
+/****/
+
+.table-row {
+    padding: 0;
+    width: 100%;
+    border-bottom: 3px solid white;
+}
+
+.table-row.table-header {
+    width: 100%;
+    min-height: 43px;
+    /*display: flex;*/
+    border-bottom: 1px solid #ccc;
+}
+
+.linhas_dados {
+    width: 95px;
+    padding: 0;
+    border-left: 1px solid white;
+    text-align: center;
+}
+
+.table-header {
+    font-weight: bold !important;
+    text-align: -webkit-center;
+}
+
+.table-row-column.pointer {
+    cursor: pointer;
+    padding: 0;
+    text-align: -webkit-center;
+}
+
+.classloading {
+    height: 100px;
+    text-align: left;
+    line-height: 100px;
+    font-size: 20px;
+    background: #dfdede94;
+    display: block !important;
+    height: 100vh;
+}
+
+.classloading {
+    /* max-width: 56vw;
+    width: 100%;*/
+    /*position: absolute;*/
+    /*top: 92px;*/
+    top: 108px;
+    /* right: 0; */
+    right: 0;
+    left: 0;
+    bottom: 0;
+    /*height: 87%;*/
+    text-align: center;
+    /* line-height: 300px;*/
+    font-size: 20px;
+    background: #dfdede94;
+    display: block !important;
+    font-weight: 500;
+    height: 100px;
+}
+
+.span-left {
+    width: 49%;
+    text-align: center;
+    /*border-right: 1px solid white;*/
+    display: inline-block;
+    font-weight: 100;
+}
+
+.span-right {
+    width: 49%;
+    text-align: center;
+    display: inline-block;
+    font-weight: 100;
+}
+
+.valores-tabela {
+    text-align: center;
+    padding-right: 0;
+    padding-left: 0px;
+    width: 285px;
+    border-right: 1px solid white;
+}
+
+.table-header .linhas_dados a {
+    color: white !important;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.table-row-column .linhas_dados a {
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.linhas_dados:not(.table-header .linhas_dados) {
+    text-align: right;
+    padding-right: 9px;
+}
+
+.referenciacol .span-right {
+    text-align: right;
+    padding-right: 9px;
+}
+
+.referenciacol .span-left {
+    text-align: right;
+    padding-right: 9px;
+}
+
+/**/

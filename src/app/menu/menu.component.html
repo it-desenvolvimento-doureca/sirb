@@ -474,7 +474,7 @@
                     <div class="panel-heading"
                         [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
                     || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)   || router.isActive('/seguimento_faturacao_anual',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true)
-                    || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) ">
+                    || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) || router.isActive('/evolucao_dividas',true) ">
                         <h4 class="panel-title">
                             <a id="node160" data-toggle="collapse" data-parent="#accordion" href="#collapseFinanceira">
                                 <span class="fa fa-line-chart" style="margin-right: 12px;">
@@ -495,6 +495,13 @@
                                     <td>
                                         <li id="node1603" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/analise_dividas']">Análise de Dívidas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1604" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/evolucao_dividas']">Evolução de Dívidas</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -680,7 +687,9 @@
 
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/planosacaomanutencao',false)">
+                    <div class="panel-heading" [class.active]="router.isActive('/planosacaomanutencao',false) || router.isActive('/equipasmanutencao',true) || router.isActive('/edificios',true)
+                    || router.isActive('/pisos',true) || router.isActive('/divisoes',true) || router.isActive('/ficha_manutencao',true)
+                    || router.isActive('/equipamentos_manutencao',true) || router.isActive('/lista_pedidos',true)  ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
                                 <span class="fa fa-wrench" style="margin-right: 12px;">
@@ -692,9 +701,63 @@
                             <table class="table">
                                 <tr>
                                     <td>
+                                        <li id="node11581" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/ficha_manutencao']">Pedido de Manutenção</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11582" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/lista_pedidos']">Lista de Pedido de Manutenção</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11591" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/equipamentos_manutencao']">Equipamentos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <li id="node1561" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaomanutencao']">Plano de Ações</a>
                                         </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node116210" data-toggle="collapse" data-target="#parametrosmanutencao"
+                                            class="collapsed" [ngClass]="{ 'active': router.isActive('/equipasmanutencao',true) || router.isActive('/edificios',true)
+                                            || router.isActive('/pisos',true) || router.isActive('/divisoes',true) }">
+
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosmanutencao">
+                                            <li id="node1162101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/equipasmanutencao']">
+                                                <a>Equipas de Manutenção</a>
+                                            </li>
+
+                                            <li id="node1163101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/edificios']">
+                                                <a>Edifícios</a>
+                                            </li>
+                                            <li id="node1164101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/pisos']">
+                                                <a>Pisos</a>
+                                            </li>
+                                            <li id="node1165101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/divisoes']">
+                                                <a>Divisões</a>
+                                            </li>
+
+
+                                        </ul>
                                     </td>
                                 </tr>
                             </table>

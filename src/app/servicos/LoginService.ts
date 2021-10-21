@@ -42,7 +42,8 @@ export class LoginService implements CanActivate {
         node9211: 'dias_producao', node9212: 'capacidade_acabamento', node9213: 'capacidade_racks', node9214: 'semanas_analise', node99: 'planeamento_producao',
         node23103: 'causas_acidente', node23102: 'epis', node55: 'auditorias', node561: 'derrogacoes', node23104: 'tipo_auditoria',
         node1612_10: 'sectores_absentismo', node1612: 'sectores_absentismo_financeira', node1584: 'analise_clientes', node16211: 'runioes', node162101: 'ambitos_reunioes',
-        node11111: 'analiseenvios'
+        node11111: 'analiseenvios', node1162101: 'equipasmanutencao', node1163101: 'edificios', node1164101: 'pisos', node1165101: 'divisoes',
+        node11581: 'ficha_manutencao', node11591: 'equipamentos_manutencao', node11582: 'lista_pedidos', node1604: 'evolucao_dividas'
     };
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

@@ -328,7 +328,7 @@ import { QUADERROGACOESFICHEIROSService } from './servicos/qua-derrogacoes-fiche
 import { QUADERROGACOESPLANOSACCOESService } from './servicos/qua-derrogacoes-planos-accoes.service';
 import { QUADERROGACOESEQUIPAService } from './servicos/qua-derrogacoes-equipa.service';
 import { FichaManutencaoComponent } from './paginas/modulo-manutencao/ficha-manutencao/ficha-manutencao.component';
-import { FichaEquipamentoComponent } from './paginas/modulo-manutencao/tabelas/ficha-equipamento/ficha-equipamento.component';
+import { FichaEquipamentoComponent } from './paginas/modulo-manutencao/ficha-equipamento/ficha-equipamento.component';
 import { AmbitosReunioesComponent } from './paginas/modulo-reunioes/ambitos-reunioes/ambitos-reunioes.component';
 import { FormAmbitosReunioesComponent } from './paginas/modulo-reunioes/ambitos-reunioes/form-ambitos-reunioes/form-ambitos-reunioes.component';
 import { ReunioesComponent } from './paginas/modulo-reunioes/reunioes/reunioes.component';
@@ -340,6 +340,28 @@ import { REUREUNIOESPARTICIPANTESService } from './servicos/reu-reunioes-partici
 import { REUREUNIOESFICHEIROSService } from './servicos/reu-reunioes-ficheiros.service';
 import { AnaliseEnviosComponent } from './paginas/modulo-logistica/analise-envios/analise-envios.component';
 import { FICHEIROTNTService } from './servicos/ficheiro-tnt.service';
+import { EquipasManutencaoComponent } from './paginas/modulo-manutencao/parametros/equipas-manutencao/equipas-manutencao.component';
+import { EdificiosComponent } from './paginas/modulo-manutencao/parametros/edificios/edificios.component';
+import { PisosComponent } from './paginas/modulo-manutencao/parametros/pisos/pisos.component';
+import { DivisoesComponent } from './paginas/modulo-manutencao/parametros/divisoes/divisoes.component';
+import { EquipamentosComponent } from './paginas/modulo-manutencao/equipamentos/equipamentos.component';
+import { MANDICEDIFICIOSService } from './servicos/man-dic-edificios.service';
+import { MANDICPISOSService } from './servicos/man-dic-pisos.service';
+import { MANDICEQUIPASService } from './servicos/man-dic-equipas.service';
+import { MANDICEQUIPASUTILIZADORESService } from './servicos/man-dic-equipas-utilizadores.service';
+import { MANDICDIVISOESService } from './servicos/man-dic-divisoes.service';
+import { MANMOVMANUTENCAOEQUIPAMENTOSService } from './servicos/man-mov-manutencao-equipamentos.service';
+import { MANMOVMANUTENCAODOCUMENTOSService } from './servicos/man-mov-manutencao-documentos.service';
+import { MANMOVMANUTENCAODADOSCOMPRAService } from './servicos/man-mov-manutencao-dados-compra.service';
+import { MANMOVMANUTENCAOCOMPONENTESService } from './servicos/man-mov-manutencao-componentes.service';
+import { MANMOVMANUTENCAOPLANOSService } from './servicos/man-mov-manutencao-planos.service';
+import { MANMOVMANUTENCAOCONTRATOSSUPORTEService } from './servicos/man-mov-manutencao-contratos-suporte.service';
+import { MANMOVMANUTENCAOGRAUSIMPORTANCIAService } from './servicos/man-mov-manutencao-graus-importancia.service';
+import { MANMOVPEDIDOSService } from './servicos/man-mov-pedidos.service';
+import { MANMOVMANUTENCAOANEXOSService } from './servicos/man-mov-manutencao-anexos.service';
+import { MANMOVPEDIDOSDOCUMENTOSService } from './servicos/man-mov-pedidos-documentos.service';
+import { ListaPedidosComponent } from './paginas/modulo-manutencao/lista-pedidos/lista-pedidos.component';
+import { EvolucaoDividasComponent } from './paginas/modulo-financeira/evolucao-dividas/evolucao-dividas.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -676,6 +698,9 @@ const routes: Routes = [
       { path: 'view', component: FichaComponent, canActivate: [LoginService], data: { breadcrumb: "Análise de Dívidas - Ficha" } },
       { path: 'editar', component: FichaComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
   },
+  {
+    path: 'evolucao_dividas', component: EvolucaoDividasComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Evolução de Dívidas" },
+  },
 
   {
     path: 'auditorias', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Auditorias" },
@@ -762,8 +787,7 @@ const routes: Routes = [
   { path: 'tiposcacifos_p', component: TipoCacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Cacifo" } },
   { path: 'locais', component: LocaisComponent, canActivate: [LoginService], data: { breadcrumb: "Locais" } },
   { path: 'feriados', component: FeriadosComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
-  { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
-  { path: 'ficha_equipamento', component: FichaEquipamentoComponent, /*canActivate: [LoginService],*/ data: { breadcrumb: "Equipamentos" } },
+
 
   {
     path: 'reclamacoesclientes', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Reclamações Cliente" },
@@ -830,6 +854,28 @@ const routes: Routes = [
       { path: 'view', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'editar', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: FormAmbitosReunioesComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'equipamentos_manutencao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Equipamentos" },
+    children: [
+      { path: '', component: EquipamentosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FichaEquipamentoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: FichaEquipamentoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FichaEquipamentoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  { path: 'edificios', component: EdificiosComponent, canActivate: [LoginService], data: { breadcrumb: "Edifícios" } },
+  { path: 'pisos', component: PisosComponent, canActivate: [LoginService], data: { breadcrumb: "Pisos" } },
+  { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
+  { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
+  { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Ficha Manutenção" } },
+  {
+    path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedido de Manutenção" },
+    children: [
+      { path: '', component: ListaPedidosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }
+    ]
   },
   { path: 'login', component: LoginComponent },
   {
@@ -1018,7 +1064,14 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     FormAmbitosReunioesComponent,
     ReunioesComponent,
     ReunioesFormComponent,
-    AnaliseEnviosComponent
+    AnaliseEnviosComponent,
+    EquipasManutencaoComponent,
+    EdificiosComponent,
+    PisosComponent,
+    DivisoesComponent,
+    EquipamentosComponent,
+    ListaPedidosComponent,
+    EvolucaoDividasComponent
   ],
   imports: [
     BrowserModule,
@@ -1228,6 +1281,21 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     REUREUNIOESPARTICIPANTESService,
     REUREUNIOESFICHEIROSService,
     FICHEIROTNTService,
+    MANDICPISOSService,
+    MANDICEDIFICIOSService,
+    MANDICEQUIPASService,
+    MANDICEQUIPASUTILIZADORESService,
+    MANDICDIVISOESService,
+    MANMOVMANUTENCAOEQUIPAMENTOSService,
+    MANMOVMANUTENCAODOCUMENTOSService,
+    MANMOVMANUTENCAODADOSCOMPRAService,
+    MANMOVMANUTENCAOCOMPONENTESService,
+    MANMOVMANUTENCAOPLANOSService,
+    MANMOVMANUTENCAOCONTRATOSSUPORTEService,
+    MANMOVMANUTENCAOGRAUSIMPORTANCIAService,
+    MANMOVPEDIDOSService,
+    MANMOVPEDIDOSDOCUMENTOSService,
+    MANMOVMANUTENCAOANEXOSService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

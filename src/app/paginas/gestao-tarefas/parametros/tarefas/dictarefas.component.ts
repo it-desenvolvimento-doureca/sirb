@@ -21,7 +21,7 @@ export class GTDICTarefasComponent implements OnInit {
   datacria;
   selectedvalues = [];
   utz_cria;
-  tipos_tarefas = [{ value: "", label: "Selecionar Tipo" }, { value: "R", label: "Reclamações" }, { value: "A", label: "Amostras" }, { value: "PA", label: "Planos de Acção" }, { value: "D", label: "Derrogações" }]
+  tipos_tarefas = [{ value: "", label: "Selecionar Tipo" }, { value: "R", label: "Reclamações" }, { value: "A", label: "Amostras" }, { value: "PA", label: "Planos de Acção" }, { value: "D", label: "Derrogações" }, { value: "M", label: "Manutenções" }]
 
   @ViewChild('dialog') dialog: ElementRef;
   @ViewChild('closedialog') closedialog: ElementRef;
