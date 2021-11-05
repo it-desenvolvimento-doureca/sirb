@@ -42,8 +42,8 @@
                     <div class="col-md-6">
                       <div class="card" id="divgrafico" (click)="display_1 = true"
                         style=" max-width: 100%; min-height: 100px; padding-left: 10px; padding-right: 10px;"
-                        [style.height.px]="myInnerHeight2">
-                        <p-chart type="line" [data]="data1" [options]="options1">
+                        [style.min-height.px]="myInnerHeight2">
+                        <p-chart type="line" [data]="data1" [options]="options1" height="150">
                         </p-chart>
                       </div>
                     </div>
@@ -51,24 +51,24 @@
                     <div class="col-md-6">
                       <div class="card" id="divgrafico" (click)="display_2 = true"
                         style=" max-width: 100%; min-height: 100px; padding-left: 10px; padding-right: 10px;"
-                        [style.height.px]="myInnerHeight2">
-                        <p-chart type="line" [data]="data4" [options]="options4">
+                        [style.min-height.px]="myInnerHeight2">
+                        <p-chart type="line" [data]="data4" [options]="options4" height="150">
                         </p-chart>
                       </div>
                     </div>
 
                     <div class="col-md-6">
                       <div class="card" id="divgrafico" (click)="display_3 = true"
-                        style=" max-width: 100%; min-height: 100px;" [style.height.px]="myInnerHeight2">
-                        <p-chart type="line" [data]="data2" [options]="options2">
+                        style=" max-width: 100%; min-height: 100px;" [style.min-height.px]="myInnerHeight2">
+                        <p-chart type="line" [data]="data2" [options]="options2" height="350">
                         </p-chart>
                       </div>
                     </div>
 
                     <div class="col-md-6">
-                      <div class="card" style=" max-width: 100%; min-height: 100px;" [style.height.px]="myInnerHeight2"
-                        id="divgrafico" (click)="display_4 = true">
-                        <p-chart type="line" [options]="options3" [data]="data3">
+                      <div class="card" style=" max-width: 100%; min-height: 100px;"
+                        [style.min-height.px]="myInnerHeight2" id="divgrafico" (click)="display_4 = true">
+                        <p-chart type="line" [options]="options3" [data]="data3" height="350">
                         </p-chart>
                       </div>
                     </div>
@@ -101,16 +101,19 @@
                           style="margin: 21px 0 0 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
                       </div>
 
+                      <div _ngcontent-c0="" class="scrollleft_kam scrollleftevolucao" style="display: block;"></div>
+                      <div _ngcontent-c0="" class="scrollright_kam scrollrightevolucao" style="display: block;"></div>
 
                     </form>
                   </div>
-                  <div style="overflow-y: auto; width: 100%;">
-                    <div style=" width: 4200px;">
-                      <div class="table-row table-header" style="background: #757676; color: white; font-weight: 500;">
+                  <div style="overflow-y: auto; width: 100%;" id="analises_prev_scroll_kam">
+                    <div style=" width: 4220px;">
+                      <div class="table-row table-header" id="header_evolucao_cli"
+                        style="background: #757676; color: white; font-weight: 500;">
                         <div class="table-row-column col-md-1" style="width: 210px; line-height: 43px;">KAM</div>
                         <div class=" table-row-column col-md-2"
-                          style="text-align: left; width: 285px; padding-right: 0; line-height: 43px;">
-                          Cliente
+                          style="text-align: left; width: 305px; padding-right: 0; line-height: 43px;">
+                          Client
                         </div>
                         <div class="table-row-column col-md-1" style="text-align: center; width: 285px;">{{mes_1}}
                           <br>
@@ -199,237 +202,244 @@
                                 class="fa fa-minus" aria-hidden="true"></span>
                               <span style="pointer-events: none;" *ngIf="divano1.classList.contains('collapsed')"
                                 class="fa fa-plus" aria-hidden="true"></span>
-                              &nbsp; {{linha_cli.kam}}
+                              {{linha_cli.kam}}
                               <div *ngIf="linha_cli.atualiza" class="fa fa-spinner fa-spin"></div>
                             </div>
                           </div>
-                          <div class="col-md-2" style="text-align: left; width: 285px; padding-right: 0;">
-                            &nbsp; {{linha_cli.cliente}}
+                          <div class="col-md-2" style="text-align: left; width: 305px; padding-right: 0;">
+                            {{linha_cli.cliente}}
                           </div>
                           <div class="col-md-1 valores-tabela" style="border-left: 1px solid white;">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes1 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes1 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes1 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes1 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes2 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes2 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes2 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes2 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes3 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes3 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes3 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes3 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes4 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes4 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes4 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes4 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes5}}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes5 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes5}}</span>
+                            <span class="span-right"> {{linha_cli.average_mes5 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes6 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes6 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes6 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes6 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes7 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes7 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes7 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes7 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes8 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes8 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes8 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes8 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes9 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes9 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes9 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes9 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes10 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes10 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes10 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes10 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes11 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes11 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes11 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes11 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes12 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes12 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes12 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes12 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_cli.valor_mes13 }}</span>
-                            <span class="span-right">&nbsp; {{linha_cli.average_mes13 }}</span>
+                            <span class="span-left"> {{linha_cli.valor_mes13 }}</span>
+                            <span class="span-right"> {{linha_cli.average_mes13 }}</span>
                           </div>
 
 
                         </div>
                         <div class="table-row collapse col-md-12" id="cliente{{linha_cli.id}}" style="border: none;">
 
-                          <div class="table-row-column col-md-1" style="background-color: whitesmoke; width: 494px;">
-                          </div>
-                          <div class="table-row col-md-12" style="width: calc(100% - 494px)">
+                          <!--div class="table-row-column col-md-1" style="background-color: whitesmoke; width: 514px;">
+                          </div-->
+                          <div class="table-row col-md-12" style="width: calc(100% - 514px)">
                             <div class="table-row table-header"
-                              style="background: #59749d; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex;">
+                              style="background: #59749d; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex;     margin-left: 514px;">
 
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,1)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,2)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,3)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,4)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,5)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,6)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,7)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,8)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,9)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,10)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,11)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,12)">Nº Doc.</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
                                   (click)="getdocumentos(linha_cli.id,13)">Nº Doc.</a></div>
 
                             </div>
 
                             <div class="table-row-column col-md-12 " data-toggle="collapse"
-                              style="background: #c4c4e9; padding-left: 0;  padding-right: 0;">
+                              style="background: #c4c4e9; padding-left: 0;  padding-right: 0; margin-left: 514px;">
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes1}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes1 }}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,1)">&nbsp; {{linha_cli.n_documentos_mes1}}</a>
-                              </div>
-
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes2 }}
-                              </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes2}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,2)">&nbsp; {{linha_cli.n_documentos_mes2}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes1}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes1 }}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,1)"> {{linha_cli.n_documentos_mes1}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes3}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes3}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,3)">&nbsp; {{linha_cli.n_documentos_mes3}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes2 }}
+                              </div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes2}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,2)"> {{linha_cli.n_documentos_mes2}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes4}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes4}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,4)">&nbsp; {{linha_cli.n_documentos_mes4}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes3}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes3}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,3)"> {{linha_cli.n_documentos_mes3}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes5}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes5}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,5)">&nbsp; {{linha_cli.n_documentos_mes5}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes4}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes4}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,4)"> {{linha_cli.n_documentos_mes4}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes6}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes6}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,6)">&nbsp; {{linha_cli.n_documentos_mes6}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes5}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes5}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,5)"> {{linha_cli.n_documentos_mes5}}</a>
+                              </div>
+
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes6}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes6}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,6)"> {{linha_cli.n_documentos_mes6}}</a>
                               </div>
 
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes7}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes7 }}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,7)">&nbsp; {{linha_cli.n_documentos_mes7}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes7}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes7 }}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,7)"> {{linha_cli.n_documentos_mes7}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes8 }}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes8 }}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes8}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,8)">&nbsp; {{linha_cli.n_documentos_mes8}}</a>
-                              </div>
-
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes9}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes9}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,9)">&nbsp; {{linha_cli.n_documentos_mes9}}</a>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes8}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,8)"> {{linha_cli.n_documentos_mes8}}</a>
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes10}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes9}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes9}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,9)"> {{linha_cli.n_documentos_mes9}}</a>
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes10}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,10)">&nbsp;
+
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes10}}
+                              </div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes10}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,10)">
                                   {{linha_cli.n_documentos_mes10}}</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes11}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes11}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes11}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,11)">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes11}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,11)">
                                   {{linha_cli.n_documentos_mes11}}</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes12}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes12}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes12}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,12)">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes12}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,12)">
                                   {{linha_cli.n_documentos_mes12}}</a></div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v31_60_mes13}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v31_60_mes13}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_cli.v61_mes13}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados"> <a
-                                  (click)="getdocumentos(linha_cli.id,13)">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_cli.v61_mes13}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos"> <a
+                                  (click)="getdocumentos(linha_cli.id,13)">
                                   {{linha_cli.n_documentos_mes13}}</a></div>
 
                             </div>
 
 
-                            <div class="table-row-column col-md-12" style="height: 300px; width: 1000px;">
-                              <p-chart type="line" [options]="linha_cli.options" [data]="linha_cli.data" width="800"
+                            <div class="table-row-column col-md-6"
+                              style="height: 300px; width: 700px;  margin-top:  8px;">
+                              <p-chart type="line" [options]="linha_cli.options" [data]="linha_cli.data" width="700"
+                                height="300">
+                              </p-chart>
+                            </div>
+                            <div class="table-row-column col-md-6"
+                              style="height: 300px; width: 700px;  margin-top:  8px;">
+                              <p-chart type="line" [options]="linha_cli.options2" [data]="linha_cli.data2" width="700"
                                 height="300">
                               </p-chart>
                             </div>
@@ -464,16 +474,19 @@
 
 
                       <div class="table-row-column col-md-2" style="height: 43px;">
-                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading"
+                        <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading_kam"
                           style="margin: 21px 0 0 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
                       </div>
 
+                      <div _ngcontent-c0="" class="scrollleft_cli scrollleftevolucao" style="display: block;"></div>
+                      <div _ngcontent-c0="" class="scrollright_cli scrollrightevolucao" style="display: block;"></div>
 
                     </form>
                   </div>
-                  <div style="overflow-y: auto; width: 100%;">
-                    <div style=" width: 4200px;">
-                      <div class="table-row table-header" style="background: #757676; color: white; font-weight: 500;">
+                  <div style="overflow-y: auto; width: 100%;" id="analises_prev_scroll_cli">
+                    <div style=" width: 4220px;">
+                      <div class="table-row table-header" id="header_evolucao_kam"
+                        style="background: #757676; color: white; font-weight: 500;">
                         <div class="table-row-column col-md-1" style="width: 495px; line-height: 43px;">KAM</div>
 
                         <div class="table-row-column col-md-1" style="text-align: center; width: 285px;">{{mes_1}}
@@ -564,216 +577,231 @@
                                 aria-hidden="true"></span>
                               <span style="pointer-events: none;" *ngIf="linha_kam.iconplus" class="fa fa-plus"
                                 aria-hidden="true"></span>
-                              &nbsp; {{linha_kam.kam}}
+                              {{linha_kam.kam}}
                               <div *ngIf="linha_kam.atualiza" class="fa fa-spinner fa-spin"></div>
                             </div>
                           </div>
 
                           <div class="col-md-1 valores-tabela" style="border-left: 1px solid white;">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes1 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes1 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes1 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes1 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes2 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes2 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes2 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes2 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes3 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes3 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes3 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes3 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes4 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes4 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes4 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes4 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes5}}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes5 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes5}}</span>
+                            <span class="span-right"> {{linha_kam.average_mes5 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes6 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes6 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes6 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes6 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes7 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes7 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes7 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes7 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes8 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes8 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes8 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes8 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes9 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes9 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes9 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes9 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes10 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes10 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes10 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes10 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes11 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes11 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes11 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes11 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes12 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes12 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes12 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes12 }}</span>
                           </div>
                           <div class="col-md-1 valores-tabela">
-                            <span class="span-left">&nbsp; {{linha_kam.valor_mes13 }}</span>
-                            <span class="span-right">&nbsp; {{linha_kam.average_mes13 }}</span>
+                            <span class="span-left"> {{linha_kam.valor_mes13 }}</span>
+                            <span class="span-right"> {{linha_kam.average_mes13 }}</span>
                           </div>
 
 
                         </div>
                         <div class="table-row collapse col-md-12" id="kams{{linha_kam.id}}" style="border: none;">
 
-                          <div class="table-row-column col-md-1" style="background-color: whitesmoke; width: 209px;">
-                          </div>
+                          <!--div class="table-row-column col-md-1" style="background-color: whitesmoke; width: 209px;">
+                          </div-->
                           <div class="table-row col-md-12" style="width: calc(100% - 209px)">
                             <div class="table-row table-header"
-                              style="background: #59749d; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex; padding-left: 286px;">
+                              style="background: #59749d; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex; padding-left: 286px; margin-left: 209px;">
 
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">61 to 90 DAYS</div>
-                              <div class="table-row-column col-md-1 linhas_dados">Nº Doc.</div>
+                              <div class="table-row-column col-md-1 linhas_dados">31 to 60 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> > 61 Days</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">Nº Doc.</div>
 
                             </div>
 
                             <div class="table-row-column col-md-12 " data-toggle="collapse"
-                              style="background: #c4c4e9; padding-left: 0;  padding-right: 0; padding-left: 286px;">
+                              style="background: #c4c4e9; padding-left: 0;  padding-right: 0; padding-left: 286px; margin-left: 209px;">
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes1}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes1}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes1}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes1}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes1}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes1}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes2}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes2}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes2}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes2}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes2}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes2}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes3}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes3}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes3}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes3}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes3}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes3}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes4}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes4}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes4}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes4}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes4}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes4}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes5}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes5}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes5}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes5}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes5}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes5}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes6}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes6}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes6}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes6}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes6}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes6}}
                               </div>
 
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes7}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes7}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes7}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes7}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes7}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes7}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes8}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes8}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes8}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes8}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes8}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes8}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes9}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes9}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.n_documentos_mes9}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes9}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes9}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.n_documentos_mes9}}
                               </div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes10}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes10}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes10}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes10}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
                                 {{linha_kam.n_documentos_mes10}}</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes11}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes11}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes11}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes11}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
                                 {{linha_kam.n_documentos_mes11}}</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes12}}
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
+                                {{linha_kam.v31_60_mes12}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes12}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes12}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados dados_n_documentos">
                                 {{linha_kam.n_documentos_mes12}}</div>
 
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v31_60_mes13}}
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v31_60_mes13}}
                               </div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp; {{linha_kam.v61_mes13}}</div>
-                              <div class="table-row-column col-md-1 linhas_dados">&nbsp;
+                              <div class="table-row-column col-md-1 linhas_dados"> {{linha_kam.v61_mes13}}</div>
+                              <div class="table-row-column col-md-1 linhas_dados  dados_n_documentos">
                                 {{linha_kam.n_documentos_mes13}}</div>
 
                             </div>
 
 
                             <div class="table-row-column col-md-12"
-                              style="height: 300px; width: 1000px; margin-left: 285px;">
-                              <p-chart type="line" [options]="linha_kam.options" [data]="linha_kam.data" width="800"
+                              style="height: 300px; width: 700px;  margin-top:  8px;">
+                              <p-chart type="line" [options]="linha_kam.options" [data]="linha_kam.data" width="700"
+                                height="300">
+                              </p-chart>
+                            </div>
+                            <div class="table-row-column col-md-12"
+                              style="height: 300px; width: 700px;  margin-top:  8px;">
+                              <p-chart type="line" [options]="linha_kam.options2" [data]="linha_kam.data2" width="700"
                                 height="300">
                               </p-chart>
                             </div>
 
-
                             <div class="table-row table-header"
-                              style="background: #6d6e6e; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex;">
-                              <div class="table-row-column col-md-12" style="text-align: left; width: 285px;">Clientes
+                              style="background: #6d6e6e; color: white; font-weight: 500; border-bottom: none; min-height: auto; display: flex; margin-left: 190px;">
+                              <div class="table-row-column col-md-12" style="text-align: left; width: 305px;">Clients
                               </div>
                               <div class="table-row-column col-md-1" style="text-align: center; width: 285px;">
                                 <span class="span-left"> Amount Due</span>
@@ -842,12 +870,12 @@
                               </div>
                             </div>
 
-                            <div class="table-row-column col-md-12 pointer" data-toggle="collapse"
-                              style="background: #6d6e6e45; padding-left: 0;  padding-right: 0;"
+                            <div class="table-row-column col-md-12 pointer cli_tabela" data-toggle="collapse"
+                              style="background: #6d6e6e45; padding-left: 0;  padding-right: 0; margin-left: 190px;"
                               *ngFor="let cliente of linha_kam.clientes" (click)="showclientes(cliente.id); ">
 
                               <div class="col-md-2"
-                                style="text-align: left; width: 285px; padding-right: 0; text-decoration: underline;">
+                                style="text-align: left; width: 305px; padding-right: 0; text-decoration: underline;">
                                 {{cliente.cliente}}
                               </div>
                               <div class="col-md-1 valores-tabela" style="border-left: 1px solid white;">
@@ -922,7 +950,7 @@
 </div>
 
 
-<p-dialog header="Documentos" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+<p-dialog header="Documents" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
   [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
   [(visible)]="display_documentos" [modal]="true">
   <div style="width: 80vw; text-align: -webkit-center;">
@@ -953,6 +981,9 @@
       <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="numero_documento" header="Nº Doc."
         [style]="{'width':'80px'}">
         <ng-template let-col let-car="rowData" pTemplate="header">Nº Doc.<br>Doc. Number
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <a (click)="getlinhasdocumentos(car['ID_CAB_DOC'])">{{car[col.field] }} </a>
         </ng-template>
       </p-column>
 
@@ -1044,26 +1075,26 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Evolução das Dívidas de Clientes" [responsive]="true" [positionTop]="0"
-  [style]="{'max-height':'99vh'}" [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true"
-  [draggable]="false" [(visible)]="display_1" [modal]="true">
+<p-dialog header="Evolution of Customer Debt" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="display_1" [modal]="true">
   <div style="width: 98vw; text-align: -webkit-center;">
     <table class="col-md-12 cab_cliente table-bordered table-striped">
       <thead>
         <th class="cab_h" style="min-width: 173px;"></th>
-        <th class="cab_h">{{mes_13}}</th>
-        <th class="cab_h">{{mes_12}}</th>
-        <th class="cab_h">{{mes_11}}</th>
-        <th class="cab_h">{{mes_10}}</th>
-        <th class="cab_h">{{mes_9}}</th>
-        <th class="cab_h">{{mes_8}}</th>
-        <th class="cab_h">{{mes_7}}</th>
-        <th class="cab_h">{{mes_6}}</th>
-        <th class="cab_h">{{mes_5}}</th>
-        <th class="cab_h">{{mes_4}}</th>
-        <th class="cab_h">{{mes_3}}</th>
-        <th class="cab_h">{{mes_2}}</th>
         <th class="cab_h">{{mes_1}}</th>
+        <th class="cab_h">{{mes_2}}</th>
+        <th class="cab_h">{{mes_3}}</th>
+        <th class="cab_h">{{mes_4}}</th>
+        <th class="cab_h">{{mes_5}}</th>
+        <th class="cab_h">{{mes_6}}</th>
+        <th class="cab_h">{{mes_7}}</th>
+        <th class="cab_h">{{mes_8}}</th>
+        <th class="cab_h">{{mes_9}}</th>
+        <th class="cab_h">{{mes_10}}</th>
+        <th class="cab_h">{{mes_11}}</th>
+        <th class="cab_h">{{mes_12}}</th>
+        <th class="cab_h">{{mes_13}}</th>
       </thead>
       <tbody *ngIf="data1">
         <tr *ngFor="let linha of data1.datasets">
@@ -1106,26 +1137,26 @@
 </p-dialog>
 
 
-<p-dialog header="Nº Documentos" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+<p-dialog header="Nº Documents" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
   [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
   [(visible)]="display_2" [modal]="true">
   <div style="width: 98vw; text-align: -webkit-center;">
     <table class="col-md-12 cab_cliente table-bordered table-striped">
       <thead>
         <th class="cab_h" style="min-width: 115px;"></th>
-        <th class="cab_h">{{mes_13}}</th>
-        <th class="cab_h">{{mes_12}}</th>
-        <th class="cab_h">{{mes_11}}</th>
-        <th class="cab_h">{{mes_10}}</th>
-        <th class="cab_h">{{mes_9}}</th>
-        <th class="cab_h">{{mes_8}}</th>
-        <th class="cab_h">{{mes_7}}</th>
-        <th class="cab_h">{{mes_6}}</th>
-        <th class="cab_h">{{mes_5}}</th>
-        <th class="cab_h">{{mes_4}}</th>
-        <th class="cab_h">{{mes_3}}</th>
-        <th class="cab_h">{{mes_2}}</th>
         <th class="cab_h">{{mes_1}}</th>
+        <th class="cab_h">{{mes_2}}</th>
+        <th class="cab_h">{{mes_3}}</th>
+        <th class="cab_h">{{mes_4}}</th>
+        <th class="cab_h">{{mes_5}}</th>
+        <th class="cab_h">{{mes_6}}</th>
+        <th class="cab_h">{{mes_7}}</th>
+        <th class="cab_h">{{mes_8}}</th>
+        <th class="cab_h">{{mes_9}}</th>
+        <th class="cab_h">{{mes_10}}</th>
+        <th class="cab_h">{{mes_11}}</th>
+        <th class="cab_h">{{mes_12}}</th>
+        <th class="cab_h">{{mes_13}}</th>
       </thead>
       <tbody *ngIf="data4">
         <tr *ngFor="let linha of data4.datasets">
@@ -1154,26 +1185,26 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Prazo Médio de Recebimento" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+<p-dialog header="Average Receipt Deadline" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
   [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
   [(visible)]="display_3" [modal]="true">
   <div style="width: 98vw; text-align: -webkit-center;">
     <table class="col-md-12 cab_cliente table-bordered table-striped">
       <thead>
         <th class="cab_h" style="min-width: 95px;"></th>
-        <th class="cab_h">{{mes_13}}</th>
-        <th class="cab_h">{{mes_12}}</th>
-        <th class="cab_h">{{mes_11}}</th>
-        <th class="cab_h">{{mes_10}}</th>
-        <th class="cab_h">{{mes_9}}</th>
-        <th class="cab_h">{{mes_8}}</th>
-        <th class="cab_h">{{mes_7}}</th>
-        <th class="cab_h">{{mes_6}}</th>
-        <th class="cab_h">{{mes_5}}</th>
-        <th class="cab_h">{{mes_4}}</th>
-        <th class="cab_h">{{mes_3}}</th>
-        <th class="cab_h">{{mes_2}}</th>
         <th class="cab_h">{{mes_1}}</th>
+        <th class="cab_h">{{mes_2}}</th>
+        <th class="cab_h">{{mes_3}}</th>
+        <th class="cab_h">{{mes_4}}</th>
+        <th class="cab_h">{{mes_5}}</th>
+        <th class="cab_h">{{mes_6}}</th>
+        <th class="cab_h">{{mes_7}}</th>
+        <th class="cab_h">{{mes_8}}</th>
+        <th class="cab_h">{{mes_9}}</th>
+        <th class="cab_h">{{mes_10}}</th>
+        <th class="cab_h">{{mes_11}}</th>
+        <th class="cab_h">{{mes_12}}</th>
+        <th class="cab_h">{{mes_13}}</th>
       </thead>
       <tbody *ngIf="data2">
         <tr *ngFor="let linha of data2.datasets">
@@ -1202,26 +1233,26 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="% de Dívida < 31 Dias" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+<p-dialog header="% of Debt > 31 Days" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
   [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
   [(visible)]="display_4" [modal]="true">
   <div style="width: 98vw; text-align: -webkit-center;">
     <table class="col-md-12 cab_cliente table-bordered table-striped">
       <thead>
         <th class="cab_h" style="min-width: 70px;"></th>
-        <th class="cab_h">{{mes_13}}</th>
-        <th class="cab_h">{{mes_12}}</th>
-        <th class="cab_h">{{mes_11}}</th>
-        <th class="cab_h">{{mes_10}}</th>
-        <th class="cab_h">{{mes_9}}</th>
-        <th class="cab_h">{{mes_8}}</th>
-        <th class="cab_h">{{mes_7}}</th>
-        <th class="cab_h">{{mes_6}}</th>
-        <th class="cab_h">{{mes_5}}</th>
-        <th class="cab_h">{{mes_4}}</th>
-        <th class="cab_h">{{mes_3}}</th>
-        <th class="cab_h">{{mes_2}}</th>
         <th class="cab_h">{{mes_1}}</th>
+        <th class="cab_h">{{mes_2}}</th>
+        <th class="cab_h">{{mes_3}}</th>
+        <th class="cab_h">{{mes_4}}</th>
+        <th class="cab_h">{{mes_5}}</th>
+        <th class="cab_h">{{mes_6}}</th>
+        <th class="cab_h">{{mes_7}}</th>
+        <th class="cab_h">{{mes_8}}</th>
+        <th class="cab_h">{{mes_9}}</th>
+        <th class="cab_h">{{mes_10}}</th>
+        <th class="cab_h">{{mes_11}}</th>
+        <th class="cab_h">{{mes_12}}</th>
+        <th class="cab_h">{{mes_13}}</th>
       </thead>
       <tbody *ngIf="data3">
         <tr *ngFor="let linha of data3.datasets">
@@ -1247,5 +1278,92 @@
   <p-footer>
     <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
       (click)="display_4 = false">Fechar</button>
+  </p-footer>
+</p-dialog>
+
+
+<p-dialog header="Document Detail" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="display_linhas_documentos" [modal]="true" (onHide)="onHIdelinhasdocumentos()">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <p-dataTable [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}" [value]="tabela_linhas_documentos"
+      dataKey="id_cab_doc" class="tabela_analise_dividas">
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="des_artigo" header="Descrição Artigo"
+        [style]="{'width':'195px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Descrição Artigo<br>Description Article
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style=" text-align: left; padding-left: 5px; display: block;">{{car[col.field] }}</span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="quantidade" header="Quantidade"
+        [style]="{'width':'80px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Quantidade<br>Quantity
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number:
+            '1.0-0'}}</span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="preco_unitario"
+        header="Preço Unitário" [style]="{'width':'80px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Preço Unitário<br>Unit Price
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_liquido" header="Valor Líquido"
+        [style]="{'width':'89px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Líquido<br>Net Value
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_iva" header="Valor Iva"
+        [style]="{'width':'73px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Iva<br>VAT Value
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_total" header="Valor Total"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Total <br>Amount</ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="n_pedido" header="Nº Pedido"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Nº Pedido<br> Order No.
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id_processo" header="Ref. Cliente"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Ref. Cliente<br>Customer Ref.
+        </ng-template>
+      </p-column>
+
+
+    </p-dataTable>
+  </div>
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="display_linhas_documentos = false">Fechar</button>
   </p-footer>
 </p-dialog>

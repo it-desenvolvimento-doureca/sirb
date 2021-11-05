@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.service';
 
 @Component({
@@ -11,6 +11,10 @@ export class EvolucaoDividasComponent implements OnInit {
   ativobt = '1';
   myInnerHeight2 = 350;
   myInnerHeight = 350;
+  display_1;
+  display_2;
+  display_3;
+  display_4;
   data1 = {};
   data2 = {};
   data3 = {};
@@ -38,7 +42,7 @@ export class EvolucaoDividasComponent implements OnInit {
   options1 = {
     title: {
       display: true,
-      text: 'Evolução das Dívidas de Clientes',
+      text: 'Evolution of Customer Debt',
       fontSize: 16
     },
     legend: {
@@ -60,7 +64,6 @@ export class EvolucaoDividasComponent implements OnInit {
     scales: {
 
       yAxes: [{
-        // stacked: true,
         ticks: {
           callback: function (value) { return formatMoney(value, 2, ",", ".") + "€" },
           label: 'label',
@@ -68,15 +71,11 @@ export class EvolucaoDividasComponent implements OnInit {
         }, scaleLabel: {
           display: true,
         },
-        /*categoryPercentage: .8,
-        barPercentage: 1,*/
         gridLines: {
           display: false
         }
       }],
       xAxes: [{
-        //stacked: true,
-        //position: 'bottom',
         ticks: {
 
           label: '',
@@ -92,7 +91,7 @@ export class EvolucaoDividasComponent implements OnInit {
     maintainAspectRatio: false,
     title: {
       display: true,
-      text: 'Prazo Médio de Recebimento',
+      text: 'Average Receipt Deadline',
       fontSize: 16
     },
     legend: {
@@ -121,8 +120,6 @@ export class EvolucaoDividasComponent implements OnInit {
         }, scaleLabel: {
           display: true,
         },
-        /*categoryPercentage: .8,
-        barPercentage: 1,*/
         gridLines: {
           display: false
         }
@@ -131,7 +128,6 @@ export class EvolucaoDividasComponent implements OnInit {
         stacked: true,
         position: 'bottom',
         ticks: {
-          // callback: function (value) { return formatMoney(value, 2, ",", ".") + "" },
           label: '',
           beginAtZero: true
         }, scaleLabel: {
@@ -146,7 +142,7 @@ export class EvolucaoDividasComponent implements OnInit {
     maintainAspectRatio: false,
     title: {
       display: true,
-      text: '% de Dívida < 31 Dias',
+      text: '% of Debt > 31 Days',
       fontSize: 16
     },
     legend: {
@@ -175,8 +171,6 @@ export class EvolucaoDividasComponent implements OnInit {
         }, scaleLabel: {
           display: true,
         },
-        /*categoryPercentage: .8,
-        barPercentage: 1,*/
         gridLines: {
           display: false
         }
@@ -185,7 +179,6 @@ export class EvolucaoDividasComponent implements OnInit {
         stacked: true,
         position: 'bottom',
         ticks: {
-          //callback: function (value) { return formatMoney(value, 2, ",", ".") + "%" },
           label: '',
           beginAtZero: true
         }, scaleLabel: {
@@ -198,7 +191,7 @@ export class EvolucaoDividasComponent implements OnInit {
   options4 = {
     title: {
       display: true,
-      text: 'Nº Documentos',
+      text: 'Nº Documents',
       fontSize: 16
     },
     legend: {
@@ -219,26 +212,19 @@ export class EvolucaoDividasComponent implements OnInit {
       },
     },
     scales: {
-
       yAxes: [{
-        // stacked: true,
         ticks: {
           label: 'label',
           beginAtZero: true,
         }, scaleLabel: {
           display: true,
         },
-        /*categoryPercentage: .8,
-        barPercentage: 1,*/
         gridLines: {
           display: false
         }
       }],
       xAxes: [{
-        //stacked: true,
-        //position: 'bottom',
         ticks: {
-          //callback: function (value) { return formatMoney(value, 2, ",", ".") + "€" },
           label: '',
           beginAtZero: true
         }, scaleLabel: {
@@ -266,13 +252,9 @@ export class EvolucaoDividasComponent implements OnInit {
           return data.labels[tooltipItem[0].index];
         },
         label: function (tooltipItems, data) {
-          if (tooltipItems.datasetIndex == 3) {
-            return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
-              + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 0, ",", ".") + '';
-          } else {
-            return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
-              + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' €';
-          }
+
+          return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
+            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' €';
 
         }
       },
@@ -280,24 +262,19 @@ export class EvolucaoDividasComponent implements OnInit {
     scales: {
 
       yAxes: [{
-        // stacked: true,
         ticks: {
+          callback: function (value) { return formatMoney(value, 2, ",", ".") + "€" },
           label: 'label',
           beginAtZero: true,
         }, scaleLabel: {
           display: true,
         },
-        /*categoryPercentage: .8,
-        barPercentage: 1,*/
         gridLines: {
           display: false
         }
       }],
       xAxes: [{
-        //stacked: true,
-        //position: 'bottom',
         ticks: {
-          // callback: function (value) { return formatMoney(value, 2, ",", ".") + "€" },
           label: '',
           beginAtZero: true
         }, scaleLabel: {
@@ -307,20 +284,76 @@ export class EvolucaoDividasComponent implements OnInit {
     },
   };
 
+  options_global2 = {
+    responsive: false,
+    title: {
+      display: false,
+      text: '',
+      fontSize: 16
+    },
+    legend: {
+      position: 'bottom',
+      display: true
+    },
+    tooltips: {
+      mode: 'index',
+      callbacks: {
+        title: function (tooltipItem, data) {
+          return data.labels[tooltipItem[0].index];
+        },
+        label: function (tooltipItems, data) {
+          return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
+            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 0, ",", ".") + '';
+
+
+        }
+      },
+    },
+    scales: {
+
+      yAxes: [{
+        ticks: {
+          label: 'label',
+          beginAtZero: true,
+        }, scaleLabel: {
+          display: true,
+        },
+        gridLines: {
+          display: false
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          label: '',
+          beginAtZero: true
+        }, scaleLabel: {
+          display: true,
+        }
+      }],
+    },
+  };
 
   meses_analise = [];
   meses_analise_grafico = [];
   dados = [];
   dados_kam = [];
   loading_kam;
+  loading;
   cliente: any;
   kam: any;
-  display_documentos: boolean;
+  display_documentos: boolean = false;
   tabela_documentos: any[];
-  constructor(private FINANALISEDIVIDASService: FINANALISEDIVIDASService) { }
+  tabela_linhas_documentos: any;
+  display_linhas_documentos: boolean = false;
+  display_documentos_show: boolean;
+  constructor(private elementRef: ElementRef, private FINANALISEDIVIDASService: FINANALISEDIVIDASService) { }
 
   ngOnInit() {
 
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "assets/js/demo.js";
+    this.elementRef.nativeElement.appendChild(s);
 
     this.mes_1 = this.getmes(0);
     this.mes_2 = this.getmes(1);
@@ -337,7 +370,7 @@ export class EvolucaoDividasComponent implements OnInit {
     this.mes_13 = this.getmes(12);
 
 
-    this.meses_analise = [
+    /*this.meses_analise_grafico = [
       this.getmesabrev(12),
       this.getmesabrev(11),
       this.getmesabrev(10),
@@ -352,9 +385,9 @@ export class EvolucaoDividasComponent implements OnInit {
       this.getmesabrev(1),
       this.getmesabrev(0)
 
-    ];
+    ];*/
 
-    this.meses_analise_grafico = [
+    this.meses_analise = [
       this.getmesabrev(0),
       this.getmesabrev(1),
       this.getmesabrev(2),
@@ -371,6 +404,8 @@ export class EvolucaoDividasComponent implements OnInit {
 
     ];
 
+    this.meses_analise_grafico = this.meses_analise;
+
     this.grafico1();
     this.grafico2e3();
     this.analise_cliente();
@@ -378,8 +413,12 @@ export class EvolucaoDividasComponent implements OnInit {
   }
 
   getmesabrev(valor) {
-    var meses = ["Jan", "FEv", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    var meses = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const d = new Date();
+    if (d.getDay() < 15) {
+      d.setMonth(d.getMonth() - 1);
+    }
+
     d.setMonth(d.getMonth() - valor);
     let month = d.getMonth();
     let year = d.getFullYear();
@@ -387,8 +426,11 @@ export class EvolucaoDividasComponent implements OnInit {
   }
 
   getmes(valor) {
-    var meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    var meses = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const d = new Date();
+    if (d.getDay() < 15) {
+      d.setMonth(d.getMonth() - 1);
+    }
     d.setMonth(d.getMonth() - valor);
     let month = d.getMonth();
     let year = d.getFullYear();
@@ -398,6 +440,10 @@ export class EvolucaoDividasComponent implements OnInit {
 
   getmesano(valor) {
     const d = new Date();
+    if (d.getDay() < 15) {
+      d.setMonth(d.getMonth() - 1);
+    }
+
     d.setMonth(d.getMonth() - valor);
     let month = d.getMonth();
     let year = d.getFullYear();
@@ -416,13 +462,13 @@ export class EvolucaoDividasComponent implements OnInit {
         var count = Object.keys(response).length;
 
         if (count > 0) {
-          var x = 12;
+          var x = 0;
           for (let i = 0; i <= 12; i++) {
             data1[i] = response[x][0];
             data2[i] = response[x][1];
             data3[i] = response[x][2];
             data4[i] = response[x][3];
-            x--;
+            x++;
           }
         }
 
@@ -431,13 +477,13 @@ export class EvolucaoDividasComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: 'Valor Em Divida Vencido', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
+              label: 'Overdue Debt Amount', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
             },
             {
-              label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
+              label: '31 to 60 Days', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
             },
             {
-              label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
+              label: '> 61 Days', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
             }
           ]
         };
@@ -446,7 +492,7 @@ export class EvolucaoDividasComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: 'Nº Documentos', backgroundColor: 'green', borderColor: 'green', data: data4, fill: false,
+              label: 'Nº Documents', backgroundColor: 'green', borderColor: 'green', data: data4, fill: false,
             }
           ]
         };
@@ -467,11 +513,11 @@ export class EvolucaoDividasComponent implements OnInit {
         var count = Object.keys(response).length;
 
         if (count > 0) {
-          var x = 12;
+          var x = 0;
           for (let i = 0; i <= 12; i++) {
             data1[i] = response[x][0];
             data2[i] = response[x][1];
-            x--;
+            x++;
           }
         }
         var labels = this.meses_analise_grafico;
@@ -480,7 +526,7 @@ export class EvolucaoDividasComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: 'Prazo Médio', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
+              label: 'Average Due', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
             },
           ]
         };
@@ -491,7 +537,7 @@ export class EvolucaoDividasComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: '% Divida', backgroundColor: 'green', borderColor: 'green', data: data2, fill: false,
+              label: '% Debt', backgroundColor: 'green', borderColor: 'green', data: data2, fill: false,
             },
           ]
         };
@@ -556,24 +602,25 @@ export class EvolucaoDividasComponent implements OnInit {
             v31_60_mes13: this.formatMoneyeuro(response[x][64]), v61_mes13: this.formatMoneyeuro(response[x][65]), n_documentos_mes13: response[x][67],
 
             options: this.options_global,
+            options2: this.options_global2,
             data: {
               labels: labels,
               datasets: [
                 {
-                  label: 'Valor Em Divida Vencido', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
+                  label: 'Overdue Debt Amount', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
                 },
                 {
-                  label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
+                  label: '31 to 60 Days', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
                 },
                 {
-                  label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
+                  label: '> 61 Days', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
                 }
               ]
             },
             data2: {
               labels: labels,
               datasets: [{
-                label: 'Nº Documentos', backgroundColor: 'red', borderColor: 'red', data: data4, fill: false,
+                label: 'Nº Documents', backgroundColor: 'red', borderColor: 'red', data: data4, fill: false,
               }
               ]
             }
@@ -599,6 +646,7 @@ export class EvolucaoDividasComponent implements OnInit {
   analise_kam() {
     this.dados_kam = [];
     var labels = this.meses_analise;
+
     this.FINANALISEDIVIDASService.FIN_EVOLUCAO_KAM([{ KAM: this.kam }]).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -648,16 +696,23 @@ export class EvolucaoDividasComponent implements OnInit {
               labels: labels,
               datasets: [
                 {
-                  label: 'Valor Em Divida Vencido', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
+                  label: 'Overdue Debt Amount', backgroundColor: 'green', borderColor: 'green', data: data1, fill: false,
                 },
                 {
-                  label: '31 to 60 DAYS', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
+                  label: '31 to 60 Days', backgroundColor: '#FFC000', borderColor: '#FFC000', data: data2, fill: false,
                 },
                 {
-                  label: '61 to 90 DAYS', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
+                  label: '> 61 Days', backgroundColor: '#ED7D31', borderColor: '#ED7D31', data: data3, fill: false,
                 },
+
+              ]
+            },
+            options2: this.options_global2,
+            data2: {
+              labels: labels,
+              datasets: [
                 {
-                  label: 'Nº Documentos', backgroundColor: 'red', borderColor: 'red', data: data4, fill: false,
+                  label: 'Nº Documents', backgroundColor: 'red', borderColor: 'red', data: data4, fill: false,
                 }
               ]
             },
@@ -674,7 +729,7 @@ export class EvolucaoDividasComponent implements OnInit {
   formatMoneyeuro(amount, decimalCount = 2, decimal = ",", thousands = ".", symbol = "€", label = null) {
     if (amount == null) return "";
 
-    if (label == 'Nº Documentos') {
+    if (label == 'Nº Documents') {
       decimalCount = 0;
       symbol = "";
     }
@@ -754,14 +809,15 @@ export class EvolucaoDividasComponent implements OnInit {
     this.totaltabela_6 = 0;
     this.tabela_documentos = [];
     this.display_documentos = true;
+    this.display_documentos_show = true;
     var count = 0;
-    this.mensagemtabela = "A Carregar...";
+    this.mensagemtabela = "Loading...";
     var data = [{ CLIENTE: cliente, MES: mes, ANO: ano }];
     this.FINANALISEDIVIDASService.FIN_EVOLUCAO_DOCUMENTOS(data).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
-          this.mensagemtabela = "Nenhum Registo foi encontrado...";
+          this.mensagemtabela = "No records were found...";
         }
         for (var x in response) {
 
@@ -787,6 +843,7 @@ export class EvolucaoDividasComponent implements OnInit {
             acordo: response[x][9],
             documento: response[x][16],
             id_ACORDO: response[x][17],
+            ID_CAB_DOC: response[x][18],
             checked: false
           });
 
@@ -798,6 +855,44 @@ export class EvolucaoDividasComponent implements OnInit {
 
   }
 
+  onHIdelinhasdocumentos() {
+    if (this.display_documentos_show) this.display_documentos = true;
+  }
+
+  getlinhasdocumentos(n_documento) {
+
+    this.tabela_linhas_documentos = [];
+    this.display_documentos = false;
+    this.display_linhas_documentos = true;
+    var count = 0;
+    this.mensagemtabela = "Loading...";
+    var data = [{ N_DOCUMENTO: n_documento }];
+    this.FINANALISEDIVIDASService.FIN_EVOLUCAO_LINHAS_DOCUMENTOS(data).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "No records were found...";
+        }
+        for (var x in response) {
+
+          this.tabela_linhas_documentos.push({
+            id_cab_doc: response[x][0],
+            des_artigo: response[x][1],
+            quantidade: response[x][2],
+            preco_unitario: response[x][3],
+            valor_liquido: response[x][4],
+            valor_iva: response[x][5],
+            valor_total: response[x][6],
+            n_pedido: response[x][7],
+            id_processo: response[x][8],
+          });
+
+        }
+        this.tabela_linhas_documentos = this.tabela_linhas_documentos.slice();
+
+      },
+      error => console.log(error));
+  }
 }
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {

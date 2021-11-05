@@ -91,6 +91,15 @@ export class FINANALISEDIVIDASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  FIN_EVOLUCAO_LINHAS_DOCUMENTOS(data) {
+    const url = webUrl.host + '/rest/sirb/FIN_EVOLUCAO_LINHAS_DOCUMENTOS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   
   FIN_EVOLUCAO_KAM(data) {
     const url = webUrl.host + '/rest/sirb/FIN_EVOLUCAO_KAM';

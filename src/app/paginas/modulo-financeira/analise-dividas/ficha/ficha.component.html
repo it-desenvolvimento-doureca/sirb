@@ -377,6 +377,9 @@
                         header="Nº Doc." [style]="{'width':'80px'}">
                         <ng-template let-col let-car="rowData" pTemplate="header">Nº Doc.<br>Doc. Number
                         </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <a (click)="getlinhasdocumentos(car['ID_CAB_DOC'])">{{car[col.field] }} </a>
+                        </ng-template>
                       </p-column>
 
                       <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_documento"
@@ -748,4 +751,90 @@
       <button type="submit" class="btn btn-success">Ok</button>
     </div>
   </form>
+</p-dialog>
+
+<p-dialog header="Document Detail" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="display_linhas_documentos" [modal]="true">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <p-dataTable [emptyMessage]="mensagemtabela" [style]="{'min-height':'300px'}" [value]="tabela_linhas_documentos"
+      dataKey="id_cab_doc" class="tabela_analise_dividas">
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="des_artigo" header="Descrição Artigo"
+        [style]="{'width':'195px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Descrição Artigo<br>Description Article
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style=" text-align: left; padding-left: 5px; display: block;">{{car[col.field] }}</span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="quantidade" header="Quantidade"
+        [style]="{'width':'80px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Quantidade<br>Quantity
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number:
+            '1.0-0'}}</span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="preco_unitario"
+        header="Preço Unitário" [style]="{'width':'80px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Preço Unitário<br>Unit Price
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_liquido" header="Valor Líquido"
+        [style]="{'width':'89px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Líquido<br>Net Value
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_iva" header="Valor Iva"
+        [style]="{'width':'73px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Iva<br>VAT Value
+        </ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="valor_total" header="Valor Total"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Valor Total <br>Amount</ng-template>
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <span style="text-align: right; display: block; padding-right: 6px;">{{car[col.field] | number: '1.2-2'}}
+            € </span>
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="n_pedido" header="Nº Pedido"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Nº Pedido<br> Order No.
+        </ng-template>
+      </p-column>
+
+      <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id_processo" header="Ref. Cliente"
+        [style]="{'width':'70px'}">
+        <ng-template let-col let-car="rowData" pTemplate="header">Ref. Cliente<br>Customer Ref.
+        </ng-template>
+      </p-column>
+
+
+    </p-dataTable>
+  </div>
+  <p-footer>
+    <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+      (click)="display_linhas_documentos = false">Fechar</button>
+  </p-footer>
 </p-dialog>

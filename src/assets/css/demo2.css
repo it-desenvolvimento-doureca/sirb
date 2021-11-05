@@ -3923,13 +3923,13 @@ input[type="date"]::-webkit-input-placeholder {
     transform: rotate(180deg);
 }
 
-.scrollleft {
+.scrollleft, .scrollleft_cli, .scrollleft_kam {
     width: 40px;
     height: 40px;
     /*bottom: -13px;*/
     top: 20px;
     position: absolute;
-    /*right: 48px;*/
+    right: 48px;
     text-indent: -999px;
     background: url('../../assets/img/6t3jba.png') no-repeat;
     display: none;
@@ -3948,13 +3948,13 @@ input[type="date"]::-webkit-input-placeholder {
     float: left;
 }
 
-.scrollright {
+.scrollright, .scrollright_cli, .scrollright_kam {
     width: 40px;
     height: 40px;
     /*bottom: -13px;*/
     top: 20px;
     position: absolute;
-    /* right: 0;*/
+    right: 3px;
     text-indent: -999px;
     background: url('../../assets/img/6t3jba.png') no-repeat;
     display: none;
@@ -3971,7 +3971,7 @@ input[type="date"]::-webkit-input-placeholder {
     /* webkit (konqueror) browsers */
     -ms-user-select: none;
     float: left;
-    left: 59px;
+    /*left: 59px;*/
 }
 
 .radio, .checkbox {

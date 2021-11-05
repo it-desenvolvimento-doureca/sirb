@@ -271,4 +271,18 @@
     padding-right: 9px;
 }
 
+.cli_tabela .span-right {
+    text-align: right;
+    padding-right: 9px;
+}
+
+.cli_tabela .span-left {
+    text-align: right;
+    padding-right: 9px;
+}
+
+.dados_n_documentos {
+    text-align: center !important;
+}
+
 /**/

@@ -122,6 +122,8 @@ export class FichaComponent implements OnInit {
   idiomas = [{ value: 'PT', label: 'Português' }, { value: 'ENG', label: 'Inglês' }, { value: 'FR', label: 'Francês' }];
   displaytipo_aviso: boolean;
   tipo_aviso = 0;
+  tabela_linhas_documentos: any[];
+  display_linhas_documentos: boolean;
 
   constructor(private GEREVENTOSCONFService: GEREVENTOSCONFService, private RelatoriosService: RelatoriosService, private FINDOCACORDOService: FINDOCACORDOService,
     private FINDICCLIENTESService: FINDICCLIENTESService, private FINREGISTOACOESService: FINREGISTOACOESService, private renderer: Renderer, private FINDIVIDASATIVIDADEService: FINDIVIDASATIVIDADEService,
@@ -371,7 +373,8 @@ export class FichaComponent implements OnInit {
             acordo: response[x][9],
             documento: response[x][16],
             id_ACORDO: response[x][17],
-            checked: false
+            checked: false,
+            ID_CAB_DOC: response[x][18],
           });
 
         }
@@ -1191,4 +1194,38 @@ export class FichaComponent implements OnInit {
     this.location.back();
   }
 
+
+  getlinhasdocumentos(n_documento) {
+
+    this.tabela_linhas_documentos = [];
+    this.display_linhas_documentos = true;
+    var count = 0;
+    this.mensagemtabela = "Loading...";
+    var data = [{ N_DOCUMENTO: n_documento }];
+    this.FINANALISEDIVIDASService.FIN_EVOLUCAO_LINHAS_DOCUMENTOS(data).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "No records were found...";
+        }
+        for (var x in response) {
+
+          this.tabela_linhas_documentos.push({
+            id_cab_doc: response[x][0],
+            des_artigo: response[x][1],
+            quantidade: response[x][2],
+            preco_unitario: response[x][3],
+            valor_liquido: response[x][4],
+            valor_iva: response[x][5],
+            valor_total: response[x][6],
+            n_pedido: response[x][7],
+            id_processo: response[x][8],
+          });
+
+        }
+        this.tabela_linhas_documentos = this.tabela_linhas_documentos.slice();
+
+      },
+      error => console.log(error));
+  }
 }
