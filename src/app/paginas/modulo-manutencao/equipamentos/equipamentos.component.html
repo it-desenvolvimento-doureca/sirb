@@ -21,7 +21,7 @@
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="localizacao"
-                header="Localização" [style]="{'width':'132px'}">
+                header="Localização" [style]="{'width':'339px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="localizacao" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
@@ -46,6 +46,13 @@
                 </ng-template>
               </p-column>
 
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ativo" header="Ativo"
+                [style]="{'width':'70px'}">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <i *ngIf="car.ativo == false" class="material-icons" style="color: red;">close</i>
+                  <i *ngIf="car.ativo == true" class="material-icons" style="color: green;">check</i>
+                </ng-template>
+              </p-column>
 
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
                 <ng-template pTemplate="header">

@@ -119,7 +119,15 @@ export class ListaPedidosComponent implements OnInit {
 
   }
 
+  getestado(valor) {
+    if (valor == 'P') {
+      return 'Pendente';
+    } else if (valor == 'V') {
+      return 'Validado';
+    }
 
+    return '';
+  }
   //limpar filtro
   reset() {
     for (var x in this.dataTableComponent.filters) {

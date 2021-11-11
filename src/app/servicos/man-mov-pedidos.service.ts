@@ -53,7 +53,12 @@ export class MANMOVPEDIDOSService {
       .catch(this.handleError);
   }
 
-
+  MAN_CRIAR_MANUTENCOES_CORRETIVAS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_CRIAR_MANUTENCOES_CORRETIVAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();

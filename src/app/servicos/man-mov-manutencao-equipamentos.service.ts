@@ -27,6 +27,14 @@ export class MANMOVMANUTENCAOEQUIPAMENTOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(): Observable<MAN_MOV_MANUTENCAO_EQUIPAMENTOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_EQUIPAMENTOS2';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteMAN_MOV_MANUTENCAO_EQUIPAMENTOS/' + id + '')

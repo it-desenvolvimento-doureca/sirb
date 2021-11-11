@@ -301,12 +301,12 @@ export class FichaManutencaoComponent implements OnInit {
             this.COMPONENTE = response[x].COMPONENTE;
             this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
             this.ID_RESPONSAVEL = response[x].ID_RESPONSAVEL;
-            this.LOCALIZACAO = response[x].TIPO_LOCALIZACAO + response[x].LOCALIZACAO;
+            this.LOCALIZACAO = ((response[x].TIPO_LOCALIZACAO == null) ? 'E' : response[x].TIPO_LOCALIZACAO) + response[x].LOCALIZACAO;
             this.EQUIPAMENTO = response[x].EQUIPAMENTO;
             this.DATA_HORA_PEDIDO = response[x].DATA_HORA_PEDIDO;
 
             this.estado = response[x].ESTADO;
-
+            if (response[x].ESTADO == 'V') { this.bteditar = false; this.modoedicao = false; }
 
           }
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE);
@@ -500,16 +500,21 @@ export class FichaManutencaoComponent implements OnInit {
 
     ficha_manutencao.UTZ_ULT_MODIF = this.user;
     ficha_manutencao.DATA_ULT_MODIF = new Date();
-    ficha_manutencao.ESTADO = this.estado;
+    if (this.COMPONENTE == null) {
+      ficha_manutencao.ESTADO = "P";
+    } else {
+      ficha_manutencao.ESTADO = "V";
+    }
 
 
     if (this.novo) {
 
       //console.log(ficha_manutencao)
-      ficha_manutencao.ESTADO = "P";
+
       this.MANMOVPEDIDOSService.create(ficha_manutencao).subscribe(
         res => {
-          this.gravarTabelaFicheiros(res.ID_PEDIDO);
+          if (ficha_manutencao.ESTADO == "V") this.gravarTabelaFicheiros(res.ID_PEDIDO);
+          this.cria_MANUTENCAO(res.ID_PEDIDO);
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -525,6 +530,7 @@ export class FichaManutencaoComponent implements OnInit {
       //console.log(ficha_manutencao)
       this.MANMOVPEDIDOSService.update(ficha_manutencao).then(
         res => {
+          if (ficha_manutencao.ESTADO == "V") this.gravarTabelaFicheiros(res.ID_PEDIDO);
           this.gravarTabelaFicheiros(id);
           //this.gravarTabelaStocks(id);
         },
@@ -534,6 +540,14 @@ export class FichaManutencaoComponent implements OnInit {
 
   }
 
+  cria_MANUTENCAO(id) {
+    this.MANMOVPEDIDOSService.MAN_CRIAR_MANUTENCOES_CORRETIVAS([{ ID_PEDIDO: id }]).subscribe(
+      res => {
+
+        this.gravarTabelaFicheiros(res.ID_PEDIDO);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
+  }
 
   gravarTabelaFicheiros(id) {
     if (this.novo && this.uploadedFiles && this.uploadedFiles.length > 0) {

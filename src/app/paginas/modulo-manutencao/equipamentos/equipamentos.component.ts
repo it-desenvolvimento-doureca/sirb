@@ -92,7 +92,7 @@ export class EquipamentosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVMANUTENCAOEQUIPAMENTOSService.getAll().subscribe(
+    this.MANMOVMANUTENCAOEQUIPAMENTOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -101,10 +101,11 @@ export class EquipamentosComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
-            id_MANUTENCAO: response[x].ID_MANUTENCAO,
-            nome: response[x].NOME,
-            localizacao: response[x].LOCALIZACAO,
-            referencia: response[x].COD_EQUIPAMENTO_PRINCIPAL
+            id_MANUTENCAO: response[x][0],
+            nome: response[x][1],
+            localizacao: response[x][3],
+            referencia: response[x][5],
+            ativo: response[x][6]
           });
 
         }
