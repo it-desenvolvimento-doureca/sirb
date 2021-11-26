@@ -362,6 +362,12 @@ import { MANMOVMANUTENCAOANEXOSService } from './servicos/man-mov-manutencao-ane
 import { MANMOVPEDIDOSDOCUMENTOSService } from './servicos/man-mov-pedidos-documentos.service';
 import { ListaPedidosComponent } from './paginas/modulo-manutencao/lista-pedidos/lista-pedidos.component';
 import { EvolucaoDividasComponent } from './paginas/modulo-financeira/evolucao-dividas/evolucao-dividas.component';
+import { ContratoComponent } from './paginas/modulo-comercial/contratos/contrato/contrato.component';
+import { ContratoFormComponent } from './paginas/modulo-comercial/contratos/contrato/contrato-form/contrato-form.component';
+import { ReferenciasComponent } from './paginas/modulo-comercial/contratos/referencias/referencias.component';
+import { ReferenciasFormComponent } from './paginas/modulo-comercial/contratos/referencias/referencias-form/referencias-form.component';
+import { AcordosComponent } from './paginas/modulo-comercial/contratos/acordos/acordos.component';
+import { AcordosFormComponent } from './paginas/modulo-comercial/contratos/acordos/acordos-form/acordos-form.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -877,6 +883,33 @@ const routes: Routes = [
       { path: 'novo', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }
     ]
   },
+
+  /**comercial contratos */
+  {
+    path: 'comercial_contratos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Contratos" },
+    children: [
+      { path: '', component: ContratoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: ContratoFormComponent, canActivate: [LoginService], data: { breadcrumb: "Contrato" } },
+      { path: 'editar', component: ContratoFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: ContratoFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'comercial_referencias', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Referências" },
+    children: [
+      { path: '', component: ReferenciasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: ReferenciasFormComponent, canActivate: [LoginService], data: { breadcrumb: "Referência" } },
+      { path: 'editar', component: ReferenciasFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: ReferenciasFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'comercial_acordos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Acordos" },
+    children: [
+      { path: '', component: AcordosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: AcordosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Acordo" } },
+      { path: 'editar', component: AcordosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: AcordosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -1071,7 +1104,13 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DivisoesComponent,
     EquipamentosComponent,
     ListaPedidosComponent,
-    EvolucaoDividasComponent
+    EvolucaoDividasComponent,
+    ContratoComponent,
+    ContratoFormComponent,
+    ReferenciasComponent,
+    ReferenciasFormComponent,
+    AcordosComponent,
+    AcordosFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1424,7 +1424,11 @@ export class FichaEquipamentoComponent implements OnInit {
       }
 
       tabela.ID_MANUTENCAO = id;
-
+      if (this.tabelaaccoes[x].id != null) {
+        tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].proxima_REALIZAR;
+      } else {
+        tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].data_INICIO;
+      }
       tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].proxima_REALIZAR;
       tabela.DATA_ULTIMA_REALIZADA = this.tabelaaccoes[x].ultima_REALIZADA;
       tabela.ID_ACAO = this.tabelaaccoes[x].id_ACCOES;
