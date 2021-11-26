@@ -1466,26 +1466,31 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     });
   }
 
+  //colocar validação nova
   preparar_linha(pos, id, id_manu) {
-
 
     var aditivo2 = [];
     var encontrou2 = false;
     var encontrou3 = false;
+    var encontrou4 = false;
     var aditivo = [];
-    this.ABMOVMANUTENCAOLINHAService.getbyIDtotal(id).subscribe(
-      resp => {
-        var count = Object.keys(resp).length;
+    this.ABMOVMANUTENCAOLINHAService.getbyIDtotal2(id).subscribe(
+      respo => {
+        var count = Object.keys(respo).length;
         if (count > 0) {
-          for (var x in resp) {
-            if (parseInt(resp[x][1]) == 0 && resp[x][0].cisterna) {
+          for (var x in respo) {
+            if (parseInt(respo[x][1]) == 0 && respo[x][0]) {
               encontrou2 = true;
-              aditivo.push(resp[x][0].nome_COMPONENTE);
+              aditivo.push(respo[x][6]);
             }
 
-            if (resp[x][3] > resp[x][4]) {
+            if (respo[x][3] > respo[x][4]) {
               encontrou3 = true;
-              aditivo2.push(resp[x][0].nome_COMPONENTE);
+              aditivo2.push(respo[x][6]);
+            }
+
+            if (respo[x][5] > 0) {
+              encontrou4 = true;
             }
           }
 
@@ -1520,19 +1525,19 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
             this.simular(this.dialogAviso);
           } else {
-            this.preparar_linha1(pos, id, id_manu);
+            this.preparar_linha1(pos, id, id_manu, encontrou4);
           }
         } else {
-          this.preparar_linha1(pos, id, id_manu);
+          this.preparar_linha1(pos, id, id_manu, encontrou4);
         }
       }, error => {
-        this.preparar_linha1(pos, id, id_manu);
+        this.preparar_linha1(pos, id, id_manu, encontrou4);
         console.log(error);
       });
   }
 
 
-  preparar_linha1(pos, id, id_manu) {
+  preparar_linha1(pos, id, id_manu, encontrou4) {
     this.arrayForm.find(item => item.pos == pos).preparado = false;
     var encontrou = false;
     for (var x in this.arrayForm.find(item => item.pos == pos).aditivos) {
@@ -1549,16 +1554,16 @@ export class ManutecaoReposicaoformComponent implements OnInit {
         header: 'Aviso',
         icon: 'fa fa-exclamation-triangle',
         accept: () => {
-          this.preparar(pos, id, id_manu);
+          this.preparar(pos, id, id_manu, encontrou4);
         }
       });
     } else {
-      this.preparar(pos, id, id_manu);
+      this.preparar(pos, id, id_manu, encontrou4);
     }
 
   }
 
-  preparar(pos, id, id_manu) {
+  preparar(pos, id, id_manu, encontrou4) {
 
     this.ABMOVMANUTENCAOCABService.getbyID_cab(id).subscribe(
       response => {
@@ -1597,6 +1602,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
               + "\n/datahorapreparacao::" + this.formatDate(MOV_MANUTENCAO_CAB.data_PREPARACAO) + "  " + MOV_MANUTENCAO_CAB.hora_PREPARACAO + "\n/observacao_preparacao::" + MOV_MANUTENCAO_CAB.obs_PREPARACAO + "}";
 
             if (MOV_MANUTENCAO_CAB.obs_PREPARACAO != "" && MOV_MANUTENCAO_CAB.obs_PREPARACAO != null) this.evento(dados, "Ao Preparar");
+            if (encontrou4) this.evento(dados, "Existe produto na zona dos bloqueados");
 
             this.ABMOVMANUTENCAOLINHAService.apagar_linhas(MOV_MANUTENCAO.id_MANUTENCAO).then(() => {
               this.ABMOVMANUTENCAOService.update(MOV_MANUTENCAO).then(() => {
@@ -2019,6 +2025,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
 
   }
 
+  //colocar validação nova
   adicionadados(id, campo) {
     var etiquetan = "0000000000" + campo;
 
@@ -2048,6 +2055,18 @@ export class ManutecaoReposicaoformComponent implements OnInit {
           etiqueta.ETQNUMENR = response[0].ETQNUMENR;
           etiqueta.ETQORIQTE1 = response[0].ETQORIQTE1;
           etiqueta.disabled = true;
+          if (response[0].TOTAL_ZONQUA > 0) {
+            this.confirmationService.confirm({
+              message: 'Atenção: Existe este produto na zona dos bloqueados. Pretende substituir a etiqueta?',
+              header: 'Aviso',
+              icon: 'fa fa-exclamation-triangle',
+              accept: () => {
+                this.apagaretiqueta(id)
+              }, reject: () => {
+
+              }
+            });
+          }
         }
       }, error => { console.log(error); });
   }
@@ -2587,6 +2606,7 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     this.calculaFalta();
   }
 
+  //colocar validação nova
   adicionadadosaditiovs(id, campo) {
     var etiquetan = "0000000000" + campo;
     var count = 0;
@@ -2613,48 +2633,20 @@ export class ManutecaoReposicaoformComponent implements OnInit {
           if (count > 0) {
 
             if (this.cod_ref == response[0].PROREF && response[0].ETQEMBQTE > 0) {
-
-              var etiqueta = this.etiquetasaditivo.find(item => item.id == id);
-              etiqueta.numero = etiquetan.substring(etiquetan.length - 10);
-              etiqueta.produto = response[0].PRODES1;
-              var value = "0";
-              if (response[0].ETQEMBQTE != null) value = parseFloat(response[0].ETQEMBQTE).toFixed(3);
-              var qtd = parseFloat(value) / this.factor_conversao;
-              etiqueta.qtdconvers = qtd.toFixed(3).replace(".", ",");
-              etiqueta.qtd = value.replace(".", ",");
-              etiqueta.EMPCOD = response[0].EMPCOD;
-              etiqueta.ETQORILOT1 = response[0].ETQORILOT1;
-              etiqueta.LIECOD = response[0].LIECOD;
-              etiqueta.LOTNUMENR = response[0].LOTNUMENR;
-              etiqueta.PROREF = response[0].PROREF;
-              etiqueta.PRODES = response[0].PRODES1;
-              etiqueta.DATCRE = response[0].DATCRE;
-              etiqueta.UNICOD = response[0].UNICOD;
-              etiqueta.UNISTO = response[0].UNISTO;
-              etiqueta.VA1REF = response[0].VA1REF;
-              etiqueta.VA2REF = response[0].VA2REF;
-              etiqueta.indnumenr = response[0].INDNUMENR;
-              etiqueta.INDREF = response[0].INDREF;
-              etiqueta.ETQNUMENR = response[0].ETQNUMENR;
-              etiqueta.ETQORIQTE1 = response[0].ETQORIQTE1;
-              var numm = this.tempconsumiraditivo.replace(",", ".")
-
-              var consumir = qtd - numm;
-              var falta = numm - qtd;
-              consumir = Math.max(0, consumir);
-              falta = Math.max(0, falta);
-              if (consumir == 0) {
-                consumir = qtd;
+              if (response[0].TOTAL_ZONQUA > 0) {
+                this.confirmationService.confirm({
+                  message: 'Atenção: Existe este produto na zona dos bloqueados. Pretende substituir a etiqueta?',
+                  header: 'Aviso',
+                  icon: 'fa fa-exclamation-triangle',
+                  accept: () => {
+                    this.apagaretiquetaaditivo(id);
+                  }, reject: () => {
+                    this.getDadosEtiquetainsert2(etiquetan, response, id);
+                  }
+                });
               } else {
-                consumir = numm;
+                this.getDadosEtiquetainsert2(etiquetan, response, id);
               }
-              var cons = consumir.toString();
-              etiqueta.consumir = parseFloat(cons).toFixed(3).replace(".", ",");
-              var qtd_f = Math.max(0, qtd - numm);
-              etiqueta.quant_FINAL = (qtd_f * this.factor_conversao).toFixed(3).replace(".", ",");
-              etiqueta.quant_FINAL2 = (qtd_f * 1).toFixed(4).replace(".", ",");
-              //etiqueta.qtdconvers = 0;
-              this.tempconsumiraditivo = falta.toFixed(3).replace(".", ",");
             } else {
               this.mensagem_aviso = "Etiqueta não pertence a este aditivo ou é negativa!";
               this.mensagem_aviso2 = "";
@@ -2701,6 +2693,51 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     }
   }
 
+  getDadosEtiquetainsert2(etiquetan, response, id) {
+
+    var etiqueta = this.etiquetasaditivo.find(item => item.id == id);
+    etiqueta.numero = etiquetan.substring(etiquetan.length - 10);
+    etiqueta.produto = response[0].PRODES1;
+    var value = "0";
+    if (response[0].ETQEMBQTE != null) value = parseFloat(response[0].ETQEMBQTE).toFixed(3);
+    var qtd = parseFloat(value) / this.factor_conversao;
+    etiqueta.qtdconvers = qtd.toFixed(3).replace(".", ",");
+    etiqueta.qtd = value.replace(".", ",");
+    etiqueta.EMPCOD = response[0].EMPCOD;
+    etiqueta.ETQORILOT1 = response[0].ETQORILOT1;
+    etiqueta.LIECOD = response[0].LIECOD;
+    etiqueta.LOTNUMENR = response[0].LOTNUMENR;
+    etiqueta.PROREF = response[0].PROREF;
+    etiqueta.PRODES = response[0].PRODES1;
+    etiqueta.DATCRE = response[0].DATCRE;
+    etiqueta.UNICOD = response[0].UNICOD;
+    etiqueta.UNISTO = response[0].UNISTO;
+    etiqueta.VA1REF = response[0].VA1REF;
+    etiqueta.VA2REF = response[0].VA2REF;
+    etiqueta.indnumenr = response[0].INDNUMENR;
+    etiqueta.INDREF = response[0].INDREF;
+    etiqueta.ETQNUMENR = response[0].ETQNUMENR;
+    etiqueta.ETQORIQTE1 = response[0].ETQORIQTE1;
+    var numm = this.tempconsumiraditivo.replace(",", ".")
+
+    var consumir = qtd - numm;
+    var falta = numm - qtd;
+    consumir = Math.max(0, consumir);
+    falta = Math.max(0, falta);
+    if (consumir == 0) {
+      consumir = qtd;
+    } else {
+      consumir = numm;
+    }
+    var cons = consumir.toString();
+    etiqueta.consumir = parseFloat(cons).toFixed(3).replace(".", ",");
+    var qtd_f = Math.max(0, qtd - numm);
+    etiqueta.quant_FINAL = (qtd_f * this.factor_conversao).toFixed(3).replace(".", ",");
+    etiqueta.quant_FINAL2 = (qtd_f * 1).toFixed(4).replace(".", ",");
+    //etiqueta.qtdconvers = 0;
+    this.tempconsumiraditivo = falta.toFixed(3).replace(".", ",");
+  }
+
   guardaretiquetasaditivos() {
     this.tempecontrou = false;
     var count = 0;
@@ -2742,57 +2779,20 @@ export class ManutecaoReposicaoformComponent implements OnInit {
           if (count > 0) {
 
             if (this.cod_ref == response[0].PROREF && response[0].ETQEMBQTE > 0) {
-
-              var etiqueta = this.etiquetasaditivo.find(item => item.id == id);
-              etiqueta.numero = etiquetan.substring(etiquetan.length - 10);
-              etiqueta.produto = response[0].PRODES1;
-              var value = "0";
-              if (response[0].ETQEMBQTE != null) value = parseFloat(response[0].ETQEMBQTE).toFixed(3);
-              var qtd = parseFloat(value) / this.factor_conversao;
-              etiqueta.qtdconvers = qtd.toFixed(3).replace(".", ",");
-              etiqueta.qtd = value.replace(".", ",");
-              etiqueta.EMPCOD = response[0].EMPCOD;
-              etiqueta.ETQORILOT1 = response[0].ETQORILOT1;
-              etiqueta.LIECOD = response[0].LIECOD;
-              etiqueta.LOTNUMENR = response[0].LOTNUMENR;
-              etiqueta.PROREF = response[0].PROREF;
-              etiqueta.PRODES = response[0].PRODES1;
-              etiqueta.DATCRE = response[0].DATCRE;
-              etiqueta.UNICOD = response[0].UNICOD;
-              etiqueta.UNISTO = response[0].UNISTO;
-              etiqueta.VA1REF = response[0].VA1REF;
-              etiqueta.VA2REF = response[0].VA2REF;
-              etiqueta.indnumenr = response[0].INDNUMENR;
-              etiqueta.INDREF = response[0].INDREF;
-              etiqueta.ETQNUMENR = response[0].ETQNUMENR;
-              etiqueta.ETQORIQTE1 = response[0].ETQORIQTE1;
-
-              var numm = this.tempconsumiraditivo.replace(",", ".");
-              var consumir;
-              var falta;
-              numm = Math.max(0, numm);
-              if (etiqueta.consumir == null || etiqueta.consumir == "") {
-                falta = numm - qtd;
-                consumir = qtd - numm;
-                consumir = Math.max(0, consumir);
-                falta = Math.max(0, falta);
-                if (consumir == 0) {
-                  consumir = qtd;
-                } else {
-                  consumir = numm;
-                }
+              if (response[0].TOTAL_ZONQUA > 0) {
+                this.confirmationService.confirm({
+                  message: 'Atenção: Existe este produto na zona dos bloqueados. Pretende substituir a etiqueta?',
+                  header: 'Aviso',
+                  icon: 'fa fa-exclamation-triangle',
+                  accept: () => {
+                    this.apagaretiqueta(id)
+                  }, reject: () => {
+                    this.getDadosEtiquetainsert(etiquetan, response, id);
+                  }
+                });
               } else {
-                consumir = etiqueta.consumir.replace(",", ".") * 1;
-                falta = parseFloat(this.tempconsumiraditivo.replace(",", "."));
-                numm = consumir;
+                this.getDadosEtiquetainsert(etiquetan, response, id);
               }
-              var cons = consumir.toString();
-              etiqueta.consumir = parseFloat(cons).toFixed(3).replace(".", ",");
-              var qtd_f = Math.max(0, qtd - numm);
-              etiqueta.quant_FINAL = (qtd_f * this.factor_conversao).toFixed(3).replace(".", ",");
-              etiqueta.quant_FINAL2 = (qtd_f * 1).toFixed(4).replace(".", ",");
-              //etiqueta.qtdconvers = 0;
-              this.tempconsumiraditivo = falta.toFixed(3).replace(".", ",");
             } else {
               this.mensagem_aviso = "Etiqueta não pertence a este aditivo ou é negativa!";
               this.mensagem_aviso2 = "";
@@ -2847,6 +2847,59 @@ export class ManutecaoReposicaoformComponent implements OnInit {
     }
   }
 
+  getDadosEtiquetainsert(etiquetan, response, id) {
+
+    var etiqueta = this.etiquetasaditivo.find(item => item.id == id);
+    etiqueta.numero = etiquetan.substring(etiquetan.length - 10);
+    etiqueta.produto = response[0].PRODES1;
+    var value = "0";
+    if (response[0].ETQEMBQTE != null) value = parseFloat(response[0].ETQEMBQTE).toFixed(3);
+    var qtd = parseFloat(value) / this.factor_conversao;
+    etiqueta.qtdconvers = qtd.toFixed(3).replace(".", ",");
+    etiqueta.qtd = value.replace(".", ",");
+    etiqueta.EMPCOD = response[0].EMPCOD;
+    etiqueta.ETQORILOT1 = response[0].ETQORILOT1;
+    etiqueta.LIECOD = response[0].LIECOD;
+    etiqueta.LOTNUMENR = response[0].LOTNUMENR;
+    etiqueta.PROREF = response[0].PROREF;
+    etiqueta.PRODES = response[0].PRODES1;
+    etiqueta.DATCRE = response[0].DATCRE;
+    etiqueta.UNICOD = response[0].UNICOD;
+    etiqueta.UNISTO = response[0].UNISTO;
+    etiqueta.VA1REF = response[0].VA1REF;
+    etiqueta.VA2REF = response[0].VA2REF;
+    etiqueta.indnumenr = response[0].INDNUMENR;
+    etiqueta.INDREF = response[0].INDREF;
+    etiqueta.ETQNUMENR = response[0].ETQNUMENR;
+    etiqueta.ETQORIQTE1 = response[0].ETQORIQTE1;
+
+    var numm = this.tempconsumiraditivo.replace(",", ".");
+    var consumir;
+    var falta;
+    numm = Math.max(0, numm);
+    if (etiqueta.consumir == null || etiqueta.consumir == "") {
+      falta = numm - qtd;
+      consumir = qtd - numm;
+      consumir = Math.max(0, consumir);
+      falta = Math.max(0, falta);
+      if (consumir == 0) {
+        consumir = qtd;
+      } else {
+        consumir = numm;
+      }
+    } else {
+      consumir = etiqueta.consumir.replace(",", ".") * 1;
+      falta = parseFloat(this.tempconsumiraditivo.replace(",", "."));
+      numm = consumir;
+    }
+    var cons = consumir.toString();
+    etiqueta.consumir = parseFloat(cons).toFixed(3).replace(".", ",");
+    var qtd_f = Math.max(0, qtd - numm);
+    etiqueta.quant_FINAL = (qtd_f * this.factor_conversao).toFixed(3).replace(".", ",");
+    etiqueta.quant_FINAL2 = (qtd_f * 1).toFixed(4).replace(".", ",");
+    //etiqueta.qtdconvers = 0;
+    this.tempconsumiraditivo = falta.toFixed(3).replace(".", ",");
+  }
 
   gravaeti() {
     for (var y in this.etiquetasaditivo) {

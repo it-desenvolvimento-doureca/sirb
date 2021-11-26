@@ -13,4 +13,6 @@ export class MAN_MOV_MANUTENCAO_EQUIPAMENTOS {
     DATA_ULT_MODIF: Date;
     ATIVO: boolean;
     TIPO_LOCALIZACAO: string;
+    TIPO_EQUIPA: string;
+    UTILIZADOR: number;
 }

@@ -94,7 +94,7 @@ export class ListaPedidosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVPEDIDOSService.getAll().subscribe(
+    this.MANMOVPEDIDOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -103,12 +103,12 @@ export class ListaPedidosComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
-            ID_PEDIDO: response[x].ID_PEDIDO,
-            DATA_HORA_PEDIDO: this.formatDate(response[x].DATA_HORA_PEDIDO) + " " + new Date(response[x].DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO: response[x].EQUIPAMENTO,
-            COMPONENTE: response[x].COMPONENTE,
-            ESTADO: response[x].ESTADO,
-            RESPONSAVEL: response[x].ID_RESPONSAVEL
+            ID_PEDIDO: response[x][0],
+            DATA_HORA_PEDIDO: this.formatDate(response[x][1]) + " " + new Date(response[x][1]).toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO: response[x][3],
+            COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
+            ESTADO: this.getestado(response[x][6]),
+            RESPONSAVEL: response[x][2]
           });
 
         }
@@ -126,7 +126,7 @@ export class ListaPedidosComponent implements OnInit {
       return 'Validado';
     }
 
-    return '';
+    return 'Pendente';
   }
   //limpar filtro
   reset() {

@@ -97,15 +97,32 @@
                           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="GRAU_IMPORTANCIA"
                           [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                       </div-->
+                      <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                        <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_equipa" value="E"
+                          [(ngModel)]="TIPO_EQUIPA">
+                        </p-radioButton>
+                        <br>
+                        <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_equipa" value="U"
+                          [(ngModel)]="TIPO_EQUIPA">
+                        </p-radioButton>
+                      </div>
 
-                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <div *ngIf="TIPO_EQUIPA == 'E'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
                         <label>Equipa:</label>
                         <p-dropdown [filter]="true" [options]="drop_equipas" [disabled]="!modoedicao"
                           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="EQUIPA"
                           [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
                       </div>
+                      <div *ngIf="TIPO_EQUIPA == 'U'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
+                        <label>Utilizador:</label>
+                        <p-dropdown [filter]="true" [options]="drop_utilizadores" [disabled]="!modoedicao"
+                          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="UTILIZADOR"
+                          [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+                      </div>
 
-                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
                         <label for="ny">Garantia (s/n):</label>
                         <div class="ui-g-12">
                           <p-checkbox [disabled]="!modoedicao" binary="true" [(ngModel)]="GARANTIA"
@@ -113,7 +130,7 @@
                         </div>
                       </div>
 
-                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
                         <label *ngIf="GARANTIA" style="display: -webkit-box;">Data Validade:</label>
                         <p-calendar *ngIf="GARANTIA" [disabled]="!modoedicao" [style]="{'height':'25px','width':'50%'}"
                           dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
@@ -381,16 +398,36 @@
                       </p-column>
 
 
+                      <p-column [editable]="false" [style]="{'width':'250px'}" field="tipo_responsavel"
+                        header="Tipo Responsável">
+                        <ng-template let-col let-car="rowData" pTemplate="body"  let-index="rowIndex">
+                          <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_responsavel{{index}}" value="E"
+                            [(ngModel)]="car['tipo_responsavel']">
+                          </p-radioButton>
+
+                          <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_responsavel{{index}}" value="U"
+                            [(ngModel)]="car['tipo_responsavel']">
+                          </p-radioButton>
+                        </ng-template>
+                      </p-column>
+
 
                       <p-column [editable]="false" [style]="{'width':'250px'}" field="equipa"
-                        header="Equipa Responsável">
+                        header="Equipa/Utilizador Responsável">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          <p-dropdown [filter]="true" [options]="drop_equipas" appendTo="body"
-                            [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="car['equipa']"
-                            [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                          <p-dropdown *ngIf="car['tipo_responsavel'] == 'E'" [filter]="true" [options]="drop_equipas"
+                            appendTo="body" [style]="{'width':'100%','height':'25px','background':'white'}"
+                            [(ngModel)]="car['equipa']" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+                          </p-dropdown>
+                          <p-dropdown *ngIf="car['tipo_responsavel'] == 'U'" [filter]="true"
+                            [options]="drop_utilizadores" appendTo="body"
+                            [style]="{'width':'100%','height':'25px','background':'white'}"
+                            [(ngModel)]="car['utilizador']" [ngModelOptions]="{standalone: true}"
+                            [disabled]="!modoedicao">
                           </p-dropdown>
                         </ng-template>
                       </p-column>
+
 
                       <p-column [style]="{'width':'80px'}">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">

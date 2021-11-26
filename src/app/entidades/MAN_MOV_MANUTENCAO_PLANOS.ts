@@ -14,5 +14,6 @@ export class MAN_MOV_MANUTENCAO_PLANOS {
       REPETIR: number;
       DIAS_SEMANA: string;
       DATA_INICIO: Date;
-
+      TIPO_RESPONSAVEL: string;
+      UTILIZADOR: number;
 }

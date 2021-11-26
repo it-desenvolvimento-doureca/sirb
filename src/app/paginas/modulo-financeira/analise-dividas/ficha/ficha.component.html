@@ -291,12 +291,12 @@
                                 <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
                                   style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;"
                                   *ngIf="car.nome_ficheiro != null"
-                                  (click)="showDialog(car.type, null,car.nome_ficheiro,car.datatype,car.ficheiro)">
+                                  (click)="showDialog(car.type, null,car.nome_ficheiro,car.datatype,car.ficheiro,car.id)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a class="btn btn-primary btn-xs" title="Download" *ngIf="car.nome_ficheiro != null"
-                                  (click)="download(car.nome_ficheiro,null,car.datatype,car.ficheiro)" target="_blank"
-                                  style="padding: 1px 0px 1px 9px; margin: 0;">
+                                  (click)="download(car.nome_ficheiro,null,car.datatype,car.ficheiro,car.id)"
+                                  target="_blank" style="padding: 1px 0px 1px 9px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
                                 <button style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0;" type="button"
@@ -568,7 +568,7 @@
         </button>-->
         <a style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" *ngIf="dados.ficheiro != null"
           class="btn btn-primary btn-xs" title="Download"
-          (click)="download(dados.nome_FICHEIRO,null,dados.datatype_FICHEIRO,dados.ficheiro)" target="_blank"
+          (click)="download(dados.nome_FICHEIRO,null,dados.datatype_FICHEIRO,dados.ficheiro,null)" target="_blank"
           style="padding: 3px 0px 3px 12px; margin: 0;">
           <i class="glyphicon glyphicon-download"></i>
         </a>

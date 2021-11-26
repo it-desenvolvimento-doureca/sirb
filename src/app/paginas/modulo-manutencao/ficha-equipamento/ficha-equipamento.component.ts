@@ -32,6 +32,7 @@ import { MANMOVMANUTENCAOANEXOSService } from 'app/servicos/man-mov-manutencao-a
 import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
 import { GERDEPARTAMENTOService } from 'app/servicos/ger-departamento.service';
+import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 
 @Component({
   selector: 'app-ficha-equipamento',
@@ -121,6 +122,10 @@ export class FichaEquipamentoComponent implements OnInit {
 
   displayperiocidade;
   index_selected_periocidade: any;
+  tipo_equipa;
+  TIPO_EQUIPA: string = 'E';
+  UTILIZADOR: number;
+  drop_utilizadores: any[];
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -134,6 +139,7 @@ export class FichaEquipamentoComponent implements OnInit {
     private MANMOVMANUTENCAOANEXOSService: MANMOVMANUTENCAOANEXOSService, private MANDICPISOSService: MANDICPISOSService,
     private MANMOVMANUTENCAOGRAUSIMPORTANCIAService: MANMOVMANUTENCAOGRAUSIMPORTANCIAService,
     private GERDEPARTAMENTOService: GERDEPARTAMENTOService,
+    private GERUTILIZADORESService: GERUTILIZADORESService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
 
   ngOnInit() {
@@ -238,6 +244,9 @@ export class FichaEquipamentoComponent implements OnInit {
         this.COD_EQUIPAMENTO_PRINCIPAL = response[0].COD_EQUIPAMENTO_PRINCIPAL;
         this.EQUIPA = response[0].EQUIPA;
         this.GARANTIA = response[0].GARANTIA;
+        this.TIPO_EQUIPA = (response[0].TIPO_EQUIPA == null) ? 'E' : response[0].TIPO_EQUIPA;
+        this.UTILIZADOR = response[0].UTILIZADOR;
+
         this.DATA_VALIDADE = (response[0].DATA_VALIDADE != null) ? new Date(response[0].DATA_VALIDADE) : null;
         this.equipamento_dados = response[0];
         this.carregatabelaFiles(id);
@@ -289,6 +298,8 @@ export class FichaEquipamentoComponent implements OnInit {
             ultima_REALIZADA: (response[x].DATA_ULTIMA_REALIZADA != null) ? new Date(response[x].DATA_ULTIMA_REALIZADA) : null,
             proxima_REALIZAR: (response[x].DATA_PROXIMA_REALIZADA != null) ? new Date(response[x].DATA_PROXIMA_REALIZADA) : null,
             equipa: response[x].ID_EQUIPA,
+            tipo_responsavel: (response[x].TIPO_RESPONSAVEL == null) ? 'E' : response[x].TIPO_RESPONSAVEL,
+            utilizador: response[x].UTILIZADOR,
             tipo_FIM: response[x].TIPO_FIM,
             ocorrencias: response[x].OCORRENCIAS,
             total_OCORRENCIAS: response[x].TOTAL_OCORRENCIAS,
@@ -298,7 +309,7 @@ export class FichaEquipamentoComponent implements OnInit {
             dias_SEMANA: response[x].DIAS_SEMANA,
             data_ULTIMA_REALIZADA: (response[x].DATA_ULTIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_ULTIMA_REALIZADA) : null,
             data_PROXIMA_REALIZADA: (response[x].DATA_PROXIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_PROXIMA_REALIZADA) : null,
-            data_INICIO:  (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null,
+            data_INICIO: (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null,
             /*hora_INICIO: response[x].hora_INICIO*/
           });
         }
@@ -344,6 +355,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.carregaaccoes();
     this.listar_refs();
     this.listar_equipas();
+    this.listar_utilizadores();
     this.listar_localizacao();
     this.listar_equipamentos(id);
     this.carregarDepartamentos();
@@ -363,6 +375,22 @@ export class FichaEquipamentoComponent implements OnInit {
           });
         }
         this.drop_equipas = this.drop_equipas.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  listar_utilizadores() {
+    this.drop_utilizadores = [];
+    this.GERUTILIZADORESService.getAll().subscribe(
+      response => {
+        this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: null });
+        var grupo = [];
+        for (var x in response) {
+          this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, email: response[x].email, value: response[x].id_UTILIZADOR });
+        }
+
+        this.drop_utilizadores = this.drop_utilizadores.slice();
 
       },
       error => { console.log(error); });
@@ -1087,6 +1115,8 @@ export class FichaEquipamentoComponent implements OnInit {
 
     equipamento.COD_EQUIPAMENTO_PRINCIPAL = this.COD_EQUIPAMENTO_PRINCIPAL;
     equipamento.EQUIPA = this.EQUIPA;
+    equipamento.TIPO_EQUIPA = this.TIPO_EQUIPA;
+    equipamento.UTILIZADOR = this.UTILIZADOR;
     equipamento.GARANTIA = this.GARANTIA;
     equipamento.DATA_VALIDADE = this.DATA_VALIDADE;
     equipamento.LOCALIZACAO = this.LOCALIZACAO.substring(1);
@@ -1399,6 +1429,8 @@ export class FichaEquipamentoComponent implements OnInit {
       tabela.DATA_ULTIMA_REALIZADA = this.tabelaaccoes[x].ultima_REALIZADA;
       tabela.ID_ACAO = this.tabelaaccoes[x].id_ACCOES;
       tabela.ID_EQUIPA = this.tabelaaccoes[x].equipa;
+      tabela.UTILIZADOR = this.tabelaaccoes[x].utilizador;
+      tabela.TIPO_RESPONSAVEL = this.tabelaaccoes[x].tipo_responsavel;
       tabela.PERIOCIDADE = this.tabelaaccoes[x].periociodade;
       tabela.TIPO_FIM = this.tabelaaccoes[x].tipo_FIM;
       tabela.OCORRENCIAS = this.tabelaaccoes[x].ocorrencias;

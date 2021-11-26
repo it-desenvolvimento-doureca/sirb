@@ -27,6 +27,14 @@ export class FINREGISTOACOESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyidFICHEIRO(id): Observable<FIN_REGISTO_ACOES[]> {
+    const url = webUrl.host + '/rest/sirb/getFIN_REGISTO_ACOESbyidFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+  
   getAll(): Observable<FIN_REGISTO_ACOES[]> {
     const url = webUrl.host + '/rest/sirb/getFIN_REGISTO_ACOES';
     return this.http

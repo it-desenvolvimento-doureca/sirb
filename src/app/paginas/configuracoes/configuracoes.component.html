@@ -4665,6 +4665,49 @@
                               </li>
                             </ul>
                           </li>
+                          <li *ngIf="id_modulo == 14">
+
+                            <input type="checkbox" id="node-1160" class="parent" />
+                            <label>
+                              <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node11602"
+                                [(ngModel)]="checkbox.node11602" />
+                              <span></span>
+                            </label>
+                            <label for="node-1160">
+                              <b>App Manutenção</b>
+                            </label>
+
+                            <ul>
+                              <!--li>
+                                <input type="checkbox" id="node-1160-0-1" />
+                                <label>
+                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node11602editar"
+                                    [(ngModel)]="checkbox.node11602editar" />
+                                  <span></span>
+                                </label>
+                                <label for="node-1160-0-1" class="editar">Editar</label>
+                              </li-->
+                              <li>
+                                <input type="checkbox" id="node-1160-1-1" />
+                                <label>
+                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node11602painel_controlo"
+                                    [(ngModel)]="checkbox.node11602painel_controlo" />
+                                  <span></span>
+                                </label>
+                                <label for="node-1160-1-1" class="parametros">Painel Controlo</label>
+                              </li>
+                              <li>
+                                <input type="checkbox" id="node-1160-1-2" />
+                                <label>
+                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node11602alterar_pipe"
+                                    [(ngModel)]="checkbox.node11602alterar_pipe" />
+                                  <span></span>
+                                </label>
+                                <label for="node-1160-1-2" class="editar">Alterar Pipe de Trabalho</label>
+                              </li>
+                            </ul>
+
+                          </li>
 
 
                           <!-- Módulo Injeção-->

@@ -298,24 +298,42 @@ export class FichaComponent implements OnInit {
           this.mensagemtabela_acoes = "Nenhum Registo foi encontrado...";
         }
         for (var x in response) {
+          var array = {
+            id_ACAO: response[x][0],
+            id_CLIENTE: response[x][1],
+            data_CRIA: response[x][2],
+            utz_CRIA: response[x][3],
+            contacto: response[x][4],
+            gerar_ALERTA: response[x][5],
+            alerta_GERADO: response[x][6],
+            origem: response[x][7],
+            descricao: response[x][8],
+            tamanho_FICHEIRO: response[x][9],
+            nome_FICHEIRO: response[x][10],
+            datatype_FICHEIRO: response[x][11],
+            type_FICHEIRO: response[x][12],
+            ficheiro: null,
+            ficheiro_2: null
+          };
 
           this.tabela_acoes.push({
-            dados: response[x][0],
-            id: response[x][0].id_ACAO,
-            data_acao: this.formatDate(response[x][0].data_CRIA),
-            utilizador: response[x][1],
-            descricao: response[x][0].descricao,
-            descricao_pequena: (response[x][0].descricao == null) ? '' : response[x][0].descricao.substring(0, 25),
-            contacto: response[x][0].contacto,
-            origem: response[x][0].origem,
-            alerta_data_hora: (response[x][0].gerar_ALERTA == null) ? null : this.formatDate(response[x][0].gerar_ALERTA) + ' ' + new Date(response[x][0].gerar_ALERTA).toLocaleTimeString().slice(0, 5),
-            gerar_ALERTA: response[x][0].gerar_ALERTA,
-            nome_ficheiro: response[x][0].nome_FICHEIRO,
-            ficheiro: response[x][0].ficheiro + response[x][0].ficheiro_2,
-            datatype: response[x][0].datatype_FICHEIRO,
-            type: response[x][0].type_FICHEIRO,
-            size: response[x][0].tamanho_FICHEIRO,
-            apagarficheiros: (this.adminuser || this.user == response[x][0].utz_CRIA) ? false : true
+            dados: array,
+            id: response[x][0],
+            data_acao: this.formatDate(response[x][2]),
+            utilizador: response[x][13],
+            descricao: response[x][8],
+            descricao_pequena: (response[x][8] == null) ? '' : response[x][8].substring(0, 25),
+            contacto: response[x][4],
+            origem: response[x][7],
+            alerta_data_hora: (response[x][5] == null) ? null : this.formatDate(response[x][5]) + ' ' + new Date(response[x][5]).toLocaleTimeString().slice(0, 5),
+            gerar_ALERTA: response[x][5],
+            nome_ficheiro: response[x][10],
+            //ficheiro: response[x][0].ficheiro + response[x][0].ficheiro_2,
+            ficheiro: null,
+            datatype: response[x][11],
+            type: response[x][12],
+            size: response[x][9],
+            apagarficheiros: (this.adminuser || this.user == response[x][3]) ? false : true
           });
 
         }
@@ -526,9 +544,23 @@ export class FichaComponent implements OnInit {
 
   abrir(event) {
     //console.log(event)
-    this.novo = false;
     this.dados = event.data.dados;
-    this.dados.ficheiro = event.data.ficheiro;
+
+    if (event.data.ficheiro == null) {
+      this.FINREGISTOACOESService.getbyidFICHEIRO(event.data.id).subscribe(
+        (res) => {
+          if (res[0][0] != null) this.dados.ficheiro = res[0][0] + res[0][1];
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        }
+      );
+    } else {
+      this.dados.ficheiro = event.data.ficheiro;
+    }
+    this.novo = false;
+
+
     this.dados.data_CRIA = new Date(event.data.dados.data_CRIA);
     this.nome_utilizador = event.data.utilizador;
     this.alerta_data = (event.data.gerar_ALERTA == null) ? null : new Date(event.data.gerar_ALERTA);
@@ -1011,27 +1043,34 @@ export class FichaComponent implements OnInit {
       });
   }
 
-  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, id_ficheiro) {
     this.srcelement = "";
     if (type == "pdf" || type == 'txt') {
       if (ficheiro == null) {
-
-        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+        this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
+          (res) => {
+            this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0][0] + res[0][1]);
+          }, error => {
+            this.simular(this.inputerroficheiro);
+            console.log(error);
+          }
+        );
+        //this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
       } else {
         /*var blob = new Blob([ficheiro], { type: datatype });
         var blobUrl = URL.createObjectURL(blob);*/
         this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
       }
     }
-    if (ficheiro == null) {
+    /*if (ficheiro == null) {
       this.srcelement = webUrl.link + srcelement;
     } else {
       this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
-    }
+    }*/
     if (type == "excel" || type == "word") {
-      this.download(nomeficheiro, srcelement, datatype, ficheiro)
+      this.download(nomeficheiro, srcelement, datatype, ficheiro, id_ficheiro)
     } else if (type == "msg") {
-      this.downloadTXT(nomeficheiro, srcelement, ficheiro)
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro, id_ficheiro)
     }
     else {
       this.nomeficheiro = nomeficheiro;
@@ -1040,15 +1079,21 @@ export class FichaComponent implements OnInit {
     }
   }
 
-  download(nome, filename, datatype, ficheiro) {
+  download(nome, filename, datatype, ficheiro, id_ficheiro) {
     if (ficheiro == null) {
-      this.UploadService.download("report", filename, datatype).subscribe(
+      this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
         (res) => {
           /*var fileURL: any = URL.createObjectURL(res);
           fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
           var myWindow = window.open(fileURL, "", "width=200,height=100");*/
           // myWindow.close();
-          FileSaver.saveAs(res, nome);
+          // FileSaver.saveAs(res, nome);
+
+          const downloadLink = document.createElement("a");
+
+          downloadLink.href = res[0][0] + res[0][1];
+          downloadLink.download = nome;
+          downloadLink.click();
         }, error => {
           this.simular(this.inputerroficheiro);
           console.log(error);
@@ -1066,19 +1111,27 @@ export class FichaComponent implements OnInit {
 
 
 
-  downloadTXT(nomeficheiro, filename, ficheiro) {
+  downloadTXT(nomeficheiro, filename, ficheiro, id_ficheiro) {
     if (ficheiro == null) {
-      this.UploadService.downloadTXT(filename).subscribe(
+      this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
         (res) => {
-          var fileURL = URL.createObjectURL(res);
-          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-          this.nomeficheiro = nomeficheiro;
-          this.type = 'txt';
-          this.display = true;
+          this.UploadService.downloadFileMSGBASE64(filename, res[0][0] + res[0][1]).subscribe(
+            (res) => {
+              var fileURL = URL.createObjectURL(res);
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+              this.nomeficheiro = nomeficheiro;
+              this.type = 'txt';
+              this.display = true;
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            });
         }, error => {
           this.simular(this.inputerroficheiro);
           console.log(error);
-        });
+        }
+      );
+
     } else {
       this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
         (res) => {

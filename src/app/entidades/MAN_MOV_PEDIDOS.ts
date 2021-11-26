@@ -13,4 +13,7 @@ export class MAN_MOV_PEDIDOS {
     DATA_ULT_MODIF: Date;
     ATIVO: boolean;
     TIPO_LOCALIZACAO: string;
+    TIPO_RESPONSAVEL: string;
+    UTILIZADOR: number;
+    ID_EQUIPA: number;
 }

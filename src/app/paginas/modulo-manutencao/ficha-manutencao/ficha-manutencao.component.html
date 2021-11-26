@@ -21,6 +21,12 @@
               <div class="ripple-container"></div>
             </a>
           </li>
+          <li [class.disabled]="disValidar" [hidden]="!btvalidar">
+            <a (click)="validar()">
+              <i class="material-icons">check</i>Validar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
           <!--<li [class.disabled]="disFechar" [hidden]="!btfechar">
             <a (click)="fechar()">
               <i class="material-icons">close</i>Fechar
@@ -106,6 +112,32 @@
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="LOCALIZACAO"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
+
+                    <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_equipa" value="E"
+                        [(ngModel)]="TIPO_RESPONSAVEL">
+                      </p-radioButton>
+                      <br>
+                      <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_equipa" value="U"
+                        [(ngModel)]="TIPO_RESPONSAVEL">
+                      </p-radioButton>
+                    </div>
+
+                    <div *ngIf="TIPO_RESPONSAVEL == 'E'" style="padding: 1px 5px 1px 10px;"
+                      class="form-group col-md-6 col-lg-3">
+                      <label>Equipa:</label>
+                      <p-dropdown [filter]="true" [options]="drop_equipas" [disabled]="!modoedicao"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="ID_EQUIPA"
+                        [ngModelOptions]="{standalone: true}" [required]="!novo"></p-dropdown>
+                    </div>
+                    <div *ngIf="TIPO_RESPONSAVEL == 'U'" style="padding: 1px 5px 1px 10px;"
+                      class="form-group col-md-6 col-lg-3">
+                      <label>Utilizador:</label>
+                      <p-dropdown [filter]="true" [options]="drop_utilizadores" [disabled]="!modoedicao"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="UTILIZADOR"
+                        [ngModelOptions]="{standalone: true}" [required]="!novo"></p-dropdown>
+                    </div>
+
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <label>Descrição do Pedido:</label>

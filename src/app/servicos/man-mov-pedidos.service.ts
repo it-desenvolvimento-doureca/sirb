@@ -27,6 +27,14 @@ export class MANMOVPEDIDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(): Observable<MAN_MOV_PEDIDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_PEDIDOS2';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteMAN_MOV_PEDIDOS/' + id + '')
@@ -48,9 +56,8 @@ export class MANMOVPEDIDOSService {
   update(data: MAN_MOV_PEDIDOS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateMAN_MOV_PEDIDOS', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
-      .catch(this.handleError);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
   }
 
   MAN_CRIAR_MANUTENCOES_CORRETIVAS(data) {
