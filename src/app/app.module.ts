@@ -368,6 +368,16 @@ import { ReferenciasComponent } from './paginas/modulo-comercial/contratos/refer
 import { ReferenciasFormComponent } from './paginas/modulo-comercial/contratos/referencias/referencias-form/referencias-form.component';
 import { AcordosComponent } from './paginas/modulo-comercial/contratos/acordos/acordos.component';
 import { AcordosFormComponent } from './paginas/modulo-comercial/contratos/acordos/acordos-form/acordos-form.component';
+import { COMACORDOSService } from './servicos/com-acordos.service';
+import { COMACORDOSACTIVIDADESService } from './servicos/com-acordos-actividades.service';
+import { COMACORDOSAMORTIZACOESService } from './servicos/com-acordos-amortizacoes.service';
+import { COMACORDOSANEXOSService } from './servicos/com-acordos-anexos.service';
+import { COMACORDOSHISTORICOService } from './servicos/com-acordos-historico.service';
+import { COMACORDOSLTAService } from './servicos/com-acordos-lta.service';
+import { COMACORDOSPRECOSService } from './servicos/com-acordos-precos.service';
+import { COMCONTRATOSService } from './servicos/com-contratos.service';
+import { COMREFERENCIASService } from './servicos/com-referencias.service';
+import { COMACORDOSVOLUMESService } from './servicos/com-acordos-volumes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1335,6 +1345,16 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANMOVPEDIDOSService,
     MANMOVPEDIDOSDOCUMENTOSService,
     MANMOVMANUTENCAOANEXOSService,
+    COMACORDOSService,
+    COMACORDOSACTIVIDADESService,
+    COMACORDOSAMORTIZACOESService,
+    COMACORDOSANEXOSService,
+    COMACORDOSHISTORICOService,
+    COMACORDOSLTAService,
+    COMACORDOSPRECOSService,
+    COMACORDOSVOLUMESService,
+    COMCONTRATOSService,
+    COMREFERENCIASService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
