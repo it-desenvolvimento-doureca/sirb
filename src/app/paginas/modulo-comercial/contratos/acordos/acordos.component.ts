@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { COMACORDOSService } from 'app/servicos/com-acordos.service';
 import { DataTable } from 'primeng/primeng';
 
 
@@ -19,10 +20,10 @@ export class AcordosComponent implements OnInit {
 
 
   user: any;
-  id_ACORDO: string;
-  assunto: string;
-  ambito: string;
-  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+  ID: string;
+  CONTRATO: string;
+  REFERENCIA: string;
+  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private COMACORDOSService: COMACORDOSService) { }
   ngOnInit() {
 
     var array = this.globalVar.getfiltros("reunioes");
@@ -33,10 +34,10 @@ export class AcordosComponent implements OnInit {
 
       this.dataTableComponent.filters = array;
 
-      this.id_ACORDO = (array['id_ACORDO'] != undefined) ? array['id_ACORDO'].value : "";
+      this.ID = (array['ID'] != undefined) ? array['ID'].value : "";
       //this.estado = (array['estado'] != undefined) ? array['estado'].value : ""; 
-      this.ambito = (array['ambito'] != undefined) ? array['ambito'].value : "";
-      this.assunto = (array['assunto'] != undefined) ? array['assunto'].value : "";
+      this.REFERENCIA = (array['REFERENCIA'] != undefined) ? array['REFERENCIA'].value : "";
+      this.CONTRATO = (array['CONTRATO'] != undefined) ? array['CONTRATO'].value : "";
 
 
     }
@@ -70,25 +71,28 @@ export class AcordosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    /* this.REUREUNIOESService.getAll().subscribe(
-       response => {
-         var count = Object.keys(response).length;
-         if (count == 0) {
-           this.mensagemtabela = "Nenhum Registo foi encontrado...";
-         }
-         for (var x in response) {
- 
-           this.cols.push({
-             id_ACORDO: response[x][0].id_ACORDO,
-             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
-             ambito: response[x][1],
-             assunto: response[x][0].assunto,
-           });
- 
-         }
-         this.cols = this.cols.slice();
-       },
-       error => console.log(error));*/
+    this.COMACORDOSService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "Nenhum Registo foi encontrado...";
+        }
+        for (var x in response) {
+
+          this.cols.push({
+            ID: response[x].ID,
+            ID_CONTRATO: response[x].ID_CONTRATO,
+            ID_REFERENCIA: response[x].ID_REFERENCIA,
+            REFERENCIA: '',
+            CONTRATO: ''
+            //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
+
+          });
+
+        }
+        this.cols = this.cols.slice();
+      },
+      error => console.log(error));
 
   }
 
@@ -100,9 +104,9 @@ export class AcordosComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
 
-    this.id_ACORDO = "";
-    this.assunto = "";
-    this.ambito = "";
+    this.ID = "";
+    this.CONTRATO = "";
+    this.REFERENCIA = "";
     //this.data_ULTIMA_REALIZADA = "";
 
     this.dataTableComponent.filter("", "", "");
@@ -130,7 +134,7 @@ export class AcordosComponent implements OnInit {
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
       for (var x in array) {
-        ids.push(array[x].id_ACORDO);
+        ids.push(array[x].ID);
       }
 
       if (array.length == 0) {
@@ -147,7 +151,7 @@ export class AcordosComponent implements OnInit {
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
 
     for (var x in array) {
-      ids.push(array[x].id_ACORDO);
+      ids.push(array[x].ID);
     }
 
     this.globalVar.setfiltros("reunioes_id", ids);
@@ -155,7 +159,7 @@ export class AcordosComponent implements OnInit {
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['reunioes/view'], { queryParams: { id: event.data.id_ACORDO } });
+    this.router.navigate(['reunioes/view'], { queryParams: { id: event.data.ID } });
   }
 
   //simular click para mostrar mensagem

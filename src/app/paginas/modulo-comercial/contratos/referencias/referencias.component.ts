@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { COMREFERENCIASService } from 'app/servicos/com-referencias.service';
 import { DataTable } from 'primeng/primeng';
 
 @Component({
@@ -18,13 +19,15 @@ export class ReferenciasComponent implements OnInit {
 
 
   user: any;
-  id_REFERENCIA: string;
-  assunto: string;
-  ambito: string;
-  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+  ID: string;
+  DESCRICAO: string;
+  COD_REFERENCIA: string;
+  COD_REFERENCIA_SILVER: string;
+  DESC_REFERENCIA_SILVER: string;
+  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private COMREFERENCIASService: COMREFERENCIASService) { }
   ngOnInit() {
 
-    var array = this.globalVar.getfiltros("reunioes");
+    var array = this.globalVar.getfiltros("comercial_referencias");
     if (array) {
 
 
@@ -32,11 +35,12 @@ export class ReferenciasComponent implements OnInit {
 
       this.dataTableComponent.filters = array;
 
-      this.id_REFERENCIA = (array['id_REFERENCIA'] != undefined) ? array['id_REFERENCIA'].value : "";
+      this.ID = (array['ID'] != undefined) ? array['ID'].value : "";
       //this.estado = (array['estado'] != undefined) ? array['estado'].value : ""; 
-      this.ambito = (array['ambito'] != undefined) ? array['ambito'].value : "";
-      this.assunto = (array['assunto'] != undefined) ? array['assunto'].value : "";
-
+      this.DESCRICAO = (array['DESCRICAO'] != undefined) ? array['DESCRICAO'].value : "";
+      this.COD_REFERENCIA = (array['COD_REFERENCIA'] != undefined) ? array['COD_REFERENCIA'].value : "";
+      this.COD_REFERENCIA_SILVER = (array['COD_REFERENCIA_SILVER'] != undefined) ? array['COD_REFERENCIA_SILVER'].value : "";
+      this.DESC_REFERENCIA_SILVER = (array['DESC_REFERENCIA_SILVER'] != undefined) ? array['DESC_REFERENCIA_SILVER'].value : "";
 
     }
 
@@ -69,25 +73,28 @@ export class ReferenciasComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    /* this.REUREUNIOESService.getAll().subscribe(
-       response => {
-         var count = Object.keys(response).length;
-         if (count == 0) {
-           this.mensagemtabela = "Nenhum Registo foi encontrado...";
-         }
-         for (var x in response) {
- 
-           this.cols.push({
-             id_REFERENCIA: response[x][0].id_REFERENCIA,
-             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
-             ambito: response[x][1],
-             assunto: response[x][0].assunto,
-           });
- 
-         }
-         this.cols = this.cols.slice();
-       },
-       error => console.log(error));*/
+    this.COMREFERENCIASService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "Nenhum Registo foi encontrado...";
+        }
+        for (var x in response) {
+
+          this.cols.push({
+            ID: response[x].ID,
+            DESCRICAO: response[x].DESCRICAO,
+            COD_REFERENCIA: response[x].COD_REFERENCIA,
+            COD_REFERENCIA_SILVER: response[x].COD_REFERENCIA_SILVER,
+            DESC_REFERENCIA_SILVER: response[x].DESC_REFERENCIA_SILVER,
+            //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
+
+          });
+
+        }
+        this.cols = this.cols.slice();
+      },
+      error => console.log(error));
 
   }
 
@@ -99,9 +106,11 @@ export class ReferenciasComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
 
-    this.id_REFERENCIA = "";
-    this.assunto = "";
-    this.ambito = "";
+    this.ID = "";
+    this.COD_REFERENCIA = "";
+    this.DESCRICAO = "";
+    this.COD_REFERENCIA_SILVER = "";
+    this.DESC_REFERENCIA_SILVER = "";
     //this.data_ULTIMA_REALIZADA = "";
 
     this.dataTableComponent.filter("", "", "");
@@ -124,19 +133,19 @@ export class ReferenciasComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("reunioes", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("comercial_referencias", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
       for (var x in array) {
-        ids.push(array[x].id_REFERENCIA);
+        ids.push(array[x].ID);
       }
 
       if (array.length == 0) {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("reunioes_id", ids);
+      this.globalVar.setfiltros("comercial_referencias_id", ids);
     }, 250);
   }
 
@@ -146,15 +155,15 @@ export class ReferenciasComponent implements OnInit {
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
 
     for (var x in array) {
-      ids.push(array[x].id_REFERENCIA);
+      ids.push(array[x].ID);
     }
 
-    this.globalVar.setfiltros("reunioes_id", ids);
+    this.globalVar.setfiltros("comercial_referencias_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['reunioes/view'], { queryParams: { id: event.data.id_REFERENCIA } });
+    this.router.navigate(['comercial_referencias/view'], { queryParams: { id: event.data.ID } });
   }
 
   //simular click para mostrar mensagem

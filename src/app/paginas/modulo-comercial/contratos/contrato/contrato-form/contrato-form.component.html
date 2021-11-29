@@ -1,3 +1,122 @@
-<p>
-  contrato-form works!
-</p>
+<app-controlos (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Contratos</h4>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div>
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
+                      <label style="display: -webkit-box;">ID Registo:</label>
+                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="ID"
+                        [ngModelOptions]="{standalone: true}" type="text"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                    </div>
+
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-5">
+                      <label style="display: -webkit-box;">Data Registo:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'60%'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="DATA_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:150px; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="HORA_CRIA" [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
+                    </div>
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-5">
+                      <label style="display: -webkit-box;">Utilizador:</label>
+                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="UTILIZADOR"
+                        [ngModelOptions]="{standalone: true}" type="text"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
+                      <label>Número Contrato:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="N_CONTRATO"
+                        [ngModelOptions]="{standalone: true}" required>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
+                      <label>Data Contrato:</label>
+                      <br>
+                      <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="DATA_CONTRATO" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="false" [required]="true"></p-calendar>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
+                      <label>Contrato Silver:</label><br>
+                      <p-dropdown [filter]="true" #dropc [options]="drop_contratos_silver"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="CONTRATO_SILVER"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                      <label>Cliente:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropc (onChange)="getMoradas(dropc.value.id)"
+                        [options]="drop_cliente" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="N_CLIENTE" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                      <label>Morada Cliente:</label>
+                      <br>
+                      <p-dropdown [filter]="true" #dropa [options]="drop_moradas"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="MORADA_CLIENTE"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_moradas.length > 0)"
+                        [required]="true"></p-dropdown>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                      <label>Observações:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="OBSERVACOES"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
+              <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
+              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button #escondebt id="editarclick4" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar id="editarclick2" data-toggle="modal" [hidden]="true"></button>
+<button #alteraeditar2 id="editarclick3" data-toggle="modal" [hidden]="true"></button>
+<button #alteracancelar id="cancelaclick1" data-toggle="modal" [hidden]="true"></button>

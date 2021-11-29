@@ -1,7 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { COMACORDOSACTIVIDADESService } from 'app/servicos/com-acordos-actividades.service';
 import { UploadService } from 'app/servicos/upload.service';
 import { ConfirmationService, FileUpload } from 'primeng/primeng';
 
@@ -49,6 +51,7 @@ export class AcordosFormComponent implements OnInit {
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
+    private COMACORDOSACTIVIDADESService: COMACORDOSACTIVIDADESService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -154,14 +157,14 @@ export class AcordosFormComponent implements OnInit {
     this.dados = event.data.dados;
 
     if (event.data.ficheiro == null) {
-      /*this.FINREGISTOACOESService.getbyidFICHEIRO(event.data.id).subscribe(
+      this.COMACORDOSACTIVIDADESService.getbyidFICHEIRO(event.data.id).subscribe(
         (res) => {
           if (res[0][0] != null) this.dados.ficheiro = res[0][0] + res[0][1];
         }, error => {
           this.simular(this.inputerroficheiro);
           console.log(error);
         }
-      );*/
+      );
     } else {
       this.dados.ficheiro = event.data.ficheiro;
     }

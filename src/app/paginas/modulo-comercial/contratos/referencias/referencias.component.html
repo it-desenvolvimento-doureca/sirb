@@ -11,25 +11,42 @@
           <div class="card-content table-responsive">
 
             <p-dataTable (onFilter)="atualizaids()" (onSort)="atualizaids()" [emptyMessage]="mensagemtabela"
-              [style]="{'min-height':'300px'}" [value]="cols" dataKey="id_REFERENCIA" [rows]="25" [paginator]="true"
+              [style]="{'min-height':'300px'}" [value]="cols" dataKey="ID" [rows]="25" [paginator]="true"
               [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id_REFERENCIA" header="Cód."
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ID" header="Id"
                 [style]="{'width':'97px'}">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="id_REFERENCIA" #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="ID"
+                    #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="assunto" header="Assunto">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="COD_REFERENCIA"
+                header="Cód. Referência">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="assunto" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="COD_REFERENCIA" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ambito" header="Âmbito">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="DESCRICAO"
+                header="Desc. Referência">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="ambito" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                    [(ngModel)]="DESCRICAO" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="COD_REFERENCIA_SILVER"
+                header="Cód. Ref. Silver">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="COD_REFERENCIA_SILVER" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="DESC_REFERENCIA_SILVER"
+                header="Desc. Ref. Silver">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="DESC_REFERENCIA_SILVER" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
 
@@ -42,7 +59,7 @@
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <a style="color: black; cursor:pointer;" title="Ver mais"
-                    [routerLink]="['/comercial_referencias/view']" [queryParams]="{ id: car.id_REFERENCIA }">
+                    [routerLink]="['/comercial_referencias/view']" [queryParams]="{ id: car.ID }">
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>

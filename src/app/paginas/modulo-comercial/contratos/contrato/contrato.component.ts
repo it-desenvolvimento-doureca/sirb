@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { COMCONTRATOSService } from 'app/servicos/com-contratos.service';
 import { DataTable } from 'primeng/primeng';
 
 @Component({
@@ -18,13 +19,15 @@ export class ContratoComponent implements OnInit {
 
 
   user: any;
-  id_CONTRATO: string;
-  assunto: string;
-  ambito: string;
-  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+  ID: string;
+  N_CONTRATO: string;
+  NOME_CLIENTE: string;
+  MORADA_CLIENTE: string;
+  OBSERVACOES: string;
+  constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private COMCONTRATOSService: COMCONTRATOSService) { }
   ngOnInit() {
 
-    var array = this.globalVar.getfiltros("reunioes");
+    var array = this.globalVar.getfiltros("comercial_contratos");
     if (array) {
 
 
@@ -32,12 +35,12 @@ export class ContratoComponent implements OnInit {
 
       this.dataTableComponent.filters = array;
 
-      this.id_CONTRATO = (array['id_CONTRATO'] != undefined) ? array['id_CONTRATO'].value : "";
+      this.ID = (array['ID'] != undefined) ? array['ID'].value : "";
       //this.estado = (array['estado'] != undefined) ? array['estado'].value : ""; 
-      this.ambito = (array['ambito'] != undefined) ? array['ambito'].value : "";
-      this.assunto = (array['assunto'] != undefined) ? array['assunto'].value : "";
-
-
+      this.NOME_CLIENTE = (array['NOME_CLIENTE'] != undefined) ? array['NOME_CLIENTE'].value : "";
+      this.N_CONTRATO = (array['N_CONTRATO'] != undefined) ? array['N_CONTRATO'].value : "";
+      this.MORADA_CLIENTE = (array['MORADA_CLIENTE'] != undefined) ? array['MORADA_CLIENTE'].value : "";
+      this.OBSERVACOES = (array['OBSERVACOES'] != undefined) ? array['OBSERVACOES'].value : "";
     }
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
@@ -69,25 +72,28 @@ export class ContratoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    /* this.REUREUNIOESService.getAll().subscribe(
-       response => {
-         var count = Object.keys(response).length;
-         if (count == 0) {
-           this.mensagemtabela = "Nenhum Registo foi encontrado...";
-         }
-         for (var x in response) {
- 
-           this.cols.push({
-             id_CONTRATO: response[x][0].id_CONTRATO,
-             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
-             ambito: response[x][1],
-             assunto: response[x][0].assunto,
-           });
- 
-         }
-         this.cols = this.cols.slice();
-       },
-       error => console.log(error));*/
+    this.COMCONTRATOSService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "Nenhum Registo foi encontrado...";
+        }
+        for (var x in response) {
+
+          this.cols.push({
+            ID: response[x].ID,
+            N_CONTRATO: response[x].N_CONTRATO,
+            NOME_CLIENTE: response[x].NOME_CLIENTE,
+            MORADA_CLIENTE: response[x].MORADA_CLIENTE,
+            OBSERVACOES: response[x].OBSERVACOES,
+            //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
+
+          });
+
+        }
+        this.cols = this.cols.slice();
+      },
+      error => console.log(error));
 
   }
 
@@ -99,9 +105,11 @@ export class ContratoComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
 
-    this.id_CONTRATO = "";
-    this.assunto = "";
-    this.ambito = "";
+    this.ID = "";
+    this.N_CONTRATO = "";
+    this.NOME_CLIENTE = "";
+    this.MORADA_CLIENTE = "";
+    this.OBSERVACOES = "";
     //this.data_ULTIMA_REALIZADA = "";
 
     this.dataTableComponent.filter("", "", "");
@@ -124,19 +132,19 @@ export class ContratoComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("reunioes", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("comercial_contratos", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
       for (var x in array) {
-        ids.push(array[x].id_CONTRATO);
+        ids.push(array[x].ID);
       }
 
       if (array.length == 0) {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("reunioes_id", ids);
+      this.globalVar.setfiltros("comercial_contratos_id", ids);
     }, 250);
   }
 
@@ -146,15 +154,15 @@ export class ContratoComponent implements OnInit {
     if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
 
     for (var x in array) {
-      ids.push(array[x].id_CONTRATO);
+      ids.push(array[x].ID);
     }
 
-    this.globalVar.setfiltros("reunioes_id", ids);
+    this.globalVar.setfiltros("comercial_contratos_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['reunioes/view'], { queryParams: { id: event.data.id_CONTRATO } });
+    this.router.navigate(['comercial_contratos/view'], { queryParams: { id: event.data.ID } });
   }
 
   //simular click para mostrar mensagem

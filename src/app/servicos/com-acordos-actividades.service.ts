@@ -52,8 +52,14 @@ export class COMACORDOSACTIVIDADESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-
-
+  getbyidFICHEIRO(id): Observable<COM_ACORDOS_ACTIVIDADES[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ACTIVIDADESbyidFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+  
   private extractData(res: Response) {
     let body = res.json();
     return body;

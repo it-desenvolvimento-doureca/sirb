@@ -51,7 +51,13 @@ export class COMACORDOSANEXOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-
+  getbyidFICHEIRO(id): Observable<COM_ACORDOS_ANEXOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ANEXOSbyidFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();
