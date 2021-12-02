@@ -53,6 +53,13 @@ export class COMACORDOSVOLUMESService {
   }
 
 
+  deleteTODOS(id) {
+    return this.http
+      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS_VOLUMES_TODOS/' + id + '')
+      .toPromise()
+      .then(res => res)
+      .catch(this.handleError);
+  }
 
   private extractData(res: Response) {
     let body = res.json();
