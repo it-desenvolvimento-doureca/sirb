@@ -78,6 +78,8 @@ export class FichaEquipamentoComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
+  @ViewChild('waitingDialog') waitingDialog: ElementRef;
+  @ViewChild('waitingDialogclose') waitingDialogclose: ElementRef;
   id_selected: number;
   descricaoeng: string;
   descricaopt: string;
@@ -126,6 +128,8 @@ export class FichaEquipamentoComponent implements OnInit {
   TIPO_EQUIPA: string = 'E';
   UTILIZADOR: number;
   drop_utilizadores: any[];
+  novo_nome: any;
+  display_duplica: boolean;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -150,7 +154,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.globalVar.setseguinte(false);
     this.globalVar.setanterior(false);
     this.globalVar.setatualizar(false);
-    this.globalVar.setduplicar(false);
+    this.globalVar.setduplicar(true);
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(false);
@@ -164,7 +168,14 @@ export class FichaEquipamentoComponent implements OnInit {
     var urlarray = url.split("/");
 
 
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591apagar"));
+    this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591duplicar"));
 
+    this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591adicionarACCAO");
+
+    this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591apagarficheiros");
 
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
@@ -175,14 +186,7 @@ export class FichaEquipamentoComponent implements OnInit {
         .subscribe(params => {
           id = params['id'] || 0;
         });
-      this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node1162101editar"));
-      this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node1162101criar"));
-      this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node1162101apagar"));
-      this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node1162101duplicar"));
 
-      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node526");
-
-      this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node1162101apagarficheiros");
 
     }
 
@@ -193,7 +197,7 @@ export class FichaEquipamentoComponent implements OnInit {
         this.globalVar.setapagar(false);
         this.globalVar.setcriar(true);
         this.modoedicao = true;
-
+        this.globalVar.setduplicar(true);
       } else if (urlarray[1].match("novo")) {
         this.globalVar.setseguinte(false);
         this.globalVar.setanterior(false);
@@ -209,7 +213,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
       } else if (urlarray[1].match("view")) {
-        this.globalVar.setdisDuplicar(false);
+        //this.globalVar.setdisDuplicar(false);
         this.globalVar.setcriar(true);
       }
     }
@@ -1183,6 +1187,34 @@ export class FichaEquipamentoComponent implements OnInit {
     }
   }
 
+  duplicar() {
+    this.novo_nome = null;
+    this.display_duplica = true;
+  }
+
+  duplica() {
+    this.display_duplica = false;
+    this.simular(this.waitingDialog);
+    this.MANMOVMANUTENCAOEQUIPAMENTOSService.DUPLICA_MAN_MOV_MANUTENCAO_EQUIPAMENTOS([{ ID_MANUTENCAO: this.ID_MANUTENCAO, NOME: this.novo_nome, UTZ_CRIA: this.user }]).subscribe(
+      res => {
+        console.log(res)
+        var back;
+        var sub2 = this.route
+          .queryParams
+          .subscribe(params => {
+            // Defaults to 0 if no query param provided.
+            back = params['redirect'] || 0;
+          });
+
+        if (back != 0) {
+          this.router.navigate(['equipamentos_manutencao/editar'], { queryParams: { id: res[0][0], redirect: back } });
+        } else {
+          this.router.navigate(['equipamentos_manutencao/editar'], { queryParams: { id: res[0][0] } });
+        }
+        this.simular(this.waitingDialogclose);
+      },
+      error => { console.log(error); this.simular(this.waitingDialogclose); this.simular(this.inputerro); });
+  }
   gravarTabelaGrausImportancia(id) {
     for (var x in this.tabelaGrauImportancia) {
       var tabela = new MAN_MOV_MANUTENCAO_GRAUS_IMPORTANCIA;

@@ -62,6 +62,12 @@ export class MANMOVMANUTENCAOEQUIPAMENTOSService {
   }
 
 
+  DUPLICA_MAN_MOV_MANUTENCAO_EQUIPAMENTOS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/DUPLICA_MAN_MOV_MANUTENCAO_EQUIPAMENTOS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();
