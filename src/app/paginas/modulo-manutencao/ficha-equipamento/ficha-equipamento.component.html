@@ -1,4 +1,4 @@
-<app-controlos (apagarbt)="apagar()"></app-controlos>
+<app-controlos (apagarbt)="apagar()" (duplicarbt)="duplicar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -400,13 +400,13 @@
 
                       <p-column [editable]="false" [style]="{'width':'250px'}" field="tipo_responsavel"
                         header="Tipo Responsável">
-                        <ng-template let-col let-car="rowData" pTemplate="body"  let-index="rowIndex">
-                          <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_responsavel{{index}}" value="E"
-                            [(ngModel)]="car['tipo_responsavel']">
+                        <ng-template let-col let-car="rowData" pTemplate="body" let-index="rowIndex">
+                          <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_responsavel{{index}}"
+                            value="E" [(ngModel)]="car['tipo_responsavel']">
                           </p-radioButton>
 
-                          <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_responsavel{{index}}" value="U"
-                            [(ngModel)]="car['tipo_responsavel']">
+                          <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_responsavel{{index}}"
+                            value="U" [(ngModel)]="car['tipo_responsavel']">
                           </p-radioButton>
                         </ng-template>
                       </p-column>
@@ -652,7 +652,7 @@
       </div>
     </div>
     <!-- Modal Footer -->
-    <div class="">
+    <div class="" style="text-align: right;">
       <button type="button" class="btn btn-default" (click)="displayAddAccao = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
@@ -892,4 +892,34 @@
       </div>
     </div>
   </form>
+</p-dialog>
+
+<button type="button" [hidden]="true" #waitingDialog class="btn btn-primary"
+  onclick="waitingDialog.show('A Duplicar Registo', {dialogSize: 'md'});"></button>
+<button type="button" [hidden]="true" #waitingDialogclose class="btn btn-primary"
+  onclick="waitingDialog.hide();"></button>
+
+
+<p-dialog header="Duplicar Registo" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="display_duplica" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="duplica()">
+    <!-- Modal Body -->
+    <div class="">
+      <div class="form-group">
+        <label for="descricao">Novo Nome</label><br>
+        <input style="width: 500px;" autocomplete="off" type="text" class="form-control2" id="novo_nome"
+          [(ngModel)]="novo_nome" [ngModelOptions]="{standalone: true}" placeholder="Nome" required />
+      </div>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: right;">
+      <button type="button" class="btn btn-default" (click)="display_duplica = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>
