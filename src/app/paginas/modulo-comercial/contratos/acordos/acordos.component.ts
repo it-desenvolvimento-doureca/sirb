@@ -26,7 +26,7 @@ export class AcordosComponent implements OnInit {
   constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private COMACORDOSService: COMACORDOSService) { }
   ngOnInit() {
 
-    var array = this.globalVar.getfiltros("reunioes");
+    var array = this.globalVar.getfiltros("acordos");
     if (array) {
 
 
@@ -71,7 +71,7 @@ export class AcordosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.COMACORDOSService.getAll().subscribe(
+    this.COMACORDOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -80,11 +80,11 @@ export class AcordosComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
-            ID: response[x].ID,
-            ID_CONTRATO: response[x].ID_CONTRATO,
-            ID_REFERENCIA: response[x].ID_REFERENCIA,
-            REFERENCIA: '',
-            CONTRATO: ''
+            ID: response[x][0],
+            ID_CONTRATO: response[x][1],
+            ID_REFERENCIA: response[x][2],
+            REFERENCIA: response[x][3] + ' - ' + response[x][4],
+            CONTRATO: response[x][5]
             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
 
           });
@@ -129,7 +129,7 @@ export class AcordosComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("reunioes", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("acordos", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
@@ -141,7 +141,7 @@ export class AcordosComponent implements OnInit {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("reunioes_id", ids);
+      this.globalVar.setfiltros("acordos_id", ids);
     }, 250);
   }
 
@@ -154,12 +154,12 @@ export class AcordosComponent implements OnInit {
       ids.push(array[x].ID);
     }
 
-    this.globalVar.setfiltros("reunioes_id", ids);
+    this.globalVar.setfiltros("acordos_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['reunioes/view'], { queryParams: { id: event.data.ID } });
+    this.router.navigate(['acordos/view'], { queryParams: { id: event.data.ID } });
   }
 
   //simular click para mostrar mensagem

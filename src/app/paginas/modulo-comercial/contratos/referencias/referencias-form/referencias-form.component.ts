@@ -118,17 +118,17 @@ export class ReferenciasFormComponent implements OnInit {
   inicia(id) {
     this.COMREFERENCIASService.getbyid(id).subscribe(
       response => {
-        this.referencia = response[0];
-        this.DATA_CRIA = this.formatDate(response[0].DATA_CRIA);
-        this.HORA_CRIA = new Date(response[0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
-        this.ID = response[0].ID
-        //this.UTILIZADOR= response[0]. 
-        this.OBSERVACOES = response[0].OBSERVACOES;
-        this.COD_REFERENCIA = response[0].COD_REFERENCIA;
-        this.DESCRICAO = response[0].DESCRICAO;
-        this.COD_REFERENCIA_SILVER = response[0].COD_REFERENCIA_SILVER;
-        this.DESC_REFERENCIA_SILVER = response[0].DESC_REFERENCIA_SILVER;
-        if (response[0].COD_REFERENCIA_SILVER != null) this.referencia_campo = { value: response[0].COD_REFERENCIA_SILVER, label: response[0].COD_REFERENCIA_SILVER + " - " + response[0].DESC_REFERENCIA_SILVER, DESIGN: response[0].DESC_REFERENCIA_SILVER, };
+        this.referencia = response[0][0];
+        this.DATA_CRIA = this.formatDate(response[0][0].DATA_CRIA);
+        this.HORA_CRIA = new Date(response[0][0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
+        this.ID = response[0][0].ID
+        this.UTILIZADOR = response[0][1]
+        this.OBSERVACOES = response[0][0].OBSERVACOES;
+        this.COD_REFERENCIA = response[0][0].COD_REFERENCIA;
+        this.DESCRICAO = response[0][0].DESCRICAO;
+        this.COD_REFERENCIA_SILVER = response[0][0].COD_REFERENCIA_SILVER;
+        this.DESC_REFERENCIA_SILVER = response[0][0].DESC_REFERENCIA_SILVER;
+        if (response[0][0].COD_REFERENCIA_SILVER != null) this.referencia_campo = { value: response[0][0].COD_REFERENCIA_SILVER, label: response[0][0].COD_REFERENCIA_SILVER + " - " + response[0][0].DESC_REFERENCIA_SILVER, DESIGN: response[0][0].DESC_REFERENCIA_SILVER, };
 
       },
       error => {

@@ -127,20 +127,20 @@ export class ContratoFormComponent implements OnInit {
   inicia(id) {
     this.COMCONTRATOSService.getbyid(id).subscribe(
       response => {
-        this.contrato = response[0];
-        this.DATA_CRIA = this.formatDate(response[0].DATA_CRIA);
-        this.HORA_CRIA = new Date(response[0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
-        this.ID = response[0].ID
-        //this.UTILIZADOR= response[0]. 
-        this.OBSERVACOES = response[0].OBSERVACOES;
-        this.N_CONTRATO = response[0].N_CONTRATO;
-        this.N_CLIENTE = response[0].N_CLIENTE;
-        this.NOME_CLIENTE = response[0].NOME_CLIENTE;
-        this.MORADA_CLIENTE = response[0].MORADA_CLIENTE;
-        this.COD_MORADA = response[0].COD_MORADA;
-        this.DATA_CONTRATO = (response[0].DATA_CONTRATO == null) ? null : new Date(response[0].DATA_CONTRATO);
-        this.CONTRATO_SILVER = response[0].CONTRATO_SILVER;
-        this.N_CLIENTE = this.drop_cliente.find(item => item.value.id == response[0].N_CLIENTE).value;
+        this.contrato = response[0][0];
+        this.DATA_CRIA = this.formatDate(response[0][0].DATA_CRIA);
+        this.HORA_CRIA = new Date(response[0][0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
+        this.ID = response[0][0].ID
+        this.UTILIZADOR = response[0][1];
+        this.OBSERVACOES = response[0][0].OBSERVACOES;
+        this.N_CONTRATO = response[0][0].N_CONTRATO;
+        this.N_CLIENTE = response[0][0].N_CLIENTE;
+        this.NOME_CLIENTE = response[0][0].NOME_CLIENTE;
+        this.MORADA_CLIENTE = response[0][0].MORADA_CLIENTE;
+        this.COD_MORADA = response[0][0].COD_MORADA;
+        this.DATA_CONTRATO = (response[0][0].DATA_CONTRATO == null) ? null : new Date(response[0][0].DATA_CONTRATO);
+        this.CONTRATO_SILVER = response[0][0].CONTRATO_SILVER;
+        this.N_CLIENTE = this.drop_cliente.find(item => item.value.id == response[0][0].N_CLIENTE).value;
         this.getMoradas(this.N_CLIENTE.id, true);
       },
       error => {

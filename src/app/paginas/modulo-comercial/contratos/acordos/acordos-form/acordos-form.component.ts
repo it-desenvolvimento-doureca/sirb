@@ -21,8 +21,11 @@ import { COM_ACORDOS_PRECOS } from 'app/entidades/COM_ACORDOS_PRECOS';
 import { COM_ACORDOS_AMORTIZACOES } from 'app/entidades/COM_ACORDOS_AMORTIZACOES';
 import { COM_ACORDOS_LTA } from 'app/entidades/COM_ACORDOS_LTA';
 import { COMREFERENCIASService } from 'app/servicos/com-referencias.service';
+import { COMACORDOSHISTORICOService } from 'app/servicos/com-acordos-historico.service';
 import { COMCONTRATOSService } from 'app/servicos/com-contratos.service';
 import { COM_ACORDOS_VOLUMES } from 'app/entidades/COM_ACORDOS_VOLUMES';
+import { COM_ACORDOS_HISTORICO } from 'app/entidades/COM_ACORDOS_HISTORICO';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-acordos-form',
@@ -51,6 +54,7 @@ export class AcordosFormComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
+  @ViewChild('datas_invalidas') datas_invalidas: ElementRef;
 
   campo_x: any;
   filedescricao = [];
@@ -87,6 +91,14 @@ export class AcordosFormComponent implements OnInit {
   anos_EOP = [];
 
   tabela_volumes: any = [];
+  dados_precos = "";
+  dados_amortizacoes = "";
+  dados_lta = "";
+  dados_atividades = "";
+  dados_volumes = "";
+  dados_documentos = "";
+  dados_old;
+
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
     private COMACORDOSACTIVIDADESService: COMACORDOSACTIVIDADESService,
@@ -98,6 +110,7 @@ export class AcordosFormComponent implements OnInit {
     private COMACORDOSVOLUMESService: COMACORDOSVOLUMESService,
     private COMREFERENCIASService: COMREFERENCIASService,
     private COMCONTRATOSService: COMCONTRATOSService,
+    private COMACORDOSHISTORICOService: COMACORDOSHISTORICOService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -284,7 +297,10 @@ export class AcordosFormComponent implements OnInit {
         this.SOP = response[0].SOP;
         this.EOP = response[0].EOP;
         this.PRECO_BASE = response[0].PRECO_BASE;
+
+        this.dados_old = { OBSERVACOES: this.OBSERVACOES, ID_CONTRATO: this.ID_CONTRATO, ID_REFERENCIA: this.ID_REFERENCIA, SOP: this.SOP, EOP: this.EOP, PRECO_BASE: this.PRECO_BASE };
       });
+
 
     this.carregatabelaFiles(id);
     this.carregatabela_precos(id);
@@ -306,6 +322,9 @@ export class AcordosFormComponent implements OnInit {
         for (var x in response) {
           this.tabela_volumes.push({ ano: response[x].ANO, valor: response[x].VALOR });
         }
+
+        this.tabela_volumes = this.tabela_volumes.slice()
+        this.dados_volumes = JSON.stringify(this.tabela_volumes.slice());
       });
   }
 
@@ -330,6 +349,7 @@ export class AcordosFormComponent implements OnInit {
         }
 
         this.tabela_precos = this.tabela_precos.slice();
+        this.dados_precos = JSON.stringify(this.tabela_precos.slice());
       });
   }
 
@@ -349,7 +369,7 @@ export class AcordosFormComponent implements OnInit {
   }
 
   adicionar_linha_tabelaPrecos() {
-    this.tabela_precos.push({ DATA_INICIO: '', DATA_FIM: '', PRECO: '', OBSERVACAO: '' });
+    this.tabela_precos.push({ DATA_INICIO: null, DATA_FIM: null, PRECO: null, OBSERVACAO: null });
     this.tabela_precos = this.tabela_precos.slice();
   }
 
@@ -374,6 +394,7 @@ export class AcordosFormComponent implements OnInit {
         }
 
         this.tabela_amortizacoes = this.tabela_amortizacoes.slice();
+        this.dados_amortizacoes = JSON.stringify(this.tabela_amortizacoes.slice());
       });
   }
 
@@ -392,7 +413,7 @@ export class AcordosFormComponent implements OnInit {
     }
   }
   adicionar_linha() {
-    this.tabela_amortizacoes.push({ DATA_INICIO: '', QUANTIDADE: '', VALOR: '', DATA_FIM_ESTIMADA: '', OBSERVACAO: '' });
+    this.tabela_amortizacoes.push({ DATA_INICIO: null, QUANTIDADE: null, VALOR: null, DATA_FIM_ESTIMADA: null, OBSERVACAO: null });
     this.tabela_amortizacoes = this.tabela_amortizacoes.slice();
   }
 
@@ -416,6 +437,7 @@ export class AcordosFormComponent implements OnInit {
         }
 
         this.tabela_lta = this.tabela_lta.slice();
+        this.dados_lta = JSON.stringify(this.tabela_lta.slice());
       });
   }
 
@@ -435,7 +457,7 @@ export class AcordosFormComponent implements OnInit {
   }
 
   adicionar_linha_lta() {
-    this.tabela_lta.push({ DATA_INICIO: '', VALOR: '', DATA_FIM: '' });
+    this.tabela_lta.push({ DATA_INICIO: null, VALOR: null, DATA_FIM: null });
     this.tabela_lta = this.tabela_lta.slice();
   }
 
@@ -502,6 +524,7 @@ export class AcordosFormComponent implements OnInit {
 
         }
         this.tabela_acoes = this.tabela_acoes.slice();
+        this.dados_atividades = JSON.stringify(this.tabela_acoes.slice());
 
       },
       error => console.log(error));
@@ -574,6 +597,10 @@ export class AcordosFormComponent implements OnInit {
 
 
   gravar() {
+
+
+
+
     var acordo = new COM_ACORDOS;
 
     if (!this.novo) acordo = this.dados_acordo;
@@ -618,6 +645,8 @@ export class AcordosFormComponent implements OnInit {
 
       acordo.ID = id;
       //console.log(reclamacao)
+
+
       this.COMACORDOSService.update(acordo).subscribe(
         res => {
           this.gravartabela_actividades(id);
@@ -625,13 +654,71 @@ export class AcordosFormComponent implements OnInit {
           this.gravartabela_amortizacoes(id);
           this.gravartabela_lta(id);
           this.gravartabela_volumes(id);
-
+          var alteracoes = this.ver_alteracoes();
+          this.gravartabela_historico(alteracoes);
           this.simular(this.inputgravou);
           this.locatiosave('view', this.ID_ACORDO);
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
 
     }
+  }
+
+  ver_alteracoes() {
+
+    let diff_precos = this.diff(this.dados_precos, this.tabela_precos);
+    let diff_amortizacoes = this.diff(this.dados_amortizacoes, this.tabela_amortizacoes);
+    let diff_lta = this.diff(this.dados_lta, this.tabela_lta);
+    let diff_atividades = this.diff(this.dados_atividades, this.tabela_acoes);
+    let diff_volumes = this.diff(this.dados_volumes, this.tabela_volumes);
+    let diff_documentos = this.diff(this.dados_documentos, this.uploadedFiles);
+
+    var modificacoes = [];
+
+    if (diff_precos) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Preços', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (diff_amortizacoes) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Amortizações', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (diff_lta) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela LTA', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (diff_atividades) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Atividades', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (diff_volumes) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Volumes', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (diff_documentos) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Documentos', ID_ACORDO: this.ID_ACORDO });
+    }
+
+    if (this.dados_old.OBSERVACOES != this.OBSERVACOES) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Observações', ID_ACORDO: this.ID_ACORDO });
+    }
+    if (this.dados_old.ID_CONTRATO != this.ID_CONTRATO) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Contrato', ID_ACORDO: this.ID_ACORDO });
+
+    }
+    if (this.dados_old.ID_REFERENCIA != this.ID_REFERENCIA) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Referência', ID_ACORDO: this.ID_ACORDO });
+
+    }
+    if (this.dados_old.SOP != this.SOP) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo SOP', ID_ACORDO: this.ID_ACORDO });
+
+    }
+    if (this.dados_old.EOP != this.EOP) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo EOP', ID_ACORDO: this.ID_ACORDO });
+
+    }
+    if (this.dados_old.PRECO_BASE != this.PRECO_BASE) {
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Preço Base', ID_ACORDO: this.ID_ACORDO });
+
+    }
+
+    return modificacoes;
   }
 
 
@@ -854,6 +941,28 @@ export class AcordosFormComponent implements OnInit {
   }
 
 
+  gravartabela_historico(alteracoes) {
+
+    for (var x in alteracoes) {
+      var tabela = new COM_ACORDOS_HISTORICO;
+      tabela.ID_ACORDO = alteracoes[x].ID_ACORDO;
+      tabela.DESCRICAO = alteracoes[x].DESCRICAO;
+      tabela.DATA_CRIA = new Date();
+      tabela.UTZ_CRIA = this.user;
+      this.gravartabela_historico2(tabela);
+
+    }
+
+  }
+
+  gravartabela_historico2(tabela) {
+    this.COMACORDOSHISTORICOService.update(tabela).subscribe(
+      res => {
+      },
+      error => {
+        console.log(error);
+      });
+  }
   novaAtividade() {
     this.novo_atividade = true;
     this.dados = new COM_ACORDOS_ACTIVIDADES();
@@ -930,9 +1039,9 @@ export class AcordosFormComponent implements OnInit {
            res => {
              this.dialognovo = false;
              this.carregatabela_actividades(this.ID_ACORDO);
- 
+   
              //this.insereatividade("Atualizou Ação");
- 
+   
            },
            error => { console.log(error); });
        }*/
@@ -974,6 +1083,7 @@ export class AcordosFormComponent implements OnInit {
 
           }
           this.uploadedFiles = this.uploadedFiles.slice();
+          this.dados_documentos = JSON.stringify(this.uploadedFiles.slice());
         }
 
       }, error => { console.log(error); });
@@ -1351,4 +1461,39 @@ export class AcordosFormComponent implements OnInit {
       return "assets/img/file.png";
     }
   }
+
+  validadatas(index) {
+    var startDate = new Date(this.tabela_precos[index].DATA_INICIO).getTime();
+    var endDate = new Date(this.tabela_precos[index].DATA_FIM).getTime();
+
+    for (var x in this.tabela_precos) {
+      if (parseInt(x) != index) {
+        var startDate2 = new Date(this.tabela_precos[x].DATA_INICIO).getTime();
+        var endDate2 = new Date(this.tabela_precos[x].DATA_FIM).getTime();
+        if (startDate2 <= startDate && endDate2 >= startDate) {
+          this.simular(this.datas_invalidas);
+          this.tabela_precos[index].DATA_INICIO = null;
+          return;
+        } else if (startDate2 <= endDate && endDate2 >= endDate) {
+          this.simular(this.datas_invalidas);
+          this.tabela_precos[index].DATA_FIM = null;
+          return;
+        } else if (startDate2 >= startDate && endDate2 <= endDate) {
+          this.simular(this.datas_invalidas);
+          this.tabela_precos[index].DATA_FIM = null;
+          return;
+        }
+      }
+
+    }
+  }
+
+  diff(a, b) {
+    b = JSON.stringify(b);
+    if (a !== b) {
+      return true;
+    }
+    return false;
+  }
 }
+

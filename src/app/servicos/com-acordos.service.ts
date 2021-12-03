@@ -27,6 +27,14 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS2';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS/' + id + '')
