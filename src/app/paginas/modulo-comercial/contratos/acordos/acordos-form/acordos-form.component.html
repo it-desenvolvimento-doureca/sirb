@@ -339,6 +339,19 @@
                         </ng-template>
                       </p-column>
 
+                      <p-column [editable]="true" field="DATA_FIM_ESTIMADA" header="Data Fim Estimada">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] | date: 'yyyy-MM-dd'}}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
+                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_FIM_ESTIMADA']"
+                            appendTo="body" [ngModelOptions]="{standalone: true}">
+                          </p-calendar>
+                        </ng-template>
+                      </p-column>
+
                       <p-column [editable]="true" field="QUANTIDADE" header="Quantidade de Peças">
                         <ng-template let-col let-car="rowData" pTemplate="body">
                           {{car[col.field] }}
@@ -365,18 +378,7 @@
                         </ng-template>
                       </p-column>
 
-                      <p-column [editable]="true" field="DATA_FIM_ESTIMADA" header="Data Fim Estimada">
-                        <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{car[col.field] | date: 'yyyy-MM-dd'}}
-                        </ng-template>
-                        <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
-                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_FIM_ESTIMADA']"
-                            appendTo="body" [ngModelOptions]="{standalone: true}">
-                          </p-calendar>
-                        </ng-template>
-                      </p-column>
+
 
                       <p-column [editable]="true" field="OBSERVACAO" header="Observação">
                         <ng-template let-col let-car="rowData" pTemplate="body">
