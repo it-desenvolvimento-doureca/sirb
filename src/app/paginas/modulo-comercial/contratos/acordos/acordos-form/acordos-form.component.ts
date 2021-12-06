@@ -1515,5 +1515,51 @@ export class AcordosFormComponent implements OnInit {
     }
     return false;
   }
+
+  apagar() {
+    var id;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        id = params['id'] || 0;
+      });
+    if (id != 0) {
+      this.confirm(id);
+    }
+
+  }
+
+  //popup apagar
+  confirm(id) {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+
+        var acordo = new COM_ACORDOS;
+
+        if (!this.novo) acordo = this.dados_acordo;
+        acordo.INATIVO = true;
+        acordo.DATA_ANULACAO = new Date();
+        acordo.UTZ_ANULACAO = this.user;
+
+
+        this.COMACORDOSService.update(acordo).subscribe(
+          res => {
+
+            this.simular(this.inputapagar)
+
+            this.router.navigate(['comercial_acordos']);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+    });
+  }
+
+  //bt cancelar
+  backview() {
+    this.location.back();
+  }
 }
 

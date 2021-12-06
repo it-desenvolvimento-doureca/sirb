@@ -266,7 +266,7 @@ export class ReferenciasFormComponent implements OnInit {
         var referencia = new COM_REFERENCIAS;
 
         if (!this.novo) referencia = this.referencia;
-        referencia.INATIVO = false;
+        referencia.INATIVO = true;
         referencia.DATA_ANULACAO = new Date();
         referencia.UTZ_ANULACAO = this.user;
 

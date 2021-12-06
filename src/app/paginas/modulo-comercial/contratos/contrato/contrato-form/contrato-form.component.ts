@@ -259,7 +259,7 @@ export class ContratoFormComponent implements OnInit {
         var contrato = new COM_CONTRATOS;
 
         if (!this.novo) contrato = this.contrato;
-        contrato.INATIVO = false;
+        contrato.INATIVO = true;
         contrato.DATA_ANULACAO = new Date();
         contrato.UTZ_ANULACAO = this.user;
 
