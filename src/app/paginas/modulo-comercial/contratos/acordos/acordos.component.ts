@@ -159,7 +159,7 @@ export class AcordosComponent implements OnInit {
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['acordos/view'], { queryParams: { id: event.data.ID } });
+    this.router.navigate(['comercial_acordos/view'], { queryParams: { id: event.data.ID } });
   }
 
   //simular click para mostrar mensagem

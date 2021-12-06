@@ -55,7 +55,7 @@
               <div class="well" style="display: flex; padding: 0;">
                 <div class="tab-content" style="width: 100%; padding: 0;">
                   <!--Geral-->
-                  <div class="tab-pane fade in active" id="tab1">
+                  <div class="tab-pane fade " [class.in]="ativobt == '1'" [class.active]="ativobt == '1'" id="tab1">
                     <div class="col-md-12" style="padding: 0;">
                       <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
                         <label style="display: -webkit-box;">ID Registo:</label>
@@ -245,7 +245,7 @@
                   </div>
 
                   <!-- Preços -->
-                  <div class="tab-pane fade in" id="tab2">
+                  <div class="tab-pane fade " [class.in]="ativobt == '2'" [class.active]="ativobt == '2'" id="tab2">
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabela_precos"
                       styleClass="ExcelTable2007">
 
@@ -321,7 +321,7 @@
                   </div>
 
                   <!--Amortizações-->
-                  <div class="tab-pane fade in" id="tab3">
+                  <div class="tab-pane fade " [class.in]="ativobt == '3'" [class.active]="ativobt == '3'" id="tab3">
                     <p-dataTable [style]="{'width':'100%'}" [editable]="true" [value]="tabela_amortizacoes"
                       styleClass="ExcelTable2007">
 
@@ -412,7 +412,7 @@
                   </div>
 
                   <!--LTA-->
-                  <div class="tab-pane fade in" id="tab4">
+                  <div class="tab-pane fade" [class.in]="ativobt == '4'" [class.active]="ativobt == '4'" id="tab4">
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabela_lta"
                       styleClass="ExcelTable2007">
 
@@ -475,7 +475,7 @@
                   </div>
 
                   <!--  Atividades -->
-                  <div class="tab-pane fade in" id="tab5">
+                  <div class="tab-pane fade " [class.in]="ativobt == '5'" [class.active]="ativobt == '5'" id="tab5">
                     <p-dataTable [emptyMessage]="mensagemtabela_acoes" [style]="{'min-height':'300px'}"
                       [value]="tabela_acoes" dataKey="id" styleClass="ExcelTable2007">
 
@@ -554,7 +554,8 @@
               <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
                 [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
-              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <button type="button" (click)="btgravar()" class="btn btn-success pull-right"
+                [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>
             </form>
           </div>

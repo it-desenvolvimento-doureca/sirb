@@ -55,6 +55,7 @@ export class AcordosFormComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('datas_invalidas') datas_invalidas: ElementRef;
+  @ViewChild('buttongravar') buttongravar: ElementRef;
 
   campo_x: any;
   filedescricao = [];
@@ -221,7 +222,7 @@ export class AcordosFormComponent implements OnInit {
       this.tabela_volumes = [];
       for (var x = this.SOP; x <= this.EOP; x++) {
         var arr = dados.find(item => item.ano == x);
-        var valor = 0;
+        var valor = null;
         if (arr) valor = arr.valor
         this.tabela_volumes.push({ ano: x, valor });
       }
@@ -282,21 +283,21 @@ export class AcordosFormComponent implements OnInit {
   }
 
   inicia(id) {
-    this.COMACORDOSService.getbyid(id).subscribe(
+    this.COMACORDOSService.getbyid2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) { }
-        this.dados_acordo = response[0];
-        this.ID_ACORDO = response[0].ID;
-        //this.UTILIZADOR = response[0].UTILIZADOR;
-        this.DATA_CRIA = this.formatDate(response[0].DATA_CRIA);
-        this.HORA_CRIA = new Date(response[0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
-        this.OBSERVACOES = response[0].OBSERVACOES;
-        this.ID_CONTRATO = response[0].ID_CONTRATO;
-        this.ID_REFERENCIA = response[0].ID_REFERENCIA;
-        this.SOP = response[0].SOP;
-        this.EOP = response[0].EOP;
-        this.PRECO_BASE = response[0].PRECO_BASE;
+        this.dados_acordo = response[0][0];
+        this.ID_ACORDO = response[0][0].ID;
+        this.UTILIZADOR = response[0][1];
+        this.DATA_CRIA = this.formatDate(response[0][0].DATA_CRIA);
+        this.HORA_CRIA = new Date(response[0][0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
+        this.OBSERVACOES = response[0][0].OBSERVACOES;
+        this.ID_CONTRATO = response[0][0].ID_CONTRATO;
+        this.ID_REFERENCIA = response[0][0].ID_REFERENCIA;
+        this.SOP = response[0][0].SOP;
+        this.EOP = response[0][0].EOP;
+        this.PRECO_BASE = response[0][0].PRECO_BASE;
 
         this.dados_old = { OBSERVACOES: this.OBSERVACOES, ID_CONTRATO: this.ID_CONTRATO, ID_REFERENCIA: this.ID_REFERENCIA, SOP: this.SOP, EOP: this.EOP, PRECO_BASE: this.PRECO_BASE };
       });
@@ -595,6 +596,25 @@ export class AcordosFormComponent implements OnInit {
     return year + month + day + hour + min + mill;
   }
 
+  btgravar() {
+    var encountrou = false;
+    for (var x in this.tabela_volumes) {
+      if (this.tabela_volumes[x].valor == null) {
+        encountrou = true;
+      }
+
+    }
+
+    if (this.ID_CONTRATO == null || this.ID_REFERENCIA == null || this.SOP == null || this.EOP == null || encountrou || this.PRECO_BASE == null) {
+      this.ativobt = '1';
+      setTimeout(() => {
+        this.simular(this.buttongravar);
+      }, 150);
+    } else {
+      this.simular(this.buttongravar);
+    }
+
+  }
 
   gravar() {
 

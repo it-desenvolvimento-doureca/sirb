@@ -53,6 +53,15 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  getbyid2(id): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOSbyid2/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   update(data: COM_ACORDOS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateCOM_ACORDOS', JSON.stringify(data), { headers: this.headers })
