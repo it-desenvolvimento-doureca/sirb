@@ -480,7 +480,7 @@
                       [value]="tabela_acoes" dataKey="id" styleClass="ExcelTable2007">
 
                       <p-column [sortable]="false" [filter]="false" styleclass="text-danger" field="data_acao"
-                        header="Data Actividade" [style]="{'width':'40px'}">
+                        header="Data Atividade" [style]="{'width':'40px'}">
                       </p-column>
                       <p-column [sortable]="false" [filter]="false" styleclass="text-danger" field="utilizador"
                         header="Utilizador" [style]="{'width':'50px'}">
@@ -608,7 +608,7 @@
     <!-- Modal Body -->
     <div class="modal-body">
       <div class="form-group col-md-2">
-        <label for="DATA_ATIVIDADE" style=" text-align: right;">Data Actividade:</label>
+        <label for="DATA_ATIVIDADE" style=" text-align: right;">Data Atividade:</label>
         <p-calendar [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
           [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="dados.DATA_ATIVIDADE"
           [ngModelOptions]="{standalone: true}" [showIcon]="true" [disabled]="true">
