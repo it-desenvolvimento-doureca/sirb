@@ -1,0 +1,66 @@
+<app-controlos (atualiza)="atualizar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Contratos</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content table-responsive">
+
+            <p-dataTable (onFilter)="atualizaids()" (onSort)="atualizaids()" [emptyMessage]="mensagemtabela"
+              [style]="{'min-height':'300px'}" [value]="cols" dataKey="ID" [rows]="25" [paginator]="true"
+              [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ID" header="ID"
+                [style]="{'width':'97px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="ID"
+                    #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="N_CONTRATO"
+                header="Nº Contrato">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="N_CONTRATO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="NOME_CLIENTE"
+                header="Cliente">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="NOME_CLIENTE" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="MORADA_CLIENTE"
+                header="Morada">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="MORADA_CLIENTE" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
+
+              <p-column styleClass="col-button" [style]="{'width':'60px'}">
+                <ng-template pTemplate="header">
+                  <a (click)="reset()" style="color: black; float: right; cursor: pointer;">
+                    <i class="fa fa-eraser" aria-hidden="true"> Limpar</i>
+                    <div class="ripple-container"></div>
+                  </a>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/comercial_contratos/view']"
+                    [queryParams]="{ id: car.ID }">
+                    <i class="material-icons">search</i>
+                  </a>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

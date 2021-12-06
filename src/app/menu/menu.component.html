@@ -141,7 +141,7 @@
                     <div class="panel-heading"
                         [class.active]="router.isActive('/planosacaoComercial',false) || router.isActive('/analiseencomendas',false) || router.isActive('/analise_clientes',false) ||
                         router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
-                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true)">
+                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true) || router.isActive('/comercial_contratos',true) || router.isActive('/comercial_referencias',true) || router.isActive('/comercial_acordos',true) ">
                         <h4 class="panel-title">
                             <a id="node158" data-toggle="collapse" data-parent="#accordion" href="#collapseComercial">
                                 <span class="fa fa-shopping-cart" style="margin-right: 12px;">
@@ -170,6 +170,31 @@
                                         <li id="node1584" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/analise_clientes']">Análise Clientes</a>
                                         </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1585" data-toggle="collapse" data-target="#comercial_contratos"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': router.isActive('/comercial_contratos',true) || router.isActive('/comercial_referencias',true) || router.isActive('/comercial_acordos',true)  }">
+                                            <a>Contratos
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="comercial_contratos">
+                                            <li id="node15850" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_contratos']">
+                                                <a>Contratos</a>
+                                            </li>
+                                            <li id="node15851" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_referencias']">
+                                                <a>Referências</a>
+                                            </li>
+                                            <li id="node15852" [routerLinkActive]="['active']"
+                                                [routerLink]="['/comercial_acordos']">
+                                                <a>Acordos</a>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 <tr>
