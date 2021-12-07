@@ -537,7 +537,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
               if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
 
-                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                if (/*this.tabelaEquipa[x].id == null && */this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
                   email_para.push(this.tabelaEquipa[x].email);
               }
             }
@@ -580,7 +580,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
               if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
 
-                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                if (/*this.tabelaEquipa[x].id == null &&*/ this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
                   email_para.push(this.tabelaEquipa[x].email);
               }
             }
@@ -653,7 +653,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
               if (this.tabelaEquipa[x].responsavel != null && this.tabelaEquipa[x].responsavel != "") {
 
-                if (this.tabelaEquipa[x].id == null && this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
+                if (/*this.tabelaEquipa[x].id == null &&*/ this.tabelaEquipa[x].email != "" && this.tabelaEquipa[x].email != null && (email_para.indexOf(this.tabelaEquipa[x].email) < 0))
                   email_para.push(this.tabelaEquipa[x].email);
               }
             }
@@ -1405,7 +1405,7 @@ export class DerrogacoesFormComponent implements OnInit {
               this.tabelaaccoes.push({
                 obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                 data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
-                id: id2, data_REAL: data_real, data_PREVISTA: new Date(response[x].data_PREVISTA),
+                id: id2, data_REAL: data_real, data_PREVISTA: ((response[x].data_PREVISTA == null) ? null : new Date(response[x].data_PREVISTA)),
                 responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
               });
 

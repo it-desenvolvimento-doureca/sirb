@@ -286,17 +286,25 @@
                             type="text">
                         </ng-template>
                       </p-column>
-                      <p-column [editable]="true" field="data_PREVISTA" header="DATA PREVISTA">
+                      <p-column [editable]="false" field="data_PREVISTA" header="DATA PREVISTA">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{car[col.field] | date: 'yyyy-MM-dd'}}
-                        </ng-template>
-                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <!-- -->
                           <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
-                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
-                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            *ngIf="modoedicao  &&  car['id'] == null" [style]="{'height':'25px','width':'90%'}"
+                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="2000:2050" [required]="true"
                             [(ngModel)]="car['data_PREVISTA']" appendTo="body" [ngModelOptions]="{standalone: true}">
                           </p-calendar>
+                          <span *ngIf="!modoedicao  ||  car['id'] != null"> {{car[col.field] | date:
+                            'yyyy-MM-dd'}}</span>
                         </ng-template>
+                        <!--ng-template let-col let-car="rowData" pTemplate="editor">
+                          <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [required]="true"
+                            [(ngModel)]="car['data_PREVISTA']" appendTo="body" [ngModelOptions]="{standalone: true}">
+                          </p-calendar>
+                        </ng-template-->
                       </p-column>
                       <p-column [editable]="true" field="data_REAL" header="DATA REAL">
                         <ng-template let-col let-car="rowData" pTemplate="body">
