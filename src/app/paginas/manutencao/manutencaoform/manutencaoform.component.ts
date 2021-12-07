@@ -1383,6 +1383,8 @@ export class ManutencaoformComponent implements OnInit {
     var encontrou2 = false;
     var encontrou3 = false;
     var encontrou4 = false;
+    var PRODUTOS_LIST = [];
+    var PRODUTOS = "";
     this.ABMOVMANUTENCAOLINHAService.getbyIDtotal2(id).subscribe(
       respo => {
         var count = Object.keys(respo).length;
@@ -1398,14 +1400,17 @@ export class ManutencaoformComponent implements OnInit {
 
               if (respo[x][3] > respo[x][4]) {
                 encontrou3 = true;
-                aditivo2.push(respo[x][0]);
+                aditivo2.push(respo[x][6]);
               }
 
               if (respo[x][5] > 0) {
                 encontrou4 = true;
+                PRODUTOS_LIST.push(respo[x][6] + ' ('+ respo[x][7] + ' - ' + respo[x][8] + ')');
               }
             }
           }
+
+          if(PRODUTOS_LIST.length > 0 ) PRODUTOS = PRODUTOS_LIST.toString();
 
           if (encontrou3) {
             this.mensagem_aviso = "O Valor a consumir para o(s) aditivo(s): " + aditivo2 + ", é superior ao valor planeado!!";
@@ -1444,23 +1449,23 @@ export class ManutencaoformComponent implements OnInit {
               accept: () => {
 
               }, reject: () => {
-                this.preparar_linha2(pos, id, id_manu, encontrou4);
+                this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
               }
             });
           } else {
-            this.preparar_linha2(pos, id, id_manu, encontrou4);
+            this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
           }
         } else {
-          this.preparar_linha2(pos, id, id_manu, encontrou4);
+          this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
         }
       }, error => {
-        this.preparar_linha2(pos, id, id_manu, encontrou4);
+        this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
         console.log(error);
       });
   }
 
 
-  preparar_linha2(pos, id, id_manu, encontrou4) {
+  preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS) {
     this.arrayForm.find(item => item.pos == pos).preparado = false;
     var encontrou = false;
     for (var x in this.arrayForm.find(item => item.pos == pos).aditivos) {
@@ -1480,16 +1485,16 @@ export class ManutencaoformComponent implements OnInit {
         header: 'Aviso',
         icon: 'fa fa-exclamation-triangle',
         accept: () => {
-          this.preparar(pos, id, id_manu, encontrou4);
+          this.preparar(pos, id, id_manu, encontrou4,PRODUTOS);
         }
       });
     } else {
-      this.preparar(pos, id, id_manu, encontrou4);
+      this.preparar(pos, id, id_manu, encontrou4,PRODUTOS);
     }
 
   }
 
-  preparar(pos, id, id_manu, encontrou4) {
+  preparar(pos, id, id_manu, encontrou4,PRODUTOS) {
     this.ABMOVMANUTENCAOCABService.getbyID_cab(id).subscribe(
       response => {
         for (var x in response) {
@@ -1524,6 +1529,7 @@ export class ManutencaoformComponent implements OnInit {
               + this.linhas.find(item => item.value.id === MOV_MANUTENCAO.id_LINHA).label
               + "\n/tina::" + this.banhos.find(item => item.value.id == MOV_MANUTENCAO_CAB.id_BANHO).value.nome_tina
               + "\n/tipo_manutencao::" + this.tipo_manu.find(item => item.value == MOV_MANUTENCAO.id_TIPO_MANUTENCAO).label
+              + "\n/PRODUTOS::" + PRODUTOS
               + "\n/datahorapreparacao::" + this.formatDate(MOV_MANUTENCAO_CAB.data_PREPARACAO) + "  " + MOV_MANUTENCAO_CAB.hora_PREPARACAO + "\n/observacao_preparacao::" + MOV_MANUTENCAO_CAB.obs_PREPARACAO + "}";
 
             if (MOV_MANUTENCAO_CAB.obs_PREPARACAO != "" && MOV_MANUTENCAO_CAB.obs_PREPARACAO != null) this.evento(dados, "Ao Preparar");
