@@ -3,4 +3,5 @@ export class COM_ACORDOS_VOLUMES {
     ANO: string;
     VALOR: number;
     ID_ACORDO: number;
+    VERSAO: number;
 }

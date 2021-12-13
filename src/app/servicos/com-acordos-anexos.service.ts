@@ -36,8 +36,8 @@ export class COMACORDOSANEXOSService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_ANEXOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ANEXOSbyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS_ANEXOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ANEXOSbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)

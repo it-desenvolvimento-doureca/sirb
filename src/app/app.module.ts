@@ -378,6 +378,7 @@ import { COMACORDOSPRECOSService } from './servicos/com-acordos-precos.service';
 import { COMCONTRATOSService } from './servicos/com-contratos.service';
 import { COMREFERENCIASService } from './servicos/com-referencias.service';
 import { COMACORDOSVOLUMESService } from './servicos/com-acordos-volumes.service';
+import { COMREFERENCIASSILVERService } from './servicos/com-referencias-silver.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1355,6 +1356,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     COMACORDOSVOLUMESService,
     COMCONTRATOSService,
     COMREFERENCIASService,
+    COMREFERENCIASSILVERService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

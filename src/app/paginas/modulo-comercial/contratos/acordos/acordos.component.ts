@@ -23,6 +23,7 @@ export class AcordosComponent implements OnInit {
   ID: string;
   CONTRATO: string;
   REFERENCIA: string;
+  ESTADO;
   constructor(private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private COMACORDOSService: COMACORDOSService) { }
   ngOnInit() {
 
@@ -38,7 +39,7 @@ export class AcordosComponent implements OnInit {
       //this.estado = (array['estado'] != undefined) ? array['estado'].value : ""; 
       this.REFERENCIA = (array['REFERENCIA'] != undefined) ? array['REFERENCIA'].value : "";
       this.CONTRATO = (array['CONTRATO'] != undefined) ? array['CONTRATO'].value : "";
-
+      this.ESTADO = (array['ESTADO'] != undefined) ? array['ESTADO'].value : "";
 
     }
 
@@ -84,7 +85,9 @@ export class AcordosComponent implements OnInit {
             ID_CONTRATO: response[x][1],
             ID_REFERENCIA: response[x][2],
             REFERENCIA: response[x][3] + ' - ' + response[x][4],
-            CONTRATO: response[x][5]
+            CONTRATO: response[x][5],
+            VERSAO: response[x][6],
+            ESTADO: this.getestado(response[x][7])
             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
 
           });
@@ -96,6 +99,15 @@ export class AcordosComponent implements OnInit {
 
   }
 
+  getestado(valor) {
+    if (valor == 'A') {
+      return "Anulado";
+    } else if (valor == 'F') {
+      return "Fechado";
+    } else {
+      return "Pendente";
+    }
+  }
 
 
   //limpar filtro
@@ -107,6 +119,7 @@ export class AcordosComponent implements OnInit {
     this.ID = "";
     this.CONTRATO = "";
     this.REFERENCIA = "";
+    this.ESTADO = "";
     //this.data_ULTIMA_REALIZADA = "";
 
     this.dataTableComponent.filter("", "", "");
@@ -159,7 +172,7 @@ export class AcordosComponent implements OnInit {
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['comercial_acordos/view'], { queryParams: { id: event.data.ID } });
+    this.router.navigate(['comercial_acordos/view'], { queryParams: { id: event.data.ID, versao: event.data.VERSAO } });
   }
 
   //simular click para mostrar mensagem

@@ -37,6 +37,7 @@ export class ContratoFormComponent implements OnInit {
   @ViewChild('inputerro') inputerro: ElementRef;
   @ViewChild('inputerro2') inputerro2: ElementRef;
   NOME_CLIENTE: any;
+  CONTRIBUINTE;
   MORADA_CLIENTE: any;
   COD_MORADA: any;
   DATA_CONTRATO: any;
@@ -136,6 +137,7 @@ export class ContratoFormComponent implements OnInit {
         this.N_CONTRATO = response[0][0].N_CONTRATO;
         this.N_CLIENTE = response[0][0].N_CLIENTE;
         this.NOME_CLIENTE = response[0][0].NOME_CLIENTE;
+        this.CONTRIBUINTE = response[0][0].CONTRIBUINTE;
         this.MORADA_CLIENTE = response[0][0].MORADA_CLIENTE;
         this.COD_MORADA = response[0][0].COD_MORADA;
         this.DATA_CONTRATO = (response[0][0].DATA_CONTRATO == null) ? null : new Date(response[0][0].DATA_CONTRATO);
@@ -161,7 +163,10 @@ export class ContratoFormComponent implements OnInit {
 
 
         for (var x in response) {
-          this.drop_cliente.push({ label: response[x].ADRNOM, value: { id: response[x].CLICOD, nome: response[x].ADRNOM } });
+          this.drop_cliente.push({
+            label: response[x].CLICOD + ' - ' + response[x].ADRNOM + ' (' + response[x].ADRTVAIDE + ')',
+            value: { id: response[x].CLICOD, nome: response[x].ADRNOM, contribuinte: response[x].ADRTVAIDE }
+          });
         }
         this.drop_cliente = this.drop_cliente.slice();
         if (inicia) this.inicia(id);
@@ -178,6 +183,7 @@ export class ContratoFormComponent implements OnInit {
     contrato.CONTRATO_SILVER = this.CONTRATO_SILVER;
     contrato.N_CLIENTE = this.N_CLIENTE.id;
     contrato.NOME_CLIENTE = this.N_CLIENTE.nome;
+    contrato.CONTRIBUINTE = this.N_CLIENTE.contribuinte;
     contrato.MORADA_CLIENTE = this.MORADA_CLIENTE.nome;
     contrato.COD_MORADA = this.MORADA_CLIENTE.id;
     contrato.OBSERVACOES = this.OBSERVACOES;
@@ -289,7 +295,7 @@ export class ContratoFormComponent implements OnInit {
         if (count > 0) {
           this.drop_moradas.push({ label: 'Sel. Morada.', value: "" });
           for (var x in response) {
-            this.drop_moradas.push({ label: response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { id: response[x].ETSNUM, nome: response[x].ADRNOM + ' ' + response[x].ADRLIB1 } });
+            this.drop_moradas.push({ label: response[x].ETSNUM + ' - ' + response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { id: response[x].ETSNUM, nome: response[x].ADRNOM + ' ' + response[x].ADRLIB1 } });
           }
           this.drop_moradas = this.drop_moradas.slice();
           if (mor) this.MORADA_CLIENTE = this.drop_moradas.find(item => item.value.id == this.COD_MORADA).value;

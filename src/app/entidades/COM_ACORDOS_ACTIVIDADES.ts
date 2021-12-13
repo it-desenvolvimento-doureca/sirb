@@ -18,4 +18,5 @@ export class COM_ACORDOS_ACTIVIDADES {
     TYPE_FICHEIRO: string;
     GERAR_ALERTA: Date;
     ALERTA_GERADO: boolean;
+    VERSAO: number;
 }

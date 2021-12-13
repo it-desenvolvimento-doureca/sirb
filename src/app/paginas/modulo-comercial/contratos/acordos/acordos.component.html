@@ -34,6 +34,12 @@
                     [(ngModel)]="CONTRATO" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ESTADO" header="Estado">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="ESTADO" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                </ng-template>
+              </p-column>
 
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
                 <ng-template pTemplate="header">
@@ -44,7 +50,7 @@
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/comercial_acordos/view']"
-                    [queryParams]="{ id: car.ID }">
+                    [queryParams]="{ id: car.ID ,versao: car.VERSAO  }">
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>

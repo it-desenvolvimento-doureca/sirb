@@ -9,8 +9,16 @@ export class COM_ACORDOS {
     UTZ_ANULACAO: number;
     INATIVO: boolean;
     ID_CONTRATO: number;
-    SOP: number;
-    EOP: number;
+    SOP: Date;
+    EOP: Date;
     PRECO_BASE: number;
     ID: number;
+    DATA_FECHO: Date;
+    UTZ_FECHO: number;
+    ESTADO: string;
+    VERSAO: number;
+    DATA_FECHO_LTA: Date;
+    UTZ_FECHO_LTA: number;
+    DATA_FECHO_AMORTIZACOES: Date;
+    UTZ_FECHO_AMORTIZACOES: number;
 }

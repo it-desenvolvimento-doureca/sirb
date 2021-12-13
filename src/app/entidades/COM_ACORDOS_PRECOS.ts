@@ -9,4 +9,5 @@ export class COM_ACORDOS_PRECOS {
     OBSERVACAO: string;
     PRECO: number;
     ID: number;
+    VERSAO: number;
 }

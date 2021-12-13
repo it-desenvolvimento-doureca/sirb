@@ -37,8 +37,8 @@ export class COMACORDOSAMORTIZACOESService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_AMORTIZACOES[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_AMORTIZACOESbyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS_AMORTIZACOES[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_AMORTIZACOESbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)

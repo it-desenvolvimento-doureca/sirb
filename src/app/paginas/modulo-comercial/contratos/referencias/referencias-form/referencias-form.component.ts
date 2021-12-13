@@ -2,8 +2,10 @@ import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { COM_REFERENCIAS } from 'app/entidades/COM_REFERENCIAS';
+import { COM_REFERENCIAS_SILVER } from 'app/entidades/COM_REFERENCIAS_SILVER';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
+import { COMREFERENCIASSILVERService } from 'app/servicos/com-referencias-silver.service';
 import { COMREFERENCIASService } from 'app/servicos/com-referencias.service';
 import { ConfirmationService } from 'primeng/primeng';
 
@@ -33,6 +35,7 @@ export class ReferenciasFormComponent implements OnInit {
   COD_REFERENCIA = null;
   DESCRICAO = null;
   referencia: any;
+  tabela_referencias = [];
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
   @ViewChild('inputapagar') inputapagar: ElementRef;
@@ -40,7 +43,7 @@ export class ReferenciasFormComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   constructor(private renderer: Renderer, private elementRef: ElementRef, private confirmationService: ConfirmationService, private route: ActivatedRoute, private location: Location,
     private globalVar: AppGlobals, private router: Router, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
-    private COMREFERENCIASService: COMREFERENCIASService) { }
+    private COMREFERENCIASService: COMREFERENCIASService, private COMREFERENCIASSILVERService: COMREFERENCIASSILVERService) { }
 
   ngOnInit() {
     this.globalVar.setapagar(true);
@@ -130,12 +133,36 @@ export class ReferenciasFormComponent implements OnInit {
         this.DESC_REFERENCIA_SILVER = response[0][0].DESC_REFERENCIA_SILVER;
         if (response[0][0].COD_REFERENCIA_SILVER != null) this.referencia_campo = { value: response[0][0].COD_REFERENCIA_SILVER, label: response[0][0].COD_REFERENCIA_SILVER + " - " + response[0][0].DESC_REFERENCIA_SILVER, DESIGN: response[0][0].DESC_REFERENCIA_SILVER, };
 
+        this.carregatabela_referencias(id);
       },
       error => {
         console.log(error);
       });
 
   }
+  carregatabela_referencias(id) {
+    this.COMREFERENCIASSILVERService.getbyid(id).subscribe(
+      response2 => {
+        this.tabela_referencias = [];
+
+        for (var y in response2) {
+
+
+          var referencia_campo = { value: response2[y].COD_REFERENCIA_SILVER, label: response2[y].COD_REFERENCIA_SILVER + " - " + response2[y].DESC_REFERENCIA_SILVER, DESIGN: response2[y].DESC_REFERENCIA_SILVER };
+          this.tabela_referencias.push({
+            filteredreferencias: [], referencia_campo: referencia_campo,
+            dados: response2[y], id: response2[y].ID,
+            PROREF: response2[y].COD_REFERENCIA_SILVER,
+            DESIGN: response2[y].DESC_REFERENCIA_SILVER,
+            ID_REFERENCIA: response2[y].ID_REFERENCIA
+          });
+        }
+        this.tabela_referencias = this.tabela_referencias.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
 
   carregaDados() {
     this.carregaReferencias();
@@ -155,7 +182,7 @@ export class ReferenciasFormComponent implements OnInit {
       });
   }
 
-  filterRef(event) {
+  /*filterRef(event) {
     this.filteredreferencia = this.pesquisa(event.query);
   }
 
@@ -179,15 +206,49 @@ export class ReferenciasFormComponent implements OnInit {
     //this.referencia_campo = event.label;
     this.COD_REFERENCIA_SILVER = event.value;
     this.DESC_REFERENCIA_SILVER = event.descricao;
+  }*/
+
+  filterRef(event, index) {
+
+    this.tabela_referencias[index].filteredreferencias = this.pesquisa(event.query);
+  }
+
+
+  pesquisa(text) {
+    var result = [];
+    for (var x in this.referencias) {
+      let ref = this.referencias[x];
+      if (ref.label.toLowerCase().includes(text.toLowerCase())) {
+        result.push(this.referencias[x]);
+      }
+    }
+    return result;
+  }
+
+  filteronUnselect(event, index) {
+    this.tabela_referencias[index].DESIGN = "";
+    this.tabela_referencias[index].PROREF = null;
+  }
+
+  filterSelect(event, index) {
+    var tab = this.referencias.find(item => item.value == event.value)
+    if (tab) {
+      this.tabela_referencias[index].PROREF = event.value;
+      this.tabela_referencias[index].DESIGN = tab.descricao;
+    } else {
+      this.tabela_referencias[index].DESIGN = "";
+      this.tabela_referencias[index].PROREF = null;
+    }
+    this.tabela_referencias = this.tabela_referencias.slice();
   }
 
   gravar() {
     var referencia = new COM_REFERENCIAS;
     if (!this.novo) referencia = this.referencia;
 
-    referencia.COD_REFERENCIA_SILVER = this.COD_REFERENCIA_SILVER;
+    //referencia.COD_REFERENCIA_SILVER = this.COD_REFERENCIA_SILVER;
     referencia.DESCRICAO = this.DESCRICAO;
-    referencia.DESC_REFERENCIA_SILVER = this.DESC_REFERENCIA_SILVER;
+    //referencia.DESC_REFERENCIA_SILVER = this.DESC_REFERENCIA_SILVER;
     referencia.OBSERVACOES = this.OBSERVACOES;
     referencia.COD_REFERENCIA = this.COD_REFERENCIA;
 
@@ -201,12 +262,14 @@ export class ReferenciasFormComponent implements OnInit {
       referencia.INATIVO = false;
       this.COMREFERENCIASService.create(referencia).subscribe(
         response => {
+          this.gravar_tabela(response.ID)
           this.simular(this.inputnotifi);
           this.router.navigate(['/comercial_referencias/editar'], { queryParams: { id: response.ID } });
         }, error => { console.log(error); });
     } else {
       this.COMREFERENCIASService.update(referencia).subscribe(
         response => {
+          this.gravar_tabela(referencia.ID)
           this.simular(this.inputgravou);
           this.router.navigate(['/comercial_referencias/view'], { queryParams: { id: referencia.ID } });
 
@@ -215,6 +278,53 @@ export class ReferenciasFormComponent implements OnInit {
 
   }
 
+  gravar_tabela(id) {
+    for (var x in this.tabela_referencias) {
+      if (this.tabela_referencias[x].id == null) {
+        this.cria_tabelas(this.tabela_referencias[x], this.tabela_referencias.length, parseInt(x) + 1, id);
+      } else {
+        this.atualiza_tabelas(this.tabela_referencias[x], this.tabela_referencias.length, parseInt(x) + 1, id);
+      }
+    }
+
+  }
+
+  cria_tabelas(data, total, index, id) {
+    if (data.PROREF != null && data.PROREF != "") {
+      var dados = new COM_REFERENCIAS_SILVER;
+      dados.COD_REFERENCIA_SILVER = data.PROREF;
+      dados.ID_REFERENCIA = data.linha;
+      dados.DESC_REFERENCIA_SILVER = data.DESIGN;
+      dados.ID_REFERENCIA = id;
+
+      this.COMREFERENCIASSILVERService.create(dados).subscribe(result => {
+        if (total == index) {
+
+        }
+      }, error => {
+        console.log(error);
+      });
+
+    }
+  }
+
+  atualiza_tabelas(data, total, index, id) {
+    if (data.PROREF != null && data.PROREF != "") {
+      var dados = new COM_REFERENCIAS_SILVER;
+      dados = data.dados;
+      dados.COD_REFERENCIA_SILVER = data.PROREF;
+      dados.ID_REFERENCIA = data.linha;
+      dados.DESC_REFERENCIA_SILVER = data.DESIGN;
+
+      this.COMREFERENCIASSILVERService.update(dados).subscribe(result => {
+        if (total == index) {
+
+        }
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
   //simular click para mostrar mensagem
   simular(element) {
     let event = new MouseEvent('click', { bubbles: true });
@@ -283,5 +393,24 @@ export class ReferenciasFormComponent implements OnInit {
     });
   }
 
+
+  //adicionar linha às tabelas
+  adicionar_linha() {
+    this.tabela_referencias.push({ filteredreferencias: [], referencia_campo: null, dados: null, id: null, PROREF: null, DESIGN: null });
+    this.tabela_referencias = this.tabela_referencias.slice();
+  }
+
+  apagar_linha(index) {
+    var tab = this.tabela_referencias[index];
+    if (tab.id == null) {
+      this.tabela_referencias = this.tabela_referencias.slice(0, index).concat(this.tabela_referencias.slice(index + 1));
+    } else {
+      this.COMREFERENCIASSILVERService.delete(tab.id).then(
+        res => {
+          this.tabela_referencias = this.tabela_referencias.slice(0, index).concat(this.tabela_referencias.slice(index + 1));
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+    }
+  }
 
 }

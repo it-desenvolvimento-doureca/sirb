@@ -16,4 +16,5 @@ export class COM_CONTRATOS {
     INATIVO: boolean;
     CONTRATO_SILVER: string;
     DESC_CONTRATO_SILVER: string;
+    CONTRIBUINTE: string;
 }

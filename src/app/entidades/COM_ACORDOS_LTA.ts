@@ -8,4 +8,6 @@ export class COM_ACORDOS_LTA {
     DATA_ULT_MODIF: Date;
     VALOR_LTA: number;
     ID: number;
+    OBSERVACAO: string;
+    VERSAO: number;
 }

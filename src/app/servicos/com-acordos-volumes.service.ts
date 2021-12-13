@@ -37,8 +37,8 @@ export class COMACORDOSVOLUMESService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_VOLUMES[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VOLUMESbyid/' + id;
+  getbyid(id,versao): Observable<COM_ACORDOS_VOLUMES[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VOLUMESbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -53,9 +53,9 @@ export class COMACORDOSVOLUMESService {
   }
 
 
-  deleteTODOS(id) {
+  deleteTODOS(id, versao) {
     return this.http
-      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS_VOLUMES_TODOS/' + id + '')
+      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS_VOLUMES_TODOS/' + id  + '/' + versao)
       .toPromise()
       .then(res => res)
       .catch(this.handleError);

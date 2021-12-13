@@ -1,4 +1,45 @@
-<app-controlos (apagarbt)="apagar()"></app-controlos>
+<div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disCriar" [hidden]="!btcriar">
+            <a (click)="novoacordo()" [ngClass]="novo ? 'cor_modo' : null">
+              <i class="material-icons">create_new_folder</i>Novo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disEditar" [hidden]="!bteditar">
+            <a (click)="edita()" [ngClass]="(modoedicao && !novo) ? 'cor_modo' : null">
+              <i class="material-icons">mode_edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disFechar" [hidden]="!btfechar">
+            <a (click)="fechar()">
+              <i class="material-icons">done</i>Fechar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
+            <a (click)="apagar()">
+              <i class="material-icons">delete</i>Anular
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -65,7 +106,7 @@
                           ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
                       </div>
 
-                      <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-5">
+                      <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-4">
                         <label style="display: -webkit-box;">Data Registo:</label>
                         <p-calendar [disabled]="true" [style]="{'height':'25px','width':'60%'}" dateFormat="yy-mm-dd"
                           placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
@@ -76,7 +117,7 @@
                           class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
                           ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                       </div>
-                      <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-5">
+                      <div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-4">
                         <label style="display: -webkit-box;">Utilizador:</label>
                         <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="UTILIZADOR"
                           [ngModelOptions]="{standalone: true}" type="text"
@@ -84,6 +125,13 @@
                           ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
                       </div>
 
+                      <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
+                        <label>Versão:</label>
+                        <br>
+                        <p-dropdown [filter]="false" [options]="drop_versoes" (onChange)="alteraVersao($event)"
+                          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="versao_selected"
+                          [ngModelOptions]="{standalone: true}"></p-dropdown>
+                      </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
                         <label>Contrato:</label>
                         <br>
@@ -101,17 +149,22 @@
                       </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                         <label>SOP:</label>
-                        <p-dropdown (onChange)="alteraAno($event)" [options]="anos_SOP"
+                        <!--p-dropdown (onChange)="alteraAno($event)" [options]="anos_SOP"
                           [style]="{'width':'100%','height':'25px'}" [(ngModel)]="SOP"
                           [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true">
-                        </p-dropdown>
+                        </p-dropdown-->
+                        <input type="month" id="SOP" (change)="atualizatabela_volumes()" [(ngModel)]="SOP" name="SOP"
+                          class=" form-control2" [disabled]="!modoedicao" [required]="(SOP == null) ? true : null ">
                       </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                         <label>EOP:</label>
-                        <p-dropdown [options]="anos_EOP" (onChange)="atualizatabela_volumes()"
+                        <!--p-dropdown [options]="anos_EOP" (onChange)="atualizatabela_volumes()"
                           [style]="{'width':'100%','height':'25px'}" [(ngModel)]="EOP"
                           [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true">
-                        </p-dropdown>
+                        </p-dropdown-->
+                        <input type="month" id="EOP" (change)="atualizatabela_volumes()" [(ngModel)]="EOP" name="EOP"
+                          min="{{SOP}}" class=" form-control2" [disabled]="!modoedicao"
+                          [required]="(EOP == null) ? true : null ">
                       </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
                         <label>Preço Base:</label>
@@ -322,6 +375,24 @@
 
                   <!--Amortizações-->
                   <div class="tab-pane fade " [class.in]="ativobt == '3'" [class.active]="ativobt == '3'" id="tab3">
+                    <form *ngIf="!novo" style="width: 100%; display: -webkit-box;" (ngSubmit)="fechar_amortizacoes()"
+                      ngNativeValidate>
+                      <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+                        <button [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null" class="btn btn-success"
+                          type="submit" style="width: 100%;">Fechar Amortizações</button>
+                      </span>
+                      <div class="form-group  has-concluir" style="width: 85%;">
+                        <input type="text" disabled placeholder="Utilizador" value="{{NOME_UTZ_FECHO_AMORTIZACOES}}"
+                          class="form-control2" id="inputSuccess85"
+                          style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                        <p-calendar [disabled]="true" [style]="{'height':'41px','width':'43%','float':'left'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          [minDate]="data_RECLAMACAO" yearRange="2000:2050" [(ngModel)]="DATA_FECHO_AMORTIZACOES"
+                          [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                      </div>
+                    </form>
+
                     <p-dataTable [style]="{'width':'100%'}" [editable]="true" [value]="tabela_amortizacoes"
                       styleClass="ExcelTable2007">
 
@@ -331,10 +402,10 @@
                           {{car[col.field] | date: 'yyyy-MM-dd'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
-                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_INICIO']"
-                            appendTo="body" [ngModelOptions]="{standalone: true}">
+                          <p-calendar [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['DATA_INICIO']" appendTo="body" [ngModelOptions]="{standalone: true}">
                           </p-calendar>
                         </ng-template>
                       </p-column>
@@ -344,10 +415,11 @@
                           {{car[col.field] | date: 'yyyy-MM-dd'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
-                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_FIM_ESTIMADA']"
-                            appendTo="body" [ngModelOptions]="{standalone: true}">
+                          <p-calendar [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['DATA_FIM_ESTIMADA']" appendTo="body"
+                            [ngModelOptions]="{standalone: true}">
                           </p-calendar>
                         </ng-template>
                       </p-column>
@@ -357,8 +429,8 @@
                           {{car[col.field] }}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <input [disabled]="!modoedicao" [(ngModel)]="car['QUANTIDADE']"
-                            [ngModelOptions]="{standalone: true}"
+                          <input [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null"
+                            [(ngModel)]="car['QUANTIDADE']" [ngModelOptions]="{standalone: true}"
                             class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched input_number"
                             type="number">
                         </ng-template>
@@ -371,7 +443,7 @@
                           {{car[col.field] | number: '1.2-2' }}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <input [disabled]="!modoedicao" [(ngModel)]="car['VALOR']"
+                          <input [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null" [(ngModel)]="car['VALOR']"
                             [ngModelOptions]="{standalone: true}" step="0.0001"
                             class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched input_number"
                             type="number">
@@ -385,8 +457,8 @@
                           {{car[col.field] }}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <input [disabled]="!modoedicao" [(ngModel)]="car['OBSERVACAO']"
-                            [ngModelOptions]="{standalone: true}"
+                          <input [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null"
+                            [(ngModel)]="car['OBSERVACAO']" [ngModelOptions]="{standalone: true}"
                             class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
                             type="text">
                         </ng-template>
@@ -395,7 +467,8 @@
 
                       <p-column [style]="{'width':'80px'}">
                         <ng-template let-index="rowIndex" pTemplate="body">
-                          <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                          <button type="button" class="btn btn-danger btn-xs"
+                            [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null" title="Apagar"
                             (click)="apagar_linha(index)">
                             <span class="glyphicon glyphicon-trash"></span>
                           </button>
@@ -403,7 +476,7 @@
                       </p-column>
 
                       <p-footer>
-                        <a (click)="adicionar_linha()" [class.disabled]="!modoedicao"
+                        <a (click)="adicionar_linha()" [class.disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null"
                           style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
                           <i class="material-icons">add</i> Adicionar
                         </a>
@@ -413,6 +486,23 @@
 
                   <!--LTA-->
                   <div class="tab-pane fade" [class.in]="ativobt == '4'" [class.active]="ativobt == '4'" id="tab4">
+                    <form *ngIf="!novo" style="width: 100%; display: -webkit-box;" (ngSubmit)="fechar_lta()"
+                      ngNativeValidate>
+                      <span class="input-group-btn" style="padding: 0; width: 15%; display: block;">
+                        <button [disabled]="!modoedicao || DATA_FECHO_LTA != null" class="btn btn-success" type="submit"
+                          style="width: 100%;">Fechar LTA (Produtividade)</button>
+                      </span>
+                      <div class="form-group  has-concluir" style="width: 85%;">
+                        <input type="text" disabled placeholder="Utilizador" value="{{NOME_UTZ_FECHO_LTA}}"
+                          class="form-control2" id="inputSuccess85"
+                          style="width: 50%; height: 41px; border-radius: 0; display: -webkit-inline-box; float: left;">
+
+                        <p-calendar [disabled]="true" [style]="{'height':'41px','width':'43%','float':'left'}"
+                          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                          [minDate]="data_RECLAMACAO" yearRange="2000:2050" [(ngModel)]="DATA_FECHO_LTA"
+                          [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true"></p-calendar>
+                      </div>
+                    </form>
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabela_lta"
                       styleClass="ExcelTable2007">
 
@@ -421,10 +511,10 @@
                           {{car[col.field] | date: 'yyyy-MM-dd'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
-                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_INICIO']"
-                            appendTo="body" [ngModelOptions]="{standalone: true}">
+                          <p-calendar [disabled]="!modoedicao || DATA_FECHO_LTA != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['DATA_INICIO']" appendTo="body" [ngModelOptions]="{standalone: true}">
                           </p-calendar>
                         </ng-template>
                       </p-column>
@@ -434,39 +524,50 @@
                           {{car[col.field] | date: 'yyyy-MM-dd'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'90%'}"
-                            dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="car['DATA_FIM']" appendTo="body"
-                            [ngModelOptions]="{standalone: true}">
+                          <p-calendar [disabled]="!modoedicao || DATA_FECHO_LTA != null"
+                            [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                            [(ngModel)]="car['DATA_FIM']" appendTo="body" [ngModelOptions]="{standalone: true}">
                           </p-calendar>
                         </ng-template>
                       </p-column>
 
-                      <p-column [editable]="true" field="VALOR" header="Valor">
+                      <p-column [editable]="true" field="VALOR" header="%">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{car[col.field] | number: '1.4-4'}}
+                          {{car[col.field] | number: '1.2-2'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <input [disabled]="!modoedicao" [(ngModel)]="car['VALOR']"
-                            [ngModelOptions]="{standalone: true}" step="0.0001"
+                          <input [disabled]="!modoedicao || DATA_FECHO_LTA != null" [(ngModel)]="car['VALOR']"
+                            [ngModelOptions]="{standalone: true}" step="0.01"
                             class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched input_number"
                             type="number">
                         </ng-template>
                       </p-column>
 
-
+                      <p-column [editable]="true" field="OBSERVACAO" header="Observação">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] }}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <input [disabled]="!modoedicao || DATA_FECHO_LTA != null" [(ngModel)]="car['OBSERVACAO']"
+                            [ngModelOptions]="{standalone: true}"
+                            class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
+                            type="text">
+                        </ng-template>
+                      </p-column>
 
                       <p-column [style]="{'width':'80px'}">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
 
-                          <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                          <button type="button" class="btn btn-danger btn-xs"
+                            [disabled]="!modoedicao || DATA_FECHO_LTA != null" title="Apagar"
                             (click)="apagar_linha_lta(index)">
                             <span class="glyphicon glyphicon-trash"></span>
                           </button>
                         </ng-template>
                       </p-column>
                       <p-footer [style]="{'text-align':'center'}">
-                        <a (click)="adicionar_linha_lta()" [class.disabled]="!modoedicao"
+                        <a (click)="adicionar_linha_lta()" [class.disabled]="!modoedicao || DATA_FECHO_LTA != null"
                           style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
                           <i class="material-icons">add</i> Adicionar
                         </a>
@@ -492,12 +593,12 @@
                             style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;">{{car[col.field]}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column [sortable]="false" [filter]="false" styleclass="text-danger" field="preco"
+                      <!--p-column [sortable]="false" [filter]="false" styleclass="text-danger" field="preco"
                         header="Preço" [style]="{'width':'65px'}">
                         <ng-template let-col let-car="rowData" pTemplate="body">
                           {{car[col.field] | number: '1.2-2'}}
                         </ng-template>
-                      </p-column>
+                      </p-column-->
                       <p-column [sortable]="false" [filter]="false" styleclass="text-danger" field="nome_ficheiro"
                         header="Anexo/Documento" [style]="{'width':'55px'}">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
@@ -578,6 +679,10 @@
   onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>
 <button type="button" class="btn btn-danger btn-block" #datas_invalidas [hidden]="true"
   onclick="demo.showNotification('top','right','Data Inserida coincide com outras datas inseridas!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #sem_alteracoes [hidden]="true"
+  onclick="demo.showNotification('top','right','Não existem alterações!',3)"></button>
+<button type="button" class="btn btn-danger btn-block" #existerefcontrato [hidden]="true"
+  onclick="demo.showNotification('top','right','Já existe um Acordo com a Referência e o Contrato Selecionados!',3)"></button>
 <!-- Modal dados-->
 
 
@@ -622,12 +727,12 @@
           [ngModelOptions]="{standalone: true}" placeholder="" [disabled]="true" />
       </div>
 
-      <div class="form-group col-md-2">
+      <!--div class="form-group col-md-2">
         <label for="PRECO" style="  text-align: right;">Preço:</label>
         <input type="number" step="0.01" class="form-control2 input_number" id="PRECO" [(ngModel)]="dados.PRECO"
           [disabled]="!modoedicao && !novo_atividade" [ngModelOptions]="{standalone: true}" placeholder=""
           [required]="true" />
-      </div>
+      </div-->
 
       <div class="form-group col-md-4 ">
         <label>Gera Alerta:</label><br>

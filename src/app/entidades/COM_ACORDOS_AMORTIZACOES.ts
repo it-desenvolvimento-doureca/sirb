@@ -10,4 +10,5 @@ export class COM_ACORDOS_AMORTIZACOES {
     VALOR: number;
     DATA_FIM_ESTIMADA: Date;
     ID: number;
+    VERSAO: number;
 }

@@ -35,9 +35,9 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  delete(id) {
+  delete(id, versao) {
     return this.http
-      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS/' + id + '')
+      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS/' + id + '/' + versao)
       .toPromise()
       .then(res => res)
       .catch(this.handleError);
@@ -45,17 +45,32 @@ export class COMACORDOSService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOSbyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOSbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getversoes(id, versao): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VERSOES/' + id + '/' + versao;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
-  getbyid2(id): Observable<COM_ACORDOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOSbyid2/' + id;
+  getbyid2(id, versao): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOSbyid2/' + id + '/' + versao;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  valida_acordo(id_contrato, id_referencia): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VALIDA_ACORDO/' + id_contrato + '/' + id_referencia;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -69,7 +84,19 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  update_NOVA_VERSAO(data: COM_ACORDOS) {
+    return this.http
+      .put(webUrl.host + '/rest/sirb/updateCOM_ACORDOS_NOVA_VERSAO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
+  updateESTADO(data: COM_ACORDOS, tipo, tipo2) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/updateCOM_ACORDOS_ESTADO/' + tipo + '/' + tipo2, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();

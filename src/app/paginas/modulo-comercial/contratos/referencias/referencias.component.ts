@@ -85,8 +85,8 @@ export class ReferenciasComponent implements OnInit {
             ID: response[x].ID,
             DESCRICAO: response[x].DESCRICAO,
             COD_REFERENCIA: response[x].COD_REFERENCIA,
-            COD_REFERENCIA_SILVER: response[x].COD_REFERENCIA_SILVER,
-            DESC_REFERENCIA_SILVER: response[x].DESC_REFERENCIA_SILVER,
+            //COD_REFERENCIA_SILVER: response[x].COD_REFERENCIA_SILVER,
+           // DESC_REFERENCIA_SILVER: response[x].DESC_REFERENCIA_SILVER,
             //data_ULTIMA_REALIZADA: (response[x].data_ULTIMA_REALIZADA == null) ? '' : this.formatDate(response[x].data_ULTIMA_REALIZADA) + ' ' + new Date(response[x].data_ULTIMA_REALIZADA).toLocaleTimeString().slice(0, 5),
 
           });

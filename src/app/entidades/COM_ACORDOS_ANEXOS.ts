@@ -10,4 +10,5 @@ export class COM_ACORDOS_ANEXOS {
     FICHEIRO: string;
     FICHEIRO_2: string;
     TYPE_FICHEIRO: string;
+    VERSAO: number;
 }

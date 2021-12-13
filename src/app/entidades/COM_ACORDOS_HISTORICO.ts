@@ -4,4 +4,5 @@ export class COM_ACORDOS_HISTORICO {
     UTZ_CRIA: number;
     ID_ACORDO: number;
     ID: number;
+    VERSAO: number;
 }

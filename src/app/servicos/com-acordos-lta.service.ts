@@ -37,8 +37,8 @@ export class COMACORDOSLTAService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_LTA[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_LTAbyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS_LTA[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_LTAbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)

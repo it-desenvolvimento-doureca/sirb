@@ -37,8 +37,8 @@ export class COMACORDOSHISTORICOService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_HISTORICO[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_HISTORICObyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS_HISTORICO[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_HISTORICObyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)

@@ -83,8 +83,8 @@
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
                       <label>Observações:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="OBSERVACOES"
-                        [ngModelOptions]="{standalone: true}">
+                      <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="OBSERVACOES" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
                     </div>
 
                   </div>

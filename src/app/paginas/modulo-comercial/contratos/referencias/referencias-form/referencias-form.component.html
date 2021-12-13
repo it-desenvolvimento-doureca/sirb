@@ -55,19 +55,67 @@
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
-                      <label>Referência Silver:</label><br>
-                      <p-autoComplete [(ngModel)]="referencia_campo" [suggestions]="filteredreferencia"
+                      <label>Referências Silver:</label>
+                      <!--p-autoComplete [(ngModel)]="referencia_campo" [suggestions]="filteredreferencia"
                         class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
                         (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
                         emptyMessage="Sem Resultados..." [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
                         (completeMethod)="filterRef($event)" field="label" placeholder="Pesquisar..." [minLength]="1">
-                      </p-autoComplete>
+                      </p-autoComplete-->
+                      <div class="col-md-12 " style="padding:0;">
+                        <p-dataTable [style]="{'width':'100%'}" [editable]="true" [value]="tabela_referencias"
+                          styleClass="ExcelTable2007">
+
+                          <p-column [style]="{'width':'50%'}" [editable]="true" field="PROREF"
+                            header="Código Referência">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                              {{car[col.field] }}
+                            </ng-template>
+                            <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
+                              <!--<p-dropdown [filter]="true" [options]="artigos"
+                                [style]="{'width':'100%','background':'white'}" [(ngModel)]="car['PROREF']"
+                                (onChange)="atualizatabelas($event,index)" [ngModelOptions]="{standalone: true}"
+                                [required]="true" appendTo="body"></p-dropdown> -->
+                              <p-autoComplete [(ngModel)]="car['referencia_campo']"
+                                [suggestions]="car['filteredreferencias']" class="autocompleseguranca"
+                                [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                                [disabled]="!modoedicao" emptyMessage="Sem Resultados..."
+                                (onUnselect)="filteronUnselect($event,index)" (onSelect)="filterSelect($event,index)"
+                                [ngModelOptions]="{standalone: true}" (completeMethod)="filterRef($event,index)"
+                                field="label" placeholder="Pesquisar..." [minLength]="1">
+                              </p-autoComplete>
+                            </ng-template>
+                          </p-column>
+
+                          <p-column [style]="{'width':'50%'}" field="DESIGN" header="Descrição">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                              {{car[col.field] }}
+                            </ng-template>
+                          </p-column>
+
+
+                          <p-column [style]="{'width':'45px'}">
+                            <ng-template let-index="rowIndex" pTemplate="body">
+                              <button type="button" label=" " pButton (click)="apagar_linha(index)"
+                                [disabled]="!modoedicao" class="ui-button-danger" icon="fa-trash"></button>
+                            </ng-template>
+                          </p-column>
+
+                          <p-footer>
+                            <a (click)="adicionar_linha()" style="color: black; cursor:pointer; margin-left:10px;"
+                              [class.disabled]="!modoedicao" title="Adicionar nova linha">
+                              <i class="material-icons">add</i> Adicionar
+                            </a>
+                          </p-footer>
+                        </p-dataTable>
+                      </div>
+
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
                       <label>Observações:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="OBSERVACOES"
-                        [ngModelOptions]="{standalone: true}">
+                      <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="OBSERVACOES" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
                     </div>
 
                   </div>

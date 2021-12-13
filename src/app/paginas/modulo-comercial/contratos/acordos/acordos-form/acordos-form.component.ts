@@ -55,8 +55,9 @@ export class AcordosFormComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('datas_invalidas') datas_invalidas: ElementRef;
+  @ViewChild('sem_alteracoes') sem_alteracoes: ElementRef;
   @ViewChild('buttongravar') buttongravar: ElementRef;
-
+  @ViewChild('existerefcontrato') existerefcontrato: ElementRef;
   campo_x: any;
   filedescricao = [];
 
@@ -75,6 +76,7 @@ export class AcordosFormComponent implements OnInit {
   mensagemtabela_acoes: string;
   tabela_acoes: any[] = [];
   ID_ACORDO: number;
+  VERSAO: number;
   drop_contratos = [];
   UTILIZADOR;
   DATA_CRIA;
@@ -88,8 +90,7 @@ export class AcordosFormComponent implements OnInit {
   novo_atividade: boolean;
   index_actividade: any;
   HORA_CRIA: string;
-  anos_SOP = [];
-  anos_EOP = [];
+
 
   tabela_volumes: any = [];
   dados_precos = "";
@@ -99,7 +100,24 @@ export class AcordosFormComponent implements OnInit {
   dados_volumes = "";
   dados_documentos = "";
   dados_old;
-
+  disApagar: boolean;
+  disCriar: boolean;
+  disEditar: boolean;
+  btapagar;
+  bteditar;
+  btvoltar;
+  btfechar;
+  disFechar;
+  btcriar;
+  drop_versoes: any[];
+  versao_selected;
+  edicao = false;
+  NOME_UTZ_FECHO: any;
+  NOME_UTZ_FECHO_AMORTIZACOES: any;
+  NOME_UTZ_FECHO_LTA: any;
+  DATA_FECHO;
+  DATA_FECHO_AMORTIZACOES;
+  DATA_FECHO_LTA;
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
     private COMACORDOSACTIVIDADESService: COMACORDOSACTIVIDADESService,
@@ -116,17 +134,11 @@ export class AcordosFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.anos_SOP.push({ label: '--', value: "" });
-    for (var x = 2000; x <= 2060; x++) {
-      this.anos_SOP.push({ value: x, label: x })
-    }
 
-    this.anos_EOP = this.anos_SOP;
 
     this.globalVar.setapagar(true);
     this.globalVar.seteditar(true);
     this.globalVar.setvoltar(true);
-    this.globalVar.seteditar(true);
     this.globalVar.setseguinte(false);
     this.globalVar.setanterior(false);
     this.globalVar.setatualizar(false);
@@ -134,6 +146,11 @@ export class AcordosFormComponent implements OnInit {
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(false);
+    this.btapagar = true;
+    this.bteditar = true;
+    this.btvoltar = true;
+    this.btfechar = true;
+
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.user_nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
@@ -150,15 +167,18 @@ export class AcordosFormComponent implements OnInit {
       this.novo = false;
 
       var id;
+      var versao;
       var sub = this.route
         .queryParams
         .subscribe(params => {
           id = params['id'] || 0;
+          versao = params['versao'] || 0;
         });
-      this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852editar"));
-      this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852criar"));
-      this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852apagar"));
-      this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852duplicar"));
+      this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852editar");
+      this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852criar");
+      this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852apagar");
+      this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852fechar");
+
 
 
       this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15852apagarficheiros");
@@ -172,6 +192,9 @@ export class AcordosFormComponent implements OnInit {
         this.globalVar.setapagar(false);
         this.globalVar.setcriar(true);
         this.modoedicao = true;
+        this.edicao = true;
+        this.btapagar = false;
+        this.btcriar = true;
 
       } else if (urlarray[1].match("novo")) {
         this.globalVar.setseguinte(false);
@@ -180,8 +203,14 @@ export class AcordosFormComponent implements OnInit {
         this.globalVar.setcriar(false);
         this.globalVar.setduplicar(false);
         this.novo = true;
+        this.btapagar = false;
         this.globalVar.seteditar(false);
         this.modoedicao = true;
+        this.edicao = true;
+        this.bteditar = false;
+        this.btfechar = false;
+        this.btcriar = false;
+
         var dirtyFormID = 'formReclama';
         var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
         resetForm.reset();
@@ -190,25 +219,37 @@ export class AcordosFormComponent implements OnInit {
       } else if (urlarray[1].match("view")) {
         this.globalVar.setdisDuplicar(false);
         this.globalVar.setcriar(true);
+        this.btcriar = true;
       }
     }
 
     if (!this.novo) {
-      this.carregaDados(id, true);
+      this.carregaDados(id, versao, true);
     } else {
-      this.carregaDados(id, false);
+      this.carregaDados(id, versao, false);
     }
 
   }
 
+  alteraVersao(event) {
+    if (event.value != "" && event.value != this.VERSAO) {
+      if (!this.edicao) {
+        this.locatiosave('view', this.ID_ACORDO, event.value);
+      } else {
+        this.locatiosave('editar', this.ID_ACORDO, event.value);
+      }
+      this.inicia(this.ID_ACORDO, event.value);
+    }
+  }
+
   alteraAno(event) {
     if (event.value != "") {
-      this.anos_EOP = [];
-      this.anos_EOP.push({ label: '--', value: "" });
-      for (var x = event.value; x <= 2060; x++) {
-        this.anos_EOP.push({ value: x, label: x })
-      }
-      this.anos_EOP = this.anos_EOP.slice();
+      /* this.anos_EOP = [];
+       this.anos_EOP.push({ label: '--', value: "" });
+       for (var x = event.value; x <= 2060; x++) {
+         this.anos_EOP.push({ value: x, label: x })
+       }
+       this.anos_EOP = this.anos_EOP.slice();*/
       if (event.value > this.EOP) this.EOP = null;
       this.atualizatabela_volumes();
     }
@@ -218,9 +259,15 @@ export class AcordosFormComponent implements OnInit {
   atualizatabela_volumes() {
 
     var dados = this.tabela_volumes.slice();
-    if (this.SOP <= this.EOP) {
+
+    if (this.SOP == "") this.SOP = null;
+    if (this.EOP == "") this.EOP = null;
+    var ano_SOP = (this.SOP == null) ? null : new Date(this.SOP + '-01').getFullYear();
+    var ano_EOP = (this.EOP == null) ? null : new Date(this.EOP + '-01').getFullYear();
+
+    if (ano_SOP <= ano_EOP) {
       this.tabela_volumes = [];
-      for (var x = this.SOP; x <= this.EOP; x++) {
+      for (var x = ano_SOP; x <= ano_EOP; x++) {
         var arr = dados.find(item => item.ano == x);
         var valor = null;
         if (arr) valor = arr.valor
@@ -230,10 +277,10 @@ export class AcordosFormComponent implements OnInit {
 
   }
 
-  carregaDados(id, inicia) {
-    this.carregar_contratos(id, inicia);
+  carregaDados(id, versao, inicia) {
+    this.carregar_contratos(id, versao, inicia);
   }
-  carregar_contratos(id, inicia) {
+  carregar_contratos(id, versao, inicia) {
     this.drop_contratos = [];
     this.drop_contratos.push({ label: 'Sel. Contrato', value: "" });
     this.COMCONTRATOSService.getAll().subscribe(
@@ -249,15 +296,15 @@ export class AcordosFormComponent implements OnInit {
 
         }
         this.drop_contratos = this.drop_contratos.slice();
-        this.carregar_referencias(id, inicia);
+        this.carregar_versoes(id, versao, inicia);
       },
       error => {
-        this.carregar_referencias(id, inicia);
+        this.carregar_versoes(id, versao, inicia);
         console.log(error);
       });
   }
 
-  carregar_referencias(id, inicia) {
+  carregar_referencias(id, versao, inicia) {
     this.drop_referencias = [];
     this.drop_referencias.push({ label: 'Sel. Referência', value: "" });
     this.COMREFERENCIASService.getAll().subscribe(
@@ -273,49 +320,99 @@ export class AcordosFormComponent implements OnInit {
 
         }
         this.drop_referencias = this.drop_referencias.slice();
-        if (inicia) this.inicia(id);
+        if (inicia) this.inicia(id, versao);
       },
       error => {
-        if (inicia) this.inicia(id);
+        if (inicia) this.inicia(id, versao);
         console.log(error);
       });
 
   }
 
-  inicia(id) {
-    this.COMACORDOSService.getbyid2(id).subscribe(
+  carregar_versoes(id, versao, inicia) {
+    this.drop_versoes = [];
+    if (inicia) {
+      this.COMACORDOSService.getversoes(id, versao).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+
+          for (var x in response) {
+
+            this.drop_versoes.push({
+              value: response[x][1],
+              label: response[x][1]
+            });
+
+          }
+          this.drop_versoes = this.drop_versoes.slice();
+          this.carregar_referencias(id, versao, inicia);
+        },
+        error => {
+          this.carregar_referencias(id, versao, inicia);
+          console.log(error);
+        });
+    } else {
+      this.carregar_referencias(id, versao, inicia);
+    }
+  }
+
+  inicia(id, versao) {
+    this.COMACORDOSService.getbyid2(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) { }
         this.dados_acordo = response[0][0];
         this.ID_ACORDO = response[0][0].ID;
+        this.VERSAO = response[0][0].VERSAO;
         this.UTILIZADOR = response[0][1];
         this.DATA_CRIA = this.formatDate(response[0][0].DATA_CRIA);
         this.HORA_CRIA = new Date(response[0][0].DATA_CRIA).toLocaleTimeString().slice(0, 5);
         this.OBSERVACOES = response[0][0].OBSERVACOES;
         this.ID_CONTRATO = response[0][0].ID_CONTRATO;
         this.ID_REFERENCIA = response[0][0].ID_REFERENCIA;
-        this.SOP = response[0][0].SOP;
-        this.EOP = response[0][0].EOP;
+        this.SOP = (response[0][0].SOP == null) ? null : this.formatDateMES(response[0][0].SOP);
+        this.EOP = (response[0][0].EOP == null) ? null : this.formatDateMES(response[0][0].SOP);
         this.PRECO_BASE = response[0][0].PRECO_BASE;
-
+        this.versao_selected = response[0][0].VERSAO;
         this.dados_old = { OBSERVACOES: this.OBSERVACOES, ID_CONTRATO: this.ID_CONTRATO, ID_REFERENCIA: this.ID_REFERENCIA, SOP: this.SOP, EOP: this.EOP, PRECO_BASE: this.PRECO_BASE };
+
+        this.NOME_UTZ_FECHO_LTA = response[0][3];
+        this.NOME_UTZ_FECHO_AMORTIZACOES = response[0][4];
+        this.NOME_UTZ_FECHO = response[0][5];
+
+        this.DATA_FECHO = (response[0][0].DATA_FECHO == null) ? null : new Date(response[0][0].DATA_FECHO);
+        this.DATA_FECHO_AMORTIZACOES = (response[0][0].DATA_FECHO_AMORTIZACOES == null) ? null : new Date(response[0][0].DATA_FECHO_AMORTIZACOES);
+        this.DATA_FECHO_LTA = (response[0][0].DATA_FECHO_LTA == null) ? null : new Date(response[0][0].DATA_FECHO_LTA);
+
+        var estado = response[0][0].ESTADO;
+        if (response[0][0].VERSAO != response[0][2] || estado == 'A' || estado == 'F') {
+          this.modoedicao = false;
+          this.btapagar = false;
+          this.bteditar = false;
+          this.btfechar = false;
+        } else {
+          this.modoedicao = this.edicao;
+          this.btapagar = true;
+          this.bteditar = true;
+          this.btfechar = true;
+        }
       });
 
 
-    this.carregatabelaFiles(id);
-    this.carregatabela_precos(id);
-    this.carregatabela_amortizacoes(id);
-    this.carregatabela_lta(id);
-    this.carregatabela_actividades(id);
-    this.carregatabela_historico(id);
-    this.carregatabela_volumes(id);
+    this.carregatabelaFiles(id, versao);
+    this.carregatabela_precos(id, versao);
+    this.carregatabela_amortizacoes(id, versao);
+    this.carregatabela_lta(id, versao);
+    this.carregatabela_actividades(id, versao);
+    this.carregatabela_historico(id, versao);
+    this.carregatabela_volumes(id, versao);
   }
 
-  carregatabela_volumes(id) {
-
-    this.COMACORDOSVOLUMESService.getbyid(id).subscribe(
+  carregatabela_volumes(id, versao) {
+    this.tabela_volumes = [];
+    this.COMACORDOSVOLUMESService.getbyid(id, versao).subscribe(
       response => {
+        this.tabela_volumes = [];
         var count = Object.keys(response).length;
         if (count == 0) {
 
@@ -329,10 +426,10 @@ export class AcordosFormComponent implements OnInit {
       });
   }
 
-  carregatabela_precos(id) {
+  carregatabela_precos(id, versao) {
     this.tabela_precos = [];
 
-    this.COMACORDOSPRECOSService.getbyid(id).subscribe(
+    this.COMACORDOSPRECOSService.getbyid(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -374,9 +471,9 @@ export class AcordosFormComponent implements OnInit {
     this.tabela_precos = this.tabela_precos.slice();
   }
 
-  carregatabela_amortizacoes(id) {
+  carregatabela_amortizacoes(id, versao) {
     this.tabela_amortizacoes = [];
-    this.COMACORDOSAMORTIZACOESService.getbyid(id).subscribe(
+    this.COMACORDOSAMORTIZACOESService.getbyid(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -414,14 +511,14 @@ export class AcordosFormComponent implements OnInit {
     }
   }
   adicionar_linha() {
-    this.tabela_amortizacoes.push({ DATA_INICIO: null, QUANTIDADE: null, VALOR: null, DATA_FIM_ESTIMADA: null, OBSERVACAO: null });
+    this.tabela_amortizacoes.push({ DATA_INICIO: null, QUANTIDADE: null, VALOR: null, DATA_FIM_ESTIMADA: null, OBSERVACAO: null, DATA_FECHO: null });
     this.tabela_amortizacoes = this.tabela_amortizacoes.slice();
   }
 
-  carregatabela_lta(id) {
+  carregatabela_lta(id, versao) {
     this.tabela_lta = [];
 
-    this.COMACORDOSLTAService.getbyid(id).subscribe(
+    this.COMACORDOSLTAService.getbyid(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -433,7 +530,8 @@ export class AcordosFormComponent implements OnInit {
             ID: response[x].ID,
             DATA_INICIO: (response[x].DATA_INICIO == null) ? null : new Date(response[x].DATA_INICIO),
             VALOR: response[x].VALOR_LTA,
-            DATA_FIM: (response[x].DATA_FIM == null) ? null : new Date(response[x].DATA_FIM)
+            OBSERVACAO: response[x].OBSERVACAO,
+            DATA_FIM: (response[x].DATA_FIM == null) ? null : new Date(response[x].DATA_FIM),
           });
         }
 
@@ -458,24 +556,24 @@ export class AcordosFormComponent implements OnInit {
   }
 
   adicionar_linha_lta() {
-    this.tabela_lta.push({ DATA_INICIO: null, VALOR: null, DATA_FIM: null });
+    this.tabela_lta.push({ DATA_INICIO: null, VALOR: null, DATA_FIM: null, OBSERVACAO: null, DATA_FECHO: null });
     this.tabela_lta = this.tabela_lta.slice();
   }
 
 
 
-  carregatabela_historico(id) {
+  carregatabela_historico(id, versao) {
     this.tabela_historico = [];
     this.tabela_historico.push({});
   }
 
-  carregatabela_actividades(id) {
+  carregatabela_actividades(id, versao) {
     this.tabela_acoes = [];
 
     var count = 0;
     this.mensagemtabela_acoes = "A Carregar...";
 
-    this.COMACORDOSACTIVIDADESService.getbyid(id).subscribe(
+    this.COMACORDOSACTIVIDADESService.getbyid(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -485,6 +583,7 @@ export class AcordosFormComponent implements OnInit {
           var array = {
             ID: response[x][0],
             ID_ACORDO: response[x][1],
+            VERSAO: versao,
             DATA_ATIVIDADE: response[x][2],
             UTILIZADOR: response[x][3],
             DESCRICAO: response[x][4],
@@ -520,6 +619,7 @@ export class AcordosFormComponent implements OnInit {
             datatype: response[x][13],
             type: response[x][14],
             size: response[x][11],
+            modificado: false,
             apagarficheiros: (this.adminuser || this.user == response[x][8]) ? false : true
           });
 
@@ -565,6 +665,21 @@ export class AcordosFormComponent implements OnInit {
     let event = new MouseEvent('click', { bubbles: true });
     this.renderer.invokeElementMethod(
       element.nativeElement, 'dispatchEvent', [event]);
+  }
+
+
+
+  //formatar a data para yyyy-mm
+  formatDateMES(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month].join('-');
   }
 
   //formatar a data para yyyy-mm-dd
@@ -628,8 +743,8 @@ export class AcordosFormComponent implements OnInit {
     acordo.ID_CONTRATO = this.ID_CONTRATO;
     acordo.ID_REFERENCIA = this.ID_REFERENCIA;
     acordo.OBSERVACOES = this.OBSERVACOES;
-    acordo.SOP = this.SOP;
-    acordo.EOP = this.EOP;
+    acordo.SOP = (this.SOP == null) ? null : new Date(this.SOP + '-01');
+    acordo.EOP = (this.EOP == null) ? null : new Date(this.EOP + '-01');
     acordo.PRECO_BASE = this.PRECO_BASE;
 
     acordo.UTZ_ULT_MODIF = this.user;
@@ -638,50 +753,78 @@ export class AcordosFormComponent implements OnInit {
     if (this.novo) {
       acordo.DATA_CRIA = new Date();
       acordo.UTZ_CRIA = this.user;
+      acordo.VERSAO = 1;
 
       acordo.INATIVO = false;
-      this.COMACORDOSService.create(acordo).subscribe(
-        res => {
 
-          this.gravarFicheiros(res.ID);
-          this.gravartabela_actividades(res.ID);
-          this.gravartabela_precos(res.ID);
-          this.gravartabela_amortizacoes(res.ID);
-          this.gravartabela_lta(res.ID);
-          this.gravartabela_volumes(res.ID);
-          this.simular(this.inputnotifi);
-          this.locatiosave('editar', res.ID);
-
+      this.COMACORDOSService.valida_acordo(this.ID_REFERENCIA, this.ID_REFERENCIA).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          if (count == 0) {
+            this.cria_acordo(acordo);
+          } else {
+            if (response[0][0] > 0) {
+              this.simular(this.existerefcontrato);
+            } else {
+              this.cria_acordo(acordo);
+            }
+          }
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
 
+
     } else {
       var id;
+      var versao;
       var sub = this.route
         .queryParams
         .subscribe(params => {
           id = params['id'] || 0;
+          //versao = params['versao'] || 0;
         });
 
       acordo.ID = id;
       //console.log(reclamacao)
+      var alteracoes = this.ver_alteracoes();
+      if (alteracoes.length > 0) {
+        this.COMACORDOSService.update_NOVA_VERSAO(acordo).subscribe(
+          res => {
+            versao = res[0][1];
+            acordo.VERSAO = versao;
 
+            this.gravartabela_actividades(id, versao, true);
+            this.gravartabela_precos(id, versao, true);
+            this.gravartabela_amortizacoes(id, versao, true);
+            this.gravartabela_lta(id, versao, true);
+            this.gravartabela_volumes(id, versao);
+            this.gravarFicheiros(id, versao, true);
+            this.gravartabela_historico(alteracoes, versao);
+            this.simular(this.inputgravou);
+            this.locatiosave('view', this.ID_ACORDO, versao);
 
-      this.COMACORDOSService.update(acordo).subscribe(
-        res => {
-          this.gravartabela_actividades(id);
-          this.gravartabela_precos(id);
-          this.gravartabela_amortizacoes(id);
-          this.gravartabela_lta(id);
-          this.gravartabela_volumes(id);
-          var alteracoes = this.ver_alteracoes();
-          this.gravartabela_historico(alteracoes);
-          this.simular(this.inputgravou);
-          this.locatiosave('view', this.ID_ACORDO);
-        },
-        error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
-
+          },
+          error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
+      } else {
+        this.simular(this.sem_alteracoes);
+      }
     }
+  }
+
+  cria_acordo(acordo) {
+    this.COMACORDOSService.create(acordo).subscribe(
+      res => {
+
+        this.gravarFicheiros(res.ID, res.VERSAO, false);
+        this.gravartabela_actividades(res.ID, res.VERSAO, false);
+        this.gravartabela_precos(res.ID, res.VERSAO, false);
+        this.gravartabela_amortizacoes(res.ID, res.VERSAO, false);
+        this.gravartabela_lta(res.ID, res.VERSAO, false);
+        this.gravartabela_volumes(res.ID, res.VERSAO);
+        this.simular(this.inputnotifi);
+        this.locatiosave('editar', res.ID, res.VERSAO);
+
+      },
+      error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
   }
 
   ver_alteracoes() {
@@ -696,45 +839,45 @@ export class AcordosFormComponent implements OnInit {
     var modificacoes = [];
 
     if (diff_precos) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Preços', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Preços', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (diff_amortizacoes) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Amortizações', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Amortizações', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (diff_lta) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela LTA', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela LTA', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (diff_atividades) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Atividades', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Atividades', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (diff_volumes) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Volumes', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Volumes', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (diff_documentos) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Documentos', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou a tabela Documentos', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
 
     if (this.dados_old.OBSERVACOES != this.OBSERVACOES) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Observações', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Observações', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
     }
     if (this.dados_old.ID_CONTRATO != this.ID_CONTRATO) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Contrato', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Contrato', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
 
     }
     if (this.dados_old.ID_REFERENCIA != this.ID_REFERENCIA) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Referência', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Referência', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
 
     }
     if (this.dados_old.SOP != this.SOP) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo SOP', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo SOP', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
 
     }
     if (this.dados_old.EOP != this.EOP) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo EOP', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo EOP', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
 
     }
     if (this.dados_old.PRECO_BASE != this.PRECO_BASE) {
-      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Preço Base', ID_ACORDO: this.ID_ACORDO });
+      modificacoes.push({ DESCRICAO: 'O Utilizador ' + this.user_nome + ' alterou o campo Preço Base', ID_ACORDO: this.ID_ACORDO, VERSAO: this.VERSAO });
 
     }
 
@@ -742,7 +885,7 @@ export class AcordosFormComponent implements OnInit {
   }
 
 
-  locatiosave(destino, id) {
+  locatiosave(destino, id, versao) {
     var back;
     var sub2 = this.route
       .queryParams
@@ -752,13 +895,13 @@ export class AcordosFormComponent implements OnInit {
       });
 
     if (back != 0) {
-      this.router.navigate(['comercial_acordos/' + destino], { queryParams: { id: id, redirect: back } });
+      this.router.navigate(['comercial_acordos/' + destino], { queryParams: { id: id, versao: versao, redirect: back } });
     } else {
-      this.router.navigate(['comercial_acordos/' + destino], { queryParams: { id: id } });
+      this.router.navigate(['comercial_acordos/' + destino], { queryParams: { id: id, versao: versao } });
     }
   }
 
-  gravarFicheiros(id) {
+  gravarFicheiros(id, versao, nova_versao) {
     if (this.uploadedFiles && this.uploadedFiles.length > 0) {
 
 
@@ -767,14 +910,20 @@ export class AcordosFormComponent implements OnInit {
         var ficheiros = new COM_ACORDOS_ANEXOS;
         var novo = false;
         if (this.uploadedFiles[x].id_FICHEIRO != null) {
-          ficheiros = this.uploadedFiles[x].data;
+          //ficheiros = this.uploadedFiles[x].data;
         } else {
           ficheiros.DATA_CRIA = new Date();
           ficheiros.UTZ_CRIA = this.user;
           novo = true;
         }
         ficheiros.ID_ACORDO = id;
+        ficheiros.VERSAO = versao;
 
+        if (nova_versao) {
+          ficheiros.ID = null;
+          ficheiros.DATA_CRIA = new Date();
+          ficheiros.UTZ_CRIA = this.user;
+        }
         //ficheiros.ID = this.uploadedFiles[x].id;
 
         ficheiros.NOME_FICHEIRO = this.uploadedFiles[x].name;
@@ -782,8 +931,8 @@ export class AcordosFormComponent implements OnInit {
         ficheiros.DATATYPE_FICHEIRO = this.uploadedFiles[x].datatype;
         ficheiros.TAMANHO_FICHEIRO = this.uploadedFiles[x].size;
         ficheiros.DESCRICAO = this.uploadedFiles[x].descricao;
-        ficheiros.FICHEIRO = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro, this.uploadedFiles[x].ficheiro.length / 2);
-        ficheiros.FICHEIRO_2 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro.length / 2, this.uploadedFiles[x].ficheiro.length);
+        if (novo) ficheiros.FICHEIRO = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro, this.uploadedFiles[x].ficheiro.length / 2);
+        if (novo) ficheiros.FICHEIRO_2 = this.uploadedFiles[x].ficheiro.substr(this.uploadedFiles[x].ficheiro.length / 2, this.uploadedFiles[x].ficheiro.length);
 
         ficheiros.DATA_CRIA = new Date();
         ficheiros.UTZ_CRIA = this.user;
@@ -803,7 +952,7 @@ export class AcordosFormComponent implements OnInit {
   }
 
 
-  gravartabela_precos(id) {
+  gravartabela_precos(id, versao, nova_versao) {
     for (var x in this.tabela_precos) {
       var tabela = new COM_ACORDOS_PRECOS;
 
@@ -814,9 +963,16 @@ export class AcordosFormComponent implements OnInit {
         tabela.UTZ_CRIA = this.user;
       }
 
+      if (nova_versao) {
+        tabela.ID = null;
+        tabela.DATA_CRIA = new Date();
+        tabela.UTZ_CRIA = this.user;
+      }
+
       tabela.DATA_ULT_MODIF = new Date();
       tabela.UTZ_ULT_MODIF = this.user;
       tabela.ID_ACORDO = id;
+      tabela.VERSAO = versao;
 
       tabela.DATA_FIM = this.tabela_precos[x].DATA_FIM;
       tabela.DATA_INICIO = this.tabela_precos[x].DATA_INICIO;
@@ -837,7 +993,7 @@ export class AcordosFormComponent implements OnInit {
       });
   }
 
-  gravartabela_amortizacoes(id) {
+  gravartabela_amortizacoes(id, versao, nova_versao) {
     for (var x in this.tabela_amortizacoes) {
       var tabela = new COM_ACORDOS_AMORTIZACOES;
 
@@ -847,9 +1003,17 @@ export class AcordosFormComponent implements OnInit {
         tabela.DATA_CRIA = new Date();
         tabela.UTZ_CRIA = this.user;
       }
+
+      if (nova_versao) {
+        tabela.ID = null;
+        tabela.DATA_CRIA = new Date();
+        tabela.UTZ_CRIA = this.user;
+      }
+
       tabela.DATA_ULT_MODIF = new Date();
       tabela.UTZ_ULT_MODIF = this.user;
       tabela.ID_ACORDO = id;
+      tabela.VERSAO = versao;
 
       tabela.DATA_INICIO = this.tabela_amortizacoes[x].DATA_INICIO;
       tabela.DATA_FIM_ESTIMADA = this.tabela_amortizacoes[x].DATA_FIM_ESTIMADA;
@@ -870,7 +1034,7 @@ export class AcordosFormComponent implements OnInit {
       });
   }
 
-  gravartabela_lta(id) {
+  gravartabela_lta(id, versao, nova_versao) {
     for (var x in this.tabela_lta) {
       var tabela = new COM_ACORDOS_LTA;
 
@@ -881,13 +1045,21 @@ export class AcordosFormComponent implements OnInit {
         tabela.UTZ_CRIA = this.user;
       }
 
+      if (nova_versao) {
+        tabela.ID = null;
+        tabela.DATA_CRIA = new Date();
+        tabela.UTZ_CRIA = this.user;
+      }
+
       tabela.DATA_ULT_MODIF = new Date();
       tabela.UTZ_ULT_MODIF = this.user;
       tabela.ID_ACORDO = id;
+      tabela.VERSAO = versao;
 
       tabela.DATA_FIM = this.tabela_lta[x].DATA_FIM;
       tabela.DATA_INICIO = this.tabela_lta[x].DATA_INICIO;
       tabela.VALOR_LTA = this.tabela_lta[x].VALOR;
+      tabela.OBSERVACAO = this.tabela_lta[x].OBSERVACAO;
 
       this.gravartabela_lta2(tabela);
 
@@ -902,7 +1074,7 @@ export class AcordosFormComponent implements OnInit {
       });
   }
 
-  gravartabela_actividades(id) {
+  gravartabela_actividades(id, versao, nova_versao) {
 
     for (var x in this.tabela_acoes) {
       var tabela = new COM_ACORDOS_ACTIVIDADES;
@@ -914,17 +1086,45 @@ export class AcordosFormComponent implements OnInit {
         tabela.ALERTA_GERADO = false;
       }
 
+      if (nova_versao) {
+        tabela.ID = null;
+        tabela.DATA_CRIA = new Date();
+        tabela.UTZ_CRIA = this.user;
+      }
+
       tabela.DATA_ULT_MODIF = new Date();
       tabela.UTZ_ULT_MODIF = this.user;
       tabela.ID_ACORDO = id;
+      tabela.VERSAO = versao;
+
       tabela.UTILIZADOR = this.user;
 
-      this.gravartabela_actividades2(tabela);
+      //if (this.tabela_acoes[x].modificado || this.novo) 
+
+      this.gravartabela_actividades2(tabela, this.tabela_acoes[x].ID);
 
     }
   }
 
-  gravartabela_actividades2(tabela) {
+  gravartabela_actividades2(tabela: COM_ACORDOS_ACTIVIDADES, id) {
+    if (tabela.FICHEIRO == null && id != null) {
+      this.COMACORDOSACTIVIDADESService.getbyidFICHEIRO(id).subscribe(
+        (res) => {
+          tabela.FICHEIRO = res[0][0];
+          tabela.FICHEIRO = res[0][1];
+          this.gravartabela_actividades3(tabela);
+        }, error => {
+          this.gravartabela_actividades3(tabela);
+          console.log(error);
+        }
+      );
+      //this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+    } else {
+      this.gravartabela_actividades3(tabela);
+    }
+  }
+
+  gravartabela_actividades3(tabela) {
     this.COMACORDOSACTIVIDADESService.update(tabela).subscribe(
       res => {
       },
@@ -933,14 +1133,15 @@ export class AcordosFormComponent implements OnInit {
       });
   }
 
-
-  gravartabela_volumes(id) {
-    this.COMACORDOSVOLUMESService.deleteTODOS(id).then(
+  gravartabela_volumes(id, versao) {
+    this.COMACORDOSVOLUMESService.deleteTODOS(id, versao).then(
       res => {
 
         for (var x in this.tabela_volumes) {
           var tabela = new COM_ACORDOS_VOLUMES;
           tabela.ID_ACORDO = id;
+          tabela.VERSAO = versao;
+
           tabela.ANO = this.tabela_volumes[x].ano;
           tabela.VALOR = this.tabela_volumes[x].valor;
           this.gravartabela_volumes2(tabela);
@@ -961,11 +1162,12 @@ export class AcordosFormComponent implements OnInit {
   }
 
 
-  gravartabela_historico(alteracoes) {
+  gravartabela_historico(alteracoes, versao) {
 
     for (var x in alteracoes) {
       var tabela = new COM_ACORDOS_HISTORICO;
       tabela.ID_ACORDO = alteracoes[x].ID_ACORDO;
+      tabela.VERSAO = versao;//alteracoes[x].VERSAO;
       tabela.DESCRICAO = alteracoes[x].DESCRICAO;
       tabela.DATA_CRIA = new Date();
       tabela.UTZ_CRIA = this.user;
@@ -1037,7 +1239,8 @@ export class AcordosFormComponent implements OnInit {
         datatype: this.dados.DATATYPE_FICHEIRO,
         type: this.dados.DATATYPE_FICHEIRO,
         size: this.dados.TAMANHO_FICHEIRO,
-        apagarficheiros: true
+        apagarficheiros: true,
+        modificado: true
       });
       this.tabela_acoes = this.tabela_acoes.slice();
       this.dialognovo = false;
@@ -1052,6 +1255,7 @@ export class AcordosFormComponent implements OnInit {
       this.tabela_acoes[this.index_actividade].size = this.dados.TAMANHO_FICHEIRO;
       this.tabela_acoes[this.index_actividade].nome_ficheiro = this.dados.NOME_FICHEIRO;
       this.tabela_acoes[this.index_actividade].gerar_ALERTA = data;
+      this.tabela_acoes[this.index_actividade].modificado = true;
       this.tabela_acoes[this.index_actividade].alerta_data_hora = (data == null) ? null : this.formatDate(data) + ' ' + new Date(data).toLocaleTimeString().slice(0, 5);
       this.dialognovo = false;
       /* } else {
@@ -1069,10 +1273,10 @@ export class AcordosFormComponent implements OnInit {
 
   }
 
-  carregatabelaFiles(id) {
+  carregatabelaFiles(id, versao) {
     this.uploadedFiles = [];
 
-    this.COMACORDOSANEXOSService.getbyid(id).subscribe(
+    this.COMACORDOSANEXOSService.getbyid(id, versao).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1080,7 +1284,7 @@ export class AcordosFormComponent implements OnInit {
 
             var id2 = null;
             var data_at = new Date();
-            var datacria = this.formatDate(response[x][0]) + " " + new Date(response[x][0].DATA_CRIA).toLocaleTimeString();
+            var datacria = this.formatDate(response[x][2]) + " " + new Date(response[x][2]).toLocaleTimeString();
 
             id2 = response[x][0];
 
@@ -1103,8 +1307,8 @@ export class AcordosFormComponent implements OnInit {
 
           }
           this.uploadedFiles = this.uploadedFiles.slice();
-          this.dados_documentos = JSON.stringify(this.uploadedFiles.slice());
         }
+        this.dados_documentos = JSON.stringify(this.uploadedFiles.slice());
 
       }, error => { console.log(error); });
 
@@ -1164,11 +1368,12 @@ export class AcordosFormComponent implements OnInit {
     var tipo = file.name.split(".");
     var data = new Date();
 
-    if (!this.novo) {
+    /*if (!this.novo) {
       var ficheiros = new COM_ACORDOS_ANEXOS;
       ficheiros.DATA_CRIA = data;
       ficheiros.UTZ_CRIA = this.user;
       ficheiros.ID_ACORDO = this.ID_ACORDO;
+      ficheiros.VERSAO = this.VERSAO;
       ficheiros.NOME_FICHEIRO = file.name;
       ficheiros.TYPE_FICHEIRO = type;
       ficheiros.DATATYPE_FICHEIRO = file.type;
@@ -1179,14 +1384,14 @@ export class AcordosFormComponent implements OnInit {
       ficheiros.DATA_CRIA = new Date();
       ficheiros.UTZ_CRIA = this.user;
       this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);
-
-    } else {
-      this.uploadedFiles.push({
-        data_CRIA: data, ficheiro: ficheiro,
-        responsavel: null, utilizador: this.user_nome, datacria: this.formatDate(data) + " " + new Date(data).toLocaleTimeString(), id_FICHEIRO: null,
-        id: null, name: file.name, datatype: file.type, type: type, size: file.size, descricao: this.filedescricao[x]
-      });
-    }
+ 
+    } else {*/
+    this.uploadedFiles.push({
+      data_CRIA: data, ficheiro: ficheiro,
+      responsavel: null, utilizador: this.user_nome, datacria: this.formatDate(data) + " " + new Date(data).toLocaleTimeString(), id_FICHEIRO: null,
+      id: null, name: file.name, datatype: file.type, type: type, size: file.size, descricao: this.filedescricao[x]
+    });
+    // }
 
     this.uploadedFiles = this.uploadedFiles.slice();
     if (this.campo_x + 1 == event.files.length) {
@@ -1357,8 +1562,8 @@ export class AcordosFormComponent implements OnInit {
 
     this.COMACORDOSANEXOSService.update(ficheiros).subscribe(
       res => {
-        if (count == total && this.novo) {
-
+        /*if (count == total && this.novo) {
+ 
         } else if (!this.novo) {
           this.uploadedFiles.push({
             data: res,
@@ -1367,7 +1572,7 @@ export class AcordosFormComponent implements OnInit {
             id: res.ID, name: ficheiros.NOME_FICHEIRO, datatype: ficheiros.DATATYPE_FICHEIRO, type: ficheiros.TYPE_FICHEIRO, size: ficheiros.TAMANHO_FICHEIRO, descricao: ficheiros.DESCRICAO
           });
           this.uploadedFiles = this.uploadedFiles.slice();
-        }
+        }*/
       },
       error => { console.log(error); });
 
@@ -1543,9 +1748,10 @@ export class AcordosFormComponent implements OnInit {
         acordo.INATIVO = true;
         acordo.DATA_ANULACAO = new Date();
         acordo.UTZ_ANULACAO = this.user;
+        acordo.DATA_ULT_MODIF = new Date();
+        acordo.UTZ_ULT_MODIF = this.user;
 
-
-        this.COMACORDOSService.update(acordo).subscribe(
+        this.COMACORDOSService.updateESTADO(acordo, 'A', 'A').subscribe(
           res => {
 
             this.simular(this.inputapagar)
@@ -1557,9 +1763,149 @@ export class AcordosFormComponent implements OnInit {
     });
   }
 
+
+  fechar() {
+    var id;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        id = params['id'] || 0;
+      });
+    if (id != 0) {
+      this.confirm2(id);
+    }
+
+  }
+
+  //popup fechar
+  confirm2(id) {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende fechar?',
+      header: 'Fechar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+
+        var acordo = new COM_ACORDOS;
+
+        if (!this.novo) acordo = this.dados_acordo;
+
+        acordo.DATA_ULT_MODIF = new Date();
+        acordo.UTZ_ULT_MODIF = this.user;
+
+        var tipo2 = 'F';
+        if (acordo.DATA_FECHO_AMORTIZACOES == null && acordo.DATA_FECHO_LTA == null) {
+          tipo2 = 'F_ALLT';
+        } else if (acordo.DATA_FECHO_AMORTIZACOES == null) {
+          tipo2 = 'F_ALL2';
+        } else if (acordo.DATA_FECHO_LTA == null) {
+          tipo2 = 'F_ALL1';
+        }
+
+        this.COMACORDOSService.updateESTADO(acordo, 'F', tipo2).subscribe(
+          res => {
+
+            this.simular(this.inputgravou)
+
+            this.router.navigate(['comercial_acordos']);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+    });
+  }
+
+  //popup fechar
+  fechar_lta() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende LTA (Produtividade)?',
+      header: 'Fechar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+
+        var acordo = new COM_ACORDOS;
+
+        if (!this.novo) acordo = this.dados_acordo;
+
+        acordo.DATA_ULT_MODIF = new Date();
+        acordo.UTZ_ULT_MODIF = this.user;
+
+        this.COMACORDOSService.updateESTADO(acordo, 'F_LTA', 'F_LTA').subscribe(
+          res => {
+            this.simular(this.inputgravou)
+            //this.router.navigate(['comercial_acordos']);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+    });
+  }
+
+  //popup fechar
+  fechar_amortizacoes() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende fechar Amortizações?',
+      header: 'Fechar Confirmação',
+      icon: 'fa fa-close',
+      accept: () => {
+
+        var acordo = new COM_ACORDOS;
+
+        if (!this.novo) acordo = this.dados_acordo;
+
+        acordo.DATA_ULT_MODIF = new Date();
+        acordo.UTZ_ULT_MODIF = this.user;
+
+        this.COMACORDOSService.updateESTADO(acordo, 'F_AMOR', 'F_AMOR').subscribe(
+          res => {
+
+            this.simular(this.inputgravou);
+            //this.router.navigate(['comercial_acordos']);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+    });
+  }
+
   //bt cancelar
   backview() {
     this.location.back();
   }
+
+  novoacordo() {
+    this.router.navigate(['comercial_acordos/novo']);
+  }
+
+  backClicked() {
+    //this.location.back();
+    this.router.navigate(['comercial_acordos']);
+  }
+
+
+  edita() {
+    var id;
+    var versao;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        id = params['id'] || 0;
+        versao = params['versao'] || 0;
+      });
+    var back;
+    var sub2 = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        back = params['redirect'] || 0;
+      });
+
+    if (this.bteditar) {
+      if (back != 0) {
+        this.router.navigate(['comercial_acordos/editar'], { queryParams: { id: id, versao: versao, redirect: back } });
+      } else {
+        this.router.navigate(['comercial_acordos/editar'], { queryParams: { id: id, versao: versao } });
+      }
+
+    }
+  }
+
 }
 

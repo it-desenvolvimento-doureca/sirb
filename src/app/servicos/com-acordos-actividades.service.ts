@@ -37,8 +37,8 @@ export class COMACORDOSACTIVIDADESService {
 
 
 
-  getbyid(id): Observable<COM_ACORDOS_ACTIVIDADES[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ACTIVIDADESbyid/' + id;
+  getbyid(id, versao): Observable<COM_ACORDOS_ACTIVIDADES[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_ACTIVIDADESbyid/' + id + '/' + versao;
     return this.http
       .get(url)
       .map(this.extractData)

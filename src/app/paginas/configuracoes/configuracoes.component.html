@@ -4953,7 +4953,7 @@
                                     [(ngModel)]="checkbox.node1585" />
                                   <span></span>
                                 </label>
-                                <label for="node1585-0" >
+                                <label for="node1585-0">
                                   Contratos
                                 </label>
                                 <ul>
@@ -5069,6 +5069,15 @@
                                           <span></span>
                                         </label>
                                         <label for="node15852-0-1-2" class="remover">Apagar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node15852-0-1-3" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node15852fechar" [(ngModel)]="checkbox.node15852fechar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node15852-0-1-3" class="parametros">Fechar</label>
                                       </li>
                                     </ul>
                                   </li>

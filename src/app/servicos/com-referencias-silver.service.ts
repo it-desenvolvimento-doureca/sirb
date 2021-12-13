@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { COM_ACORDOS_PRECOS } from 'app/entidades/COM_ACORDOS_PRECOS';
+import { COM_REFERENCIAS_SILVER } from 'app/entidades/COM_REFERENCIAS_SILVER';
 import { webUrl } from 'assets/config/webUrl';
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
-export class COMACORDOSPRECOSService {
+export class COMREFERENCIASSILVERService {
   handleError: any;
 
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
-  create(data: COM_ACORDOS_PRECOS) {
+  create(data: COM_REFERENCIAS_SILVER) {
     return this.http
-      .post(webUrl.host + '/rest/sirb/createCOM_ACORDOS_PRECOS', JSON.stringify(data), { headers: this.headers })
+      .post(webUrl.host + '/rest/sirb/createCOM_REFERENCIAS_SILVER', JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll(): Observable<COM_ACORDOS_PRECOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_PRECOS';
+  getAll(): Observable<COM_REFERENCIAS_SILVER[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_REFERENCIAS_SILVER';
     return this.http
       .get(url)
       .map(this.extractData)
@@ -29,7 +29,7 @@ export class COMACORDOSPRECOSService {
 
   delete(id) {
     return this.http
-      .delete(webUrl.host + '/rest/sirb/deleteCOM_ACORDOS_PRECOS/' + id + '')
+      .delete(webUrl.host + '/rest/sirb/deleteCOM_REFERENCIAS_SILVER/' + id + '')
       .toPromise()
       .then(res => res)
       .catch(this.handleError);
@@ -37,17 +37,17 @@ export class COMACORDOSPRECOSService {
 
 
 
-  getbyid(id, versao): Observable<COM_ACORDOS_PRECOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_PRECOSbyid/' + id + '/' + versao;
+  getbyid(id): Observable<COM_REFERENCIAS_SILVER[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_REFERENCIAS_SILVERbyid/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  update(data: COM_ACORDOS_PRECOS) {
+  update(data: COM_REFERENCIAS_SILVER) {
     return this.http
-      .put(webUrl.host + '/rest/sirb/updateCOM_ACORDOS_PRECOS', JSON.stringify(data), { headers: this.headers })
+      .put(webUrl.host + '/rest/sirb/updateCOM_REFERENCIAS_SILVER', JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }

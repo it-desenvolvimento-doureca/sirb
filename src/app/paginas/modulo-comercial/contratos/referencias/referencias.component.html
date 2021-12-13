@@ -35,7 +35,7 @@
                     [(ngModel)]="DESCRICAO" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="COD_REFERENCIA_SILVER"
+              <!--p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="COD_REFERENCIA_SILVER"
                 header="Cód. Ref. Silver">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
@@ -48,7 +48,7 @@
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="DESC_REFERENCIA_SILVER" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
-              </p-column>
+              </p-column-->
 
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
                 <ng-template pTemplate="header">
