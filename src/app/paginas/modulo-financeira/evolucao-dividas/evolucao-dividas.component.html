@@ -207,7 +207,7 @@
                             </div>
                           </div>
                           <div class="col-md-2" style="text-align: left; width: 305px; padding-right: 0;">
-                            {{linha_cli.cliente}}
+                            <a (click)="listar_acoes(linha_cli.id)">{{linha_cli.cliente}}</a>
                           </div>
                           <div class="col-md-1 valores-tabela" style="border-left: 1px solid white;">
                             <span class="span-left"> {{linha_cli.valor_mes1 }}</span>
@@ -1367,3 +1367,90 @@
       (click)="display_linhas_documentos = false">Fechar</button>
   </p-footer>
 </p-dialog>
+
+
+<p-dialog header="Ações" [responsive]="true" [positionTop]="0" styleClass="dialognot" styleClass="dialog_index2"
+  [style]="{'max-height':'99vh','width':'80%','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialogacoes" [modal]="true">
+
+  <form id="formReclama1" role="form" ngNativeValidate>
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0;">
+        <p-dataTable [emptyMessage]="mensagemtabela_acoes" [style]="{'min-height':'300px'}" [value]="tabela_acoes"
+          dataKey="id" class="tabela_analise_dividas" styleClass="ExcelTable2007">
+
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data_acao" header="Data Ação"
+            [style]="{'width':'40px'}">
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="utilizador" header="Utilizador"
+            [style]="{'width':'50px'}">
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="descricao"
+            header="Descrição da Ação" [style]="{'width':'90px'}">
+            <ng-template let-col let-car="rowData" pTemplate="body">
+              <span pTooltip="{{car['descricao']}}" tooltipStyleClass="tooltip_ficha"
+                style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;">{{car[col.field]}}</span>
+            </ng-template>
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="contacto" header="Contacto"
+            [style]="{'width':'65px'}">
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="origem" header="Origem"
+            [style]="{'width':'80px'}">
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="nome_ficheiro"
+            header="Anexo/Documento" [style]="{'width':'55px'}">
+            <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+              <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: block;"
+                title="{{car[col.field]}}">{{car[col.field]}}</span>
+            </ng-template>
+          </p-column>
+          <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="alerta_data_hora"
+            header="Alerta (Data/Hora)" [style]="{'width':'55px'}">
+          </p-column>
+          <p-column [style]="{'width':'59px'}" header="Ação Anexo" field="ficheiro">
+            <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+              <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
+                style="padding: 1px 0px 1px 9px; margin: 3px 0 3px 0; font-size: 13px !important;"
+                *ngIf="car.nome_ficheiro != null"
+                (click)="showDialog(car.type, null,car.nome_ficheiro,car.datatype,car.ficheiro,car.id)">
+                <i class="glyphicon glyphicon-zoom-in"></i>
+              </button>
+              <a class="btn btn-primary btn-xs" title="Download" *ngIf="car.nome_ficheiro != null"
+                (click)="download(car.nome_ficheiro,null,car.datatype,car.ficheiro,car.id)" target="_blank"
+                style="padding: 1px 0px 1px 12px; margin: 0; font-size: 13px !important;">
+                <i class="glyphicon glyphicon-download"></i>
+              </a>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+      </div>
+    </div>
+
+    <p-footer>
+      <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+        (click)="dialogacoes = false">Fechar</button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-dialog [header]="nomeficheiro" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" baseZIndex="1022" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="display" [modal]="true" (onHide)="onHide()">
+  <div style="width: 80vw; text-align: -webkit-center;">
+    <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Your
+      browser does not support the audio element.</audio>
+    <iframe *ngIf="(type == 'pdf' || type == 'txt')  && display" class="embed-responsive-item"
+      style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [src]="srcelement" type="application/pdf"
+      scale="aspect" frameborder="0"></iframe>
+    <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
+    <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
+      autoplay="" controls="">Video
+      format or MIME type is not supported</video>
+  </div>
+</p-dialog>
+
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>

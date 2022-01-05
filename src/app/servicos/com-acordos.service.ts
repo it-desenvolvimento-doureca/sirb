@@ -27,6 +27,50 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  COM_ACORDOS_ANALISE(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  COM_ACORDOS_ANALISE_1(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE_1', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  COM_ACORDOS_ANALISE_2(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE_2', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  COM_ACORDOS_ANALISE_3(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE_3', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  COM_ACORDOS_ANALISE_ACORDOS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE_ACORDOS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+  COM_ACORDOS_ANALISE_CLIENTES(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/COM_ACORDOS_ANALISE_CLIENTES', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   getAll2(): Observable<COM_ACORDOS[]> {
     const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS2';
     return this.http

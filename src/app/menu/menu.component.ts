@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { ROUTES } from "app/menu/sidebar-routes.config";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { AppComponent } from 'app/app.component';
@@ -26,7 +26,7 @@ export class MenuComponent implements OnInit {
     }
   ];
 
-  constructor(private comp: AppComponent, private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
+  constructor(private activatedRoute: ActivatedRoute, private comp: AppComponent, private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
 
   }
 
@@ -103,6 +103,15 @@ export class MenuComponent implements OnInit {
   abrirdashboardTarefas() {
     if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node6"))
       this.router.navigate(['tarefas']);
+  }
+
+  isLinkActive(url: string, val = true): boolean {
+    //router.isActive
+    if (this.router.url.indexOf(url) > -1) {
+      return true;
+    }
+
+    return false;
   }
 
 

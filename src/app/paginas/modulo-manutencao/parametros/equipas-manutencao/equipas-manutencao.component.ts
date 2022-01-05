@@ -279,12 +279,27 @@ export class EquipasManutencaoComponent implements OnInit {
       response => {
         for (var x in response) {
           this.responsaveis.push({
-            value: response[x].id_UTILIZADOR, label: response[x].nome_UTILIZADOR
+            value: response[x].id_UTILIZADOR, label: ((response[x].cod_UTZ == null) ? '' : response[x].cod_UTZ) + ' - ' + response[x].nome_UTILIZADOR, nome: response[x].nome_UTILIZADOR
           });
         }
         this.responsaveis = this.responsaveis.slice();
+        this.ordernar(this.responsaveis);
       },
       error => console.log(error));
+  }
+
+  ordernar(array) {
+    array.sort((n1, n2) => {
+      if (n1.nome > n2.nome) {
+        return 1;
+      }
+
+      if (n1.nome < n2.nome) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
 }

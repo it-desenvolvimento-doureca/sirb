@@ -93,6 +93,7 @@ export class AcordosFormComponent implements OnInit {
 
 
   tabela_volumes: any = [];
+  tabela_analises = [];
   dados_precos = "";
   dados_amortizacoes = "";
   dados_lta = "";
@@ -118,6 +119,7 @@ export class AcordosFormComponent implements OnInit {
   DATA_FECHO;
   DATA_FECHO_AMORTIZACOES;
   DATA_FECHO_LTA;
+  loading_analise: boolean = false;
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
     private COMACORDOSACTIVIDADESService: COMACORDOSACTIVIDADESService,
@@ -273,6 +275,7 @@ export class AcordosFormComponent implements OnInit {
         if (arr) valor = arr.valor
         this.tabela_volumes.push({ ano: x, valor });
       }
+      this.carregatabela_analises();
     }
 
   }
@@ -371,7 +374,7 @@ export class AcordosFormComponent implements OnInit {
         this.ID_CONTRATO = response[0][0].ID_CONTRATO;
         this.ID_REFERENCIA = response[0][0].ID_REFERENCIA;
         this.SOP = (response[0][0].SOP == null) ? null : this.formatDateMES(response[0][0].SOP);
-        this.EOP = (response[0][0].EOP == null) ? null : this.formatDateMES(response[0][0].SOP);
+        this.EOP = (response[0][0].EOP == null) ? null : this.formatDateMES(response[0][0].EOP);
         this.PRECO_BASE = response[0][0].PRECO_BASE;
         this.versao_selected = response[0][0].VERSAO;
         this.dados_old = { OBSERVACOES: this.OBSERVACOES, ID_CONTRATO: this.ID_CONTRATO, ID_REFERENCIA: this.ID_REFERENCIA, SOP: this.SOP, EOP: this.EOP, PRECO_BASE: this.PRECO_BASE };
@@ -396,16 +399,17 @@ export class AcordosFormComponent implements OnInit {
           this.bteditar = true;
           this.btfechar = true;
         }
+        this.carregatabelaFiles(id, versao);
+        this.carregatabela_precos(id, versao);
+        this.carregatabela_amortizacoes(id, versao);
+        this.carregatabela_lta(id, versao);
+        this.carregatabela_actividades(id, versao);
+        this.carregatabela_historico(id, versao);
+        this.carregatabela_volumes(id, versao);
       });
 
 
-    this.carregatabelaFiles(id, versao);
-    this.carregatabela_precos(id, versao);
-    this.carregatabela_amortizacoes(id, versao);
-    this.carregatabela_lta(id, versao);
-    this.carregatabela_actividades(id, versao);
-    this.carregatabela_historico(id, versao);
-    this.carregatabela_volumes(id, versao);
+
   }
 
   carregatabela_volumes(id, versao) {
@@ -423,7 +427,98 @@ export class AcordosFormComponent implements OnInit {
 
         this.tabela_volumes = this.tabela_volumes.slice()
         this.dados_volumes = JSON.stringify(this.tabela_volumes.slice());
+        this.carregatabela_analises();
       });
+  }
+
+  carregatabela_analises() {
+    this.tabela_analises = [];
+
+    var anos = []
+    for (var x in this.tabela_volumes) {
+      anos.push({ ano: this.tabela_volumes[x].ano, valor: null });
+    }
+    this.tabela_analises = this.carregatabela_analises2(anos);
+
+
+    for (var t in this.tabela_amortizacoes) {
+      var ano = null;
+      ano = (this.tabela_amortizacoes[t].DATA_INICIO == null) ? null : new Date(this.tabela_amortizacoes[t].DATA_INICIO).getFullYear();
+
+      var amortizacoes_qtd = this.tabela_analises[3];
+      var amortizacoes_qtd2 = amortizacoes_qtd.valores.find(item => item.ano == ano);
+      if (amortizacoes_qtd2) {
+        if (amortizacoes_qtd2.valor == null) amortizacoes_qtd2.valor = 0;
+        amortizacoes_qtd2.valor += this.tabela_amortizacoes[t].QUANTIDADE;
+      }
+
+      /* var amortizacoes_valor = this.tabela_analises[5];
+       var amortizacoes_valor2 = amortizacoes_valor.valores.find(item => item.ano == ano);
+       if (amortizacoes_valor2) {
+         if (amortizacoes_valor2.valor == null) amortizacoes_valor2.valor = 0;
+         amortizacoes_valor2.valor += this.tabela_amortizacoes[t].VALOR;
+       }*/
+    }
+    var contrato = this.drop_contratos.find(item => item.value == this.ID_CONTRATO);
+    var dados = [{
+      DATA_INICIO: (this.SOP == null) ? null : this.formatDate(new Date(this.SOP + '-01')),
+      DATA_FIM: (this.EOP == null) ? null : this.formatDate(new Date(this.EOP + '-01')),
+      CONTRATO: (contrato) ? contrato.label : null,
+      ID_REFERENCIA: this.ID_REFERENCIA
+    }];
+    this.loading_analise = true;
+    this.COMACORDOSService.COM_ACORDOS_ANALISE(dados).subscribe(
+      (res) => {
+
+        for (var y in res) {
+          if (res[y][0] == 'ENCOMENDAS') {
+
+            var arr_Encomendado = this.tabela_analises[1];
+            var arr_Encomendado2 = arr_Encomendado.valores.find(item => item.ano == res[y][1]);
+            if (arr_Encomendado2) arr_Encomendado2.valor = res[y][9];
+
+          } else if (res[y][0] == 'FATURACAO') {
+
+            var arr_Enviado = this.tabela_analises[0];
+            var arr_Enviado2 = arr_Enviado.valores.find(item => item.ano == res[y][1]);
+            if (arr_Enviado2) arr_Enviado2.valor = res[y][5];
+
+            var arr_Valor_de_Venda = this.tabela_analises[2];
+            var arr_Valor_de_Venda2 = arr_Valor_de_Venda.valores.find(item => item.ano == res[y][1]);
+            if (arr_Valor_de_Venda2) arr_Valor_de_Venda2.valor = this.formatMoney(res[y][6], 2, ",", ".", ' €');
+
+            var arr_Amortiz_Realizada_p = this.tabela_analises[4];
+            var arr_Amortiz_Realizada_p2 = arr_Amortiz_Realizada_p.valores.find(item => item.ano == res[y][1]);
+            if (arr_Amortiz_Realizada_p2) arr_Amortiz_Realizada_p2.valor = res[y][7];
+
+            var arr_Amortiz_Realizada_v = this.tabela_analises[5];
+            var arr_Amortiz_Realizada_v2 = arr_Amortiz_Realizada_v.valores.find(item => item.ano == res[y][1]);
+            if (arr_Amortiz_Realizada_v2) arr_Amortiz_Realizada_v2.valor = this.formatMoney(res[y][8], 2, ",", ".", ' €');
+          }
+        }
+        this.loading_analise = false;
+      }, error => {
+        this.loading_analise = false;
+        console.log(error);
+      }
+    );
+
+
+
+
+  }
+
+  carregatabela_analises2(anos) {
+    var tabela_analises = []
+    tabela_analises.push({ desc: 'Enviado', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Encomendado', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Valor de Venda', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Amortiz Def. (nº peças)', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Amortiz Realizada (nº Peças)', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Amortiz Realizada (valor)', valores: JSON.parse(JSON.stringify(anos)) });
+    tabela_analises.push({ desc: 'Valor Acumulado LTA', valores: JSON.parse(JSON.stringify(anos)) });
+
+    return tabela_analises;
   }
 
   carregatabela_precos(id, versao) {
@@ -1384,7 +1479,7 @@ export class AcordosFormComponent implements OnInit {
       ficheiros.DATA_CRIA = new Date();
       ficheiros.UTZ_CRIA = this.user;
       this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);
- 
+   
     } else {*/
     this.uploadedFiles.push({
       data_CRIA: data, ficheiro: ficheiro,
@@ -1563,7 +1658,7 @@ export class AcordosFormComponent implements OnInit {
     this.COMACORDOSANEXOSService.update(ficheiros).subscribe(
       res => {
         /*if (count == total && this.novo) {
- 
+   
         } else if (!this.novo) {
           this.uploadedFiles.push({
             data: res,
@@ -1907,5 +2002,20 @@ export class AcordosFormComponent implements OnInit {
     }
   }
 
+  formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",", symbol = '') {
+    try {
+      decimalCount = Math.abs(decimalCount);
+      decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+      const negativeSign = amount < 0 ? "-" : "";
+
+      let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+      let j = (i.length > 3) ? i.length % 3 : 0;
+
+      return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - parseInt(i)).toFixed(decimalCount).slice(2) : "") + symbol;
+    } catch (e) {
+      console.log(e)
+    }
+  };
 }
 

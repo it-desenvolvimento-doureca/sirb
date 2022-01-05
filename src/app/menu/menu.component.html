@@ -13,7 +13,7 @@
                 <!-- MENU Planos Ação -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="router.isActive('planosacao',true) || router.isActive('ambitos',true)">
+                        [class.active]="isLinkActive('planosacao',true) || isLinkActive('ambitos',true)">
                         <h4 class="panel-title">
                             <a id="node155" data-toggle="collapse" data-parent="#accordion" href="#collapsePlanosAcao">
                                 <span class="fa fa-list-ul" style="margin-right: 12px;">
@@ -28,7 +28,7 @@
                                     <td>
                                         <li id="node15511" data-toggle="collapse" data-target="#PlanosAcao"
                                             class="collapsed" [routerLink]="['/planosacao']"
-                                            [ngClass]="{ 'active':  router.isActive('/planosacao',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/planosacao',true) }">
                                             <a>Planos</a>
                                         </li>
                                     </td>
@@ -37,7 +37,7 @@
                                     <td>
                                         <li id="node15512" data-toggle="collapse" data-target="#ListaAcoes"
                                             class="collapsed" [routerLink]="['/listaacoes']"
-                                            [ngClass]="{ 'active':  router.isActive('/listaacoes',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/listaacoes',true) }">
                                             <a>Lista de Ações</a>
                                         </li>
                                     </td>
@@ -45,8 +45,7 @@
                                 <tr>
                                     <td>
                                         <li id="node15510" data-toggle="collapse" data-target="#parametrosPlanosAcao"
-                                            class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/ambitos',true) }">
+                                            class="collapsed" [ngClass]="{ 'active':  isLinkActive('/ambitos',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -68,7 +67,7 @@
                 <!-- MENU REUNIAO -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="router.isActive('reunioes',true) || router.isActive('ambitos_reunioes',true)">
+                        [class.active]="isLinkActive('reunioes',true) || isLinkActive('ambitos_reunioes',true)">
                         <h4 class="panel-title">
                             <a id="node162" data-toggle="collapse" data-parent="#accordion" href="#collapseReunioes">
                                 <span class="fa fa-users" style="margin-right: 12px;">
@@ -83,7 +82,7 @@
                                     <td>
                                         <li id="node16211" data-toggle="collapse" data-target="#Reunioes"
                                             class="collapsed" [routerLink]="['/reunioes']"
-                                            [ngClass]="{ 'active':  router.isActive('/reunioes',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/reunioes',true) }">
                                             <a>Fichas de Reunião</a>
                                         </li>
                                     </td>
@@ -92,7 +91,7 @@
                                     <td>
                                         <li id="node16210" data-toggle="collapse" data-target="#parametrosReunioes"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/ambitos_reunioes',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/ambitos_reunioes',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -114,7 +113,7 @@
                 <!---->
                 <!-- MENU ANÁLISES GESTÃO -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/analisesjasper',true)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/analisesjasper',true)">
                         <h4 class="panel-title">
                             <a id="node2" data-toggle="collapse" data-parent="#accordion" href="#collapsesanalises">
                                 <span class="glyphicon glyphicon-stats">
@@ -139,9 +138,9 @@
                 <!-- MENU Comercial -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="router.isActive('/planosacaoComercial',false) || router.isActive('/analiseencomendas',false) || router.isActive('/analise_clientes',false) ||
-                        router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
-                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true) || router.isActive('/comercial_contratos',true) || router.isActive('/comercial_referencias',true) || router.isActive('/comercial_acordos',true) ">
+                        [class.active]="isLinkActive('/planosacaoComercial',false) || isLinkActive('/analiseencomendas',false) || isLinkActive('/analise_clientes',false) || isLinkActive('/analise_acordos',false) || 
+                        isLinkActive('/comercial_limites_encomendas',true) || isLinkActive('/comercial_oem',true) || isLinkActive('/comercial_veiculos',true) || isLinkActive('/comercial_projetos',true) || 
+                                            isLinkActive('/comercial_fabricas',true) || isLinkActive('/comercial_programas',true) || isLinkActive('/comercial_contratos',true) || isLinkActive('/comercial_referencias',true) || isLinkActive('/comercial_acordos',true) ">
                         <h4 class="panel-title">
                             <a id="node158" data-toggle="collapse" data-parent="#accordion" href="#collapseComercial">
                                 <span class="fa fa-shopping-cart" style="margin-right: 12px;">
@@ -174,9 +173,16 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <li id="node1586" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/analise_acordos']">Análise Acordos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <li id="node1585" data-toggle="collapse" data-target="#comercial_contratos"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/comercial_contratos',true) || router.isActive('/comercial_referencias',true) || router.isActive('/comercial_acordos',true)  }">
+                                            [ngClass]="{ 'active': isLinkActive('/comercial_contratos',true) || isLinkActive('/comercial_referencias',true) || isLinkActive('/comercial_acordos',true)  }">
                                             <a>Contratos
                                                 <span class="arrow"></span>
                                             </a>
@@ -201,8 +207,8 @@
                                     <td>
                                         <li id="node1583" data-toggle="collapse"
                                             data-target="#parametroscapacidade_linha" class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/comercial_limites_encomendas',true) || router.isActive('/comercial_oem',true) || router.isActive('/comercial_veiculos',true) || router.isActive('/comercial_projetos',true) || 
-                                            router.isActive('/comercial_fabricas',true) || router.isActive('/comercial_programas',true) }">
+                                            [ngClass]="{ 'active': isLinkActive('/comercial_limites_encomendas',true) || isLinkActive('/comercial_oem',true) || isLinkActive('/comercial_veiculos',true) || isLinkActive('/comercial_projetos',true) || 
+                                            isLinkActive('/comercial_fabricas',true) || isLinkActive('/comercial_programas',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -272,8 +278,8 @@
                 <!-- MENU BANHOS -->
                 <div class="panel panel-default">
                     <div (click)="abrirdashboard()" class="panel-heading"
-                        [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_engenharia',true) || router.isActive('/planosacaoengenaria',false) || router.isActive('/alertasePrioridades',false) ||  router.isActive('/registo',true) ||router.isActive('/fornecedor',true) || router.isActive('/tinas',true)|| router.isActive('/componentes',true)|| router.isActive('/banhos',true)
-                    || router.isActive('/gestaobanhos_relatorios',true) || router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true) || router.isActive('/operacoes',true)|| router.isActive('/homegestaobanhos',true) || router.isActive('/linhas',true) || router.isActive('/unidades',true)|| router.isActive('/zonas',true)|| router.isActive('/turnos',true) || router.isActive('/adicoes',true) || router.isActive('/manutencoes',true) || router.isActive('/registopara',true)  || router.isActive('/manutencaonaoprogramada',true) || router.isActive('/manutencaoreposicao',true) || router.isActive('/construcaobanhos',true) }">
+                        [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_engenharia',true) || isLinkActive('/planosacaoengenaria',false) || isLinkActive('/alertasePrioridades',false) ||  isLinkActive('/registo',true) ||isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)|| isLinkActive('/banhos',true)
+                    || isLinkActive('/gestaobanhos_relatorios',true) || isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true) || isLinkActive('/operacoes',true)|| isLinkActive('/homegestaobanhos',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true) || isLinkActive('/registopara',true)  || isLinkActive('/manutencaonaoprogramada',true) || isLinkActive('/manutencaoreposicao',true) || isLinkActive('/construcaobanhos',true) }">
                         <h4 class="panel-title">
                             <a id="node0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                 <span class="glyphicon glyphicon-list-alt ">
@@ -287,7 +293,7 @@
                                     <td>
                                         <li id="node00" (click)="linha()" data-toggle="collapse" data-target="#movi"
                                             class="collapsed"
-                                            [ngClass]="{'active': router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true) || router.isActive('/manutencao',true) || router.isActive('/registopara',true)  || router.isActive('/construcaobanhos',true) ||  router.isActive('/manutencaonaoprogramada',true) || router.isActive('/manutencaoreposicao',true) || router.isActive('/registo',true)}">
+                                            [ngClass]="{'active': isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true) || isLinkActive('/manutencao',true) || isLinkActive('/registopara',true)  || isLinkActive('/construcaobanhos',true) ||  isLinkActive('/manutencaonaoprogramada',true) || isLinkActive('/manutencaoreposicao',true) || isLinkActive('/registo',true)}">
                                             <a>Gestão de Banhos
                                                 <span class="arrow"></span>
                                             </a>
@@ -352,7 +358,7 @@
                                     <td>
                                         <li id="node05" data-toggle="collapse" data-target="#analiseconsumos"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/analiseconsumos',true)}">
+                                            [ngClass]="{ 'active': isLinkActive('/analiseconsumos',true)}">
                                             <a>Consultas
                                                 <span class="arrow"></span>
                                             </a>
@@ -372,7 +378,7 @@
                                 <tr>
                                     <td>
                                         <li id="node01" data-toggle="collapse" data-target="#tabelas" class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/fornecedor',true) || router.isActive('/tinas',true)|| router.isActive('/componentes',true)||router.isActive('/banhos',true)}">
+                                            [ngClass]="{ 'active': isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)||isLinkActive('/banhos',true)}">
                                             <a (click)="linha()">Tabelas
                                                 <span class="arrow"></span>
                                             </a>
@@ -399,7 +405,7 @@
                                     <td>
                                         <li id="node02" data-toggle="collapse" data-target="#parametros"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/operacoes',true) || router.isActive('/linhas',true) || router.isActive('/unidades',true)|| router.isActive('/zonas',true)|| router.isActive('/turnos',true) || router.isActive('/adicoes',true) || router.isActive('/manutencoes',true)}">
+                                            [ngClass]="{ 'active': isLinkActive('/operacoes',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true)}">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -441,7 +447,7 @@
                                     <td>
                                         <li id="node06" data-toggle="collapse" data-target="#utilitarios"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/correcaoquantidades',true) || router.isActive('/analiseetiquetas',true) || router.isActive('/ficheirosmanutencoes',true) }">
+                                            [ngClass]="{ 'active': isLinkActive('/correcaoquantidades',true) || isLinkActive('/analiseetiquetas',true) || isLinkActive('/ficheirosmanutencoes',true) }">
                                             <a>Utilitários
                                                 <span class="arrow"></span>
                                             </a>
@@ -466,7 +472,7 @@
                                     <td>
                                         <li id="node3" data-toggle="collapse" data-target="#collapseLMEP"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/grid',true) || router.isActive('/lmep_relatorios',true)  }">
+                                            [ngClass]="{ 'active': isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true)  }">
                                             <a>Gestão LMEP
                                                 <span class="arrow"></span>
                                             </a>
@@ -497,9 +503,9 @@
                 <!-- MENU Financeira -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="router.isActive('/planosacaoFinanceira',false) || router.isActive('/controloassiduidade_financeira',true) || router.isActive('/pausas',true) || router.isActive('/tiposcacifos',true) || router.isActive('/cacifos',true) || router.isActive('/estadosfuncionarios',true) 
-                    || router.isActive('/sectores',true) || router.isActive('/analise_dividas',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/seguimento_faturacao',true)   || router.isActive('/seguimento_faturacao_anual',true)  || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true)
-                    || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) || router.isActive('/evolucao_dividas',true) ">
+                        [class.active]="isLinkActive('/planosacaoFinanceira',false) || isLinkActive('/controloassiduidade_financeira',true) || isLinkActive('/pausas',true) || isLinkActive('/tiposcacifos',true) || isLinkActive('/cacifos',true) || isLinkActive('/estadosfuncionarios',true) 
+                    || isLinkActive('/sectores',true) || isLinkActive('/analise_dividas',true) || isLinkActive('/turnosrecursos',true) || isLinkActive('/funcionarios',true) || isLinkActive('/seguimento_faturacao',true)   || isLinkActive('/seguimento_faturacao_anual',true)  || isLinkActive('/objetivos_faturacao',true)  || isLinkActive('/parametros_seguimento_faturacao_anual',true)
+                    || isLinkActive('/sectores_absentismo_financeira',true) || isLinkActive('/tipos_documento',true) || isLinkActive('/evolucao_dividas',true) ">
                         <h4 class="panel-title">
                             <a id="node160" data-toggle="collapse" data-parent="#accordion" href="#collapseFinanceira">
                                 <span class="fa fa-line-chart" style="margin-right: 12px;">
@@ -556,7 +562,7 @@
                                     <td>
                                         <li id="node1602" data-toggle="collapse" data-target="#parametrosrecursos"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/estadosfuncionarios',true)|| router.isActive('/pausas',true)  || router.isActive('/tiposcacifos',true)|| router.isActive('/cacifos',true)  || router.isActive('/sectores',true) || router.isActive('/turnosrecursos',true) || router.isActive('/funcionarios',true) || router.isActive('/objetivos_faturacao',true)  || router.isActive('/parametros_seguimento_faturacao_anual',true) || router.isActive('/sectores_absentismo_financeira',true) || router.isActive('/tipos_documento',true) }">
+                                            [ngClass]="{ 'active': isLinkActive('/estadosfuncionarios',true)|| isLinkActive('/pausas',true)  || isLinkActive('/tiposcacifos',true)|| isLinkActive('/cacifos',true)  || isLinkActive('/sectores',true) || isLinkActive('/turnosrecursos',true) || isLinkActive('/funcionarios',true) || isLinkActive('/objetivos_faturacao',true)  || isLinkActive('/parametros_seguimento_faturacao_anual',true) || isLinkActive('/sectores_absentismo_financeira',true) || isLinkActive('/tipos_documento',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -615,7 +621,7 @@
 
                 <!-- MENU Injecao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoinjecao',false)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoinjecao',false)">
                         <h4 class="panel-title">
                             <a id="node157" data-toggle="collapse" data-parent="#accordion" href="#collapseInjecao">
                                 <span class="fa fa-industry" style="margin-right: 12px;">
@@ -641,7 +647,7 @@
                 <!-- MENU Logística -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]=" router.isActive('/pedidosdaproducao',true) || router.isActive('analiseenvios',true) || router.isActive('planosacaologistica',true) || router.isActive('objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true)">
+                        [class.active]=" isLinkActive('/pedidosdaproducao',true) || isLinkActive('analiseenvios',true) || isLinkActive('planosacaologistica',true) || isLinkActive('objetivos_cumprimento_fornecedor',true) || isLinkActive('/objetivos_cumprimento_cliente',true)">
                         <h4 class="panel-title">
                             <a id="node100" data-toggle="collapse" data-parent="#accordion" href="#collapseLogistica">
                                 <span class="fa fa-truck" style="margin-right: 12px;">
@@ -668,7 +674,7 @@
                                 <tr>
                                     <td>
                                         <li id="node8" data-toggle="collapse" data-target="#stocks" class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/pedidosdaproducao',true)  }">
+                                            [ngClass]="{ 'active': isLinkActive('/pedidosdaproducao',true)  }">
                                             <a>Stocks
                                                 <span class="arrow"></span>
                                             </a>
@@ -685,7 +691,7 @@
                                     <td>
                                         <li id="node1010" data-toggle="collapse"
                                             data-target="#parametros_cumprimento_fornecedor" class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/objetivos_cumprimento_fornecedor',true) || router.isActive('/objetivos_cumprimento_cliente',true) }">
+                                            [ngClass]="{ 'active': isLinkActive('/objetivos_cumprimento_fornecedor',true) || isLinkActive('/objetivos_cumprimento_cliente',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -712,9 +718,9 @@
 
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/planosacaomanutencao',false) || router.isActive('/equipasmanutencao',true) || router.isActive('/edificios',true)
-                    || router.isActive('/pisos',true) || router.isActive('/divisoes',true) || router.isActive('/ficha_manutencao',true)
-                    || router.isActive('/equipamentos_manutencao',true) || router.isActive('/lista_pedidos',true)  ">
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                    || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/ficha_manutencao',true)
+                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true)  ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
                                 <span class="fa fa-wrench" style="margin-right: 12px;">
@@ -755,8 +761,8 @@
                                 <tr>
                                     <td>
                                         <li id="node116210" data-toggle="collapse" data-target="#parametrosmanutencao"
-                                            class="collapsed" [ngClass]="{ 'active': router.isActive('/equipasmanutencao',true) || router.isActive('/edificios',true)
-                                            || router.isActive('/pisos',true) || router.isActive('/divisoes',true) }">
+                                            class="collapsed" [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                                            || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) }">
 
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
@@ -794,14 +800,14 @@
                 <!-- MENU Produção -->
                 <div class="panel panel-default">
                     <div (click)="abrirproducao()" class="panel-heading"
-                        [class.active]="router.isActive('/producao_oem',true) || router.isActive('/producao_veiculos',true) || router.isActive('/producao_projetos',true) || 
-                        router.isActive('/producao_fabricas',true) || router.isActive('/producao_programas',true) ||router.isActive('analiseencomendas_p',true)  ||router.isActive('gestao_barras',true)   
-                        || router.isActive('planosacaoproducao',true) || router.isActive('objetivos_planos',true) || router.isActive('/producao/amostras',true) || router.isActive('/producao/barras_alerta',true) || router.isActive('/producao/producoes_prioritarias',true) || router.isActive('/producao/revisoes_prioritarias',true) 
-                        || router.isActive('capacidade_linha',true) || router.isActive('/producao/planeamento',true) || router.isActive('/producao/analise_rejeicoes',true) 
-                        || router.isActive('/producao',true) || router.isActive('/controloassiduidade_producao',true) || router.isActive('/pausas_p',true) || router.isActive('/tiposcacifos_p',true) || router.isActive('/cacifos_p',true) || router.isActive('/estadosfuncionarios_p',true) || router.isActive('/sectores_p',true) 
-                        || router.isActive('/turnosrecursos_p',true) || router.isActive('/funcionarios_p',true) || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
-                        || router.isActive('/semanas_analise',true) || router.isActive('/planeamento_producao',true) || router.isActive('/planeamento_analises',true)
-                        || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) || router.isActive('/sectores_absentismo',true)  ">
+                        [class.active]="isLinkActive('/producao_oem',true) || isLinkActive('/producao_veiculos',true) || isLinkActive('/producao_projetos',true) || 
+                        isLinkActive('/producao_fabricas',true) || isLinkActive('/producao_programas',true) ||isLinkActive('analiseencomendas_p',true)  ||isLinkActive('gestao_barras',true)   
+                        || isLinkActive('planosacaoproducao',true) || isLinkActive('objetivos_planos',true) || isLinkActive('/producao/amostras',true) || isLinkActive('/producao/barras_alerta',true) || isLinkActive('/producao/producoes_prioritarias',true) || isLinkActive('/producao/revisoes_prioritarias',true) 
+                        || isLinkActive('capacidade_linha',true) || isLinkActive('/producao/planeamento',true) || isLinkActive('/producao/analise_rejeicoes',true) 
+                        || isLinkActive('/producao',true) || isLinkActive('/controloassiduidade_producao',true) || isLinkActive('/pausas_p',true) || isLinkActive('/tiposcacifos_p',true) || isLinkActive('/cacifos_p',true) || isLinkActive('/estadosfuncionarios_p',true) || isLinkActive('/sectores_p',true) 
+                        || isLinkActive('/turnosrecursos_p',true) || isLinkActive('/funcionarios_p',true) || isLinkActive('/dias_producao',true) || isLinkActive('/capacidade_acabamento',true) || isLinkActive('/capacidade_racks',true)
+                        || isLinkActive('/semanas_analise',true) || isLinkActive('/planeamento_producao',true) || isLinkActive('/planeamento_analises',true)
+                        || isLinkActive('/validacoes_bastidores',true) || isLinkActive('/sectores_agregadores',true) || isLinkActive('/sectores_absentismo',true)  ">
                         <h4 class="panel-title">
                             <a id="node9" data-toggle="collapse" data-parent="#accordion" href="#collapseProducao">
                                 <span class="fa fa-building-o" style="margin-right: 12px;">
@@ -865,7 +871,7 @@
                                 <tr>
                                     <td>
                                         <li id="node990" data-toggle="collapse" data-target="#planeamentoproducao"
-                                            [ngClass]="{ 'active': router.isActive('/planeamento_producao',true) || router.isActive('/planeamento_analises',true)}">
+                                            [ngClass]="{ 'active': isLinkActive('/planeamento_producao',true) || isLinkActive('/planeamento_analises',true)}">
                                             <a>Planos Produção <span class="arrow"></span></a>
                                         </li>
                                         <ul class="sub-menu collapse" id="planeamentoproducao">
@@ -907,14 +913,14 @@
                                         <li id="node9210" data-toggle="collapse" data-target="#parametrosproducao"
                                             class="collapsed"
                                             [ngClass]="{ 'active': 
-                                            router.isActive('/producao_oem',true) || router.isActive('/producao_veiculos',true) || router.isActive('/producao_projetos',true) || 
-                                            router.isActive('/producao_fabricas',true) || router.isActive('/producao_programas',true) || 
-                                            router.isActive('/tipologia_ensaio',true) || 
-                                            router.isActive('/capacidade_linha',true) ||  router.isActive('/objetivos_planos',true) ||  router.isActive('/sectores_analise',true) 
-                                            || router.isActive('/estadosfuncionarios_p',true)|| router.isActive('/pausas_p',true)  || router.isActive('/tiposcacifos_p',true)|| router.isActive('/cacifos_p',true)  || router.isActive('/sectores_p',true) 
-                                            || router.isActive('/turnosrecursos_p',true) 
-                                            || router.isActive('/dias_producao',true) || router.isActive('/capacidade_acabamento',true) || router.isActive('/capacidade_racks',true)
-                                            || router.isActive('/semanas_analise',true) || router.isActive('/validacoes_bastidores',true) || router.isActive('/sectores_agregadores',true) || router.isActive('/sectores_absentismo',true)}">
+                                            isLinkActive('/producao_oem',true) || isLinkActive('/producao_veiculos',true) || isLinkActive('/producao_projetos',true) || 
+                                            isLinkActive('/producao_fabricas',true) || isLinkActive('/producao_programas',true) || 
+                                            isLinkActive('/tipologia_ensaio',true) || 
+                                            isLinkActive('/capacidade_linha',true) ||  isLinkActive('/objetivos_planos',true) ||  isLinkActive('/sectores_analise',true) 
+                                            || isLinkActive('/estadosfuncionarios_p',true)|| isLinkActive('/pausas_p',true)  || isLinkActive('/tiposcacifos_p',true)|| isLinkActive('/cacifos_p',true)  || isLinkActive('/sectores_p',true) 
+                                            || isLinkActive('/turnosrecursos_p',true) 
+                                            || isLinkActive('/dias_producao',true) || isLinkActive('/capacidade_acabamento',true) || isLinkActive('/capacidade_racks',true)
+                                            || isLinkActive('/semanas_analise',true) || isLinkActive('/validacoes_bastidores',true) || isLinkActive('/sectores_agregadores',true) || isLinkActive('/sectores_absentismo',true)}">
 
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
@@ -1031,7 +1037,7 @@
 
                 <!-- MENU Projetos -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/planosacaoProjetos',false)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoProjetos',false)">
                         <h4 class="panel-title">
                             <a id="node159" data-toggle="collapse" data-parent="#accordion" href="#collapseProjetos">
                                 <span class="fa fa-industry" style="margin-right: 12px;">
@@ -1057,10 +1063,10 @@
                 <!-- MENU RECLAMAÇÕES-->
                 <!---->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [ngClass]="{ 'active': router.isActive('/analise_rejeicoes_qualidade',true) || router.isActive('/seguranca_trabalho',true) || router.isActive('/reclamacoes_relatorios',true) || router.isActive('/reclamacoesfornecedores',true) || router.isActive('/reclamacoesclientes',true) || router.isActive('/temposresposta',true) 
-                        || router.isActive('/planosacaoqualidade',false) || router.isActive('/rejeicoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) || router.isActive('/tiposocorrencia',true)  
-                        || router.isActive('/tipos_ocorrencia',true) || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) ||  router.isActive('/tiposnaodetecao',true) 
-                        || router.isActive('/auditorias',true) || router.isActive('/derrogacoes',true) || router.isActive('/tipo_auditoria',true)  
+                    <div class="panel-heading" [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_qualidade',true) || isLinkActive('/seguranca_trabalho',true) || isLinkActive('/reclamacoes_relatorios',true) || isLinkActive('/reclamacoesfornecedores',true) || isLinkActive('/reclamacoesclientes',true) || isLinkActive('/temposresposta',true) 
+                        || isLinkActive('/planosacaoqualidade',false) || isLinkActive('/rejeicoes',true)  || isLinkActive('/tiposreclamacoes',true) || isLinkActive('/grausimportancia',true)|| isLinkActive('/tiposdefeito',true) || isLinkActive('/ficheirosanalise',true) || isLinkActive('/tiposocorrencia',true)  
+                        || isLinkActive('/tipos_ocorrencia',true) || isLinkActive('/causas_acidente',true) || isLinkActive('/epis',true) ||  isLinkActive('/tiposnaodetecao',true) 
+                        || isLinkActive('/auditorias',true) || isLinkActive('/derrogacoes',true) || isLinkActive('/tipo_auditoria',true)  
                     }">
                         <h4 class="panel-title">
                             <a id="node5" data-toggle="collapse" data-parent="#accordion" href="#collapsereclamacoes">
@@ -1074,7 +1080,7 @@
                                 <tr>
                                     <td>
                                         <li id="node50" data-toggle="collapse" data-target="#movi3" class="collapsed"
-                                            [ngClass]="{'active':router.isActive('/reclamacoesclientes',true) || router.isActive('/reclamacoesfornecedores',true) }">
+                                            [ngClass]="{'active':isLinkActive('/reclamacoesclientes',true) || isLinkActive('/reclamacoesfornecedores',true) }">
                                             <a>Reclamações
                                                 <span class="arrow"></span>
                                             </a>
@@ -1116,7 +1122,7 @@
                                     <td>
                                         <li id="node23" data-toggle="collapse" data-target="#movide500"
                                             class="collapsed"
-                                            [ngClass]="{'active':router.isActive('/seguranca_trabalho',true)  }">
+                                            [ngClass]="{'active':isLinkActive('/seguranca_trabalho',true)  }">
                                             <a>Segurança no Trabalho
                                                 <span class="arrow"></span>
                                             </a>
@@ -1148,7 +1154,7 @@
                                 <!--<tr>
                                     <td>
                                         <li id="node55" data-toggle="collapse" data-target="#rrrclam" class="collapsed"
-                                            [ngClass]="{ 'active': router.isActive('/analiseconsumos',true)}">
+                                            [ngClass]="{ 'active': isLinkActive('/analiseconsumos',true)}">
                                             <a>Consultas
                                                 <span class="arrow"></span>
                                             </a>
@@ -1167,8 +1173,8 @@
                                     <td>
                                         <li id="node52" data-toggle="collapse" data-target="#parametrosrecl"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/tipos_ocorrencia',true)  || router.isActive('/causas_acidente',true) || router.isActive('/epis',true) || router.isActive('/tipo_auditoria',true) || 
-                                            router.isActive('/tiposocorrencia',true) ||  router.isActive('/tiposnaodetecao',true) || router.isActive('/temposresposta',true) || router.isActive('/rejeicoes',true) || router.isActive('/accoesreclamacoes',true)  || router.isActive('/tiposreclamacoes',true) || router.isActive('/grausimportancia',true)|| router.isActive('/tiposdefeito',true) || router.isActive('/ficheirosanalise',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/tipos_ocorrencia',true)  || isLinkActive('/causas_acidente',true) || isLinkActive('/epis',true) || isLinkActive('/tipo_auditoria',true) || 
+                                            isLinkActive('/tiposocorrencia',true) ||  isLinkActive('/tiposnaodetecao',true) || isLinkActive('/temposresposta',true) || isLinkActive('/rejeicoes',true) || isLinkActive('/accoesreclamacoes',true)  || isLinkActive('/tiposreclamacoes',true) || isLinkActive('/grausimportancia',true)|| isLinkActive('/tiposdefeito',true) || isLinkActive('/ficheirosanalise',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -1246,7 +1252,7 @@
                 <!-- MENU TAREFAS -->
                 <div class="panel panel-default">
                     <div (click)="abrirdashboardTarefas()" class="panel-heading"
-                        [class.active]="router.isActive('/tarefas',true) ||  router.isActive('/dictarefas',true) || router.isActive('/dictiposacao',true)">
+                        [class.active]="isLinkActive('/tarefas',true) ||  isLinkActive('/dictarefas',true) || isLinkActive('/dictiposacao',true)">
                         <h4 class="panel-title">
                             <a id="node6" data-toggle="collapse" data-parent="#accordion" href="#collapseTarefas">
                                 <span class="glyphicon glyphicon-tasks">
@@ -1274,7 +1280,7 @@
                                     <td>
                                         <li id="node62" data-toggle="collapse" data-target="#parametrostarefas"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  router.isActive('/dictarefas',true) || router.isActive('/dictiposacao',true) }">
+                                            [ngClass]="{ 'active':  isLinkActive('/dictarefas',true) || isLinkActive('/dictiposacao',true) }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -1304,8 +1310,8 @@
                 <!-- MENU CONFIGURAÇÕES -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [ngClass]="{ 'active': router.isActive('/utilizadores',true) || router.isActive('/config',true) || router.isActive('/parametros',true) || router.isActive('/eventos',true)
-                    || router.isActive('/grupos',true) || router.isActive('/seccoes',true) || router.isActive('/departamentos',true) || router.isActive('/locais',true) || router.isActive('/feriados',true) }">
+                        [ngClass]="{ 'active': isLinkActive('/utilizadores',true) || isLinkActive('/config',true) || isLinkActive('/parametros',true) || isLinkActive('/eventos',true)
+                    || isLinkActive('/grupos',true) || isLinkActive('/seccoes',true) || isLinkActive('/departamentos',true) || isLinkActive('/locais',true) || isLinkActive('/feriados',true) }">
                         <h4 class="panel-title">
                             <a id="node1" data-toggle="collapse" data-parent="#accordion" href="#collapseConf">
                                 <span class="glyphicon glyphicon-cog ">
@@ -1408,7 +1414,7 @@
 
                 <!-- MENU CONTA -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/perfil',true)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/perfil',true)">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
                                 <span class="glyphicon glyphicon-user">
@@ -1456,7 +1462,7 @@
                     </div>
                 </div>
                 <!--<div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="router.isActive('/teste1',true)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/teste1',true)">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapsestats">
                                 <span class="glyphicon glyphicon-stats">

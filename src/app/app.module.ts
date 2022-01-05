@@ -379,6 +379,7 @@ import { COMCONTRATOSService } from './servicos/com-contratos.service';
 import { COMREFERENCIASService } from './servicos/com-referencias.service';
 import { COMACORDOSVOLUMESService } from './servicos/com-acordos-volumes.service';
 import { COMREFERENCIASSILVERService } from './servicos/com-referencias-silver.service';
+import { AnaliseAcordosComponent } from './paginas/modulo-comercial/analise-acordos/analise-acordos.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -532,6 +533,7 @@ const routes: Routes = [
   { path: 'sectores_absentismo', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
   { path: 'sectores_absentismo_financeira', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
   { path: 'analise_clientes', component: AnaliseClientesComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Clientes" } },
+  { path: 'analise_acordos', component: AnaliseAcordosComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Acordos" } },
 
   {
     path: 'planeamento_producao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Produção" },
@@ -1121,7 +1123,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ReferenciasComponent,
     ReferenciasFormComponent,
     AcordosComponent,
-    AcordosFormComponent
+    AcordosFormComponent,
+    AnaliseAcordosComponent
   ],
   imports: [
     BrowserModule,

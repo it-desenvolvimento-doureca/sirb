@@ -1,5 +1,8 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.service';
+import { FINREGISTOACOESService } from 'app/servicos/fin-registo-acoes.service';
+import { UploadService } from 'app/servicos/upload.service';
 
 @Component({
   selector: 'app-evolucao-dividas',
@@ -8,6 +11,11 @@ import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.servi
 })
 export class EvolucaoDividasComponent implements OnInit {
   mensagemtabela: string;
+  srcelement;
+  nomeficheiro: any;
+  @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
+  type: any;
+  display: boolean;
   ativobt = '1';
   myInnerHeight2 = 350;
   myInnerHeight = 350;
@@ -346,7 +354,14 @@ export class EvolucaoDividasComponent implements OnInit {
   tabela_linhas_documentos: any;
   display_linhas_documentos: boolean = false;
   display_documentos_show: boolean;
-  constructor(private elementRef: ElementRef, private FINANALISEDIVIDASService: FINANALISEDIVIDASService) { }
+  tabela_acoes: any[];
+  mensagemtabela_acoes: string;
+  display_dialog_true: boolean;
+  dialogacoes: boolean;
+  constructor(private elementRef: ElementRef, private FINANALISEDIVIDASService: FINANALISEDIVIDASService,
+    private FINREGISTOACOESService: FINREGISTOACOESService,
+    private renderer: Renderer,
+    private UploadService: UploadService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
 
@@ -893,6 +908,202 @@ export class EvolucaoDividasComponent implements OnInit {
       },
       error => console.log(error));
   }
+
+  listar_acoes(id) {
+    this.display_dialog_true = false;
+    this.dialogacoes = true;
+    this.tabela_acoes = [];
+
+    var count = 0;
+    this.mensagemtabela_acoes = "A Carregar...";
+
+    this.FINREGISTOACOESService.getbyid(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela_acoes = "Nenhum Registo foi encontrado...";
+        }
+        for (var x in response) {
+          var array = {
+            id_ACAO: response[x][0],
+            id_CLIENTE: response[x][1],
+            data_CRIA: response[x][2],
+            utz_CRIA: response[x][3],
+            contacto: response[x][4],
+            gerar_ALERTA: response[x][5],
+            alerta_GERADO: response[x][6],
+            origem: response[x][7],
+            descricao: response[x][8],
+            tamanho_FICHEIRO: response[x][9],
+            nome_FICHEIRO: response[x][10],
+            datatype_FICHEIRO: response[x][11],
+            type_FICHEIRO: response[x][12],
+            ficheiro: null,
+            ficheiro_2: null
+          };
+
+          this.tabela_acoes.push({
+            dados: array,
+            id: response[x][0],
+            data_acao: this.formatDate(response[x][2]),
+            utilizador: response[x][13],
+            descricao: response[x][8],
+            descricao_pequena: (response[x][8] == null) ? '' : response[x][8].substring(0, 25),
+            contacto: response[x][4],
+            origem: response[x][7],
+            alerta_data_hora: (response[x][5] == null) ? null : this.formatDate(response[x][5]) + ' ' + new Date(response[x][5]).toLocaleTimeString().slice(0, 5),
+            gerar_ALERTA: response[x][5],
+            nome_ficheiro: response[x][10],
+            //ficheiro: response[x][0].ficheiro + response[x][0].ficheiro_2,
+            ficheiro: null,
+            datatype: response[x][11],
+            type: response[x][12],
+            size: response[x][9],
+            apagarficheiros: false
+          });
+
+        }
+        this.tabela_acoes = this.tabela_acoes.slice();
+
+      },
+      error => console.log(error));
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, id_ficheiro) {
+    this.srcelement = "";
+    if (type == "pdf" || type == 'txt') {
+      if (ficheiro == null) {
+        this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
+          (res) => {
+            this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0][0] + res[0][1]);
+          }, error => {
+            this.simular(this.inputerroficheiro);
+            console.log(error);
+          }
+        );
+        //this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+      } else {
+        /*var blob = new Blob([ficheiro], { type: datatype });
+        var blobUrl = URL.createObjectURL(blob);*/
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+      }
+    }
+    /*if (ficheiro == null) {
+      this.srcelement = webUrl.link + srcelement;
+    } else {
+      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+    }*/
+    if (type == "excel" || type == "word") {
+      this.download(nomeficheiro, srcelement, datatype, ficheiro, id_ficheiro)
+    } else if (type == "msg") {
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro, id_ficheiro)
+    }
+    else {
+      this.nomeficheiro = nomeficheiro;
+      this.type = type;
+      this.display = true;
+      this.display_dialog_true = true;
+      this.dialogacoes = false;
+    }
+  }
+
+  download(nome, filename, datatype, ficheiro, id_ficheiro) {
+    if (ficheiro == null) {
+      this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
+        (res) => {
+          /*var fileURL: any = URL.createObjectURL(res);
+          fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          var myWindow = window.open(fileURL, "", "width=200,height=100");*/
+          // myWindow.close();
+          // FileSaver.saveAs(res, nome);
+
+          const downloadLink = document.createElement("a");
+
+          downloadLink.href = res[0][0] + res[0][1];
+          downloadLink.download = nome;
+          downloadLink.click();
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        }
+      );
+    } else {
+
+      const downloadLink = document.createElement("a");
+
+      downloadLink.href = ficheiro;
+      downloadLink.download = nome;
+      downloadLink.click();
+    }
+  }
+
+
+
+  downloadTXT(nomeficheiro, filename, ficheiro, id_ficheiro) {
+    if (ficheiro == null) {
+      this.FINREGISTOACOESService.getbyidFICHEIRO(id_ficheiro).subscribe(
+        (res) => {
+          this.UploadService.downloadFileMSGBASE64(filename, res[0][0] + res[0][1]).subscribe(
+            (res) => {
+              var fileURL = URL.createObjectURL(res);
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+              this.nomeficheiro = nomeficheiro;
+              this.type = 'txt';
+              this.display = true;
+              this.display_dialog_true = true;
+              this.dialogacoes = false;
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            });
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        }
+      );
+
+    } else {
+      this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
+        (res) => {
+          var fileURL = URL.createObjectURL(res);
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+          this.nomeficheiro = nomeficheiro;
+          this.type = 'txt';
+          this.display = true;
+          this.display_dialog_true = true;
+          this.dialogacoes = false;
+        }, error => {
+          this.simular(this.inputerroficheiro);
+          console.log(error);
+        });
+    }
+  }
+
+  //simular click para mostrar mensagem
+  simular(element) {
+    let event = new MouseEvent('click', { bubbles: true });
+    this.renderer.invokeElementMethod(
+      element.nativeElement, 'dispatchEvent', [event]);
+  }
+
+  onHide() {
+    if (this.display_dialog_true) {
+      this.dialogacoes = true;
+    }
+  }
+
 }
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {

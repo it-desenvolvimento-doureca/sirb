@@ -48,7 +48,7 @@
         </div>
         <div class="form-group col-md-6">
           <label for="nome">Responsável</label>
-          <p-dropdown [required]="true" [options]="responsaveis"
+          <p-dropdown [required]="true" [options]="responsaveis" [filter]="true"
             [style]="{'width':'100%','height':'25px','font-size':'15px','background':'white'}"
             [(ngModel)]="id_responsavel" [ngModelOptions]="{standalone: true}" styleClass="ui-column-filter">
           </p-dropdown>

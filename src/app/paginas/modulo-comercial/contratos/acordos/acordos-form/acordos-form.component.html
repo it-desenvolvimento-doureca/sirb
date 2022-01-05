@@ -91,6 +91,13 @@
                     <div class="hidden-xs" style="display: contents;">Atividades</div>
                   </button>
                 </div>
+                <div class="btn-group" role="group" style="border-right: 2px solid white;">
+                  <button (click)="ativobt='6';" style="padding: 12px;" [class.ativobt]="ativobt == '6'" type="button"
+                    id="favorites" class="btn" href="#tab6" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                      aria-hidden="true"></span>
+                    <div class="hidden-xs" style="display: contents;">Análise de Acordos</div>
+                  </button>
+                </div>
               </div>
 
               <div class="well" style="display: flex; padding: 0;">
@@ -645,7 +652,47 @@
                     </p-dataTable>
                   </div>
 
-                  <!-- Dados da Compra -->
+                  <!--  Análise de Acordos -->
+                  <div class="tab-pane fade " [class.in]="ativobt == '6'" [class.active]="ativobt == '6'" id="tab6">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ExcelTable2007">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th *ngFor="let anos of tabela_volumes" style="text-align: center; width: 100px;">
+                              {{anos.ano}}</th>
+                          </tr>
+                          <tr *ngIf="tabela_volumes.length == 0">
+                            <th style="text-align: center; width: 100px;">
+                              Sem Dados</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="!loading_analise && tabela_volumes.length > 0">
+                          <tr>
+                            <th style="padding-left: 4px; padding-right: 4px;">Volumes Acordados</th>
+                            <td *ngFor="let valor of tabela_volumes"
+                              style="text-align: right; padding-left: 4px !important; padding-right: 4px !important;">
+                              {{valor.valor}}
+                            </td>
+                          </tr>
+                          <tr *ngFor="let tab of tabela_analises">
+                            <th style="padding-left: 4px; padding-right: 4px;">{{tab.desc}}</th>
+                            <td *ngFor="let tabvalor of tab.valores"
+                              style="text-align: right; padding-left: 4px !important; padding-right: 4px !important;">
+                              {{tabvalor.valor}}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="loading_analise && tabela_volumes.length > 0">
+                          <tr>
+                            <th [attr.colspan]="tabela_volumes.length + 1" style="text-align: center;">
+                              A Carregar...</th>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
                 </div>
               </div>
