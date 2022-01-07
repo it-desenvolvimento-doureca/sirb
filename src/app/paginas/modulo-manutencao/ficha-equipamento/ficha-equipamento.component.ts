@@ -253,6 +253,13 @@ export class FichaEquipamentoComponent implements OnInit {
 
         this.DATA_VALIDADE = (response[0].DATA_VALIDADE != null) ? new Date(response[0].DATA_VALIDADE) : null;
         this.equipamento_dados = response[0];
+
+        if (response[0].ATIVO == false) {
+          this.globalVar.setapagar(false);
+          this.globalVar.seteditar(false);
+          var s = document.getElementById("editarclickhidde");
+          s.click();
+        }
         this.carregatabelaFiles(id);
         this.carregaTabelaGrausImportancia(id);
         this.carregaTabelaListaComponentes(id);
@@ -1110,6 +1117,30 @@ export class FichaEquipamentoComponent implements OnInit {
 
   apagar() {
 
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+        var equipamento = new MAN_MOV_MANUTENCAO_EQUIPAMENTOS;
+
+        equipamento = this.equipamento_dados;
+
+        equipamento.UTZ_ULT_MODIF = this.user;
+        equipamento.DATA_ULT_MODIF = new Date();
+        equipamento.ATIVO = false;
+
+
+        this.MANMOVMANUTENCAOEQUIPAMENTOSService.update(equipamento).then(
+          res => {
+            this.router.navigate(['equipamentos_manutencao']);
+            this.simular(this.inputapagar);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+
+      }
+
+    });
   }
 
   gravar() {

@@ -131,7 +131,7 @@ export class AnaliseAcordosComponent implements OnInit {
       response => {
         var count = Object.keys(response).length;
         for (var x in response) {
-          var anos_array = response[x][13].split(",");
+          var anos_array = response[x][14].split(",");
           var anos = [];
           for (var y in anos_array) {
             anos.push({ ano: anos_array[y], valor: null });
@@ -191,6 +191,10 @@ export class AnaliseAcordosComponent implements OnInit {
       var arr_Amortiz_Realizada_v = analise1.dados[6];
       var arr_Amortiz_Realizada_v2 = arr_Amortiz_Realizada_v.valores.find(item => item.ano == res[y][3]);
       if (arr_Amortiz_Realizada_v2) arr_Amortiz_Realizada_v2.valor = this.formatMoney(res[y][10], 2, ",", ".", ' €');
+
+      var arr_Acumulado_LTA = analise1.dados[7];
+      var arr_Acumulado_LTA2 = arr_Acumulado_LTA.valores.find(item => item.ano == res[y][3]);
+      if (arr_Acumulado_LTA2) arr_Acumulado_LTA2.valor = this.formatMoney(res[y][13], 2, ",", ".", ' €');
     }
   }
 
@@ -249,7 +253,7 @@ export class AnaliseAcordosComponent implements OnInit {
       response => {
         var count = Object.keys(response).length;
         for (var x in response) {
-          var anos_array = response[x][13].split(",");
+          var anos_array = response[x][14].split(",");
           var anos = [];
           for (var y in anos_array) {
             anos.push({ ano: anos_array[y], valor: null });
@@ -303,13 +307,17 @@ export class AnaliseAcordosComponent implements OnInit {
       var arr_Valor_de_Venda2 = arr_Valor_de_Venda.valores.find(item => item.ano == res[y][3]);
       if (arr_Valor_de_Venda2) arr_Valor_de_Venda2.valor = this.formatMoney(res[y][8], 2, ",", ".", ' €');
 
-      var arr_Amortiz_Realizada_p = analise2.dados[4];
+      var arr_Amortiz_Realizada_p = analise2.dados[3];
       var arr_Amortiz_Realizada_p2 = arr_Amortiz_Realizada_p.valores.find(item => item.ano == res[y][3]);
       if (arr_Amortiz_Realizada_p2) arr_Amortiz_Realizada_p2.valor = res[y][9];
 
-      var arr_Amortiz_Realizada_v = analise2.dados[5];
+      var arr_Amortiz_Realizada_v = analise2.dados[4];
       var arr_Amortiz_Realizada_v2 = arr_Amortiz_Realizada_v.valores.find(item => item.ano == res[y][3]);
       if (arr_Amortiz_Realizada_v2) arr_Amortiz_Realizada_v2.valor = this.formatMoney(res[y][10], 2, ",", ".", ' €');
+
+      var arr_Acumulado_LTA = analise2.dados[5];
+      var arr_Acumulado_LTA2 = arr_Acumulado_LTA.valores.find(item => item.ano == res[y][3]);
+      if (arr_Acumulado_LTA2) arr_Acumulado_LTA2.valor = this.formatMoney(res[y][13], 2, ",", ".", ' €');
     }
   }
 
@@ -371,7 +379,7 @@ export class AnaliseAcordosComponent implements OnInit {
           var valorAmortiz_Def = null;
           var valorAmortiz_Realizada_pecas = response[x][5];
           var valorAmortiz_Realizada_valor = this.formatMoney(response[x][6], 2, ",", ".", ' €');
-          var valorValor_Acumulado_LTA = null;
+          var valorValor_Acumulado_LTA = this.formatMoney(response[x][9], 2, ",", ".", ' €');;
 
 
           dados.push({
