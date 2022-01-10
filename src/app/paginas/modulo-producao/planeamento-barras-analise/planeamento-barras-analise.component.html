@@ -1,0 +1,121 @@
+<app-controlos (apagarbt)="apagar()"></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Planeamento de Barras</h4>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar()"
+              ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div style="display: inline-block;">
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+
+                    <!--<div *ngIf="!novo" style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-8">
+                      <label style="display: -webkit-box;">Data Registo:</label>
+                      <p-calendar [disabled]="true" [style]="{'height':'25px','width':'150px'}" dateFormat="yy-mm-dd"
+                        placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                        [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+                        [required]="true"></p-calendar>
+                      <input [disabled]="true" style="width:150px; padding: 5px 4px;height: 25px;"
+                        [(ngModel)]="hora_CRIA" [ngModelOptions]="{standalone: true}" type="time"
+                        class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                        ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                    </div>
+
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 ">
+                      <label>Estado:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado_texto" required
+                        [ngModelOptions]="{standalone: true}">
+                    </div>-->
+
+                    <div
+                      style="padding: 1px 0px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                      class="form-group col-md-12 col-lg-12 filtros_analiseencomendas_3">
+                      <form #form id="formReclama2" (ngSubmit)="atualiza_graficos()" ngNativeValidate>
+
+                        <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4 ">
+                          <label>Ano:</label><br>
+                          <p-dropdown (onChange)="alteraSemana($event)" [options]="anos" class="droplinha"
+                            [style]="{'width':'185px','height':'25px'}" [(ngModel)]="ano"
+                            [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-dropdown>
+                        </div>
+
+                        <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4">
+                          <label>Semana:</label><br>
+                          <p-dropdown (onChange)="alteraSemana($event)" [options]="semanas" class="droplinha"
+                            [style]="{'width':'185px','height':'25px'}" [(ngModel)]="semana"
+                            [ngModelOptions]="{standalone: true}" [required]="true">
+                          </p-dropdown>
+                        </div>
+
+                        <div style="padding: 1px 5px 1px 10px; height: 48px; width: 200px;"
+                          class="form-group col-md-4 ">
+
+                          <label style="font-size: 14px;">Linha:</label><br>
+                          <p-dropdown [style.background]="cor_linha" (onChange)="alteracorlinha($event)"
+                            [options]="linhas" class="droplinha" [style]="{'width':'185px','height':'25px'}"
+                            [(ngModel)]="linha" [ngModelOptions]="{standalone: true}" [required]="true">
+                            <ng-template let-car pTemplate="item">
+                              <div class="ui-helper-clearfix" [style.background]="car.value.cor"
+                                style="position: relative;height: 25px;">
+                                {{car.label}}
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+
+                        </div>
+                        <div class="table-row-column col-md-3" style="height: 64px;">
+                          <button type="submit" class="btn btn-success " [disabled]="loading_analise"
+                            style="margin: 18px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                        </div>
+                        <button *ngIf="!loading" type="button" pButton icon="fa-file" iconPos="left" label="Export"
+                          (click)="download()"
+                          style="float:right; top: 22px; position: absolute; right: 23px;"></button>
+                        <button *ngIf="loading" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
+                          label="Export" [disabled]="true"
+                          style="float:right; top: 22px; position: absolute; right: 23px;"></button>
+                      </form>
+                    </div>
+
+
+
+                  </div>
+
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6" id="graf1">
+                    <p-chart type="line" [data]="data1" [options]="options1" height="150">
+                    </p-chart>
+                  </div>
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6" id="graf2">
+                    <p-chart type="line" [data]="data2" [options]="options2" height="150">
+                    </p-chart>
+                  </div>
+
+                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6" id="graf3">
+                    <p-chart type="line" [data]="data3" [options]="options3" height="150">
+                    </p-chart>
+                  </div>
+
+                </div>
+
+
+
+              </div>
+
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

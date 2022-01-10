@@ -77,6 +77,13 @@ export class PLANEAMENTOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  ANALISE_PLANEAMENTO_BARRAS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/ANALISE_PLANEAMENTO_BARRAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;

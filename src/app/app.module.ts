@@ -381,6 +381,7 @@ import { COMACORDOSVOLUMESService } from './servicos/com-acordos-volumes.service
 import { COMREFERENCIASSILVERService } from './servicos/com-referencias-silver.service';
 import { AnaliseAcordosComponent } from './paginas/modulo-comercial/analise-acordos/analise-acordos.component';
 import { BusinessanalyticsComponent } from './paginas/modulo-engenharia-processos/businessanalytics/businessanalytics.component';
+import { PlaneamentoBarrasAnaliseComponent } from './paginas/modulo-producao/planeamento-barras-analise/planeamento-barras-analise.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -609,6 +610,7 @@ const routes: Routes = [
           { path: 'editar', component: PlaneamentosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
           { path: 'novo', component: PlaneamentosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
       },
+      { path: 'planeamento_barras_analise', component: PlaneamentoBarrasAnaliseComponent, canActivate: [LoginService], data: { breadcrumb: "Análise de Rejeições" } },
       {
         path: 'amostras', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Amostras" }, children: [
           { path: '', component: AmostrasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -1127,7 +1129,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     AcordosComponent,
     AcordosFormComponent,
     AnaliseAcordosComponent,
-    BusinessanalyticsComponent
+    BusinessanalyticsComponent,
+    PlaneamentoBarrasAnaliseComponent
   ],
   imports: [
     BrowserModule,

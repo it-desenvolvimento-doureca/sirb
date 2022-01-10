@@ -2923,44 +2923,68 @@
                                 <label for="node-9-1" class="parametros">Análise de Rejeições</label>
 
                               </li>
+
                               <li>
-                                <input type="checkbox" class="parent" id="node-9-2" />
+                                <input type="checkbox" id="node-9-2-0" class="parent" />
                                 <label>
-                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node92"
-                                    [(ngModel)]="checkbox.node92" />
+                                  <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node920"
+                                    [(ngModel)]="checkbox.node920" />
                                   <span></span>
                                 </label>
-                                <label for="node-9-2">Planeamento de Barras</label>
+                                <label for="node-9-2-0">
+                                  Planeamento de Barras
+                                </label>
                                 <ul>
                                   <li>
-                                    <input type="checkbox" id="node-9-2-0-1" />
+                                    <input type="checkbox" class="parent" id="node-9-2" />
                                     <label>
-                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
-                                        id="node92editar" [(ngModel)]="checkbox.node92editar" />
+                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node92"
+                                        [(ngModel)]="checkbox.node92" />
                                       <span></span>
                                     </label>
-                                    <label for="node-9-2-0-1" class="editar">Editar</label>
+                                    <label for="node-9-2">Planeamento </label>
+                                    <ul>
+                                      <li>
+                                        <input type="checkbox" id="node-9-2-0-1" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node92editar" [(ngModel)]="checkbox.node92editar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node-9-2-0-1" class="editar">Editar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node-9-2-0-2" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node92criar" [(ngModel)]="checkbox.node92criar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node-9-2-0-2" class="criar">Criar</label>
+                                      </li>
+                                      <li>
+                                        <input type="checkbox" id="node-9-2-0-3" />
+                                        <label>
+                                          <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
+                                            id="node92apagar" [(ngModel)]="checkbox.node92apagar" />
+                                          <span></span>
+                                        </label>
+                                        <label for="node-9-2-0-3" class="remover">Apagar</label>
+                                      </li>
+                                    </ul>
                                   </li>
                                   <li>
-                                    <input type="checkbox" id="node-9-2-0-2" />
+                                    <input type="checkbox" class="parent" id="node-9-2-0-5" />
                                     <label>
-                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node92criar"
-                                        [(ngModel)]="checkbox.node92criar" />
+                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx id="node921"
+                                        [(ngModel)]="checkbox.node921" />
                                       <span></span>
                                     </label>
-                                    <label for="node-9-2-0-2" class="criar">Criar</label>
-                                  </li>
-                                  <li>
-                                    <input type="checkbox" id="node-9-2-0-3" />
-                                    <label>
-                                      <input type="checkbox" [ngModelOptions]="{standalone: true}" #cbx
-                                        id="node92apagar" [(ngModel)]="checkbox.node92apagar" />
-                                      <span></span>
-                                    </label>
-                                    <label for="node-9-2-0-3" class="remover">Apagar</label>
+                                    <label for="node-9-2-0-5" class="parametros">Análise</label>
                                   </li>
                                 </ul>
                               </li>
+
                               <li>
                                 <input type="checkbox" class="parent" id="node-9-3" />
                                 <label>

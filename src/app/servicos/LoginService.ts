@@ -26,7 +26,8 @@ export class LoginService implements CanActivate {
         node524: "ficheirosanalise", node525: "temposresposta", node526: "tiposocorrencia", node527: "tiposnaodetecao", node528: 'classificacao', node529: "tipologia"
         , node622: "dictiposacao", node621: "dictarefas", node17: "departamentos", node18: "seccoes", node19: "grupos",
         node7_18: "controloassiduidade_financeira", node7_10: "controloassiduidade_producao", node721: "estadosfuncionarios", node722: "sectores", node723: "turnosrecursos", node724: "funcionarios", node191: "locais", node725: "cacifos", node726: "tiposcacifos"
-        , node727: "pausas", node8: 'stocks', node81: "pedidosdaproducao", node9: "producao", node91: "analise_rejeicoes", node23: 'seguranca_trabalho', node92: 'producao/planeamento'
+        , node727: "pausas", node8: 'stocks', node81: "pedidosdaproducao", node9: "producao", node91: "analise_rejeicoes", node23: 'seguranca_trabalho',
+        node92: 'producao/planeamento', node921: 'planeamento_barras_analise'
         , node23101: 'tipos_ocorrencia', node92101: 'capacidade_linha', node1101: 'feriados', node92102: 'objetivos_planos', node92103: 'sectores_analise', node93: 'producao/amostras'
         , node94: 'producao/barras_alerta', node95: 'producao/revisoes_prioritarias', node96: 'producao/producoes_prioritarias'
         , node92104: 'tipologia_ensaio', node10101: 'objetivos_cumprimento_fornecedor', node15511: 'planosacao', node15512: 'listaacoes'

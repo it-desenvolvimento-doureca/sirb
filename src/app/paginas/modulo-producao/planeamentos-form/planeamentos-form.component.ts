@@ -175,7 +175,6 @@ export class PlaneamentosFormComponent implements OnInit {
     var data = this.getDateOfWeek(this.semana, this.ano);
     console.log(data)
     var array = this.getDatesOfWeek(data);
-    console.log(array)
 
     this.atualizatabela_linhas(array);
   }
