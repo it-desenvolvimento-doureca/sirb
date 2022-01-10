@@ -382,6 +382,7 @@ import { COMREFERENCIASSILVERService } from './servicos/com-referencias-silver.s
 import { AnaliseAcordosComponent } from './paginas/modulo-comercial/analise-acordos/analise-acordos.component';
 import { BusinessanalyticsComponent } from './paginas/modulo-engenharia-processos/businessanalytics/businessanalytics.component';
 import { PlaneamentoBarrasAnaliseComponent } from './paginas/modulo-producao/planeamento-barras-analise/planeamento-barras-analise.component';
+import { ChartsModule } from 'ng2-charts';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1166,6 +1167,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     OverlayPanelModule,
     TriStateCheckboxModule,
     TooltipModule,
+    ChartsModule,
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,

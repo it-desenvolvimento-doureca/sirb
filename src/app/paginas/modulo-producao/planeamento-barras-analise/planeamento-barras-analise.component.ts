@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
+
 @Component({
   selector: 'app-planeamento-barras-analise',
   templateUrl: './planeamento-barras-analise.component.html',
@@ -52,6 +53,10 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
         }
       },
     },
+    animation: {
+      onComplete: drawBarValues
+    },
+    hover: { animationDuration: 0 },
     scales: {
 
       yAxes: [{
@@ -106,6 +111,10 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
         }
       },
     },
+    animation: {
+      onComplete: drawBarValues
+    },
+    hover: { animationDuration: 0 },
     scales: {
 
       yAxes: [{
@@ -160,6 +169,10 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
         }
       },
     },
+    animation: {
+      onComplete: drawBarValues
+    },
+    hover: { animationDuration: 0 },
     scales: {
 
       yAxes: [{
@@ -622,3 +635,23 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
     console.log(e)
   }
 };
+
+function drawBarValues() {
+  // render the value of the chart above the bar
+  var ctx = this.chart.ctx;
+
+  ctx.fillStyle = 'grey'
+  ctx.font = "10px Helvetica Neue, Helvetica, Arial, sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+
+  this.data.datasets.forEach(function (dataset) {
+    for (var i = 0; i < dataset.data.length; i++) {
+      if (dataset.hidden === true && dataset._meta[Object.keys(dataset._meta)[0]].hidden !== false) { continue; }
+      var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+      if (dataset.data[i] !== null && dataset.label != 'Linha de Tendência') {
+        ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' %', model.x - 1, model.y - 5);
+      }
+    }
+  });
+}
