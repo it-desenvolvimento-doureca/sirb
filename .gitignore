@@ -1,5 +1,5 @@
 
-./dist/
+/dist/*
 ./dist/favicon.ico
 ./dist/index.html
 ./dist/polyfills.aef2c435f889702f75d6.bundle.js
