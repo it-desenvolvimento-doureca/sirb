@@ -78,7 +78,9 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
           autoSkip: false,
         }, scaleLabel: {
           display: true,
-        }
+        }, afterFit: (axis) => {
+          axis.paddingRight = 50;
+        },
       }],
     },
   };
@@ -136,7 +138,9 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
           autoSkip: false,
         }, scaleLabel: {
           display: true,
-        }
+        }, afterFit: (axis) => {
+          axis.paddingRight = 50;
+        },
       }],
     },
   };
@@ -194,7 +198,9 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
           autoSkip: false,
         }, scaleLabel: {
           display: true,
-        }
+        }, afterFit: (axis) => {
+          axis.paddingRight = 50;
+        },
       }],
     },
   };
@@ -240,20 +246,32 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
     var data1 = [];
     var data2 = [];
     var data3 = [];
+    var data1_v = [];
+    var data2_v = [];
+    var data3_v = [];
     this.PLANEAMENTOCABService.ANALISE_PLANEAMENTO_BARRAS([{ ANO: this.ano, SEMANA: this.semana, LINHA: this.linha.id }]).subscribe(
       response => {
+        label.push('');
+        data1_v.push(null);
+        data2_v.push(null);
+        data3_v.push(null);
 
         for (var x in response) {
           label.push('week ' + response[x][1] + ' - ' + response[x][2]);
           data1.push(response[x][3]);
           data2.push(response[x][4]);
           data3.push(response[x][5]);
+          data1_v.push(response[x][3]);
+          data2_v.push(response[x][4]);
+          data3_v.push(response[x][5]);
 
         }
 
-        this.grafico1(label, data1);
-        this.grafico2(label, data2);
-        this.grafico3(label, data3);
+
+
+        this.grafico1(label, data1_v, data1);
+        this.grafico2(label, data2_v, data2);
+        this.grafico3(label, data3_v, data3);
 
         this.loading_analise = false;
       },
@@ -270,23 +288,23 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
 
 
   //% Cumprimento do Plano
-  grafico1(labels, data1) {
+  grafico1(labels, data1, data) {
     //var data1 = [47.73, 51.78, 55.86/*, 40, 50, 60, 70, 80, 90, 100*/];
-    var datalinear = [null, null, null, null, null, null, null, null, null, null];
+    var datalinear = [null, null, null, null, null, null, null, null, null, null, null];
     //var labels = ['week 1', 'week 2', 'week 3'/*, 'week 4', 'week 5', 'week 6', 'week 7', 'week 8', 'week 9', 'week 10'*/];
 
     var known_x4 = [];
 
-    for (var x in data1) {
-      known_x4.push([parseInt(x) + 1, data1[x], 1])
+    for (var x in data) {
+      known_x4.push([parseInt(x) + 1, data[x], 1])
     }
 
     var lr = this.linear_regression(known_x4);
 
 
-    for (var x in data1) {
+    for (var x in data) {
       var valor = ((lr[0] * (parseInt(x) + 1)) + lr[1]);
-      datalinear[parseInt(x)] = valor;
+      datalinear[parseInt(x) + 1] = valor;
     }
 
     var cor = this.getRandomColor(1);
@@ -314,22 +332,22 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
   }
 
   //% Ocupação da Linha
-  grafico2(labels, data2) {
+  grafico2(labels, data2, data) {
     //var data1 = [104.06, 101.75, 103.35/*, 40, 50, 60, 70, 80, 90, 100*/];
     var datalinear = [null, null, null, null, null, null, null, null, null, null];
     // var labels = ['week 1', 'week 2', 'week 3'/*, 'week 4', 'week 5', 'week 6', 'week 7', 'week 8', 'week 9', 'week 10'*/];
     var known_x4 = [];
 
-    for (var x in data2) {
-      known_x4.push([parseInt(x) + 1, data2[x], 1])
+    for (var x in data) {
+      known_x4.push([parseInt(x) + 1, data[x], 1])
     }
 
     var lr = this.linear_regression(known_x4);
 
 
-    for (var x in data2) {
+    for (var x in data) {
       var valor = ((lr[0] * (parseInt(x) + 1)) + lr[1]);
-      datalinear[parseInt(x)] = valor;
+      datalinear[parseInt(x) + 1] = valor;
     }
 
     var cor = this.getRandomColor(2);
@@ -356,22 +374,22 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
 
 
   //% Ocupação Total da Linha
-  grafico3(labels, data3) {
+  grafico3(labels, data3, data) {
     //*var data1 = [104.06, 101.75, 103.35/*, 40, 50, 60, 70, 80, 90, 100*/];
     var datalinear = [null, null, null, null, null, null, null, null, null, null];
     //var labels = ['week 1', 'week 2', 'week 3'/*, 'week 4', 'week 5', 'week 6', 'week 7', 'week 8', 'week 9', 'week 10'*/];
     var known_x4 = [];
 
-    for (var x in data3) {
-      known_x4.push([parseInt(x) + 1, data3[x], 1])
+    for (var x in data) {
+      known_x4.push([parseInt(x) + 1, data[x], 1])
     }
 
     var lr = this.linear_regression(known_x4);
 
 
-    for (var x in data3) {
+    for (var x in data) {
       var valor = ((lr[0] * (parseInt(x) + 1)) + lr[1]);
-      datalinear[parseInt(x)] = valor;
+      datalinear[parseInt(x) + 1] = valor;
     }
 
     var cor = this.getRandomColor(3);
