@@ -257,7 +257,9 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
         data3_v.push(null);
 
         for (var x in response) {
-          label.push('week ' + response[x][1] + ' - ' + response[x][2]);
+          let text = response[x][2];
+          let result = text.substring(2, 4);
+          label.push('week ' + response[x][1] + '/' + result);
           data1.push(response[x][3]);
           data2.push(response[x][4]);
           data3.push(response[x][5]);
