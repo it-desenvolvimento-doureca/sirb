@@ -1139,7 +1139,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
     doc.setFontSize(10);
     doc.setFont('helvetica')
     doc.setFontType('bold')
-    doc.text("DOURECA - Sistema de Gestão Integrado de Informação da Doureca", 425, 20, null, null, "center");
+    doc.text("DOURECA - Sistema de Gestão Integrado de Informação da XpertGo", 425, 20, null, null, "center");
 
     doc.setFont('times')
 
@@ -1147,7 +1147,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
     doc.text(this.formatDate(new Date), 40, 580);
 
     var img_logo = new Image()
-    img_logo.src = 'assets/img/logo_doureca.png'
+    img_logo.src = 'assets/img/logo_empresa.png'
     doc.addImage(img_logo, 'PNG', 10, 5, 80, 17,'','FAST');
 
     /*var tab1 = document.getElementById('tab1');

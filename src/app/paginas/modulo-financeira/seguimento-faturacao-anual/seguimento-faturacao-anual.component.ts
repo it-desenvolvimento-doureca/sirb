@@ -1902,7 +1902,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
       // doc.text("Pág. 1/" + pagecount, pageWidth - 2, pageHeight - 40, null, null, "right");
 
       var img_logo = new Image()
-      img_logo.src = 'assets/img/logo_doureca.png'
+      img_logo.src = 'assets/img/logo_empresa.png'
       doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
 
       doc.addImage(img, 'PNG', 2, 20, pageWidth - 4, 0,'','FAST');
@@ -1913,7 +1913,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
           /*doc.setFontSize(10);
           doc.setFont('helvetica')
           doc.setFontType('bold')
-          doc.text("DOURECA - Sistema de Gestão Integrado de Informação da Doureca", 150, 15, null, null, "center");
+          doc.text("DOURECA - Sistema de Gestão Integrado de Informação da XpertGo", 150, 15, null, null, "center");
 
           doc.setFont('times')
 
@@ -1921,7 +1921,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
           doc.text(data, 2, pageHeight - 2);
 
           var img_logo = new Image()
-          img_logo.src = 'assets/img/logo_doureca.png'
+          img_logo.src = 'assets/img/logo_empresa.png'
           doc.addImage(img_logo, 'PNG', 10, 5, 50, 10);*/
           doc.addImage(img, 'PNG', 2, -(j * pageHeight) + 25, pageWidth - 4, 0,'','FAST');
           j++;
@@ -1978,7 +1978,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
       // doc.text("Pág. 1/" + pagecount, pageWidth - 2, pageHeight - 40, null, null, "right");
 
       var img_logo = new Image()
-      img_logo.src = 'assets/img/logo_doureca.png'
+      img_logo.src = 'assets/img/logo_empresa.png'
       doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
 
       var imgs = canvas.toDataURL("image/png");

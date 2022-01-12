@@ -3339,7 +3339,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   continuarconcluitEtapa(etapa) {
     var atraso = this.atualizaDatasresposta(etapa, this['step' + etapa + 'CONCLUIDO_DATA']);
     if (atraso > 0) {
-      this.temp_RESPONSABILIDADE_ATRASADO = "Doureca";
+      this.temp_RESPONSABILIDADE_ATRASADO = "XpertGo";
       this.tempo_ATRASO = atraso;
       this.displayResponsabilidade = true;
       this.temp_ETAPA = etapa;

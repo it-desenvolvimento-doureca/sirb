@@ -852,7 +852,7 @@ export class FichaComponent implements OnInit {
             acao.data_acao, acao.utilizador, acao.descricao, acao.contacto, acao.origem);
           this.bt_disable = false;
           this.email_para = this.email_KAM;
-          this.email_DE = "alertas.it.doureca@gmail.com";
+          this.email_DE = "tiago.pereira@xpertgo.pt";
 
           this.display_envia_kam = true;
         },
@@ -923,7 +923,7 @@ export class FichaComponent implements OnInit {
         this.bt_disable2 = false;
         this.email_para_1 = this.email_1;
         this.email_para_2 = this.email_2;
-        this.email_DE = "alertas.it.doureca@gmail.com";
+        this.email_DE = "tiago.pereira@xpertgo.pt";
 
         this.display_envia_contacto = true;
       },

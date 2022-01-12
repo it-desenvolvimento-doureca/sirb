@@ -341,7 +341,7 @@ export class GestaoeventosComponent implements OnInit {
     email.assunto = email_assunto;
     email.mensagem = email_mens;
 
-    email.de = "alertas.it.doureca@gmail.com";
+    email.de = "tiago.pereira@xpertgo.pt";
 
     //email.mensagem = email_mens.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "");
 
