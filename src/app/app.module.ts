@@ -383,6 +383,7 @@ import { AnaliseAcordosComponent } from './paginas/modulo-comercial/analise-acor
 import { BusinessanalyticsComponent } from './paginas/modulo-engenharia-processos/businessanalytics/businessanalytics.component';
 import { PlaneamentoBarrasAnaliseComponent } from './paginas/modulo-producao/planeamento-barras-analise/planeamento-barras-analise.component';
 import { ChartsModule } from 'ng2-charts';
+import { BusinessanalyticsService } from './servicos/businessanalytics.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1368,6 +1369,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     COMCONTRATOSService,
     COMREFERENCIASService,
     COMREFERENCIASSILVERService,
+    BusinessanalyticsService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

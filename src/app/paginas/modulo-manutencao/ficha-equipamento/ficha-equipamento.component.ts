@@ -480,7 +480,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
   listar_refs() {
 
-    this.ABDICCOMPONENTEService.getReferencias().subscribe(
+    this.ABDICCOMPONENTEService.getReferenciasMANU().subscribe(
       response => {
         this.artigos = [];
         //this.artigos.push({ value: null, label: 'Selecionar Artigo' });

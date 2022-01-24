@@ -102,6 +102,14 @@ export class ABDICCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getReferenciasMANU() {
+    const url = webUrl.host + '/rest/sirb/getReferenciasMANU';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getClientes() {
     const url = webUrl.host + '/rest/sirb/getClientes';
     return this.http
