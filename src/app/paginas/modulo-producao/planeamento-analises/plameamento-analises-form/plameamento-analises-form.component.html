@@ -297,6 +297,10 @@
                       <button *ngIf="loading1" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"
                         label="Export" [disabled]="true" style="float:right;"></button>
 
+                      <!--button type="button" class="ui-button-warning" pButton icon="fa-refresh" iconPos="left" label="Atualizar Dados"
+                        (click)="atualizardados('recursos_humanos')" style="float:right; margin-right: 10px;"></button-->
+
+
                       <div id="analises_prev_scroll1" style="display: inline-block; overflow: auto; width: 100%; min-height: 200px; padding-bottom:
                       10px; overflow-y: hidden;">
 
@@ -526,6 +530,7 @@
 
 
                     <div class="tab-pane fade in dashboard" id="tab3">
+
                       <button *ngIf="!loading2" type="button" pButton icon="fa-file" iconPos="left" label="Export"
                         (click)="download('exportpdf2','tipos_acabamento','loading2')" style="float:right;"></button>
                       <button *ngIf="loading2" type="button" pButton icon="fa fa-spinner fa-pulse fa-fw" iconPos="left"

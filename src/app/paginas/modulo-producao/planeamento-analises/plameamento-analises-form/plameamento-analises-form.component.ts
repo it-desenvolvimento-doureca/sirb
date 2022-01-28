@@ -1092,7 +1092,8 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
             var e1 = this.planos1.find(item => item.value == this.id_PLANO_LINHA_1).ESTADO;
             var e2 = this.planos2.find(item => item.value == this.id_PLANO_LINHA_2).ESTADO;
             if (e1 == 'F' && e2 == 'F') {
-              this.btatualizardados = true;
+              //this.btatualizardados = true;
+              this.btatualizardados = false;
             } else {
               this.btatualizardados = false;
             }
@@ -1148,7 +1149,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
     var img_logo = new Image()
     img_logo.src = 'assets/img/logo_doureca.png'
-    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17,'','FAST');
+    doc.addImage(img_logo, 'PNG', 10, 5, 80, 17, '', 'FAST');
 
     /*var tab1 = document.getElementById('tab1');
     var printer_1 = document.getElementById('printer_1');
@@ -1174,7 +1175,7 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(img);
       const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight,'','FAST');
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, '', 'FAST');
 
       //document.getElementById(id).removeChild(document.getElementById('tab1_1'));
 
@@ -1210,5 +1211,8 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
       }
     });
+  }
+  atualizardados(analise) {
+    this.atualizar_dados();
   }
 }
