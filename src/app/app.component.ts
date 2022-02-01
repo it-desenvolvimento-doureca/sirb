@@ -397,4 +397,8 @@ export class AppComponent {
         return null;
     }
 
+    goToHome() {
+        this.router.navigate(['/']);
+    }
+
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GTMOVTAREFASService } from '../../../servicos/gt-mov-tarefas.service';
 import { RCDICACCOESRECLAMACAOService } from '../../../servicos/rc-dic-accoes-reclamacao.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tarefas',
@@ -23,7 +23,7 @@ export class TarefasComponent implements OnInit {
   datafim2 = null;
   tipo_utl: string[] = ['u'];
   classstep = "step1";
-  constructor(private router: Router, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
   ngOnInit() {
     this.cols = [];
     this.estados = [
@@ -41,7 +41,14 @@ export class TarefasComponent implements OnInit {
     //this.estado = ["P", "L", "E"];
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
+    var id = null;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        id = params['id'] || null;
+      });
 
+    if (id != null) this.accao = [id];
     this.atualizar();
 
     this.carregaaccoes();
