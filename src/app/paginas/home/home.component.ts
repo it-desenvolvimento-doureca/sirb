@@ -368,8 +368,8 @@ export class HomeComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
-  goToTarefas(id) {
-    this.router.navigate(['tarefas'], { queryParams: { id: id } });
+  goToTarefas(id, modulo) {
+    this.router.navigate(['tarefas'], { queryParams: { id: id, modulo: modulo, tipo_utl: this.tipo_utl.toString() } });
   }
 
 }

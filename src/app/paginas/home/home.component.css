@@ -53,3 +53,11 @@
 .list-group-item-text {
     margin: 0 0 11px;
 }
+
+.goToTarefas_title {
+    cursor: pointer;
+}
+
+.goToTarefas_title:hover {
+    color: #ffa91f;
+}

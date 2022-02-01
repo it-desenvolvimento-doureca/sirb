@@ -408,37 +408,37 @@
 
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tarefa" header="#">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span (click)="goToTarefas(car['id_tarefa'])"
+                            <span (click)="goToTarefas(car['id_tarefa'],null)"
                                 title="{{car['tarefa'] }}">{{car['tarefa']}}</span>
-                            <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id_tarefa'])"
+                            <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id_tarefa'],null)"
                                 class="glyphicon glyphicon-share-alt"></span>
                             <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
                         </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="reclamacoes_clientes">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}</span>
+                            <span class="goToTarefas_title"  (click)="goToTarefas(car['id_tarefa'],'reclamacoes_clientes')" title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}</span>
                         </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger"
                         field="reclamacoes_fornecedores">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}</span>
+                            <span  class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'reclamacoes_fornecedores')" title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}</span>
                         </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span title="{{car['title3'] }}">{{car['amostras'] }}</span>
+                            <span  class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'amostras')" title="{{car['title3'] }}">{{car['amostras'] }}</span>
                         </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span title="{{car['title4'] }}">{{car['planosacao'] }}</span>
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosacao')" title="{{car['title4'] }}">{{car['planosacao'] }}</span>
                         </ng-template>
                     </p-column>
                     <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="derrogacoes">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span title="{{car['title5'] }}">{{car['derrogacoes'] }}</span>
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'derrogacoes')" title="{{car['title5'] }}">{{car['derrogacoes'] }}</span>
                         </ng-template>
                     </p-column>
                 </p-dataTable>

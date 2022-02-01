@@ -42,14 +42,38 @@ export class TarefasComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
     var id = null;
+    var modulo = null;
+    var tipo_utl = null;
     var sub = this.route
       .queryParams
       .subscribe(params => {
         id = params['id'] || null;
+        modulo = params['modulo'] || null;
+        tipo_utl = params['tipo_utl'] || null;
       });
 
     if (id != null) this.accao = [id];
-    this.atualizar();
+    this.tipo_utl = (tipo_utl == null) ? ['u'] : tipo_utl.split(',');
+    var id_modulo = null;
+    var sub_modulo = null;
+    if (modulo == 'reclamacoes_clientes') {
+      id_modulo = 5;
+      sub_modulo = 'C';
+    } else if (modulo == 'reclamacoes_fornecedores') {
+      id_modulo = 5;
+      sub_modulo = 'F';
+    } else if (modulo == 'amostras') {
+      id_modulo = 10;
+      sub_modulo = 'A';
+    } else if (modulo == 'planosacao') {
+      id_modulo = 13;
+      sub_modulo = 'PA';
+    } else if (modulo == 'derrogacoes') {
+      id_modulo = 5;
+      sub_modulo = 'D';
+    }
+
+    this.atualizar(id_modulo, sub_modulo);
 
     this.carregaaccoes();
 
@@ -78,7 +102,7 @@ export class TarefasComponent implements OnInit {
     this.router.navigate(['tarefas/view'], { queryParams: { id: event.data.id_tarefa } });
   }
 
-  atualizar() {
+  atualizar(id_modulo = null, sub_modulo = null) {
     this.cols = [];
     this.tabelalistatarefas = [];
     this.tabelalistatarefas2 = [];
@@ -136,7 +160,7 @@ export class TarefasComponent implements OnInit {
 
     var data = [{
       utilizador: this.user, tipo_utilizador: tipo_utilizador, estado: estado, utilizador_grupo: utilizador_grupo,
-      utilizador_sector: utilizador_sector,
+      utilizador_sector: utilizador_sector, modulo: id_modulo, submodulo: sub_modulo,
       datacria1: datacria1, datacria2: datacria2, datafim1: datafim1, datafim2: this.datafim2,
       accao: accao
     }];
