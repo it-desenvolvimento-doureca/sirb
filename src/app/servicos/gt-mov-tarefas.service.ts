@@ -128,6 +128,23 @@ export class GTMOVTAREFASService {
 
 
 
+  getAtualizaSubtarefas(id, estado, utilizador): Observable<GT_MOV_TAREFAS[]> {
+    const url = webUrl.host + '/rest/sirb/getAtualizaSubtarefas/' + id + '/' + estado + '/' + utilizador;
+    return this.http
+      .post(url, [], { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+  getValidaSubtarefas(id): Observable<GT_MOV_TAREFAS[]> {
+    const url = webUrl.host + '/rest/sirb/getValidaSubtarefas/' + id;
+    return this.http
+      .post(url, [], { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;

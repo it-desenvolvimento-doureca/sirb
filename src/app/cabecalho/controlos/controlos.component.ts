@@ -209,9 +209,11 @@ export class ControlosComponent implements OnInit {
     if (back != 0 && back != 'back') {
       back = back.replace("kvk", "?");
       if (back.indexOf("?") > 0) {
-        this.router.navigateByUrl(back);
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigateByUrl(back))
+        //this.router.navigateByUrl(back);
       } else {
-        this.router.navigate([back], { queryParams: { redirect: 1 } });
+        //this.router.navigate([back], { queryParams: { redirect: 1 } });
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate([back], { queryParams: { redirect: 1 } }))
       }
 
 
@@ -226,7 +228,8 @@ export class ControlosComponent implements OnInit {
       } else if (this.router.routerState.snapshot.url.search("manutencao/historico") > -1) {
         this.location.back();
       } else {
-        this.router.navigate([this.currentpage]);
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate([this.currentpage]))
+        // this.router.navigate([this.currentpage]);
       }
     }
 

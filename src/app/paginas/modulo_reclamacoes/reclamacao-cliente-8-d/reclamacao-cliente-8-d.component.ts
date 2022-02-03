@@ -4301,6 +4301,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               logs.data_CRIA = new Date();
               logs.descricao = data_logs[x].descricao;
               this.criaLogs(logs);
+              this.atualizaSUBTAREFAS(id,estado,this.user);
             }
 
 
@@ -4316,6 +4317,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     }
   }
 
+  atualizaSUBTAREFAS(id,estado,utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id,estado,utilizador).subscribe(response => {
+    }, error => {
+      console.log(error);
+    });
+  }
 
   criaLogs(log) {
     this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {

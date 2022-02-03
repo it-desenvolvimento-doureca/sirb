@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header"  data-background-color="red">
+          <div class="card-header" data-background-color="red">
             <h4 class="title" style="display: -webkit-inline-box;">Tarefas</h4>
 
             <button (click)="encaminharpara()" [disabled]="disencaminhar" class="btn btn-default" title="Encaminhar"
@@ -23,133 +23,254 @@
           </div>
 
           <div class="card-content">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#detalhe" aria-controls="detalhe" role="tab" data-toggle="tab">Detalhes</a>
+              </li>
+              <li role="presentation">
+                <a href="#listatarefa" aria-controls="listatarefa" role="tab" data-toggle="tab">SubTarefas</a>
+              </li>
+              <li role="presentation">
+                <a href="#ficheiro" aria-controls="ficheiro" role="tab" data-toggle="tab">Ficheiros</a>
+              </li>
+            </ul>
+            <!--*************Detalhes****************-->
             <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar(false)"
               ngNativeValidate>
-              <div class="container-fluid" style="padding: 0;">
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="detalhe">
 
-                <div style="display: inline-block;">
 
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Tarefa:</label>
-                    <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
-                      [(ngModel)]="nome_tarefa" [ngModelOptions]="{standalone: true}">
-                  </div>
+                  <div class="container-fluid" style="padding: 0;">
 
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-5">
-                    <label>Origem:</label>
-                    <!-- <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
+                    <div style="display: inline-block;">
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Tarefa:</label>
+                        <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
+                          [(ngModel)]="nome_tarefa" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-5">
+                        <label>Origem:</label>
+                        <!-- <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
                       [ngModelOptions]="{standalone: true}" style="">-->
-                    <br>
-                    <a href="{{caminho_origem}}">{{origem}}</a>
+                        <br>
+                        <a href="{{caminho_origem}}">{{origem}}</a>
+                        <a style="cursor: pointer;" (click)="goToTarefas(caminho_origem_pai)">{{origem_pai}}</a>
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-3">
+                        <label>Utilizador Origem:</label>
+                        <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
+                          [(ngModel)]="utz_origem" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Departamento:</label>
+                        <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
+                          [(ngModel)]="dep_origem" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Data/Hora Atribuição:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="data_atribuicao"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Atribuído a:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="atribuido" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Prioridade:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="prioridade" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Prazo Conclusão:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="prazo_conclusao"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Encaminhado para:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="encaminhado"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Data/Hora Encaminhamento:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="data_encaminhado"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                        <label>Cliente:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="cliente" [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                        <label>Referência:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                        <label>Estado:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <label>Observações Origem:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="observacoes"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Conclusão (%):</label>
+                        <input [disabled]="!modoedicao" min="0" max="100" [disabled]="true" type="number"
+                          class="form-control2 enabled" [(ngModel)]="percentagem_conclusao"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Tempo Gasto (H):</label>
+                        <input [disabled]="!modoedicao" min="0" [disabled]="true" type="number" step="0.01"
+                          class="form-control2 enabled" [(ngModel)]="tempo_gasto" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4 progressBarTarefas">
+                        <label>Progresso SubTarefas:</label>
+                        <p-progressBar [value]="progresso"></p-progressBar>
+                      </div>
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <label>Descrição das Ações Efetuadas:</label>
+                        <textarea [disabled]="!modoedicao" rows="6" pInputTextarea [(ngModel)]="descricao"
+                          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+                          style="height: auto; width: 100%;"></textarea>
+                      </div>
+
+                      <div *ngIf="campo_estado == 'R'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-12 col-lg-12">
+                        <label>Motivo Rejeição:</label>
+                        <textarea [disabled]="!modoedicao" rows="3" pInputTextarea [(ngModel)]="mototivoRejeicao_texto"
+                          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+                          style="height: auto; width: 100%;"></textarea>
+                      </div>
+
+                      <div *ngIf="justificacao_ALTERACAO_ESTADO != '' && justificacao_ALTERACAO_ESTADO != null"
+                        style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <label>Justificação:</label>
+                        <textarea [disabled]="!modoedicao" rows="3" pInputTextarea
+                          [(ngModel)]="justificacao_ALTERACAO_ESTADO" class="form-control2 enabled"
+                          [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
+                      </div>
+
+
+                    </div>
                   </div>
 
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-3">
-                    <label>Utilizador Origem:</label>
-                    <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
-                      [(ngModel)]="utz_origem" [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Departamento:</label>
-                    <input [disabled]="true" type="text" class="form-control2" style="background: #efefefba;"
-                      [(ngModel)]="dep_origem" [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Data/Hora Atribuição:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="data_atribuicao"
-                      [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Atribuído a:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="atribuido" [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Prioridade:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="prioridade" [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Prazo Conclusão:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="prazo_conclusao"
-                      [ngModelOptions]="{standalone: true}">
-                  </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Encaminhado para:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="encaminhado" [ngModelOptions]="{standalone: true}">
-                  </div>
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                    <label>Data/Hora Encaminhamento:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="data_encaminhado"
-                      [ngModelOptions]="{standalone: true}">
-                  </div>
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                    <label>Cliente:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="cliente" [ngModelOptions]="{standalone: true}">
-                  </div>
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                    <label>Referência:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
-                  </div>
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                    <label>Estado:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="estado" [ngModelOptions]="{standalone: true}">
-                  </div>
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                    <label>Observações Origem:</label>
-                    <input required="true" [disabled]="true" type="text" class="form-control2"
-                      style="background: #efefefba;" [(ngModel)]="observacoes" [ngModelOptions]="{standalone: true}">
-                  </div>
+                  <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                    [hidden]="!modoedicao">Cancelar</button>
+                  <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+                  <div class="clearfix"></div>
 
 
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                    <label>Conclusão (%):</label>
-                    <input [disabled]="!modoedicao" min="0" max="100" [disabled]="true" type="number"
-                      class="form-control2 enabled" [(ngModel)]="percentagem_conclusao"
-                      [ngModelOptions]="{standalone: true}">
-                  </div>
+                </div>
 
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
-                    <label>Tempo Gasto (H):</label>
-                    <input [disabled]="!modoedicao" min="0" [disabled]="true" type="number" step="0.01"
-                      class="form-control2 enabled" [(ngModel)]="tempo_gasto" [ngModelOptions]="{standalone: true}">
+                <!--*************SubTarefas****************-->
+                <div role="tabpanel" class="tab-pane" id="listatarefa">
+                  <div class="row row-bordered">
+                    <div class="col-md-11" style="padding-bottom: 0">
+                      <h4 style="margin: 0px">
+                        <button (click)="adicionar()" type="button" [disabled]="!modoedicao"
+                          class="add_task cqpim_button cqpim_small_button font-white bg-green op rounded_2 cqpim_tooltip"
+                          title="Adicionar" style="padding: 1px 6px; ">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          Adicionar SubTarefa
+                        </button>
+                      </h4>
+                    </div>
                   </div>
-
-                  <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                    <label>Descrição das Ações Efetuadas:</label>
-                    <textarea [disabled]="!modoedicao" rows="6" pInputTextarea [(ngModel)]="descricao"
-                      class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
-                      style="height: auto; width: 100%;"></textarea>
+                  <div *ngIf="listasubtarefas.length" class="listasubtarefas">
+                    <p-dataTable class="tabelahometarefa2" [style]="{'min-height':'100px'}" [value]="listasubtarefas"
+                      dataKey="id">
+                      <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span *ngIf="car['existesubtarefas']" style="font-size: 10px; color: #37414b;"
+                            (click)="abrirsubtarefas(car['id'])" class="glyphicon glyphicon-list"></span>
+                          <span (click)="goToTarefas(car['id'],null)"
+                            title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
+                          <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
+                            class="glyphicon glyphicon-share-alt"></span>
+                          <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" field="utz_origem" header="Utili. Origem"></p-column>
+                      <p-column [style]="{'width':'6%'}" field="dep_origem" header="Dep. Origem"></p-column>
+                      <p-column [style]="{'width':'6%'}" field="data_atribuicao" header="Data/Hora Atribuição">
+                      </p-column>
+                      <p-column [style]="{'width':'7%'}" field="atribuido" header="Atribuído a"></p-column>
+                      <p-column [style]="{'width':'6%'}" field="encaminhado" header="Encaminhado para"></p-column>
+                      <p-column [style]="{'width':'6%'}" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+                      <p-column [style]="{'width':'7%'}" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+                      <!--p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade"
+                        header="Prioridade"></p-column-->
+                      <p-column [style]="{'width':'4%'}" field="estado" header="Estado">
+                      </p-column>
+                      <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+                      <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+                    </p-dataTable>
+                    <!--div *ngFor="let tarefa of listasubtarefas" class="dd-milestone">
+                      <div class="col-md-12 dd-milestone-title" style="padding: 0;">
+                        <div class="col-md-1" style="padding-left: 6px;     padding-bottom: 0;">
+                          <!--p-toggleButton (onChange)="handleChange($event)" [(ngModel)]="tarefa.estado"
+                          [ngModelOptions]="{standalone: true}" onLabel="Concluída" offLabel="Por Concluir"
+                          onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton-->
+                    <!--  {{tarefa.estado}}
+                        </div>
+                        <div class="col-md-11" style="padding-left: 6px;">
+                          <div class="col-md-7" style="padding-left: 6px;">
+                            <span class=" ms-title" (click)="goToTarefas(tarefa.id)">{{tarefa.nome_tarefa}}</span>
+                            <span class=" ms-title" style="font-size: 10px; top: -7px;">{{tarefa.atribuido}}</span>
+                          </div>
+                          <div class="col-md-3 dd-milestone-info" style="padding-top: 14px; text-align: -webkit-right">
+                            <strong>Data/Hora Atribuição:</strong> {{tarefa.data_atribuicao}}
+                            <strong>Prazo Conclusão:</strong> {{tarefa.prazo_conclusao}}
+                          </div>
+                          <div class="col-md-1 dd-milestone-actions">
+                            <!--button type="button"
+                            class="edit-milestone cqpim_button cqpim_small_button font-white bg-amber op rounded_2 cqpim_tooltip"
+                            title="Editar">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button-->
+                    <!--button type="button"
+                              class="delete_stage_conf cqpim_button cqpim_small_button font-white bg-red op rounded_2 cqpim_tooltip"
+                              title="Eliminar">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                          <div class="col-md-12 dd-milestone-title"
+                            style="padding-top: 0; padding-bottom: 0; padding-left: 124px; top: -9px;">
+                            <strong>Observações:</strong>
+                            {{tarefa.observacoes}}
+                          </div>
+                        </div>
+                      </div>
+                    </div-->
                   </div>
+                </div>
 
-                  <div *ngIf="campo_estado == 'R'" style="padding: 1px 5px 1px 10px;"
-                    class="form-group col-md-12 col-lg-12">
-                    <label>Motivo Rejeição:</label>
-                    <textarea [disabled]="!modoedicao" rows="3" pInputTextarea [(ngModel)]="mototivoRejeicao_texto"
-                      class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
-                      style="height: auto; width: 100%;"></textarea>
-                  </div>
-
-                  <div *ngIf="justificacao_ALTERACAO_ESTADO != '' && justificacao_ALTERACAO_ESTADO != null"
-                    style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                    <label>Justificação:</label>
-                    <textarea [disabled]="!modoedicao" rows="3" pInputTextarea
-                      [(ngModel)]="justificacao_ALTERACAO_ESTADO" class="form-control2 enabled"
-                      [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
-                  </div>
-
+                <!--*************FICHEIROS****************-->
+                <div role="tabpanel" class="tab-pane" id="ficheiro">
                   <div class="form-group col-md-6 col-lg-6">
                     <p-fileUpload [disabled]="!modoedicao || campo_estado == 'C' || campo_estado == 'A'" #fileInput
                       name="myfile[]" customUpload="true" (uploadHandler)="onUpload($event)" multiple="multiple"
@@ -219,14 +340,16 @@
                         </ng-template>
                       </p-column>
                     </p-dataTable>
+
+                    <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                      [hidden]="!modoedicao">Cancelar</button>
+                    <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+                    <div class="clearfix"></div>
+
                   </div>
                 </div>
-              </div>
 
-              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
-                [hidden]="!modoedicao">Cancelar</button>
-              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
-              <div class="clearfix"></div>
+              </div>
             </form>
           </div>
         </div>
@@ -331,4 +454,165 @@
     </div>
   </form>
 
+</p-dialog>
+
+
+
+<button class="btn btn-primary btn-lg" #dialoglinhas data-toggle="modal" [hidden]="true" data-target="#myModallinhas"
+  data-backdrop="false"></button>
+<!-- Modal -->
+<div style="padding-top: 20px; background: #80808073; height: 100vh;" class="modal fade" id="myModallinhas"
+  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-top">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Nova SubTarefa</h4>
+        </div>
+        <form id="fromitem" (ngSubmit)="criar_subtarefa()" ngNativeValidate>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group form-black label-floating">
+                  <p style="font-size: 14px;">Ação</p>
+                  <p-dropdown [filter]="true" [options]="drop_accoes" [style]="{'width':'90%'}"
+                    [(ngModel)]="novo_id_ACCAO" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao "
+                    appendTo="body" [required]="true">
+                  </p-dropdown>
+                  <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao" title="Adicionar"
+                    style="height: 27px; margin: 0;" (click)="showDialogToAdd()">
+                    <span class="glyphicon glyphicon-plus" style="margin-right: 0;"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group form-black label-floating">
+                  <p style="font-size: 14px;">Responsável</p>
+                  <!--select [(ngModel)]="novo_responsavel" [ngModelOptions]=" {standalone: true}" class="form-control2">
+                    <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
+                      <option [selected]="f.value == novo_responsavel" [value]="f.value" *ngFor="let f of i.itens">
+                        {{f.label}}</option>
+                    </optgroup>
+                  </select-->
+                  <p-dropdown [filter]="true" [options]="drop_utilizadores" [style]="{'width':'100%'}"
+                    [(ngModel)]="novo_responsavel" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                    appendTo="body" [required]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group form-black label-floating">
+                  <p style="font-size: 14px;">Data Ação</p>
+                  <p-calendar required [style]="{'width':'94%'}" dateFormat="yy-mm-dd" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="2000:2070" [(ngModel)]="data_ACCAO" [disabled]="!modoedicao"
+                    [ngModelOptions]="{standalone: true}" [showIcon]="true" [hidden]="!modoedicao"></p-calendar>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group form-black label-floating">
+                  <p style="font-size: 14px;">Hora Ação</p>
+                  <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 31px;" [(ngModel)]="hora_ACCAO"
+                    [ngModelOptions]="{standalone: true}" type="time" min
+                    class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div>
+                    <p style="font-size: 14px;">Observações</p>
+                    <textarea class="form-control1" rows="3" [(ngModel)]="novo_observacoes"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" #closedialoglinha class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Gravar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ADICIONAR ACÇÔES -->
+
+<!-- Modal dados-->
+
+<p-dialog header="Ações de Amostras" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayAddAccao" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+    <!-- Modal Body -->
+    <div class="">
+      <div class="form-group">
+        <label for="descricao">Descrição PT</label>
+        <input autocomplete="off" type="text" class="form-control2" id="descricaopt" [(ngModel)]="descricaopt"
+          [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Português" required />
+      </div>
+    </div>
+    <!-- Modal Footer -->
+    <div class="">
+      <button type="button" class="btn btn-default" (click)="displayAddAccao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+
+<p-dialog header="SubTarefas" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displaylistasubtarefasdialog" [modal]="true">
+
+  <!-- Modal Header -->
+    <!-- Modal Body -->
+    <div class="">
+      <p-dataTable class="tabelahometarefa2" [style]="{'min-height':'100px'}" [value]="listasubtarefasdialog" dataKey="id">
+        <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
+          <ng-template let-col let-car="rowData" pTemplate="body">
+            <span *ngIf="car['existesubtarefas']" style="font-size: 10px;" (click)="abrirsubtarefas(car['id'])"
+              class="glyphicon glyphicon-list"></span>
+            <span (click)="goToTarefas(car['id'],null)" title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
+            <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
+              class="glyphicon glyphicon-share-alt"></span>
+            <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
+          </ng-template>
+        </p-column>
+        <p-column [style]="{'width':'6%'}" field="utz_origem" header="Utili. Origem"></p-column>
+        <p-column [style]="{'width':'6%'}" field="dep_origem" header="Dep. Origem"></p-column>
+        <p-column [style]="{'width':'6%'}" field="data_atribuicao" header="Data/Hora Atribuição">
+        </p-column>
+        <p-column [style]="{'width':'7%'}" field="atribuido" header="Atribuído a"></p-column>
+        <p-column [style]="{'width':'6%'}" field="encaminhado" header="Encaminhado para"></p-column>
+        <p-column [style]="{'width':'6%'}" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+        <p-column [style]="{'width':'7%'}" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+        <!--p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade"
+                        header="Prioridade"></p-column-->
+        <p-column [style]="{'width':'4%'}" field="estado" header="Estado">
+        </p-column>
+        <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+        <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+      </p-dataTable>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displaylistasubtarefasdialog = false">Fechar</button>
+
+    </div>
 </p-dialog>

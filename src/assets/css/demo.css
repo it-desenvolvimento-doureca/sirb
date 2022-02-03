@@ -745,6 +745,14 @@ p-chart>div {
     margin: 0 !important;
 }
 
+.tabelahometarefa2 td {
+    vertical-align: middle !important;
+}
+
+.tabelalistatarefas td {
+    vertical-align: middle !important;
+}
+
 .formhometarefas .ui-chkbox-box span {
     background-color: #37414b !important;
 }
@@ -755,4 +763,12 @@ p-chart>div {
 
 .formhometarefas .ui-chkbox-box.ui-state-active {
     background-color: #37414b !important;
+}
+
+.progressBarTarefas .ui-progressbar {
+    height: 25px;
+}
+
+.progressBarTarefas .ui-progressbar .ui-progressbar-label {
+    margin-top: 2px !important;
 }

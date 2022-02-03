@@ -37,4 +37,6 @@ export class GT_MOV_TAREFAS {
     utz_CONTROLA: number;
     justificacao_ALTERACAO_ESTADO: string;
 
+    id_TAREFA_PAI: number;
+
 }

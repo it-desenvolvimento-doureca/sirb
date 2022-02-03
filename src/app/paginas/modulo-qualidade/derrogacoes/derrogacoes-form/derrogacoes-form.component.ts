@@ -770,7 +770,27 @@ export class DerrogacoesFormComponent implements OnInit {
 
   backClicked() {
     //this.location.back();
-    this.router.navigate(['derrogacoes']);
+    var back;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        back = params['redirect'] || 0;
+      });
+
+    if (back != 0 && back != 'back') {
+      back = back.replace("kvk", "?");
+      if (back.indexOf("?") > 0) {
+        this.router.navigateByUrl(back);
+      } else {
+        this.router.navigate([back], { queryParams: { redirect: 1 } });
+      }
+
+
+    } else {
+      this.router.navigate(['derrogacoes']);
+    }
+
   }
 
 
@@ -1226,6 +1246,7 @@ export class DerrogacoesFormComponent implements OnInit {
               logs.data_CRIA = new Date();
               logs.descricao = data_logs[x].descricao;
               this.criaLogs(logs);
+              this.atualizaSUBTAREFAS(id, estado, this.user);
             }
 
 
@@ -1240,6 +1261,14 @@ export class DerrogacoesFormComponent implements OnInit {
       });
     }
   }
+
+  atualizaSUBTAREFAS(id, estado, utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id, estado, utilizador).subscribe(response => {
+    }, error => {
+      console.log(error);
+    });
+  }
+
 
   criaLogs(log) {
     this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {

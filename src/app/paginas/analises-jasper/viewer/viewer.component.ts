@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GERANALISESService } from 'app/servicos/ger-analises.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class ViewerComponent implements OnInit {
   fileURL = null;
 
   public list = [];
-  constructor(private elementRef: ElementRef, private GERANALISESService: GERANALISESService, private location: Location, private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private route: ActivatedRoute,private elementRef: ElementRef, private GERANALISESService: GERANALISESService, private location: Location, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
     this.id_modulo = 0;
@@ -43,9 +43,9 @@ export class ViewerComponent implements OnInit {
       this.id_modulo = 1;
     } else if (this.currentpage == 'analisesjasper') {
       this.id_modulo = 2;
-    }else if (this.currentpage == "lmep_relatorios"){
+    } else if (this.currentpage == "lmep_relatorios") {
       this.id_modulo = 3;
-    }else if( this.currentpage =="reclamacoes_relatorios"){
+    } else if (this.currentpage == "reclamacoes_relatorios") {
       this.id_modulo = 5;
     }
 
@@ -75,7 +75,27 @@ export class ViewerComponent implements OnInit {
   }
 
   backClicked() {
-    this.router.navigate(['analises']);
+    var back;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        back = params['redirect'] || 0;
+      });
+
+    if (back != 0 && back != 'back') {
+      back = back.replace("kvk", "?");
+      if (back.indexOf("?") > 0) {
+        this.router.navigateByUrl(back);
+      } else {
+        this.router.navigate([back], { queryParams: { redirect: 1 } });
+      }
+
+
+    } else {
+      this.router.navigate(['analises']);
+    }
+
   }
 
 

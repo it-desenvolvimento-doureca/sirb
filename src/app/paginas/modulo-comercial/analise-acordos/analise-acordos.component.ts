@@ -1,6 +1,6 @@
 import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { COMACORDOSService } from 'app/servicos/com-acordos.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class AnaliseAcordosComponent implements OnInit {
   data_fim_analise3;
   loading_analise3;
   analise3_cliente;
-  constructor(private router: Router, private COMACORDOSService: COMACORDOSService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private COMACORDOSService: COMACORDOSService) { }
 
   ngOnInit() {
     this.carrega_acordos(true);
@@ -83,7 +83,27 @@ export class AnaliseAcordosComponent implements OnInit {
 
   backClicked() {
     //this.location.back();
-    this.router.navigate(['comercial_acordos']);
+    var back;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        back = params['redirect'] || 0;
+      });
+
+    if (back != 0 && back != 'back') {
+      back = back.replace("kvk", "?");
+      if (back.indexOf("?") > 0) {
+        this.router.navigateByUrl(back);
+      } else {
+        this.router.navigate([back], { queryParams: { redirect: 1 } });
+      }
+
+
+    } else {
+      this.router.navigate(['comercial_acordos']);
+    }
+
   }
 
   /*** ANALISE 1 */

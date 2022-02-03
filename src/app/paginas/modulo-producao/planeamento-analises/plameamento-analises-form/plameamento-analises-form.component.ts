@@ -1052,7 +1052,27 @@ export class PlameamentoAnalisesFormComponent implements OnInit {
 
   backClicked() {
     //this.location.back();
-    this.router.navigate([this.caminho]);
+    var back;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        back = params['redirect'] || 0;
+      });
+
+    if (back != 0 && back != 'back') {
+      back = back.replace("kvk", "?");
+      if (back.indexOf("?") > 0) {
+        this.router.navigateByUrl(back);
+      } else {
+        this.router.navigate([back], { queryParams: { redirect: 1 } });
+      }
+
+
+    } else {
+      this.router.navigate([this.caminho]);
+    }
+
   }
   carregar_planos(ano, semana) {
     this.planos1 = [];
