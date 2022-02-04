@@ -506,6 +506,7 @@ export class PaginatarefaComponent implements OnInit {
           sub_modulo: resp[x][29],
           data_conclusao: (resp[x][12] != null) ? this.formatDate(resp[x][12]) + " " + new Date(resp[x][12]).toLocaleTimeString() : null,
           utz_concluiu: resp[x][13],
+          podeapagar: (this.adminuser ||/* this.user == this.utz_origem_id || this.user == resp[x][20] ||*/ this.user == resp[x][24])
         })
 
       }
@@ -523,7 +524,7 @@ export class PaginatarefaComponent implements OnInit {
       if (this.listasubtarefas[x].campo_estado != 'P' && this.listasubtarefas[x].campo_estado != 'L' && this.listasubtarefas[x].campo_estado != 'E') count++;
     }
 
-    this.progresso = (this.listasubtarefas.length == 0) ? '100' : ((((count) / total) * 100).toFixed(0));
+    this.progresso = (this.listasubtarefas.length == 0) ? '0' : ((((count) / total) * 100).toFixed(0));
   }
 
   goToTarefas(id) {
@@ -542,6 +543,92 @@ export class PaginatarefaComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['tarefas/view'], { queryParams: { id: id, redirect: "tarefas/viewkvk\id=" + this.id_tarefa } }))
     /*}*/
 
+  }
+
+  CancelarSubTarefa(id) {
+    var mensagem = 'Tem a certeza que pretende cancelar a SubTarefa?';
+    this.GTMOVTAREFASService.getValidaSubtarefas(id).subscribe(response => {
+      if (response[0][0] > 0) {
+        mensagem = "Existem SubTarefas Associadas a esta Tarefa, deseja Cancelar todas?";
+        this.CancelarSubTarefa2(id, mensagem);
+      } else {
+        this.CancelarSubTarefa2(id, mensagem);
+      }
+    }, error => {
+      console.log(error);
+      this.simular(this.inputerro);
+    });
+  }
+
+  CancelarSubTarefa2(id, mensagem) {
+
+    this.confirmationService.confirm({
+      message: mensagem,
+      header: 'Confirmação',
+      icon: 'fa fa-info',
+      accept: () => {
+        this.atualizaestadoSubTarefa(id, 'A');
+      }
+
+    });
+  }
+  atualizaestadoSubTarefa(id, estado) {
+    if (id != null) {
+      this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
+
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa = response[0]
+
+          var data_logs = [];
+
+
+          if (tarefa.estado != estado) {
+            data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+          }
+
+          tarefa.estado = estado;
+          if (estado == "C") {
+            tarefa.utz_CONCLUSAO = this.user;
+            tarefa.data_CONCLUSAO = new Date();
+          } else if (estado == "A") {
+            tarefa.utz_ANULACAO = this.user;
+            tarefa.data_ANULACAO = new Date();
+          }
+
+
+          this.GTMOVTAREFASService.update(tarefa).then(response => {
+            for (var x in data_logs) {
+              var logs = new GT_LOGS;
+              logs.id_TAREFA = id;
+              logs.utz_CRIA = this.user;
+              logs.data_CRIA = new Date();
+              logs.descricao = data_logs[x].descricao;
+              this.criaLogs(logs);
+              this.carregasubtarefas(this.id_tarefa);
+              this.atualizaSUBTAREFAS(id, estado, this.user);
+            }
+
+
+          }, error => {
+            console.log(error);
+
+          });
+        }
+      }, error => {
+        console.log(error);
+        this.simular(this.inputerro);
+      });
+    }
+  }
+
+
+  atualizaSUBTAREFAS(id, estado, utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id, estado, utilizador).subscribe(response => {
+    }, error => {
+      console.log(error);
+    });
   }
 
   //formatar a data para yyyy-mm-dd

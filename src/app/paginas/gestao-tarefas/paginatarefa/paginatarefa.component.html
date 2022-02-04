@@ -147,7 +147,7 @@
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4 progressBarTarefas">
-                        <label>Progresso SubTarefas:</label>
+                        <label>Progresso SubTarefas <b>({{listasubtarefas.length}})</b>:</label>
                         <p-progressBar [value]="progresso"></p-progressBar>
                       </div>
 
@@ -228,6 +228,16 @@
                       </p-column>
                       <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
                       <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+                      <p-column [style]="{'width':'4%'}" [editable]="false" field="descricao" header="">
+                        <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
+                          <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
+                            class="btn btn-danger btn-xs"
+                            [disabled]="!modoedicao || (!car.podeapagar && car.id != null) || campo_estado == 'C' || campo_estado == 'A'"
+                            title="Cancelar SubTarefa" (click)="CancelarSubTarefa(car.id)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </ng-template>
+                      </p-column>
                     </p-dataTable>
                     <!--div *ngFor="let tarefa of listasubtarefas" class="dd-milestone">
                       <div class="col-md-12 dd-milestone-title" style="padding: 0;">
@@ -580,39 +590,40 @@
   [(visible)]="displaylistasubtarefasdialog" [modal]="true">
 
   <!-- Modal Header -->
-    <!-- Modal Body -->
-    <div class="">
-      <p-dataTable class="tabelahometarefa2" [style]="{'min-height':'100px'}" [value]="listasubtarefasdialog" dataKey="id">
-        <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
-          <ng-template let-col let-car="rowData" pTemplate="body">
-            <span *ngIf="car['existesubtarefas']" style="font-size: 10px;" (click)="abrirsubtarefas(car['id'])"
-              class="glyphicon glyphicon-list"></span>
-            <span (click)="goToTarefas(car['id'],null)" title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
-            <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
-              class="glyphicon glyphicon-share-alt"></span>
-            <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
-          </ng-template>
-        </p-column>
-        <p-column [style]="{'width':'6%'}" field="utz_origem" header="Utili. Origem"></p-column>
-        <p-column [style]="{'width':'6%'}" field="dep_origem" header="Dep. Origem"></p-column>
-        <p-column [style]="{'width':'6%'}" field="data_atribuicao" header="Data/Hora Atribuição">
-        </p-column>
-        <p-column [style]="{'width':'7%'}" field="atribuido" header="Atribuído a"></p-column>
-        <p-column [style]="{'width':'6%'}" field="encaminhado" header="Encaminhado para"></p-column>
-        <p-column [style]="{'width':'6%'}" field="data_encaminhado" header="Data/Hora Enc."></p-column>
-        <p-column [style]="{'width':'7%'}" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
-        <!--p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade"
+  <!-- Modal Body -->
+  <div class="">
+    <p-dataTable class="tabelahometarefa2" [style]="{'min-height':'100px'}" [value]="listasubtarefasdialog"
+      dataKey="id">
+      <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <!--span *ngIf="car['existesubtarefas']" style="font-size: 10px;" (click)="abrirsubtarefas(car['id'])"
+            class="glyphicon glyphicon-list"></span-->
+          <span (click)="goToTarefas(car['id'],null)" title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
+          <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
+            class="glyphicon glyphicon-share-alt"></span>
+          <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
+        </ng-template>
+      </p-column>
+      <p-column [style]="{'width':'6%'}" field="utz_origem" header="Utili. Origem"></p-column>
+      <p-column [style]="{'width':'6%'}" field="dep_origem" header="Dep. Origem"></p-column>
+      <p-column [style]="{'width':'6%'}" field="data_atribuicao" header="Data/Hora Atribuição">
+      </p-column>
+      <p-column [style]="{'width':'7%'}" field="atribuido" header="Atribuído a"></p-column>
+      <p-column [style]="{'width':'6%'}" field="encaminhado" header="Encaminhado para"></p-column>
+      <p-column [style]="{'width':'6%'}" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+      <p-column [style]="{'width':'7%'}" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+      <!--p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade"
                         header="Prioridade"></p-column-->
-        <p-column [style]="{'width':'4%'}" field="estado" header="Estado">
-        </p-column>
-        <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
-        <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
-      </p-dataTable>
+      <p-column [style]="{'width':'4%'}" field="estado" header="Estado">
+      </p-column>
+      <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+      <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+    </p-dataTable>
 
-    </div>
-    <!-- Modal Footer -->
-    <div class="" style="text-align: -webkit-center;">
-      <button type="button" class="btn btn-default" (click)="displaylistasubtarefasdialog = false">Fechar</button>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" (click)="displaylistasubtarefasdialog = false">Fechar</button>
 
-    </div>
+  </div>
 </p-dialog>

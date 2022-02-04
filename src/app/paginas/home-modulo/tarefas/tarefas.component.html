@@ -201,7 +201,13 @@
                   [value]="tabelalistatarefas2" dataKey="id" [rows]="25" [paginator]="true" [pageLinks]="3"
                   [rowsPerPageOptions]="[25,50,100,'todos']">
                   <p-column [style]="{'width':'13%'}" [sortable]="true" [filter]="true" field="nome"
-                    header="Nome Tarefas"></p-column>
+                    header="Nome Tarefas">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                      <span *ngIf="car['existesubtarefas']" style="font-size: 10px;"
+                        (click)="abrirsubtarefas(car['id'])" class="glyphicon glyphicon-list"></span>
+                      <span title="{{car['nome'] }}">{{car['nome']}}</span>
+                    </ng-template>
+                  </p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="utz_origem"
                     header="Utili. Origem"></p-column>
                   <p-column [style]="{'width':'6%'}" [sortable]="true" [filter]="true" field="dep_origem"
@@ -256,8 +262,8 @@
       dataKey="id">
       <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
         <ng-template let-col let-car="rowData" pTemplate="body">
-          <span *ngIf="car['existesubtarefas']" style="font-size: 10px; color: #37414b;"
-            (click)="abrirsubtarefas(car['id'])" class="glyphicon glyphicon-list"></span>
+          <!--span *ngIf="car['existesubtarefas']" style="font-size: 10px; color: #37414b;"
+            (click)="abrirsubtarefas(car['id'])" class="glyphicon glyphicon-list"></span-->
           <span (click)="goToTarefas(car['id'],null)" title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
           <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
             class="glyphicon glyphicon-share-alt"></span>
