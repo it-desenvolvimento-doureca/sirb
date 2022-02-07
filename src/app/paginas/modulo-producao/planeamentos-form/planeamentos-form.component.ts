@@ -8,6 +8,8 @@ import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
 import { PLANEAMENTO_CAB } from 'app/entidades/PLANEAMENTO_CAB';
 import { PLANEAMENTOLINHASService } from 'app/servicos/planeamento-linhas.service';
 import { PLANEAMENTO_LINHAS } from 'app/entidades/PLANEAMENTO_LINHAS';
+import { RelatoriosService } from 'app/servicos/relatorios.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-planeamentos-form',
@@ -57,9 +59,10 @@ export class PlaneamentosFormComponent implements OnInit {
   id_PLANEAMENTO: any;
   displayverificar: boolean;
   mensagem_verifica: string;
+  exporta_dados: boolean;
 
   constructor(private PLANEAMENTOLINHASService: PLANEAMENTOLINHASService, private ABDICLINHAService: ABDICLINHAService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-    private renderer: Renderer, private PLANEAMENTOCABService: PLANEAMENTOCABService, private globalVar: AppGlobals, private router: Router) { }
+    private renderer: Renderer, private PLANEAMENTOCABService: PLANEAMENTOCABService, private globalVar: AppGlobals, private router: Router, private RelatoriosService: RelatoriosService) { }
 
   ngOnInit() {
 
@@ -513,4 +516,16 @@ export class PlaneamentosFormComponent implements OnInit {
     });
   }
 
+
+  exportar() {
+    this.exporta_dados = true;
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+    this.RelatoriosService.downloadPDF('xlsx', filename, this.id_PLANEAMENTO, "Planeamento_Barras", "producao").subscribe(
+      (res) => {
+        FileSaver.saveAs(res, 'Planeamento de Barras' + this.ano + '/' + this.semana);
+        this.exporta_dados = false;
+      }, error => {
+        this.exporta_dados = false;
+      });
+  }
 }
