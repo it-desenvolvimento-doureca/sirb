@@ -1570,7 +1570,7 @@ export class PaginatarefaComponent implements OnInit {
   }
 
 
-  criar_subtarefa(encaminhado) {
+  criar_subtarefa() {
     this.GTMOVTAREFASService.getbyid(this.id_tarefa).subscribe(response => {
 
       var count = Object.keys(response).length;
