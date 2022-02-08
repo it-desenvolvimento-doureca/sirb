@@ -17,12 +17,12 @@ export class EquipamentosComponent implements OnInit {
   filtroval;
   localizacao: string;
   id_MANUTENCAO: string;
-  //estados: ({ label: string; value: string; } | { label: string; value: boolean; })[];
+  estados: ({ label: string; value: string; } | { label: string; value: boolean; })[];
   query: any = [];
   disduplicar: boolean = true;
   id: any;
   user: any;
-  estado: string;
+ 
   data_actual: Date;
   cols: any[];
   filtro = [];
@@ -38,12 +38,14 @@ export class EquipamentosComponent implements OnInit {
     , private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
+    this.estados = [{ label: "Ativo", value: true }, { label: "Inativo", value: false }];
+
     this.filtroval = true;
     var array = this.globalVar.getfiltros("equipamentos_manutencao");
+    this.filtro.push(true)
     if (array) {
-
-
-      this.filtro2 = (array['estado'] != undefined) ? array['estado'].value : null;
+     
+      this.filtro2 = (array['ativo'] != undefined) ? array['ativo'].value : null;
 
       this.dataTableComponent.filters = array;
 
@@ -55,10 +57,11 @@ export class EquipamentosComponent implements OnInit {
       this.designacao_REF = (array['designacao_REF'] != undefined) ? array['designacao_REF'].value : "";
       if (this.filtro2 != null && this.filtro2 != "") {
         var f = this.filtro2.split(',');
+        this.filtro = [];
         for (var x in f) {
           this.filtro.push(f[x])
         }
-        this.filtroval = false;
+        this.filtroval = true;
       }
     }
 
@@ -110,7 +113,7 @@ export class EquipamentosComponent implements OnInit {
 
         }
         this.cols = this.cols.slice();
-
+        if (this.filtroval) this.filtrar(this.filtro, "ativo", true, "in");
       },
       error => console.log(error));
 
@@ -138,8 +141,7 @@ export class EquipamentosComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
     this.filtro = [];
-    this.id_MANUTENCAO = "";
-    this.estado = "";
+    this.id_MANUTENCAO = ""; 
     this.localizacao = "";
     this.nome = "";
     this.referencia = "";

@@ -9,7 +9,7 @@
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'100%'}" [value]="dados"
-            [(selection)]="selectedvalues"
+            [(selection)]="selectedvalues" selectionMode="single"
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column [style]="{'width':'30px'}" field="nomept" header="Descrição PT" [filter]="true"
                 [sortable]="true"></p-column>
