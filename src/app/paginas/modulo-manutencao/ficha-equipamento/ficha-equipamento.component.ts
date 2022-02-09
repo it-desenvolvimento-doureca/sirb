@@ -16,8 +16,7 @@ import { MANMOVMANUTENCAOEQUIPAMENTOSService } from 'app/servicos/man-mov-manute
 import { MANMOVMANUTENCAODADOSCOMPRAService } from 'app/servicos/man-mov-manutencao-dados-compra.service';
 import { MANMOVMANUTENCAODOCUMENTOSService } from 'app/servicos/man-mov-manutencao-documentos.service';
 import { MAN_MOV_MANUTENCAO_DOCUMENTOS } from 'app/entidades/MAN_MOV_MANUTENCAO_DOCUMENTOS';
-import { MAN_MOV_MANUTENCAO_COMPONENTES } from 'app/entidades/MAN_MOV_MANUTENCAO_COMPONENTES';
-import { MAN_MOV_MANUTENCAO_ACCOES } from 'app/entidades/MAN_MOV_MANUTENCAO_ACCOES';
+import { MAN_MOV_MANUTENCAO_COMPONENTES } from 'app/entidades/MAN_MOV_MANUTENCAO_COMPONENTES'; 
 import { MAN_MOV_MANUTENCAO_PLANOS } from 'app/entidades/MAN_MOV_MANUTENCAO_PLANOS';
 import { MAN_MOV_MANUTENCAO_CONTRATOS_SUPORTE } from 'app/entidades/MAN_MOV_MANUTENCAO_CONTRATOS_SUPORTE';
 import { MAN_MOV_MANUTENCAO_DADOS_COMPRA } from 'app/entidades/MAN_MOV_MANUTENCAO_DADOS_COMPRA';
@@ -1595,7 +1594,7 @@ export class FichaEquipamentoComponent implements OnInit {
       tabela.REFERENCIA = this.tabela_lista_componentes[x].PROREF;
       tabela.QUANTIDADE = this.tabela_lista_componentes[x].quantidade;
       tabela.ANEXO = this.tabela_lista_componentes[x].anexo;
-      this.gravarTabelaListaComponentes2(tabela, x);
+      if (this.tabela_lista_componentes[x].PROREF != null) this.gravarTabelaListaComponentes2(tabela, x);
     }
   }
 
