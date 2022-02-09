@@ -110,6 +110,13 @@ export class ABDICCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getReferenciasSTOCK(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/getReferenciasSTOCK', data, { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getClientes() {
     const url = webUrl.host + '/rest/sirb/getClientes';
     return this.http

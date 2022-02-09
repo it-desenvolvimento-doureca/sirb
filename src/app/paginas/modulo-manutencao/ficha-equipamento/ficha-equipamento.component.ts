@@ -130,6 +130,9 @@ export class FichaEquipamentoComponent implements OnInit {
   drop_utilizadores: any[];
   novo_nome: any;
   display_duplica: boolean;
+  stocklocalizacoes: any[];
+  mensagemtabela: string;
+  displaylocalizacaostock: boolean;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -285,13 +288,29 @@ export class FichaEquipamentoComponent implements OnInit {
   }
 
   carregaTabelaListaComponentes(id) {
-    this.MANMOVMANUTENCAOCOMPONENTESService.getbyID(id).subscribe(
+    this.mensagemtabela = "A Carregar...";
+    this.MANMOVMANUTENCAOCOMPONENTESService.getbyID2(id).subscribe(
       response => {
-        for (var x in response) {
-          this.tabela_lista_componentes.push({
-            id: response[x].ID, PROREF: response[x].REFERENCIA,
-            DESIGN: response[x].DESC_REFERENCIA, quantidade: response[x].QUANTIDADE, dados: response[x]
-          });
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            var dados: MAN_MOV_MANUTENCAO_COMPONENTES = new MAN_MOV_MANUTENCAO_COMPONENTES;
+
+            dados.ID = response[x][0];
+            dados.REFERENCIA = response[x][21];
+            dados.DESC_REFERENCIA = response[x][3];
+            dados.QUANTIDADE = response[x][4];
+            dados.ANEXO = response[x][6];
+            this.tabela_lista_componentes.push({
+              id: response[x][0], PROREF: response[x][2],
+              DESIGN: response[x][3], quantidade: response[x][4], dados: dados,
+              anexo: (response[x][5] == null) ? 0 : response[x][5],
+              anexos: [],
+              STOCK_TOTAL: response[x][6]
+            });
+          }
+        } else {
+          this.mensagemtabela = "Nenhum Registo foi encontrado...";
         }
         this.tabela_lista_componentes = this.tabela_lista_componentes.slice();
       },
@@ -340,7 +359,7 @@ export class FichaEquipamentoComponent implements OnInit {
             periociodade: response[x].PERIOCIDADE,
             data_INICIO: (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null,
             data_FIM: (response[x].DATA_FIM != null) ? new Date(response[x].DATA_FIM) : null,
-            anexo: response[x].ANEXO
+            anexo: (response[x].ANEXO == null) ? 0 : response[x].ANEXO
           });
         }
 
@@ -354,7 +373,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.MANMOVMANUTENCAODADOSCOMPRAService.getbyID(id).subscribe(
       response => {
         for (var x in response) {
-          this.tabeladadoscompra.push({ anexos: [], id: response[x].ID, n_documento: response[x].N_DOCUMENTO, fornecedor: response[x].FORNECEDOR, anexo: response[x].ANEXO, dados: response[x] });
+          this.tabeladadoscompra.push({ anexos: [], id: response[x].ID, n_documento: response[x].N_DOCUMENTO, fornecedor: response[x].FORNECEDOR, anexo: (response[x].ANEXO == null) ? 0 : response[x].ANEXO, dados: response[x] });
         }
         this.tabeladadoscompra = this.tabeladadoscompra.slice();
       },
@@ -487,7 +506,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
         for (var x in response) {
           this.artigos.push({
-            value: response[x].PROREF, label: response[x].PROREF + ' - ' + response[x].PRODES1, DESIGN: response[x].PRODES1
+            value: response[x].PROREF, label: response[x].PROREF + ' - ' + response[x].PRODES1, DESIGN: response[x].PRODES1, STOCK_TOTAL: response[x].STOCK_TOTAL
           });
         }
         this.artigos = this.artigos.slice();
@@ -517,6 +536,7 @@ export class FichaEquipamentoComponent implements OnInit {
   filteronUnselect(event, index) {
     this.tabela_lista_componentes[index].DESIGN = "";
     this.tabela_lista_componentes[index].PROREF = null;
+    this.tabela_lista_componentes[index].STOCK_TOTAL = "";
   }
 
   filterSelect(event, index) {
@@ -524,8 +544,10 @@ export class FichaEquipamentoComponent implements OnInit {
     if (tab) {
       this.tabela_lista_componentes[index].PROREF = event.value;
       this.tabela_lista_componentes[index].DESIGN = tab.DESIGN;
+      this.tabela_lista_componentes[index].STOCK_TOTAL = tab.STOCK_TOTAL;
     } else {
       this.tabela_lista_componentes[index].DESIGN = "";
+      this.tabela_lista_componentes[index].STOCK_TOTAL = "";
       this.tabela_lista_componentes[index].PROREF = null;
     }
     this.tabela_lista_componentes = this.tabela_lista_componentes.slice();
@@ -552,7 +574,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
   adicionar_linha() {
-    this.tabela_lista_componentes.push({ id: null, PROREF: null, DESIGN: null, quantidade: null });
+    this.tabela_lista_componentes.push({ id: null, PROREF: null, DESIGN: null, quantidade: null, STOCK_TOTAL: null, anexos: null, anexo: 0 });
     this.tabela_lista_componentes = this.tabela_lista_componentes.slice();
   }
 
@@ -605,7 +627,7 @@ export class FichaEquipamentoComponent implements OnInit {
   }
 
   adicionar_linha_contratos_suporte() {
-    this.tabelacontratossuporte.push({ anexos: [], id: null, fornecedor: null, contrato_suporte: false, periociodade: null, data_INICIO: null, data_FIM: null, anexo: null });
+    this.tabelacontratossuporte.push({ anexos: [], id: null, fornecedor: null, contrato_suporte: false, periociodade: null, data_INICIO: null, data_FIM: null, anexo: 0 });
     this.tabelacontratossuporte = this.tabelacontratossuporte.slice();
   }
 
@@ -642,7 +664,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
   adicionar_linha_tabeladadoscompra() {
-    this.tabeladadoscompra.push({ anexos: [], id: null, fornecedor: null, anexo: null, n_documento: null });
+    this.tabeladadoscompra.push({ anexos: [], id: null, fornecedor: null, anexo: 0, n_documento: null });
     this.tabeladadoscompra = this.tabeladadoscompra.slice();
   }
 
@@ -663,7 +685,46 @@ export class FichaEquipamentoComponent implements OnInit {
     return nome;
   }
 
-  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, anexos) {
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, anexos, id) {
+    if (ficheiro == null) {
+      if (!anexos) {
+
+        this.MANMOVMANUTENCAODOCUMENTOSService.getbyID(id).subscribe(
+          response => {
+            var count = Object.keys(response).length;
+            if (count > 0) {
+              for (var x in response) {
+
+                var ficheirores = response[x].FICHEIRO_1 + response[x].FICHEIRO_2;
+                this.showDialog_open(type, srcelement, nomeficheiro, datatype, ficheirores, anexos);
+              }
+            } else {
+              this.simular(this.inputerroficheiro);
+            }
+
+          }, error => { console.log(error); this.simular(this.inputerroficheiro); });
+      } else {
+
+        this.MANMOVMANUTENCAOANEXOSService.getbyIDANEXO(id).subscribe(
+          response => {
+            var count = Object.keys(response).length;
+            if (count > 0) {
+              for (var x in response) {
+                var ficheirores = response[x].FICHEIRO_1 + response[x].FICHEIRO_2;
+                this.showDialog_open(type, srcelement, nomeficheiro, datatype, ficheirores, anexos);
+              }
+            } else {
+              this.simular(this.inputerroficheiro);
+            }
+
+          }, error => { console.log(error); this.simular(this.inputerroficheiro); });
+      }
+    } else {
+      this.showDialog_open(type, srcelement, nomeficheiro, datatype, ficheiro, anexos);
+    }
+  }
+
+  showDialog_open(type, srcelement, nomeficheiro, datatype, ficheiro, anexos) {
     var anexos = anexos;
     this.anexosshow = anexos;
     this.srcelement = "";
@@ -911,6 +972,12 @@ export class FichaEquipamentoComponent implements OnInit {
       ficheiros.DATA_ULT_MODIF = new Date();
       ficheiros.UTZ_ULT_MODIF = this.user;
 
+      this.uploadedFiles.push({
+        data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
+        utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
+        id: null, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
+      });
+
       this.gravarFicheiros2(ficheiros, 0, 0);
 
     } else {
@@ -955,6 +1022,21 @@ export class FichaEquipamentoComponent implements OnInit {
 
       this.gravarFicheirosAnexos2(ficheiros);
 
+      this.uploadedFilesAnexos.push({
+        data: null,
+        data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
+        utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
+        id: null, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
+      });
+
+      if (this.tipo_selected == 'contrato_suporte') {
+        this.tabelacontratossuporte[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+      } else if (this.tipo_selected == 'dados_compra') {
+        this.tabeladadoscompra[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+      } else if (this.tipo_selected == 'componentes') {
+        this.tabela_lista_componentes[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+      }
+
     } else {
       this.count++;
       var ficheiro_linha = {
@@ -970,9 +1052,15 @@ export class FichaEquipamentoComponent implements OnInit {
       if (this.tipo_selected == 'contrato_suporte') {
         this.tabelacontratossuporte[this.index_selected].anexos.push(ficheiro_linha);
         this.tabelacontratossuporte[this.index_selected].anexos = this.tabelacontratossuporte[this.index_selected].anexos.slice();
+        this.tabelacontratossuporte[this.index_selected].anexo = this.tabelacontratossuporte[this.index_selected].anexos.length;
       } else if (this.tipo_selected == 'dados_compra') {
         this.tabeladadoscompra[this.index_selected].anexos.push(ficheiro_linha);
         this.tabeladadoscompra[this.index_selected].anexos = this.tabeladadoscompra[this.index_selected].anexos.slice();
+        this.tabeladadoscompra[this.index_selected].anexo = this.tabeladadoscompra[this.index_selected].anexos.length;
+      } else if (this.tipo_selected == 'componentes') {
+        this.tabela_lista_componentes[this.index_selected].anexos.push(ficheiro_linha);
+        this.tabela_lista_componentes[this.index_selected].anexos = this.tabela_lista_componentes[this.index_selected].anexos.slice();
+        this.tabela_lista_componentes[this.index_selected].anexo = this.tabela_lista_componentes[this.index_selected].anexos.length;
       }
 
     }
@@ -1003,21 +1091,34 @@ export class FichaEquipamentoComponent implements OnInit {
   removerficheiroAnexo(index) {
     var tab = this.uploadedFilesAnexos[index];
     if (tab.id == null) {
-
+      this.uploadedFilesAnexos = this.uploadedFilesAnexos.slice(0, index).concat(this.uploadedFilesAnexos.slice(index + 1));
       if (this.tipo_selected == 'contrato_suporte') {
         var index2 = this.tabelacontratossuporte[this.index_selected].anexos.find(item => item.id_temp == tab.id_temp).id_temp;
         this.tabelacontratossuporte[this.index_selected].anexos.slice(0, index2).concat(this.tabelacontratossuporte[this.index_selected].anexos.slice(index2 + 1));
+        this.tabelacontratossuporte[this.index_selected].anexo = this.uploadedFilesAnexos.length;
 
       } else if (this.tipo_selected == 'dados_compra') {
         var index3 = this.tabeladadoscompra[this.index_selected].anexos.find(item => item.id_temp == tab.id_temp).id_temp;
         this.tabeladadoscompra[this.index_selected].anexos.slice(0, index3).concat(this.tabeladadoscompra[this.index_selected].anexos.slice(index3 + 1));
+        this.tabeladadoscompra[this.index_selected].anexo = this.uploadedFilesAnexos.length;
 
+      } else if (this.tipo_selected == 'componentes') {
+        var index4 = this.tabela_lista_componentes[this.index_selected].anexos.find(item => item.id_temp == tab.id_temp).id_temp;
+        this.tabela_lista_componentes[this.index_selected].anexos.slice(0, index4).concat(this.tabeladadoscompra[this.index_selected].anexos.slice(index4 + 1));
+        this.tabela_lista_componentes[this.index_selected].anexo = this.uploadedFilesAnexos.length;
       }
-      this.uploadedFilesAnexos = this.uploadedFilesAnexos.slice(0, index).concat(this.uploadedFilesAnexos.slice(index + 1));
+
     } else {
       this.MANMOVMANUTENCAOANEXOSService.delete(tab.id).then(
         res => {
           this.uploadedFilesAnexos = this.uploadedFilesAnexos.slice(0, index).concat(this.uploadedFilesAnexos.slice(index + 1));
+          if (this.tipo_selected == 'contrato_suporte') {
+            this.tabelacontratossuporte[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          } else if (this.tipo_selected == 'dados_compra') {
+            this.tabeladadoscompra[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          } else if (this.tipo_selected == 'componentes') {
+            this.tabela_lista_componentes[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          }
         },
         error => { console.log(error); this.simular(this.inputerro); });
     }
@@ -1112,7 +1213,17 @@ export class FichaEquipamentoComponent implements OnInit {
 
   //bt cancelar
   backview() {
-    this.location.back();
+    this.confirmationService.confirm({
+      message: 'Pretende sair sem Gravar?',
+      header: 'Confirmação',
+      icon: 'fa fa-exclamation-triangle',
+      accept: () => {
+        this.location.back();
+
+      }
+
+    });
+
   }
 
   apagar() {
@@ -1365,12 +1476,20 @@ export class FichaEquipamentoComponent implements OnInit {
             this.router.navigate(['equipamentos_manutencao/view'], { queryParams: { id: this.ID_MANUTENCAO } });
           }
         } else if (!this.novo) {
-          this.uploadedFiles.push({
+          var data = {
             data: res,
             data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
             utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
             id: res.ID, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
-          });
+          };
+          var index = this.uploadedFiles.findIndex(item => item.src == ficheiros.CAMINHO);
+          this.uploadedFiles[index] = data;
+          /* this.uploadedFiles.push({
+             data: res,
+             data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
+             utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
+             id: res.ID, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
+           });*/
           this.uploadedFiles = this.uploadedFiles.slice();
         }
       },
@@ -1439,12 +1558,21 @@ export class FichaEquipamentoComponent implements OnInit {
     this.MANMOVMANUTENCAOANEXOSService.update(ficheiros).subscribe(
       res => {
 
-        this.uploadedFilesAnexos.push({
+        var data = {
           data: res,
           data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
           utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
           id: res.ID, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
-        });
+        };
+        var index = this.uploadedFilesAnexos.findIndex(item => item.src == ficheiros.CAMINHO);
+        this.uploadedFilesAnexos[index] = data;
+
+        /* this.uploadedFilesAnexos.push({
+           data: res,
+           data_CRIA: ficheiros.DATA_CRIA, responsavel: null, ficheiro: ficheiros.FICHEIRO_1 + ficheiros.FICHEIRO_2,
+           utilizador: this.user_nome, datacria: this.formatDate(ficheiros.DATA_CRIA) + " " + new Date(ficheiros.DATA_CRIA).toLocaleTimeString(), id_FICHEIRO: null,
+           id: res.ID, name: ficheiros.NOME, datatype: ficheiros.DATATYPE, src: ficheiros.CAMINHO, type: ficheiros.TIPO, size: ficheiros.TAMANHO, descricao: ficheiros.DESCRICAO
+         });*/
 
         this.uploadedFilesAnexos = this.uploadedFilesAnexos.slice();
       },
@@ -1466,13 +1594,15 @@ export class FichaEquipamentoComponent implements OnInit {
       tabela.DESC_REFERENCIA = this.tabela_lista_componentes[x].DESIGN;
       tabela.REFERENCIA = this.tabela_lista_componentes[x].PROREF;
       tabela.QUANTIDADE = this.tabela_lista_componentes[x].quantidade;
-      this.gravarTabelaListaComponentes2(tabela);
+      tabela.ANEXO = this.tabela_lista_componentes[x].anexo;
+      this.gravarTabelaListaComponentes2(tabela, x);
     }
   }
 
-  gravarTabelaListaComponentes2(tabela) {
+  gravarTabelaListaComponentes2(tabela, x) {
     this.MANMOVMANUTENCAOCOMPONENTESService.update(tabela).then(
       res => {
+        this.gravarFicheirosAnexos(res.ID_MANUTENCAO, res.ID, 'componentes', this.tabela_lista_componentes[x].anexos);
       },
       error => {
         console.log(error);
@@ -1581,7 +1711,7 @@ export class FichaEquipamentoComponent implements OnInit {
   carregatabelaFiles(id) {
     this.uploadedFiles = [];
 
-    this.MANMOVMANUTENCAODOCUMENTOSService.getbyidEquipamento(id).subscribe(
+    this.MANMOVMANUTENCAODOCUMENTOSService.getbyidEquipamento2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1589,17 +1719,17 @@ export class FichaEquipamentoComponent implements OnInit {
 
             var id2 = null;
             var data_at = new Date();
-            var datacria = this.formatDate(response[x][0].DATA_CRIA) + " " + new Date(response[x][0].DATA_CRIA).toLocaleTimeString();
+            var datacria = this.formatDate(response[x][8]) + " " + new Date(response[x][8]).toLocaleTimeString();
 
-            id2 = response[x][0].ID;
+            id2 = response[x][0];
 
-            if (response[x][0].ID_FICHEIRO != null) id2 = "f110" + response[x][0].ID;
+            //if (response[x][0].ID_FICHEIRO != null) id2 = "f110" + response[x][0].ID;
             this.uploadedFiles.push({
-              data_CRIA: data_at, ficheiro: response[x][0].FICHEIRO_1 + response[x][0].FICHEIRO_2,
-              data: response[x][0], utilizador: response[x][1].nome_UTILIZADOR,
-              datacria: datacria, responsavel: response[x][2],
-              id: id2, name: response[x][0].NOME, id_FICHEIRO: response[x][0].id_FICHEIRO,
-              src: response[x][0].CAMINHO, type: response[x][0].TIPO, datatype: response[x][0].DATATYPE, size: response[x][0].TAMANHO, descricao: response[x][0].DESCRICAO
+              data_CRIA: data_at, ficheiro: null, /*response[x][0].FICHEIRO_1 + response[x][0].FICHEIRO_2,*/
+              data: response[x][0], utilizador: response[x][13].nome_UTILIZADOR,
+              datacria: datacria, /*responsavel: response[x][2],*/
+              id: id2, name: response[x][2], id_FICHEIRO: response[x][0],
+              src: response[x][3], type: response[x][5], datatype: response[x][11], size: response[x][1], descricao: response[x][4]
             });
 
 
@@ -1636,6 +1766,8 @@ export class FichaEquipamentoComponent implements OnInit {
       this.uploadedFilesAnexos = this.getfilecontrato_suporte(index);
     } else if (tipo == 'dados_compra') {
       this.uploadedFilesAnexos = this.getfiledados_compra(index);
+    } else if (tipo == 'componentes') {
+      this.uploadedFilesAnexos = this.getfiledados_componentes(index);
     }
 
     if (linha.id != null) {
@@ -1656,11 +1788,15 @@ export class FichaEquipamentoComponent implements OnInit {
     return JSON.parse(anexos);
   }
 
+  getfiledados_componentes(index) {
+    const anexos = JSON.stringify(this.tabela_lista_componentes[index].anexos);
+    return JSON.parse(anexos);
+  }
 
   carregatabelaFilesAnexos(id, separador) {
 
 
-    this.MANMOVMANUTENCAOANEXOSService.getbyID(id, separador).subscribe(
+    this.MANMOVMANUTENCAOANEXOSService.getbyID2(id, separador).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1668,22 +1804,36 @@ export class FichaEquipamentoComponent implements OnInit {
 
             var id2 = null;
             var data_at = new Date();
-            var datacria = this.formatDate(response[x][0].DATA_CRIA) + " " + new Date(response[x][0].DATA_CRIA).toLocaleTimeString();
+            var datacria = this.formatDate(response[x][8]) + " " + new Date(response[x][8]).toLocaleTimeString();
 
-            id2 = response[x][0].ID;
+            id2 = response[x][0];
 
-            if (response[x][0].ID_FICHEIRO != null) id2 = "f110" + response[x][0].ID;
+            // if (response[x][0].ID_FICHEIRO != null) id2 = "f110" + response[x][0].ID;
+            /*this.uploadedFilesAnexos.push({
+              data_CRIA: data_at, ficheiro: null, /*response[x][0].FICHEIRO_1 + response[x][0].FICHEIRO_2,*/
+            /*     data: response[x][0], utilizador: response[x][1].nome_UTILIZADOR,
+                 datacria: datacria, responsavel: response[x][2],
+                 id: id2, name: response[x][0].NOME, id_FICHEIRO: response[x][0].id_FICHEIRO,
+                 src: response[x][0].CAMINHO, type: response[x][0].TIPO, datatype: response[x][0].DATATYPE, size: response[x][0].TAMANHO, descricao: response[x][0].DESCRICAO
+               });*/
             this.uploadedFilesAnexos.push({
-              data_CRIA: data_at, ficheiro: response[x][0].FICHEIRO_1 + response[x][0].FICHEIRO_2,
-              data: response[x][0], utilizador: response[x][1].nome_UTILIZADOR,
-              datacria: datacria, responsavel: response[x][2],
-              id: id2, name: response[x][0].NOME, id_FICHEIRO: response[x][0].id_FICHEIRO,
-              src: response[x][0].CAMINHO, type: response[x][0].TIPO, datatype: response[x][0].DATATYPE, size: response[x][0].TAMANHO, descricao: response[x][0].DESCRICAO
+              data_CRIA: data_at, ficheiro: null, /*response[x][0].FICHEIRO_1 + response[x][0].FICHEIRO_2,*/
+              data: response[x][0], utilizador: response[x][12].nome_UTILIZADOR,
+              datacria: datacria,
+              id: id2, name: response[x][2], id_FICHEIRO: response[x][0],
+              src: response[x][3], type: response[x][5], datatype: response[x][11], size: response[x][1], descricao: response[x][4]
             });
 
           }
           this.uploadedFilesAnexos = this.uploadedFilesAnexos.slice();
 
+          if (separador == 'contrato_suporte') {
+            this.tabelacontratossuporte[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          } else if (separador == 'dados_compra') {
+            this.tabeladadoscompra[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          } else if (separador == 'componentes') {
+            this.tabela_lista_componentes[this.index_selected].anexo = this.uploadedFilesAnexos.length;
+          }
         }
 
         this.displayFilesAnexo = true;
@@ -1729,5 +1879,24 @@ export class FichaEquipamentoComponent implements OnInit {
     /*this.tabelaaccoes[index].hora_INICIO = dados.hora_INICIO;*/
 
     this.displayperiocidade = false;
+  }
+
+  verStock(proref) {
+    if (proref != null) {
+      this.ABDICCOMPONENTEService.getReferenciasSTOCK(proref).subscribe(
+        response => {
+          this.stocklocalizacoes = [];
+
+          for (var x in response) {
+            this.stocklocalizacoes.push({
+              Referencia: response[x].Referencia, Armazem: response[x].Armazem + ' - ' + response[x].Localizacao, Localizacao: response[x].Localizacao, stock: response[x].stock
+            });
+          }
+          this.stocklocalizacoes = this.stocklocalizacoes.slice();
+          this.displaylocalizacaostock = true;
+
+        },
+        error => { console.log(error); });
+    }
   }
 }

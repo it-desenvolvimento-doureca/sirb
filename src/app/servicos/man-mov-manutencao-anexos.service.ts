@@ -45,6 +45,22 @@ export class MANMOVMANUTENCAOANEXOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyID2(id, separador): Observable<MAN_MOV_MANUTENCAO_ANEXOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_ANEXOSbyid2/' + id + '/' + separador;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyIDANEXO(id): Observable<MAN_MOV_MANUTENCAO_ANEXOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_ANEXOSbyidanexo/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   update(data: MAN_MOV_MANUTENCAO_ANEXOS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateMAN_MOV_MANUTENCAO_ANEXOS', JSON.stringify(data), { headers: this.headers })

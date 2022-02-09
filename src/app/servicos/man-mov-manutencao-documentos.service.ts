@@ -38,7 +38,7 @@ export class MANMOVMANUTENCAODOCUMENTOSService {
 
 
   getbyID(id): Observable<MAN_MOV_MANUTENCAO_DOCUMENTOS[]> {
-    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_DOCUMENTOSbyid/' + id + '/0';
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_DOCUMENTOSbyid/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -55,6 +55,14 @@ export class MANMOVMANUTENCAODOCUMENTOSService {
 
   getbyidEquipamento(id): Observable<MAN_MOV_MANUTENCAO_DOCUMENTOS[]> {
     const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_DOCUMENTOSbyidEquipamento/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyidEquipamento2(id): Observable<MAN_MOV_MANUTENCAO_DOCUMENTOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_DOCUMENTOSbyidEquipamento2/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
