@@ -1,0 +1,105 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tipologia Dosificadores</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
+              </p-column>
+              <!--p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer-->
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
+
+
+
+<!-- Modal dados-->
+<p-dialog header="Sectores/Absentismo" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'100vw','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()" style="width:98vw;">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0;  margin-bottom: 15px;">
+        <div class="col-md-12" style="padding: 0;">
+          <div class="form-group col-md-12">
+            <label for="nome">Nome</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="nome"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-12" style="max-height: 70vh; overflow-y: -webkit-paged-y;">
+        <label for="Objetivos" style="color: black;">Objetivos</label>
+        <p-dataTable [style]="{'width':'100%'}" [value]="objetivos" styleClass="tabelaPostos">
+          <p-column field="VALOR_MINIMO" header="Valor Mínimo">
+            <ng-template let-col let-car="rowData" pTemplate="body">
+              <input type="number" class="form-control2" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="car['VALOR_MINIMO']" required="{standalone: true}" placeholder="Valor Mínimo"
+                style="height: 32px; width: 100%; padding: 0 0 0 9px;" />
+            </ng-template>
+          </p-column>
+          <p-column field="VALOR_MAXIMO" header="Valor Máximo">
+            <ng-template let-col let-car="rowData" pTemplate="body">
+              <input type="number" class="form-control2" [(ngModel)]="car['VALOR_MAXIMO']" required
+                [ngModelOptions]="{standalone: true}" placeholder="Valor Máximo"
+                style="height: 32px; width: 100%; padding: 0 0 0 9px;" />
+            </ng-template>
+          </p-column>
+
+          <p-column field="COR" header="Cor">
+            <ng-template let-col let-car="rowData" pTemplate="body">
+              <p-colorPicker [(ngModel)]="car['COR']" [ngModelOptions]="{standalone: true}">
+              </p-colorPicker>
+            </ng-template>
+          </p-column>
+          <p-column [style]="{'width':'5%'}" styleClass="col-button">
+            <ng-template let-linhaof="rowData" let-index="rowIndex" pTemplate="body">
+              <button type="button" class="ui-button-danger" pButton (click)="eliminar(linhaof,index)"
+                icon="fa-trash"></button>
+            </ng-template>
+          </p-column>
+          <p-footer>
+            <a (click)="adicionar_linha()" style="color: black; cursor:pointer; margin-left:10px;"
+              title="Adicionar nova linha">
+              <i class="material-icons">add</i> Adicionar
+            </a>
+          </p-footer>
+        </p-dataTable>
+      </div>
+
+
+      <div class="col-md-12">
+        <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+          (click)="dialognovo = false">Fechar</button>
+        <!--button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+          [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button-->
+        <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+      </div>
+    </div>
+
+    <p-footer>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<p-confirmDialog key="conf001" appendTo="body"></p-confirmDialog>

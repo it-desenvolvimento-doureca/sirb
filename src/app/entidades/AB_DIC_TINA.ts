@@ -12,4 +12,5 @@ export class AB_DIC_TINA {
     utz_ANULACAO: number;
     data_ANULACAO: Date;
     inativo: boolean;
+    id_TIPO_TIPOLOGIA_DOSIFICADORES: number;
 }

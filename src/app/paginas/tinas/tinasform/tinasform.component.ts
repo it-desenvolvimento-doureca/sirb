@@ -7,6 +7,7 @@ import { AB_DIC_TINA } from "app/entidades/AB_DIC_TINA";
 import { ABDICTINAService } from "app/servicos/ab-dic-tina.service";
 import { ABDICLINHAService } from "app/servicos/ab-dic-linha.service";
 import { ABDICZONAService } from "app/servicos/ab-dic-zona.service";
+import { ABDICTIPOTIPOLOGIADOSIFICADORESService } from 'app/servicos/ab-dic-tipo-tipologia-dosificadores.service';
 
 @Component({
   selector: 'app-tinasform',
@@ -15,10 +16,12 @@ import { ABDICZONAService } from "app/servicos/ab-dic-zona.service";
 })
 export class TinasformComponent implements OnInit {
   zonas: any;
+  TIPOS_TIPOLOGIA_DOSIFICADORES = [];
   cor_linha: any;
   linha: any;
   zona: any;
   linhas: any[];
+  id_TIPO_TIPOLOGIA_DOSIFICADORES;
 
   i: any;
   tina: any = [];
@@ -36,7 +39,7 @@ export class TinasformComponent implements OnInit {
   @ViewChild('inputapagar') inputapagar: ElementRef;
   @ViewChild('inputerro') inputerro: ElementRef;
 
-  constructor(private ABDICZONAService: ABDICZONAService, private ABDICLINHAService: ABDICLINHAService, private confirmationService: ConfirmationService, private router: Router, private ABDICTINAService: ABDICTINAService, private renderer: Renderer, private route: ActivatedRoute, private globalVar: AppGlobals, private location: Location) { }
+  constructor(private ABDICTIPOTIPOLOGIADOSIFICADORESService: ABDICTIPOTIPOLOGIADOSIFICADORESService, private ABDICZONAService: ABDICZONAService, private ABDICLINHAService: ABDICLINHAService, private confirmationService: ConfirmationService, private router: Router, private ABDICTINAService: ABDICTINAService, private renderer: Renderer, private route: ActivatedRoute, private globalVar: AppGlobals, private location: Location) { }
 
 
   ngOnInit() {
@@ -50,7 +53,7 @@ export class TinasformComponent implements OnInit {
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(true);
-    
+
 
     this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010editar"));
     this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node010criar"));
@@ -114,6 +117,18 @@ export class TinasformComponent implements OnInit {
       },
       error => console.log(error));
 
+    //preenche combobox TIPOS_TIPOLOGIA_DOSIFICADORES
+    this.TIPOS_TIPOLOGIA_DOSIFICADORES = [];
+    this.TIPOS_TIPOLOGIA_DOSIFICADORES.push({ label: 'Nenhum', value: null });
+    this.ABDICTIPOTIPOLOGIADOSIFICADORESService.getAll().subscribe(
+      response => {
+        for (var x in response) {
+          this.TIPOS_TIPOLOGIA_DOSIFICADORES.push({ value: response[x].ID, label: response[x].NOME });
+        }
+        this.TIPOS_TIPOLOGIA_DOSIFICADORES = this.TIPOS_TIPOLOGIA_DOSIFICADORES.slice();
+      },
+      error => console.log(error));
+
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
         this.globalVar.setseguinte(false);
@@ -155,6 +170,7 @@ export class TinasformComponent implements OnInit {
               this.capacidade = response[x][0].capacidade;
               this.linha = response[x][0].id_LINHA;
               this.zona = response[x][0].id_ZONA;
+              this.id_TIPO_TIPOLOGIA_DOSIFICADORES = response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES;
               this.obs = response[x][0].obs;
               this.cor_linha = response[x][1].cor;
             }
@@ -187,6 +203,7 @@ export class TinasformComponent implements OnInit {
       tina.id_LINHA = this.linha;
       tina.id_ZONA = this.zona;
       tina.inativo = false;
+      tina.id_TIPO_TIPOLOGIA_DOSIFICADORES = this.id_TIPO_TIPOLOGIA_DOSIFICADORES;
 
       this.ABDICTINAService.create(tina).subscribe(
         res => {
@@ -212,6 +229,7 @@ export class TinasformComponent implements OnInit {
       tina.utz_ULT_MODIF = this.user;
       tina.id_LINHA = this.linha;
       tina.id_ZONA = this.zona;
+      tina.id_TIPO_TIPOLOGIA_DOSIFICADORES = this.id_TIPO_TIPOLOGIA_DOSIFICADORES;
 
       this.ABDICTINAService.update(tina).then(() => {
         this.simular(this.inputgravou);
@@ -286,11 +304,11 @@ export class TinasformComponent implements OnInit {
 
   //só deixa introduzir numeros no código tina
   mascara(event) {
-   /* if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode == 45) {
-      return true;
-    } else {
-      return false
-    }*/
+    /* if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode == 45) {
+       return true;
+     } else {
+       return false
+     }*/
   }
 
   alteracorlinha(event) {

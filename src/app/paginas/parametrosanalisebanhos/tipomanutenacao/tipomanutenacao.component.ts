@@ -27,7 +27,7 @@ export class TipomanutenacaoComponent implements OnInit {
   ngOnInit() {
     this.classificacao = [{ label: "Selecionar Clasif.", value: "" },
     { label: "Manutenção Banho", value: "M" }, { label: "Construção Banho", value: "B" },
-    { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }];
+    { label: "Reposições", value: "R" }, { label: "Não Programadas", value: "N" }, { label: "Dosificadores", value: "D" }];
     this.globalVar.setapagar(false);
     this.globalVar.seteditar(false);
     this.globalVar.setvoltar(false);
@@ -82,7 +82,7 @@ export class TipomanutenacaoComponent implements OnInit {
   //listar os dados das unidades de manutencoes na tabela
   listar_manutencoes() {
     this.manutencoes = [];
-    this.ABDICTIPOMANUTENCAOService.getAll(["M", "B", "R", "N"]).subscribe(
+    this.ABDICTIPOMANUTENCAOService.getAll(["M", "B", "R", "N","D"]).subscribe(
       response => {
         for (var x in response) {
           var classif_nome = "Manutenção Banho";

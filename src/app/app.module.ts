@@ -384,6 +384,13 @@ import { BusinessanalyticsComponent } from './paginas/modulo-engenharia-processo
 import { PlaneamentoBarrasAnaliseComponent } from './paginas/modulo-producao/planeamento-barras-analise/planeamento-barras-analise.component';
 import { ChartsModule } from 'ng2-charts';
 import { BusinessanalyticsService } from './servicos/businessanalytics.service';
+import { TipologiaDosificadoresComponent } from './paginas/modulo-engenharia-processos/parametros/tipologia-dosificadores/tipologia-dosificadores.component';
+import { DosificacaoComponent } from './paginas/modulo-engenharia-processos/parametros/dosificacao/dosificacao.component';
+import { DosificadoresComponent } from './paginas/modulo-engenharia-processos/gestao-de-banhos/dosificadores/dosificadores.component';
+import { ABDICTIPOTIPOLOGIADOSIFICADORESService } from './servicos/ab-dic-tipo-tipologia-dosificadores.service';
+import { ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService } from './servicos/ab-dic-tipo-tipologia-dosificadores-objetivos.service';
+import { ABDICDOSIFICACAOHORARIOSVERIFICACAOService } from './servicos/ab-dic-dosificacao-horarios-verificacao.service';
+import { ABDICDOSIFICACAOService } from './servicos/ab-dic-dosificacao.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -812,6 +819,9 @@ const routes: Routes = [
   { path: 'tiposcacifos_p', component: TipoCacifosComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Cacifo" } },
   { path: 'locais', component: LocaisComponent, canActivate: [LoginService], data: { breadcrumb: "Locais" } },
   { path: 'feriados', component: FeriadosComponent, canActivate: [LoginService], data: { breadcrumb: "Feriados" } },
+  { path: 'dosificadores', component: DosificadoresComponent, canActivate: [LoginService], data: { breadcrumb: "Dosificadores" } },
+  { path: 'tipologia_dosificadores', component: TipologiaDosificadoresComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologia Dosificadores" } },
+  { path: 'dosificacao', component: DosificacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Dosificação" } },
 
 
   {
@@ -1132,7 +1142,10 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     AcordosFormComponent,
     AnaliseAcordosComponent,
     BusinessanalyticsComponent,
-    PlaneamentoBarrasAnaliseComponent
+    PlaneamentoBarrasAnaliseComponent,
+    TipologiaDosificadoresComponent,
+    DosificacaoComponent,
+    DosificadoresComponent
   ],
   imports: [
     BrowserModule,
@@ -1370,6 +1383,10 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     COMREFERENCIASService,
     COMREFERENCIASSILVERService,
     BusinessanalyticsService,
+    ABDICTIPOTIPOLOGIADOSIFICADORESService,
+    ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService,
+    ABDICDOSIFICACAOHORARIOSVERIFICACAOService,
+    ABDICDOSIFICACAOService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

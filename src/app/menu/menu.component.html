@@ -277,9 +277,9 @@
 
                 <!-- MENU BANHOS -->
                 <div class="panel panel-default">
-                    <div (click)="abrirdashboard()" class="panel-heading"
-                        [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_engenharia',true) || isLinkActive('/planosacaoengenaria',false) || isLinkActive('/alertasePrioridades',false) ||  isLinkActive('/registo',true) ||isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)|| isLinkActive('/banhos',true)
-                        || isLinkActive('/business_analytics',true) || isLinkActive('/gestaobanhos_relatorios',true) || isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true) || isLinkActive('/operacoes',true)|| isLinkActive('/homegestaobanhos',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true) || isLinkActive('/registopara',true)  || isLinkActive('/manutencaonaoprogramada',true) || isLinkActive('/manutencaoreposicao',true) || isLinkActive('/construcaobanhos',true) }">
+                    <div (click)="abrirdashboard()" class="panel-heading" [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_engenharia',true) || isLinkActive('/planosacaoengenaria',false) || isLinkActive('/alertasePrioridades',false) ||  isLinkActive('/registo',true) ||isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)|| isLinkActive('/banhos',true)
+                        || isLinkActive('/business_analytics',true) || isLinkActive('/gestaobanhos_relatorios',true) || isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true) || isLinkActive('/operacoes',true)|| isLinkActive('/homegestaobanhos',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true) || isLinkActive('/registopara',true)  || isLinkActive('/manutencaonaoprogramada',true) || isLinkActive('/manutencaoreposicao',true) || isLinkActive('/construcaobanhos',true) 
+                        || isLinkActive('/dosificacao',true) || isLinkActive('/tipologia_dosificadores',true) || isLinkActive('/dosificadores',true) }">
                         <h4 class="panel-title">
                             <a id="node0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                 <span class="glyphicon glyphicon-list-alt ">
@@ -324,6 +324,13 @@
                                                 <a>Reg. Parâm. de Operação</a>
                                             </li>
                                         </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node0261" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/dosificadores']">Dosificadores</a>
+                                        </li>
                                     </td>
                                 </tr>
                                 <tr>
@@ -412,7 +419,7 @@
                                     <td>
                                         <li id="node02" data-toggle="collapse" data-target="#parametros"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': isLinkActive('/operacoes',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true)}">
+                                            [ngClass]="{ 'active':  isLinkActive('/dosificacao',true) || isLinkActive('/tipologia_dosificadores',true) || isLinkActive('/armazens',true) || isLinkActive('/operacoes',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true)}">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -446,6 +453,14 @@
                                             <li id="node027" [routerLinkActive]="['active']"
                                                 [routerLink]="['/armazens']">
                                                 <a>Armazéns</a>
+                                            </li>
+                                            <li id="node028" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipologia_dosificadores']">
+                                                <a>Tipologia Dosificadores</a>
+                                            </li>
+                                            <li id="node029" [routerLinkActive]="['active']"
+                                                [routerLink]="['/dosificacao']">
+                                                <a>Dosificação</a>
                                             </li>
                                         </ul>
                                     </td>

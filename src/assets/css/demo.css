@@ -772,3 +772,7 @@ p-chart>div {
 .progressBarTarefas .ui-progressbar .ui-progressbar-label {
     margin-top: 2px !important;
 }
+
+#formTina .ui-dropdown-label {
+    padding-top: 3px !important;
+}

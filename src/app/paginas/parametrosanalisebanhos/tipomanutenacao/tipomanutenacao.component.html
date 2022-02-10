@@ -8,17 +8,21 @@
             <h4 class="title">Tipo Manutenção</h4>
           </div>
           <div class="card-content">
-            <p-dataTable [style]="{'width':'100%'}" [value]="manutencoes" selectionMode="single" (onRowSelect)="onRowSelect($event)"
-              [paginator]="true" [rows]="15">
-              <p-column [style]="{'width':'80px'}" field="nome" header="Tipo Manutenção" [filter]="true" [sortable]="true"></p-column>
-              <p-column [style]="{'width':'60px'}" field="classif_nome" header="Classificação" [sortable]="true"></p-column>
+            <p-dataTable [style]="{'width':'100%'}" [value]="manutencoes" selectionMode="single"
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column [style]="{'width':'80px'}" field="nome" header="Tipo Manutenção" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'60px'}" field="classif_nome" header="Classificação" [sortable]="true">
+              </p-column>
               <p-column [style]="{'width':'30px'}" field="cor" header="Cor" [sortable]="true">
                 <ng-template pTemplate="body" let-col3 let-row3="rowData ">
-                  <p-colorPicker [(ngModel)]="row3[col3.field]" [ngModelOptions]="{standalone: true}" [disabled]="true"></p-colorPicker>
+                  <p-colorPicker [(ngModel)]="row3[col3.field]" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                  </p-colorPicker>
                 </ng-template>
               </p-column>
               <p-footer>
-                <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                <a (click)="showDialogToAdd()" style="color: black; cursor:pointer; margin-left:10px;"
+                  title="Adicionar nova linha">
                   <i class="material-icons">add</i> Adicionar
                 </a>
               </p-footer>
@@ -29,10 +33,12 @@
     </div>
   </div>
 </div>
-<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm" data-backdrop="false"></button>
+<button class="btn btn-primary btn-lg" #dialog data-toggle="modal" [hidden]="true" data-target="#myModalNorm"
+  data-backdrop="false"></button>
 
 <!-- Modal Tipo Manutenção-->
-<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="background: #80808052;">
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  style="background: #80808052;">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->
@@ -50,14 +56,14 @@
         <div class="modal-body">
           <div class="form-group col-md-4">
             <label for="manutencao">Nome Manutencao</label>
-            <input type="text" class="form-control" id="manutencao" [(ngModel)]="valor_manutencao" [ngModelOptions]="{standalone: true}"
-              placeholder="Introduza o Tipo Manutenção" required />
+            <input type="text" class="form-control" id="manutencao" [(ngModel)]="valor_manutencao"
+              [ngModelOptions]="{standalone: true}" placeholder="Introduza o Tipo Manutenção" required />
           </div>
           <div class="form-group col-md-4">
             <label for="manutencao">Classificação</label>
             <br>
-            <p-dropdown [options]="classificacao" [(ngModel)]="classif" [ngModelOptions]="{standalone: true}" [style]="{'width':'300px'}"
-              [required]="true"></p-dropdown>
+            <p-dropdown [options]="classificacao" [(ngModel)]="classif" [ngModelOptions]="{standalone: true}"
+              [style]="{'width':'100%'}" [required]="true"></p-dropdown>
           </div>
           <div class="form-group col-md-4">
             <label>Cor Manutenção</label>
@@ -68,7 +74,8 @@
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" #closedialog data-dismiss="modal">Fechar</button>
-          <button type="button" (click)="apagarmanutencao()" [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+          <button type="button" (click)="apagarmanutencao()" [hidden]="novo" class="btn btn-danger"
+            data-dismiss="modal">Remover</button>
           <button type="submit" class="btn btn-success ">Gravar</button>
         </div>
       </form>
