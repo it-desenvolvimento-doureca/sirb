@@ -776,3 +776,74 @@ p-chart>div {
 #formTina .ui-dropdown-label {
     padding-top: 3px !important;
 }
+
+
+
+.tabeladosificadores th {
+    border: 1px solid rgb(255 169 31);
+    vertical-align: middle !important;
+    /*padding-top: 4px !important;
+    padding-bottom: 5px !important;*/
+    border-top: 1px solid #c7c7c7 !important;
+    /*padding-left: 2px !important;
+    padding-right: 2px !important;*/
+    border-color: rgb(255 169 31) !important;
+    border-bottom: none !important;
+}
+
+.tabeladosificadores th {
+    padding: 5px 5px 10px !important;
+    color: rgb(238, 238, 238) !important;
+    background-color: rgb(55, 65, 75) !important;
+    /*box-shadow: rgb(255 169 31) 0px -6px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset;*/
+    box-sizing: border-box;
+    height: 34px;
+}
+
+.tabeladosificadores tbody:nth-child(odd) {
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    color: #666666 !important;
+    background-color: #ffffff !important;
+    box-shadow: inset 0px 0 0 -5px black, inset 0px 0 0 -5px black, inset 0 0px 0 -5px black, inset 0 0px 0 -5px black;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.tabeladosificadores tbody:nth-child(even) {
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    color: #666666 !important;
+    background-color: #EEEEEE !important;
+    box-shadow: inset 0px 0 0 -5px black, inset 0px 0 0 -5px black, inset 0 0px 0 -5px black, inset 0 0px 0 -5px black;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.tabeladosificadores tr {
+    background-color: transparent !important;
+}
+
+.tabeladosificadores td {
+    display: table-cell;
+    border: 1px solid #ddd;
+    height: 30px;
+}
+
+
+.tabeladosificadores table {
+    /*position: absolute;*/
+    overflow: auto;
+    inset: 34px 9px 0px 1px;
+    box-sizing: border-box;
+    font-size: 12px;
+    margin: 0 !important;
+}
+
+.tabeladosificadores td {
+    vertical-align: middle !important;
+}

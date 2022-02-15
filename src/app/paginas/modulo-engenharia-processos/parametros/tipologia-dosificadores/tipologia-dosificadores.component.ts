@@ -193,7 +193,7 @@ export class TipologiaDosificadoresComponent implements OnInit {
   gravarlinhas(id) {
     for (var z in this.objetivos) {
       var obj = new AB_DIC_TIPO_TIPOLOGIA_DOSIFICADORES_OBJETIVOS;
-      if (this.objetivos[z].ID != null) {
+      if (this.objetivos[z].id != null) {
         obj = this.objetivos[z].dados;
       } else {
         obj.DATA_CRIA = new Date();

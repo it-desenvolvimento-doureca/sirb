@@ -6,7 +6,7 @@
 
 #container .col-md-12>label {
     width: 23%;
-  /*  height: 17px;*/
+    /*  height: 17px;*/
     margin-top: 4px;
 }
 
@@ -17,9 +17,10 @@
 #container .col-md-12>input {
     width: 75%;
 }
+
 #container .col-md-12>textarea {
     width: 75%;
-   /* border: 1px solid rgb(169, 169, 169) !important;*/
+    /* border: 1px solid rgb(169, 169, 169) !important;*/
 }
 
 .adititable th {
@@ -34,25 +35,55 @@
 .ui-dropdown-label {
     padding-top: 4px !important;
 }
-.adititable th{
+
+.adititable th {
     padding-right: 0;
     padding-left: 0;
 }
-.adititable tr{
-    font-size:  13px;
-}
-.col_wd60{
-    width: 60%  !important;
+
+.adititable tr {
+    font-size: 13px;
 }
 
-.col_wd40{
-    width: 40%  !important;
+.col_wd60 {
+    width: 60% !important;
 }
 
-.col_wd60 label{
-    width: 38%  !important;
+.col_wd40 {
+    width: 40% !important;
 }
 
-.col_wd40 label{
-    width: 34%  !important;
+.col_wd60 label {
+    width: 38% !important;
+}
+
+.col_wd40 label {
+    width: 34% !important;
+}
+
+
+.form-control2 {
+    height: 31px;
+    padding: 7px 0;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+.form-control2 {
+    display: block;
+    width: 100%;
+    height: 31px;
+    padding: 0px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }

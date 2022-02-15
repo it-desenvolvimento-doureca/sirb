@@ -15,14 +15,14 @@
               [rowsPerPageOptions]="[25,50,100,'todos']">
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="id" header="Nº Manut">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="id_manu"
-                    #v (input)="filtrar(v.value,col.field,false,'in')" type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="id_manu" #v (input)="filtrar(v.value,col.field,false,'in')" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="tipo_manu" header="Tipo">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="tipo_manu"
-                    #v2 (ngModelChange)="filtrar(v2.value,col.field)" type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="tipo_manu" #v2 (ngModelChange)="filtrar(v2.value,col.field)" type="text">
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <div [style.background]="car['cor_tipo']">
@@ -32,14 +32,14 @@
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="data" header="Data Planea.">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="data"
-                    #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="data" #v3 (ngModelChange)="filtrar(v3.value,col.field)" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="linha" header="Linha">
                 <ng-template pTemplate="filter" let-col>
-                  <p-dropdown [options]="linhas" [(ngModel)]="linha" [style]="{'width':'100%'}" (onChange)="filtrar($event.value,col.field,true)"
-                    styleClass="ui-column-filter"></p-dropdown>
+                  <p-dropdown [options]="linhas" [(ngModel)]="linha" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true)" styleClass="ui-column-filter"></p-dropdown>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <div [style.background]="car['cor']">
@@ -47,17 +47,19 @@
                   </div>
                 </ng-template>
               </p-column>
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="turno" header="Turno" [style]="{'width':'10%'}">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="turno" header="Turno"
+                [style]="{'width':'10%'}">
                 <ng-template pTemplate="filter" let-col>
-                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all" [(ngModel)]="turno"
-                    #v4 (ngModelChange)="filtrar(v4.value,col.field)" type="text">
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="turno" #v4 (ngModelChange)="filtrar(v4.value,col.field)" type="text">
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" filterMatchMode="in" styleclass="text-danger" field="estado"
                 header="Estado">
                 <ng-template pTemplate="filter" let-col>
-                  <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados" [style]="{'width':'100%'}"
-                    (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)" styleClass="ui-column-filter"></p-multiSelect>
+                  <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados"
+                    [style]="{'width':'100%'}" (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
+                    styleClass="ui-column-filter"></p-multiSelect>
                 </ng-template>
               </p-column>
               <p-column styleClass="col-button" [style]="{'width':'20%'}">
@@ -77,10 +79,11 @@
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
                   <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/manutencao/view']"
-                    [queryParams]="{ id: car.id }">
+                    [queryParams]="{ id: car.id,classif: car.classif }">
                     <i class="material-icons">search</i>
                   </a>
-                  <a [hidden]="disduplicar" (click)="duplicar(car.id)" style="color: black; cursor:pointer;" title="Duplicar">
+                  <a [hidden]="disduplicar || car.classif == 'D'" (click)="duplicar(car.id)"
+                    style="color: black; cursor:pointer;" title="Duplicar">
                     <i class="material-icons">content_copy</i>
                   </a>
                 </ng-template>
@@ -93,9 +96,13 @@
   </div>
 </div>
 
-<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Duplicado com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Duplicado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
 
 
-<button type="button" [hidden]="true" #waitingDialog class="btn btn-primary" onclick="waitingDialog.show('A Duplicar Registo', {dialogSize: 'md'});"></button>
-<button type="button" [hidden]="true" #waitingDialogclose class="btn btn-primary" onclick="waitingDialog.hide();"></button>
+<button type="button" [hidden]="true" #waitingDialog class="btn btn-primary"
+  onclick="waitingDialog.show('A Duplicar Registo', {dialogSize: 'md'});"></button>
+<button type="button" [hidden]="true" #waitingDialogclose class="btn btn-primary"
+  onclick="waitingDialog.hide();"></button>

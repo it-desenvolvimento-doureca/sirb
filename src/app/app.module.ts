@@ -391,6 +391,7 @@ import { ABDICTIPOTIPOLOGIADOSIFICADORESService } from './servicos/ab-dic-tipo-t
 import { ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService } from './servicos/ab-dic-tipo-tipologia-dosificadores-objetivos.service';
 import { ABDICDOSIFICACAOHORARIOSVERIFICACAOService } from './servicos/ab-dic-dosificacao-horarios-verificacao.service';
 import { ABDICDOSIFICACAOService } from './servicos/ab-dic-dosificacao.service';
+import { ABMOVMANUTENCAODOSIFICADORESService } from './servicos/ab-mov-manutencao-dosificadores.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1387,6 +1388,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService,
     ABDICDOSIFICACAOHORARIOSVERIFICACAOService,
     ABDICDOSIFICACAOService,
+    ABMOVMANUTENCAODOSIFICADORESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

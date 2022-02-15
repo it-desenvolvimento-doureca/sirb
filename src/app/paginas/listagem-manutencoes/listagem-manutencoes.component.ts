@@ -115,7 +115,7 @@ export class ListagemManutencoesComponent implements OnInit {
     { label: "Em Preparação", value: "Em Preparação" }, { label: "Preparado", value: "Preparado" }, { label: "Em Execução", value: "Em Execução" }];
 
     this.manutencoes = [{ label: "Manutenção Planeada", value: "Manutenção Planeada" }, { label: "Construção Banho", value: "Construção Banho" },
-    { label: "Não Programada", value: "Não Programada" }, { label: "Reposição", value: "Reposição" }];
+    { label: "Não Programada", value: "Não Programada" }, { label: "Reposição", value: "Reposição" }, { label: "Dosificadores", value: "Dosificadores" }];
 
     this.globalVar.setvoltar(false);
     this.globalVar.seteditar(false);
@@ -151,6 +151,8 @@ export class ListagemManutencoesComponent implements OnInit {
     var acessom = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001");
     var acesson = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004");
     var acessor = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node005");
+    var acessod = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node006");
+
     if (acessob) {
       this.manutencaoquery.push("'B'");
       if (!acessopla) acessopla = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node003planeamento");
@@ -230,6 +232,28 @@ export class ListagemManutencoesComponent implements OnInit {
       }
     }
 
+    if (acessod) {
+      this.manutencaoquery.push("'D'");
+      this.filtro.push("Planeado", "Em Execução");
+      /* this.criarnaoprogramadas = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004criar");
+       if (!acessopla) acessopla = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004planeamento");
+       if (!acessoprep) acessoprep = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004preparacao");
+       if (!acessoexec) acessoexec = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004execucao");
+       if (this.filtroval) {
+ 
+         if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004execucao")) {
+           if (!var1) { this.filtro.push("Preparado", "Em Execução"); var1 = true; }
+         }
+         if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004preparacao")) {
+           if (!var2) { this.filtro.push("Planeado", "Em Preparação"); var2 = true }
+         }
+         if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node004planeamento")) {
+           if (!var3) { this.filtro.push("Em Planeamento"); var3 = true };
+         }
+ 
+       }*/
+    }
+
     if (var1 && var2 && var3) this.filtro = [];
 
     this.query.push("Executado");
@@ -266,6 +290,7 @@ export class ListagemManutencoesComponent implements OnInit {
     var manutencao_id = [];
     var manutencaonaoprogramada_id = [];
     var manutencaoreposicao_id = [];
+    var manutencaodosificadores_id = [];
     var banho = this.globalVar.getfiltros("listagemidbanho");
 
     var data = [{ query: this.query.toString(), classif: this.manutencaoquery.toString(), querybanho: banho }];
@@ -286,6 +311,8 @@ export class ListagemManutencoesComponent implements OnInit {
             manutencao = "Não Programada";
           } else if (response[x][9] == "R") {
             manutencao = "Reposição";
+          } else if (response[x][9] == "D") {
+            manutencao = 'Dosificadores'
           }
           var cor_tipo = "";
           if (response[x][14] != null && response[x][14] != '' && response[x][14] != "#ffffff") {
@@ -306,6 +333,7 @@ export class ListagemManutencoesComponent implements OnInit {
                 this.cols.push({
                   id: response[x][0], tipo: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo,
                   cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7], manutencao: manutencao, classif: response[x][9]
+
                 });
               }
             }
@@ -325,6 +353,8 @@ export class ListagemManutencoesComponent implements OnInit {
             manutencaonaoprogramada_id.push(response[x][0]);
           } else if (response[x][9] == "R") {
             manutencaoreposicao_id.push(response[x][0]);
+          } else if (response[x][9] == "D") {
+            manutencaodosificadores_id.push(response[x][0]);
           }
         }
 
@@ -338,6 +368,7 @@ export class ListagemManutencoesComponent implements OnInit {
         this.globalVar.setfiltros("manutencao_id", manutencao_id);
         this.globalVar.setfiltros("manutencaonaoprogramada_id", manutencaonaoprogramada_id);
         this.globalVar.setfiltros("manutencaoreposicao_id", manutencaoreposicao_id);
+        this.globalVar.setfiltros("manutencaodosificadores_id", manutencaodosificadores_id);
 
       },
       error => console.log(error));
@@ -355,11 +386,11 @@ export class ListagemManutencoesComponent implements OnInit {
       },
       error => console.log(error));
 
-    this.ABDICTIPOMANUTENCAOService.getAll(["M", "B", "R", "N"]).subscribe(
+    this.ABDICTIPOMANUTENCAOService.getAll2(["M", "B", "R", "N", "D"]).subscribe(
       response => {
         this.tipos = [];
         for (var x in response) {
-          this.tipos.push({ label: response[x].nome_TIPO_MANUTENCAO, value: response[x].nome_TIPO_MANUTENCAO });
+          this.tipos.push({ label: response[x][2], value: response[x][2] });
         }
         this.tipos = this.tipos.slice();
       },
@@ -410,6 +441,7 @@ export class ListagemManutencoesComponent implements OnInit {
     var manutencao_id = [];
     var manutencaonaoprogramada_id = [];
     var manutencaoreposicao_id = [];
+    var manutencaodosificadores_id = [];
     for (var x in this.dataTableComponent.dataToRender) {
       if (this.dataTableComponent.dataToRender[x].classif == "M") {
         manutencao_id.push(this.dataTableComponent.dataToRender[x].id);
@@ -419,6 +451,8 @@ export class ListagemManutencoesComponent implements OnInit {
         manutencaonaoprogramada_id.push(this.dataTableComponent.dataToRender[x].id);
       } else if (this.dataTableComponent.dataToRender[x].classif == "R") {
         manutencaoreposicao_id.push(this.dataTableComponent.dataToRender[x].id);
+      } else if (this.dataTableComponent.dataToRender[x].classif == "D") {
+        manutencaodosificadores_id.push(this.dataTableComponent.dataToRender[x].id);
       }
     }
     if (this.dataTableComponent.dataToRender.length == 0) {
@@ -428,6 +462,7 @@ export class ListagemManutencoesComponent implements OnInit {
     this.globalVar.setfiltros("manutencao_id", manutencao_id);
     this.globalVar.setfiltros("manutencaonaoprogramada_id", manutencaonaoprogramada_id);
     this.globalVar.setfiltros("manutencaoreposicao_id", manutencaoreposicao_id);
+    this.globalVar.setfiltros("manutencaodosificadores_id", manutencaodosificadores_id);
   }
 
   atualizaids() {
@@ -435,6 +470,7 @@ export class ListagemManutencoesComponent implements OnInit {
     var manutencao_id = [];
     var manutencaonaoprogramada_id = [];
     var manutencaoreposicao_id = [];
+    var manutencaodosificadores_id = [];
     for (var x in this.dataTableComponent.dataToRender) {
       if (this.dataTableComponent.dataToRender[x].classif == "M") {
         manutencao_id.push(this.dataTableComponent.dataToRender[x].id);
@@ -444,36 +480,43 @@ export class ListagemManutencoesComponent implements OnInit {
         manutencaonaoprogramada_id.push(this.dataTableComponent.dataToRender[x].id);
       } else if (this.dataTableComponent.dataToRender[x].classif == "R") {
         manutencaoreposicao_id.push(this.dataTableComponent.dataToRender[x].id);
+      } else if (this.dataTableComponent.dataToRender[x].classif == "D") {
+        manutencaodosificadores_id.push(this.dataTableComponent.dataToRender[x].id);
       }
     }
     this.globalVar.setfiltros("construcaobanhos_id", construcaobanhos_id);
     this.globalVar.setfiltros("manutencao_id", manutencao_id);
     this.globalVar.setfiltros("manutencaonaoprogramada_id", manutencaonaoprogramada_id);
     this.globalVar.setfiltros("manutencaoreposicao_id", manutencaoreposicao_id);
+    this.globalVar.setfiltros("manutencaodosificadores_id", manutencaodosificadores_id);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    if (event.data.classif == "M") {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: event.data.id, redirect: "listagem" } });
+    if (event.data.classif == "M" || event.data.classif == "D") {
+      this.router.navigate(['manutencao/view'], { queryParams: { id: event.data.id, classif: event.data.classif, redirect: "listagem" } });
     } else if (event.data.classif == "B") {
       this.router.navigate(['construcaobanhos/view'], { queryParams: { id: event.data.id, redirect: "listagem" } });
     } else if (event.data.classif == "N") {
       this.router.navigate(['manutencaonaoprogramada/view'], { queryParams: { id: event.data.id, redirect: "listagem" } });
     } else if (event.data.classif == "R") {
       this.router.navigate(['manutencaoreposicao/view'], { queryParams: { id: event.data.id, redirect: "listagem" } });
-    }
+    } /*else if (event.data.classif == "D") {
+      this.router.navigate(['manutencaodosificadores/view'], { queryParams: { id: event.data.id, redirect: "listagem" } });
+    }*/
   }
   navegar(id, classif) {
-    if (classif == "M") {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: id, redirect: "listagem" } });
+    if (classif == "M" || classif == "D") {
+      this.router.navigate(['manutencao/view'], { queryParams: { id: id, classif: classif, redirect: "listagem" } });
     } else if (classif == "B") {
       this.router.navigate(['construcaobanhos/view'], { queryParams: { id: id, redirect: "listagem" } });
     } else if (classif == "N") {
       this.router.navigate(['manutencaonaoprogramada/view'], { queryParams: { id: id, redirect: "listagem" } });
     } else if (classif == "R") {
       this.router.navigate(['manutencaoreposicao/view'], { queryParams: { id: id, redirect: "listagem" } });
-    }
+    }/* else if (classif == "D") {
+      this.router.navigate(['manutencaodosificadores/view'], { queryParams: { id: id, redirect: "listagem" } });
+    }*/
   }
 
   novomanutenao() {

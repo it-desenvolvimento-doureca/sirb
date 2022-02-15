@@ -6,12 +6,12 @@
         <div class="card">
           <div class="card-header"  data-background-color="red">
             <h4 class="title">Manutenções de Reposição</h4>
-            <button [disabled]="novo || disimprimir" title="Imprimir em folhas separadas" type="button" style="color: black; float:right; margin-top: -19px; background-color: #ccc1c1;"
+            <button [disabled]="novo || disimprimir" title="Imprimir em folhas separadas" type="button" style="color: black; float:right; margin-top: -25px; background-color: #ccc1c1;"
               class="btn btn-white btn-round btn-just-icon" (click)="imprimir('manutencao_separadas',num_manutencao)">
               <i class="material-icons">print</i>
               <div class="ripple-container"></div>
             </button>
-            <button [disabled]="novo || disimprimir" title="Imprimir na mesma folha" type="button" style="color:white; float:right; margin-top: -19px;background-color: #ccc1c1;"
+            <button [disabled]="novo || disimprimir" title="Imprimir na mesma folha" type="button" style="color:white; float:right; margin-top: -25px;background-color: #ccc1c1;"
               class="btn btn-white btn-round btn-just-icon" (click)="imprimir('manutencao_juntas',num_manutencao)">
               <i class="material-icons">print</i>
               <div class="ripple-container"></div>

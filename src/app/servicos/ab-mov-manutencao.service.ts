@@ -21,9 +21,9 @@ export class ABMOVMANUTENCAOService {
       .catch((error: any) => Observable.throw('Server error'))
   }
 
-  getAll(query, classif): Observable<AB_MOV_MANUTENCAO[]> {
+  getAll(query, classif, classif2 = 'XX'): Observable<AB_MOV_MANUTENCAO[]> {
     if (query.length <= 0) query = null;
-    const url = webUrl.host + '/rest/sirb/getAB_MOV_MANUTENCAO/0/' + classif;
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_MANUTENCAO/0/' + classif + '/' + classif2;
     return this.http
       .post(url, JSON.stringify(query), { headers: this.headers })
       .map(this.extractData)
@@ -49,9 +49,9 @@ export class ABMOVMANUTENCAOService {
   }
 
 
-  getAllsrotid(query, classif): Observable<AB_MOV_MANUTENCAO[]> {
+  getAllsrotid(query, classif, classif2 = 'XX'): Observable<AB_MOV_MANUTENCAO[]> {
     if (query.length <= 0) query = null;
-    const url = webUrl.host + '/rest/sirb/getAB_MOV_MANUTENCAOsorid/0/' + classif;
+    const url = webUrl.host + '/rest/sirb/getAB_MOV_MANUTENCAOsorid/0/' + classif + '/' + classif2;
     return this.http
       .post(url, JSON.stringify(query), { headers: this.headers })
       .map(this.extractData)
@@ -85,6 +85,14 @@ export class ABMOVMANUTENCAOService {
 
   atualizarestados(id): Observable<AB_MOV_MANUTENCAO[]> {
     const url = webUrl.host + '/rest/sirb/atualizarestados/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+  
+  atualizarestadosDosificadores(id): Observable<AB_MOV_MANUTENCAO[]> {
+    const url = webUrl.host + '/rest/sirb/atualizarestadosDosificadores/' + id;
     return this.http
       .get(url)
       .map(this.extractData)

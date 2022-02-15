@@ -26,6 +26,14 @@ export class ABDICTIPOMANUTENCAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(classif): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
+    const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAO2/';
+    return this.http
+      .post(url, JSON.stringify(classif), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getbyID(id): Observable<AB_DIC_TIPO_MANUTENCAO[]> {
     const url = webUrl.host + '/rest/sirb/getAB_DIC_TIPO_MANUTENCAObyid_aditivo/' + id + '';
     return this.http

@@ -142,7 +142,7 @@ export class ManutencaoComponent implements OnInit {
     if (count == 0) {
 
       this.cols = [];
-      this.ABMOVMANUTENCAOService.getAll(this.query, "M").subscribe(
+      this.ABMOVMANUTENCAOService.getAll(this.query, "M", "D").subscribe(
         response => {
           var count = Object.keys(response).length;
           if (count == 0) {
@@ -167,13 +167,13 @@ export class ManutencaoComponent implements OnInit {
 
                 if (minutos <= min && minutos_max <= min_max) {
                   this.cols.push({
-                    id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7]
+                    id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7], classif: response[x][14]
                   });
                 }
               }
             } else {
               this.cols.push({
-                id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7]
+                id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7], classif: response[x][14]
               });
             }
           }
@@ -291,7 +291,7 @@ export class ManutencaoComponent implements OnInit {
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['manutencao/view'], { queryParams: { id: event.data.id } });
+    this.router.navigate(['manutencao/view'], { queryParams: { id: event.data.id, classif: event.data.classif } });
   }
 
   duplicar(id) {
@@ -331,14 +331,14 @@ export class ManutencaoComponent implements OnInit {
                 var minutos_max = Math.round(total_max / 60000);
                 if (minutos <= min && minutos_max <= min_max) {
                   this.cols.push({
-                    id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7]
+                    id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7], classif: "M"
                   });
                   ids.push(response[x][0]);
                 }
               }
             } else {
               this.cols.push({
-                id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7]
+                id: response[x][0], tipo_manu: response[x][1], data: this.formatDate(response[x][2]) + " - " + response[x][3].slice(0, 5), cor_tipo: cor_tipo, cor: response[x][4], linha: response[x][5], turno: response[x][6], estado: response[x][7], classif: "M"
               });
               ids.push(response[x][0]);
             }

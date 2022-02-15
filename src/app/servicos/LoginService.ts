@@ -17,7 +17,7 @@ export class LoginService implements CanActivate {
     private user;
     private password;
     private nodes = {
-        node000: "registo", node001: "manutencao", node002: "registopara", node003: "construcaobanhos", node004: "manutencaonaoprogramada", node005: "manutencaoreposicao",
+        node000: "registo", node006: "manutencao", node001: "manutencao", node002: "registopara", node003: "construcaobanhos", node004: "manutencaonaoprogramada", node005: "manutencaoreposicao",
         node010: "tinas", node011: "componentes", node012: "banhos", node013: "fornecedor", node020: "linhas", node021: "unidades", node022: "zonas", node023: "turnos",
         node024: "adicoes", node025: "manutencoes", node026: "operacoes", node027: "armazens", node10: "utilizadores", node11: "config", node12: "parametros",
         node13: "eventos", node14: "configjasper", node16: "eventosprogramados", node2: "analisesjasper", node31: "grid", node33: "cartelas", node040: "homegestaobanhos",
@@ -46,7 +46,7 @@ export class LoginService implements CanActivate {
         node11111: 'analiseenvios', node1162101: 'equipasmanutencao', node1163101: 'edificios', node1164101: 'pisos', node1165101: 'divisoes',
         node11581: 'ficha_manutencao', node11591: 'equipamentos_manutencao', node11582: 'lista_pedidos', node1604: 'evolucao_dividas',
         node15850: 'comercial_contratos', node15851: 'comercial_referencias', node15852: 'comercial_acordos', node1586: 'analise_acordos', node09: 'business_analytics',
-        node028: "tipologia_dosificadores", node029: "dosificacao",node0261 :'dosificadores'
+        node028: "tipologia_dosificadores", node029: "dosificacao", node0261: 'dosificadores'
     };
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

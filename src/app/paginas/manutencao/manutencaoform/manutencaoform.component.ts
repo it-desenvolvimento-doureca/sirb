@@ -31,6 +31,9 @@ import { GERPOSTOSService } from 'app/servicos/ger-postos.service';
 import { UploadService } from 'app/servicos/upload.service';
 import { AB_MOV_MANUTENCAO_ETIQ } from '../../../entidades/AB_MOV_MANUTENCAO_ETIQ';
 import { ABMOVMANUTENCAOETIQService } from '../../../servicos/ab-mov-manutencao-etiq.service';
+import { ControlosComponent } from 'app/cabecalho/controlos/controlos.component';
+import { AB_MOV_MANUTENCAO_DOSIFICADORES } from 'app/entidades/AB_MOV_MANUTENCAO_DOSIFICADORES';
+import { ABMOVMANUTENCAODOSIFICADORESService } from 'app/servicos/ab-mov-manutencao-dosificadores.service';
 
 
 @Component({
@@ -97,6 +100,7 @@ export class ManutencaoformComponent implements OnInit {
   planeado = false;
   preparado = false;
 
+  dosificadores = [];
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputapagar') inputapagar: ElementRef;
@@ -115,6 +119,7 @@ export class ManutencaoformComponent implements OnInit {
   @ViewChild('alteraeditar') alteraeditar: ElementRef;
   @ViewChild('alteraeditartrue') alteraeditartrue: ElementRef;
   @ViewChild('imprime') imprime: ElementRef;
+  @ViewChild(ControlosComponent) ControlosComponent: ControlosComponent;
 
   tempQTD2: any;
   tempQTD: any[];
@@ -141,15 +146,30 @@ export class ManutencaoformComponent implements OnInit {
   @ViewChild('closedialoAviso') closedialoAviso: ElementRef;
   cod_ref_subs: any;
   adit_design_subst: any;
+  mostraAB = false
+  mostraNiv = false;
 
 
-  constructor(private ABMOVMANUTENCAOETIQService: ABMOVMANUTENCAOETIQService, private UploadService: UploadService, private GERPOSTOSService: GERPOSTOSService, private sanitizer: DomSanitizer, private RelatoriosService: RelatoriosService, private GERUTILIZADORESService: GERUTILIZADORESService, private elementRef: ElementRef, private GERARMAZEMService: GERARMAZEMService, private ADMOVREGPARAMOPERACAOService: ADMOVREGPARAMOPERACAOService, private ABMOVMANUTENCAOLINHAService: ABMOVMANUTENCAOLINHAService, private ABMOVMANUTENCAOCABService: ABMOVMANUTENCAOCABService, private ABMOVANALISEService: ABMOVANALISEService, private ABDICTIPOOPERACAOService: ABDICTIPOOPERACAOService, private ABDICTIPOADICAOService: ABDICTIPOADICAOService, private ABDICBANHOADITIVOService: ABDICBANHOADITIVOService, private ABMOVMANUTENCAOService: ABMOVMANUTENCAOService, private ABDICTURNOService: ABDICTURNOService, private ABDICTIPOMANUTENCAOService: ABDICTIPOMANUTENCAOService, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICBANHOService: ABDICBANHOService, private ABDICLINHAService: ABDICLINHAService, private globalVar: AppGlobals, private ABUNIDADADEMEDIDAService: ABUNIDADADEMEDIDAService, private location: Location, private router: Router, private renderer: Renderer, private route: ActivatedRoute) { }
+  constructor(private ABMOVMANUTENCAOETIQService: ABMOVMANUTENCAOETIQService, private UploadService: UploadService,
+    private GERPOSTOSService: GERPOSTOSService, private sanitizer: DomSanitizer, private RelatoriosService: RelatoriosService,
+    private GERUTILIZADORESService: GERUTILIZADORESService, private elementRef: ElementRef, private GERARMAZEMService: GERARMAZEMService,
+    private ADMOVREGPARAMOPERACAOService: ADMOVREGPARAMOPERACAOService, private ABMOVMANUTENCAOLINHAService: ABMOVMANUTENCAOLINHAService,
+    private ABMOVMANUTENCAOCABService: ABMOVMANUTENCAOCABService, private ABMOVANALISEService: ABMOVANALISEService,
+    private ABDICTIPOOPERACAOService: ABDICTIPOOPERACAOService, private ABDICTIPOADICAOService: ABDICTIPOADICAOService,
+    private ABDICBANHOADITIVOService: ABDICBANHOADITIVOService, private ABMOVMANUTENCAOService: ABMOVMANUTENCAOService,
+    private ABDICTURNOService: ABDICTURNOService, private ABDICTIPOMANUTENCAOService: ABDICTIPOMANUTENCAOService, private confirmationService: ConfirmationService,
+    private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private ABDICBANHOService: ABDICBANHOService, private ABDICLINHAService: ABDICLINHAService,
+    private globalVar: AppGlobals, private ABUNIDADADEMEDIDAService: ABUNIDADADEMEDIDAService, private location: Location,
+    private ABMOVMANUTENCAODOSIFICADORESService: ABMOVMANUTENCAODOSIFICADORESService,
+    private router: Router, private renderer: Renderer, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    var classif = 'M';
     var sub = this.route
       .queryParams
       .subscribe(params => {
         this.url = params['redirect'];
+        classif = params['classif'] || 'M';
       });
 
     if (document.getElementById("script1")) document.getElementById("script1").remove();
@@ -157,31 +177,11 @@ export class ManutencaoformComponent implements OnInit {
     script1.setAttribute("id", "script1");
     script1.setAttribute("src", "assets/js/jqbtk.js");
     document.body.appendChild(script1);
-    this.globalVar.setapagar(true);
-    this.globalVar.seteditar(true);
-    this.globalVar.setvoltar(true);
-    this.globalVar.setseguinte(true);
-    this.globalVar.setanterior(true);
-    this.globalVar.setatualizar(false);
-    this.globalVar.setduplicar(true);
-    this.globalVar.sethistorico(false);
-    this.globalVar.setcriarmanutencao(false);
-    this.globalVar.setdisCriarmanutencao(true);
+
 
     this.admin = JSON.parse(localStorage.getItem('userapp'))["admin"];
-    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001editar"));
-    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001criar"));
-    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001apagar"));
-    this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001duplicar"));
 
-    this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001imprimir");
-    this.disimprimiretiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001imprimiretiquetas");
-    this.disprevetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001prevetiquetas");
-    this.disaddetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001addetiquetas");
-    this.dishistorico = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001historico");
-    // this.pos=3;
-    /* this.arrayForm = [{pos: 1, id: null, id_banho: 1, tina: 2, capacidade: "11 L", aditivos: [{ id: 1, valor: 10, unidade: "aa", obs: "" }] },
-     {pos: 2, id: null, id_banho: 1, tina: 2, capacidade: "11 L", aditivos: [{ id: 1, valor: 10, unidade: "aa", obs: "" }] }];*/
+    this.validaAcessos(classif, false);
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.username = JSON.parse(localStorage.getItem('userapp'))["nome"];
@@ -189,6 +189,9 @@ export class ManutencaoformComponent implements OnInit {
     var url = this.router.routerState.snapshot.url;
     url = url.slice(1);
     var urlarray = url.split("/");
+
+    var node = "node001";
+    if (classif == 'D') node = "node006";
 
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
@@ -200,10 +203,10 @@ export class ManutencaoformComponent implements OnInit {
           id = params['id'] || 0;
         });
 
-      if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001execucao")) {
+      if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "execucao")) {
         this.acessoexec = true;
       }
-      if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001preparacao")) {
+      if (JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "preparacao")) {
         this.acessoprep = true;
       }
 
@@ -212,18 +215,11 @@ export class ManutencaoformComponent implements OnInit {
       if (this.globalVar.getfiltros("manutencao_id") && this.globalVar.getfiltros("manutencao_id").length > 0) {
         this.manutencao = this.globalVar.getfiltros("manutencao_id");
         this.i = this.manutencao.indexOf(+id);
-        this.preenchedados(true, this.manutencao[this.i]);
+        this.preenchedados(true, this.manutencao[this.i], classif);
       }
       else {
-        /*  if (!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001planeamento")) {
-            this.query.push("Em Planeamento");
-            this.acessoplaneamento = false;
-          }
-          if (!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001preparacao") && !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001execucao")) {
-            this.query.push("Planeado", "Em Preparação", "Preparado", "Em Execução", "Executado");
-          }*/
-        var acessopla = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001planeamento");
-        var acessoprep = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node001preparacao");
+        var acessopla = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "planeamento");
+        var acessoprep = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "preparacao");
         var acessoexec = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "acessoexec");
 
         if (!acessopla) {
@@ -241,7 +237,7 @@ export class ManutencaoformComponent implements OnInit {
 
 
         //preenche array das manutenções por ordem do id.
-        this.ABMOVMANUTENCAOService.getAllsrotid(this.query, "M").subscribe(
+        this.ABMOVMANUTENCAOService.getAllsrotid(this.query, "M", "D").subscribe(
           response => {
             for (var x in response) {
               if (!this.acessoplaneamento) {
@@ -267,12 +263,13 @@ export class ManutencaoformComponent implements OnInit {
             if (this.manutencao[this.i] == null) {
 
               //preenceh combobox
-              this.preenchedados(true, id);
-            } else this.preenchedados(true, this.manutencao[this.i]);
+              this.preenchedados(true, id, classif);
+            } else this.preenchedados(true, this.manutencao[this.i], classif);
           }, error => { console.log(error); });
       }
 
     }
+
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
         this.globalVar.setseguinte(false);
@@ -304,7 +301,7 @@ export class ManutencaoformComponent implements OnInit {
         this.novalinha();
         this.arrayForm = null;
         //preenceh combobox
-        this.preenchedados();
+        this.preenchedados(false, null, 'M');
 
       } else if (urlarray[1].match("view")) {
         this.globalVar.setcriar(true);
@@ -313,23 +310,92 @@ export class ManutencaoformComponent implements OnInit {
       }
     }
 
-
-
   }
 
-  inicia(id) {
+  validaAcessos(classif, inicia) {
+
+    if (classif == 'D') {
+      this.globalVar.setduplicar(false);
+      this.globalVar.setcriar(false);
+    } else {
+      this.globalVar.setduplicar(true);
+      this.globalVar.setcriar(true);
+    }
+    this.globalVar.setapagar(true);
+    this.globalVar.setvoltar(true);
+    this.globalVar.setseguinte(true);
+    this.globalVar.setanterior(true);
+    this.globalVar.setatualizar(false);
+
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+
+    var node = "node001";
+    if (classif == 'D') node = "node006";
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "apagar"));
+    this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "duplicar"));
+
+    this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "imprimir");
+    this.disimprimiretiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "imprimiretiquetas");
+    this.disprevetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "prevetiquetas");
+    this.disaddetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "addetiquetas");
+    this.dishistorico = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "historico");
+
+    if (inicia) {
+      if (this.estado == "Planeado") {
+        this.planeado = true;
+        this.globalVar.seteditar(false);
+        this.simular(this.alteraeditar);
+      } else if (this.estado == "Preparado") {
+        this.preparado = true;
+        this.globalVar.seteditar(false);
+        this.simular(this.alteraeditar);
+      } else if (this.estado == "Em Planeamento") {
+        this.planeamento = true;
+        this.globalVar.seteditar(true);
+        this.simular(this.alteraeditartrue);
+      } else if (this.estado == "Em Preparação") {
+        this.planeado = true;
+        this.globalVar.seteditar(false);
+        this.simular(this.alteraeditar);
+      } else if (this.estado == "Em Execução") {
+        this.preparado = true;
+        this.globalVar.seteditar(false);
+        this.simular(this.alteraeditar);
+      }
+      else if (this.estado == "Executado") {
+        this.preparado = true;
+        this.globalVar.seteditar(false);
+        this.simular(this.alteraeditar);
+      }
+      if (this.admin) {
+        this.globalVar.seteditar(true);
+        this.simular(this.alteraeditartrue);
+      }
+    }
+
+    this.ControlosComponent.setacessos();
+  }
+
+  inicia(id, classif) {
     this.planeado = false;
     this.preparado = false;
     this.planeamento = false;
+    this.mostraAB = false;
+    this.mostraNiv = false;
     if (id != null) {
       this.ABMOVMANUTENCAOService.getbyID(id).subscribe(
         response => {
           var count = Object.keys(response).length;
           if (count > 0) {
             for (var x in response) {
+              classif = response[x][0].classif;
               this.manutencao_dados = response[x][0];
               this.num_manutencao = response[x][0].id_MANUTENCAO;
-              this.tipo_manu_id = response[x][0].id_TIPO_MANUTENCAO;
+              this.tipo_manu_id = (response[x][0].classif == 'D') ? response[x][0].id_TIPO_MANUTENCAO + '_' + response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES : response[x][0].id_TIPO_MANUTENCAO;
               this.data_planeamento = this.formatDate(response[x][0].data_PLANEAMENTO);
               this.hora_planeamento = response[x][0].hora_PLANEAMENTO.slice(0, 5);
               this.data_planeamendth = new Date(new Date(response[x][0].data_PLANEAMENTO).toDateString() + " " + response[x][0].hora_PLANEAMENTO.slice(0, 5));
@@ -339,38 +405,38 @@ export class ManutencaoformComponent implements OnInit {
               this.id_turno = response[x][0].id_TURNO;
               this.estado = response[x][0].estado;
               this.cor_linha = response[x][1].cor;
-              if (this.estado == "Planeado") {
-                this.planeado = true;
-                this.globalVar.seteditar(false);
-                this.simular(this.alteraeditar);
-              } else if (this.estado == "Preparado") {
-                this.preparado = true;
-                this.globalVar.seteditar(false);
-                this.simular(this.alteraeditar);
-              } else if (this.estado == "Em Planeamento") {
-                this.planeamento = true;
-                this.globalVar.seteditar(true);
-                this.simular(this.alteraeditartrue);
-              } else if (this.estado == "Em Preparação") {
-                this.planeado = true;
-                this.globalVar.seteditar(false);
-                this.simular(this.alteraeditar);
-              } else if (this.estado == "Em Execução") {
-                this.preparado = true;
-                this.globalVar.seteditar(false);
-                this.simular(this.alteraeditar);
+
+              if (response[x][0].classif == 'D' && response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES == 1) {
+                this.mostraAB = true;
+                this.mostraNiv = true;
+              } else if (response[x][0].classif == 'D' && response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES == 2) {
+                this.mostraAB = true;
+                this.mostraNiv = false;
+              } else if (response[x][0].classif == 'D' && response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES == 3) {
+                this.mostraAB = true;
+                this.mostraNiv = false;
+              } else if (response[x][0].classif == 'D' && response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES == 4) {
+                this.mostraAB = true;
+                this.mostraNiv = false;
+              } else if (response[x][0].classif == 'D' && response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES == 5) {
+                this.mostraAB = false;
+                this.mostraNiv = false;
               }
-              else if (this.estado == "Executado") {
-                this.preparado = true;
-                this.globalVar.seteditar(false);
-                this.simular(this.alteraeditar);
-              }
-              if (this.admin) {
-                this.globalVar.seteditar(true);
-                this.simular(this.alteraeditartrue);
-              }
+
+              this.validaAcessos(classif, true);
+
+
             }
-            this.preenche_banhos(id);
+
+
+            this.banhos = [];
+            this.arrayForm = [];
+            this.dosificadores = [];
+            if (classif == 'M') {
+              this.preenche_banhos(id);
+            } else if (classif == 'D') {
+              this.carregadosificadores(id);
+            }
           }
         },
         error => console.log(error));
@@ -381,7 +447,7 @@ export class ManutencaoformComponent implements OnInit {
         .subscribe(params => {
           id2 = params['id'] || 0;
         });
-      if (id2 != 0) this.inicia(id2);
+      if (id2 != 0) this.inicia(id2, classif);
 
     }
   }
@@ -764,10 +830,17 @@ export class ManutencaoformComponent implements OnInit {
       MOV_MANUTENCAO.data_PLANEAMENTO = this.data_planeamento;
       MOV_MANUTENCAO.estado = this.estado
       this.ABMOVMANUTENCAOService.update(MOV_MANUTENCAO).then(() => {
-        this.ABMOVMANUTENCAOService.atualizarestados(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
-          response => { }, error => {
-            console.log(error);
-          });
+        if (MOV_MANUTENCAO.classif == "M") {
+          this.ABMOVMANUTENCAOService.atualizarestados(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
+            response => { }, error => {
+              console.log(error);
+            });
+        } else if (MOV_MANUTENCAO.classif == "D") {
+          this.ABMOVMANUTENCAOService.atualizarestadosDosificadores(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
+            response => { }, error => {
+              console.log(error);
+            });
+        }
 
         this.simular(this.inputgravou);
       }, error => {
@@ -973,12 +1046,13 @@ export class ManutencaoformComponent implements OnInit {
     this.i = this.i + 1;
     this.i = this.i % this.manutencao.length;
     if (this.manutencao.length > 0) {
-      this.inicia(this.manutencao[this.i]);
+      this.preenchedados(false, this.manutencao[this.i], this.manutencao[this.i].classif);
+      this.inicia(this.manutencao[this.i], this.manutencao[this.i].classif);
 
       if (this.url != null) {
-        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], redirect: "listagem" } });
+        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif, redirect: "listagem" } });
       } else {
-        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i] } });
+        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif } });
       }
     }
   }
@@ -989,12 +1063,13 @@ export class ManutencaoformComponent implements OnInit {
     }
     this.i = this.i - 1;
     if (this.url != null) {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], redirect: "listagem" } });
+      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif, redirect: "listagem" } });
     } else {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i] } });
+      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif } });
     }
     if (this.manutencao.length > 0) {
-      this.inicia(this.manutencao[this.i]);
+      this.preenchedados(false, this.manutencao[this.i], this.manutencao[this.i].classif);
+      this.inicia(this.manutencao[this.i], this.manutencao[this.i].classif);
     }
   }
 
@@ -1223,7 +1298,7 @@ export class ManutencaoformComponent implements OnInit {
 
           }
           this.simular(this.inputgduplica);
-          this.inicia(id);
+          this.inicia(id, 'M');
           this.simular(this.waitingDialogclose);
           if (this.url != null) {
             this.router.navigate(['manutencao/editar'], { queryParams: { id: id, redirect: "listagem" } });
@@ -1232,7 +1307,7 @@ export class ManutencaoformComponent implements OnInit {
           }
         } else {
           this.simular(this.inputgduplica);
-          this.inicia(id);
+          this.inicia(id, 'M');
           this.simular(this.waitingDialogclose);
           if (this.url != null) {
             this.router.navigate(['manutencao/editar'], { queryParams: { id: id, redirect: "listagem" } });
@@ -1405,12 +1480,12 @@ export class ManutencaoformComponent implements OnInit {
 
               if (respo[x][5] > 0) {
                 encontrou4 = true;
-                PRODUTOS_LIST.push(respo[x][6] + ' ('+ respo[x][7] + ' - ' + respo[x][8] + ')');
+                PRODUTOS_LIST.push(respo[x][6] + ' (' + respo[x][7] + ' - ' + respo[x][8] + ')');
               }
             }
           }
 
-          if(PRODUTOS_LIST.length > 0 ) PRODUTOS = PRODUTOS_LIST.toString();
+          if (PRODUTOS_LIST.length > 0) PRODUTOS = PRODUTOS_LIST.toString();
 
           if (encontrou3) {
             this.mensagem_aviso = "O Valor a consumir para o(s) aditivo(s): " + aditivo2 + ", é superior ao valor planeado!!";
@@ -1449,23 +1524,23 @@ export class ManutencaoformComponent implements OnInit {
               accept: () => {
 
               }, reject: () => {
-                this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
+                this.preparar_linha2(pos, id, id_manu, encontrou4, PRODUTOS);
               }
             });
           } else {
-            this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
+            this.preparar_linha2(pos, id, id_manu, encontrou4, PRODUTOS);
           }
         } else {
-          this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
+          this.preparar_linha2(pos, id, id_manu, encontrou4, PRODUTOS);
         }
       }, error => {
-        this.preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS);
+        this.preparar_linha2(pos, id, id_manu, encontrou4, PRODUTOS);
         console.log(error);
       });
   }
 
 
-  preparar_linha2(pos, id, id_manu, encontrou4,PRODUTOS) {
+  preparar_linha2(pos, id, id_manu, encontrou4, PRODUTOS) {
     this.arrayForm.find(item => item.pos == pos).preparado = false;
     var encontrou = false;
     for (var x in this.arrayForm.find(item => item.pos == pos).aditivos) {
@@ -1485,16 +1560,16 @@ export class ManutencaoformComponent implements OnInit {
         header: 'Aviso',
         icon: 'fa fa-exclamation-triangle',
         accept: () => {
-          this.preparar(pos, id, id_manu, encontrou4,PRODUTOS);
+          this.preparar(pos, id, id_manu, encontrou4, PRODUTOS);
         }
       });
     } else {
-      this.preparar(pos, id, id_manu, encontrou4,PRODUTOS);
+      this.preparar(pos, id, id_manu, encontrou4, PRODUTOS);
     }
 
   }
 
-  preparar(pos, id, id_manu, encontrou4,PRODUTOS) {
+  preparar(pos, id, id_manu, encontrou4, PRODUTOS) {
     this.ABMOVMANUTENCAOCABService.getbyID_cab(id).subscribe(
       response => {
         for (var x in response) {
@@ -1541,7 +1616,7 @@ export class ManutencaoformComponent implements OnInit {
                   console.log(error);
                 });
               this.criarficheiro(id);
-              this.inicia(id_manu);
+              this.inicia(id_manu, 'M');
 
             }, error => {
               console.log(error); this.simular(this.inputerro);
@@ -1622,9 +1697,9 @@ export class ManutencaoformComponent implements OnInit {
             this.ABMOVMANUTENCAOService.update(MOV_MANUTENCAO).then(() => {
               this.ABMOVMANUTENCAOService.atualizarestados(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
                 response => {
-                  this.inicia(id_manu);
+                  this.inicia(id_manu, 'M');
                 }, error => {
-                  this.inicia(id_manu);
+                  this.inicia(id_manu, 'M');
                   console.log(error);
                 });
               //this.inicia(id_manu);
@@ -1788,22 +1863,26 @@ export class ManutencaoformComponent implements OnInit {
     }
   }
 
-  preenchedados(val = false, id = null) {
+  preenchedados(val, id, classif) {
     //preenche combobox unidades
-    this.ABUNIDADADEMEDIDAService.getAll().subscribe(
-      response => {
+    if (classif != 'D') {
+      this.ABUNIDADADEMEDIDAService.getAll().subscribe(
+        response => {
 
-        this.medidas = [];
-        for (var x in response) {
-          this.medidas.push({ label: response[x].medida, value: response[x].id_MEDIDA });
-        }
-        this.medidas = this.medidas.slice();
-        this.preenchelinhas(val, id);
-      },
-      error => console.log(error));
+          this.medidas = [];
+          for (var x in response) {
+            this.medidas.push({ label: response[x].medida, value: response[x].id_MEDIDA });
+          }
+          this.medidas = this.medidas.slice();
+          this.preenchelinhas(val, id, classif);
+        },
+        error => console.log(error));
+    } else {
+      this.preenchelinhas(val, id, classif);
+    }
   }
 
-  preenchelinhas(val, id) {
+  preenchelinhas(val, id, classif) {
     //preenche combobox linhas
     this.ABDICLINHAService.getAll().subscribe(
       response => {
@@ -1814,28 +1893,28 @@ export class ManutencaoformComponent implements OnInit {
         }
         if (this.globalVar.getlinha() != 0) this.linha = this.linhas.find(item => item.value.id == this.globalVar.getlinha()).value;
         this.linhas = this.linhas.slice();
-        this.preenchetipo_man(val, id);
+        this.preenchetipo_man(val, id, classif);
       },
       error => console.log(error));
   }
 
-  preenchetipo_man(val, id) {
+  preenchetipo_man(val, id, classif) {
     //preenche combobox Tipo Manutenção
-    this.ABDICTIPOMANUTENCAOService.getAll(["M"]).subscribe(
+    this.ABDICTIPOMANUTENCAOService.getAll2(["M", "D"]).subscribe(
       response => {
         this.tipo_manu = [];
         this.tipo_manu.push({ label: "Sel. Tipo Manutenção", value: "" });
         for (var x in response) {
-          this.tipo_manu.push({ label: response[x].nome_TIPO_MANUTENCAO, value: response[x].id_TIPO_MANUTENCAO });
+          this.tipo_manu.push({ label: response[x][2], value: response[x][3] });
         }
         this.tipo_manu = this.tipo_manu.slice();
-        this.preencheTurno(val, id);
+        this.preencheTurno(val, id, classif);
       },
       error => console.log(error));
   }
 
 
-  preencheTurno(val, id) {
+  preencheTurno(val, id, classif) {
     //preenche combobox Turno
     this.ABDICTURNOService.getAll().subscribe(
       response => {
@@ -1845,40 +1924,50 @@ export class ManutencaoformComponent implements OnInit {
           this.turno.push({ label: response[x].nome_TURNO, value: response[x].id_TURNO });
         }
         this.turno = this.turno.slice();
-        this.preencheAdicao(val, id);
-      },
-      error => console.log(error));
-  }
-  preencheAdicao(val, id) {
-    //preenche combobox Tipo Adição
-    this.ABDICTIPOADICAOService.getAll(["M"]).subscribe(
-      response => {
-        this.tipo_adicao = [];
-        this.tipo_adicao.push({ label: "Sel. Tipo Adição", value: "" });
-        for (var x in response) {
-          this.tipo_adicao.push({ label: response[x].nome_TIPO_ADICAO, value: { id: response[x].id_TIPO_ADICAO, id195: response[x].id_TIPO_OPERACAO } });
-        }
-        this.tipo_adicao = this.tipo_adicao.slice();
-        this.preencheIntervalo(val, id);
-      },
-      error => console.log(error));
-  }
-  preencheIntervalo(val, id) {
-    //preenche combobox Intervalo Oper.
-    this.ABDICTIPOOPERACAOService.getAll(["M"]).subscribe(
-      response => {
-        this.intervalo_op = [];
-        this.intervalo_op.push({ label: "Sel. Intervalo Oper.", value: "" });
-        for (var x in response) {
-          this.intervalo_op.push({ label: response[x].nome_TIPO_OPERACAO, value: { id: response[x].id_TIPO_OPERACAO, id195: response[x].id195 } });
-        }
-        this.intervalo_op = this.intervalo_op.slice();
-        this.preenchettz(val, id);
+        this.preencheAdicao(val, id, classif);
       },
       error => console.log(error));
   }
 
-  preenchettz(val, id) {
+  preencheAdicao(val, id, classif) {
+    if (classif != 'D') {
+      //preenche combobox Tipo Adição
+      this.ABDICTIPOADICAOService.getAll(["M"]).subscribe(
+        response => {
+          this.tipo_adicao = [];
+          this.tipo_adicao.push({ label: "Sel. Tipo Adição", value: "" });
+          for (var x in response) {
+            this.tipo_adicao.push({ label: response[x].nome_TIPO_ADICAO, value: { id: response[x].id_TIPO_ADICAO, id195: response[x].id_TIPO_OPERACAO } });
+          }
+          this.tipo_adicao = this.tipo_adicao.slice();
+          this.preencheIntervalo(val, id, classif);
+        },
+        error => console.log(error));
+    } else {
+      this.preencheIntervalo(val, id, classif);
+    }
+  }
+
+  preencheIntervalo(val, id, classif) {
+    if (classif != 'D') {
+      //preenche combobox Intervalo Oper.
+      this.ABDICTIPOOPERACAOService.getAll(["M"]).subscribe(
+        response => {
+          this.intervalo_op = [];
+          this.intervalo_op.push({ label: "Sel. Intervalo Oper.", value: "" });
+          for (var x in response) {
+            this.intervalo_op.push({ label: response[x].nome_TIPO_OPERACAO, value: { id: response[x].id_TIPO_OPERACAO, id195: response[x].id195 } });
+          }
+          this.intervalo_op = this.intervalo_op.slice();
+          this.preenchettz(val, id, classif);
+        },
+        error => console.log(error));
+    } else {
+      this.preenchettz(val, id, classif);
+    }
+  }
+
+  preenchettz(val, id, classif) {
     this.GERUTILIZADORESService.getAll().subscribe(
       response => {
         this.utilizadores = [];
@@ -1886,7 +1975,7 @@ export class ManutencaoformComponent implements OnInit {
           this.utilizadores.push({ label: response[x].id_UTILIZADOR + ' - ' + response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR });
         }
         this.utilizadores = this.utilizadores.slice();
-        if (val) this.inicia(id)
+        if (val) this.inicia(id, classif)
       },
       error => console.log(error));
   }
@@ -2985,5 +3074,124 @@ export class ManutencaoformComponent implements OnInit {
     return value;
   }
 
+  /*** dosificadores */
+
+  carregadosificadores(id) {
+    this.dosificadores = [];
+    this.ABMOVMANUTENCAODOSIFICADORESService.getbyID(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            var hora_exc = (response[x][0].HORA_EXECUCAO != null) ? response[x][0].HORA_EXECUCAO.slice(0, 5) : null;
+            var hora_prev = (response[x][0].HORA_PREVISTA != null) ? response[x][0].HORA_PREVISTA.slice(0, 5) : null;
+
+            var data_exec = (response[x][0].DATA_EXECUCAO == null) ? null : this.formatDate(response[x][0].DATA_EXECUCAO) + ' ' + hora_exc;
+            var data_prev = this.formatDate(response[x][0].DATA_PREVISTA) + ' ' + hora_prev;
+
+            this.dosificadores.push({
+              ID: response[x][0].ID,
+              ID_MANUTENCAO: response[x][0].ID_MANUTENCAO,
+              ID_TINA: response[x][0].ID_TINA,
+              COD_TINA: response[x][2],
+              DATA_PREVISTA: data_prev,
+              HORA_PREVISTA: hora_prev,
+              DATA_EXECUCAO: data_exec,
+              HORA_EXECUCAO: hora_exc,
+              UTZ_EXECUCAO: response[x][0].UTZ_EXECUCAO,
+              NOME_UTZ_EXECUCAO: response[x][1],
+              DOSEADOR_AB_NIVEL: response[x][0].DOSEADOR_AB_NIVEL,
+              DOSEADOR_AB_REPOSICAO: response[x][0].DOSEADOR_AB_REPOSICAO,
+              DOSEADOR_NIV_NIVEL: response[x][0].DOSEADOR_NIV_NIVEL,
+              DOSEADOR_NIV_REPOSICAO: response[x][0].DOSEADOR_NIV_REPOSICAO,
+              AMPERES: response[x][0].AMPERES,
+              OBSERVACOES: response[x][0].OBSERVACOES,
+              executado: (response[x][0].DATA_EXECUCAO == null) ? false : true,
+              dados: response[x][0],
+            });
+          }
+          this.dosificadores = this.dosificadores.slice();
+        }
+      },
+      error => console.log(error));
+
+
+  }
+
+
+  confirmar_linhaDosificadores(id) {
+
+    var array = this.dosificadores.find(item => item.ID == id);
+
+    var id_manu = array.ID_MANUTENCAO;
+    var MANUTENCAO_DOSIFICADORES = new AB_MOV_MANUTENCAO_DOSIFICADORES;
+    MANUTENCAO_DOSIFICADORES = array.dados;
+    MANUTENCAO_DOSIFICADORES.DATA_EXECUCAO = new Date();
+    MANUTENCAO_DOSIFICADORES.UTZ_EXECUCAO = this.user;
+    MANUTENCAO_DOSIFICADORES.HORA_EXECUCAO = new Date().toLocaleTimeString().slice(0, 8);
+    MANUTENCAO_DOSIFICADORES.OBSERVACOES = array.OBSERVACOES;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_AB_NIVEL = array.DOSEADOR_AB_NIVEL;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_AB_REPOSICAO = array.DOSEADOR_AB_REPOSICAO;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_NIV_NIVEL = array.DOSEADOR_NIV_NIVEL;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_NIV_REPOSICAO = array.DOSEADOR_NIV_REPOSICAO;
+    MANUTENCAO_DOSIFICADORES.AMPERES = array.AMPERES;
+
+    array.executado = true;
+
+    var hora_exc = (MANUTENCAO_DOSIFICADORES.HORA_EXECUCAO != null) ? MANUTENCAO_DOSIFICADORES.HORA_EXECUCAO.slice(0, 5) : null;
+    var data_exec = (MANUTENCAO_DOSIFICADORES.DATA_EXECUCAO == null) ? null : this.formatDate(MANUTENCAO_DOSIFICADORES.DATA_EXECUCAO) + ' ' + hora_exc;
+
+    array.DATA_EXECUCAO = data_exec;
+    array.HORA_EXECUCAO = hora_exc;
+    array.NOME_UTZ_EXECUCAO = this.username;
+
+    this.ABMOVMANUTENCAODOSIFICADORESService.update(MANUTENCAO_DOSIFICADORES).then(() => {
+      var tamanho = this.dosificadores.length;
+      var count = 0;
+      for (var x in this.dosificadores) {
+        if (this.dosificadores[x].executado) count++;
+      }
+      if (tamanho == count) {
+        this.estado = "Executado";
+      } else {
+        this.estado = "Em Execução";
+      }
+
+      var MOV_MANUTENCAO = new AB_MOV_MANUTENCAO;
+      MOV_MANUTENCAO = this.manutencao_dados;
+      MOV_MANUTENCAO.estado = this.estado;
+      MOV_MANUTENCAO.data_ULT_MODIF = new Date();
+      MOV_MANUTENCAO.utz_ULT_MODIF = this.user;
+
+      var dados = "{numero_manutencao::" + id_manu + "\n/data_manutencao::" + this.data_planeamento
+        + "\n/nome_banho::" + "--"
+        + "\n/tina::" + array.COD_TINA + "\n/utilizador::" + this.username + "\n/linha::"
+        + this.linhas.find(item => item.value.id === MOV_MANUTENCAO.id_LINHA).label
+        + "\n/tipo_manutencao::" + this.tipo_manu.find(item => item.value == this.tipo_manu_id).label
+        //+ "\n/datahorapreparacao::" + this.formatDate(MANUTENCAO_DOSIFICADORES.DATA_PREVISTA) + "  " + MANUTENCAO_DOSIFICADORES.HORA_PREVISTA.slice(0, 5)
+        + "\n/datahoraexecucao::" + this.formatDate(MANUTENCAO_DOSIFICADORES.DATA_EXECUCAO) + "  " + MANUTENCAO_DOSIFICADORES.HORA_EXECUCAO
+        + "\n/observacao_execucao::" + MANUTENCAO_DOSIFICADORES.OBSERVACOES + "}";
+
+      if (MANUTENCAO_DOSIFICADORES.OBSERVACOES != "" && MANUTENCAO_DOSIFICADORES.OBSERVACOES != null) this.evento(dados, "Ao Executar");
+
+      this.ABMOVMANUTENCAOService.update(MOV_MANUTENCAO).then(() => {
+        this.ABMOVMANUTENCAOService.atualizarestadosDosificadores(MOV_MANUTENCAO.id_MANUTENCAO).subscribe(
+          response => {
+            // this.inicia(id_manu, 'D');
+          }, error => {
+            //this.inicia(id_manu, 'D');
+            console.log(error);
+          });
+        //this.inicia(id_manu);
+      }, error => {
+        console.log(error); this.simular(this.inputerro);
+      });
+
+    }, error => {
+      console.log(error); this.simular(this.inputerro);
+    });
+
+
+  }
 }
 

@@ -18,6 +18,6 @@ export class AB_MOV_MANUTENCAO {
     data_ULT_IMPRES: Date;
     impresso: boolean;
     classif: string;
-
+    id_TIPO_TIPOLOGIA_DOSIFICADORES: number;
 }
  

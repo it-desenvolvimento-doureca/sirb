@@ -119,11 +119,25 @@ export class ControlosComponent implements OnInit {
 
   //atualizar permissões
   setacessos() {
+    this.criar = this.globalVar.getcriar();
+    this.criarmanutencao = this.globalVar.getcriarmanutencao();
+    this.anterior = this.globalVar.getanterior();
+    this.voltar = this.globalVar.getvoltar();
+    this.editar = this.globalVar.geteditar();
+    this.apagar = this.globalVar.getapagar();
+    this.seguinte = this.globalVar.getseguinte();
+    this.voltar = this.globalVar.getvoltar();
+    this.pesquisar = this.globalVar.getatualizar();
+    this.duplica = this.globalVar.getduplicar();
+    this.historico = this.globalVar.gethistorico();
+
     this.disCriar = this.globalVar.getdisCriar();
     this.disCriarmanutencao = this.globalVar.getdisCriarmanutencao();
     this.disApagar = this.globalVar.getdisApagar();
     this.disDuplicar = this.globalVar.getdisDuplicar();
     this.disEditar = this.globalVar.getdisEditar();
+    this.disValidar = this.globalVar.getdisValidar();
+
   }
 
   getAcesso() {
@@ -173,11 +187,13 @@ export class ControlosComponent implements OnInit {
 
   edita() {
     var page;
+    var classif;
     var sub = this.route
       .queryParams
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         page = params['id'] || 0;
+        classif = params['classif'] || 'M';
       });
     var back;
     var sub2 = this.route
@@ -187,11 +203,13 @@ export class ControlosComponent implements OnInit {
         back = params['redirect'] || 0;
       });
 
+    if (this.currentpage != "manutencao") classif = null;
+
     if (this.globalVar.geteditar()) {
       if (back != 0) {
-        this.router.navigate([this.currentpage + '/editar'], { queryParams: { id: page, redirect: back } });
+        this.router.navigate([this.currentpage + '/editar'], { queryParams: { id: page, classif: classif, redirect: back } });
       } else {
-        this.router.navigate([this.currentpage + '/editar'], { queryParams: { id: page } });
+        this.router.navigate([this.currentpage + '/editar'], { queryParams: { id: page, classif: classif } });
       }
 
     }
