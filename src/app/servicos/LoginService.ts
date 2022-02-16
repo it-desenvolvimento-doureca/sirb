@@ -85,48 +85,27 @@ export class LoginService implements CanActivate {
             } else if (urlarray[0] == 'login') {
                 if (document.getElementById("script2")) document.getElementById("script2").remove();
             }
-            for (var x in this.nodes) {
-                var link = "";
-                if (urlarray[1] != null) link = urlarray[0] + '/' + urlarray[1];
 
-                if (this.nodes[x] == urlarray[0] || this.nodes[x] == link) {
-                    if (urlarray[1] != null) {
-                        if (urlarray[1].match("editar")) {
-                            if (x != 'node6' && !access.find(item => item.node == x + "editar")) {
-                                this.router.navigate(['./home']);
-                                return false;
-                            }
-                        } else if (urlarray[1].match("view")) {
-                            if (!access.find(item => item.node == x)) {
-                                this.router.navigate(['./home']);
-                                return false;
-                            }
-                        } else if (urlarray[1].match("novo")) {
-                            if (!access.find(item => item.node == x + "criar")) {
-                                this.router.navigate(['./home']);
-                                return false;
-                            }
-                        } else if (urlarray[0] + '/' + urlarray[1] == this.nodes[x]) {
-                            if (urlarray[2] != null) {
-                                this.verifica(urlarray[2], access, x);
-                            } else {
-                                if (!access.find(item => item.node == x)) {
-                                    this.router.navigate(['./home']);
-                                    return false;
-                                }
-                            }
-                        }
-                    } else {
-                        if (!access.find(item => item.node == x)) {
-                            this.router.navigate(['./home']);
-                            return false;
-                        }
-                    }
+            if (urlarray[0] == 'manutencao') {
+
+                var valida = this.valida2(urlarray, 'node001', access);
+                var valida2 = this.valida2(urlarray, 'node006', access);
+                console.log(valida)
+                console.log(valida2)
+                if (!valida && !valida2) {
+                    this.router.navigate(['./home']);
+                    return false;
                 }
-                /*if(this.nodes[access[x].node]){
-                    console.log(this.nodes[access[x].node])
-                }*/
+
+            } else {
+                for (var x in this.nodes) {
+                    this.valida1(urlarray, x, access);
+                }
             }
+            /*if(this.nodes[access[x].node]){
+                console.log(this.nodes[access[x].node])
+            }*/
+
 
 
             //alert('Acesso Negado!');
@@ -154,6 +133,88 @@ export class LoginService implements CanActivate {
         return true;
     }
 
+
+    valida1(urlarray, x, access) {
+
+        var link = "";
+        if (urlarray[1] != null) link = urlarray[0] + '/' + urlarray[1];
+
+        if (this.nodes[x] == urlarray[0] || this.nodes[x] == link) {
+            if (urlarray[1] != null) {
+                if (urlarray[1].match("editar")) {
+                    if (x != 'node6' && !access.find(item => item.node == x + "editar")) {
+                        this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[1].match("view")) {
+                    if (!access.find(item => item.node == x)) {
+                        this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[1].match("novo")) {
+                    if (!access.find(item => item.node == x + "criar")) {
+                        this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[0] + '/' + urlarray[1] == this.nodes[x]) {
+                    if (urlarray[2] != null) {
+                        this.verifica(urlarray[2], access, x);
+                    } else {
+                        if (!access.find(item => item.node == x)) {
+                            this.router.navigate(['./home']);
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                if (!access.find(item => item.node == x)) {
+                    this.router.navigate(['./home']);
+                    return false;
+                }
+            }
+        }
+    }
+
+    valida2(urlarray, x, access) {
+        var link = "";
+        if (urlarray[1] != null) link = urlarray[0] + '/' + urlarray[1];
+
+        if (this.nodes[x] == urlarray[0] || this.nodes[x] == link) {
+            if (urlarray[1] != null) {
+                if (urlarray[1].match("editar")) {
+                    if (x != 'node6' && !access.find(item => item.node == x + "editar")) {
+                        // this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[1].match("view")) {
+                    if (!access.find(item => item.node == x)) {
+                        //this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[1].match("novo")) {
+                    if (!access.find(item => item.node == x + "criar")) {
+                        //this.router.navigate(['./home']);
+                        return false;
+                    }
+                } else if (urlarray[0] + '/' + urlarray[1] == this.nodes[x]) {
+                    if (urlarray[2] != null) {
+                        this.verifica(urlarray[2], access, x);
+                    } else {
+                        if (!access.find(item => item.node == x)) {
+                            //this.router.navigate(['./home']);
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                if (!access.find(item => item.node == x)) {
+                    //this.router.navigate(['./home']);
+                    return false;
+                }
+            }
+        }
+        return true
+    }
     verifica(urlarray, access, x) {
         if (urlarray.match("editar")) {
             if (x != 'node6' && !access.find(item => item.node == x + "editar")) {
