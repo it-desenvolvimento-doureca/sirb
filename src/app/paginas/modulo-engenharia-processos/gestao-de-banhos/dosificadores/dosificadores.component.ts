@@ -162,7 +162,8 @@ export class DosificadoresComponent implements OnInit {
             //tipo response[x][17]
             this.dosificadores.push({
               DATA_PREVISTA: response[x][4],
-              dia: days[new Date(response[x][4]).getDay()],
+              dia: (response[x][17] != null) ? "" : days[new Date(response[x][4]).getDay()],
+              data: (response[x][17] != null) ? "" : response[x][4],
               linhas: [linha]
             });
           } else {
