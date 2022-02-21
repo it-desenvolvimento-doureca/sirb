@@ -1,0 +1,82 @@
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.tg td {
+    padding: 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: black;
+}
+
+.tg th {
+    font-weight: normal;
+    padding: 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: black;
+}
+
+.tg .tg-wfll {
+    font-weight: bold;
+    background-color: #dbdbdb;
+    text-align: center;
+    vertical-align: middle;
+    border: grey solid 1px;
+}
+
+.tg .tg-6it1 {
+    font-weight: bold;
+    background-color: #ffd43d;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tg .tg-gy6f {
+    font-weight: bold;
+    background-color: #dbdbdb;
+    text-align: center;
+    vertical-align: middle;
+    max-width: 59px;
+    width: 59px;
+}
+
+.tg .tg-llyw {
+    background-color: #c0c0c0;
+    text-align: center;
+    vertical-align: middle;
+    max-width: 59px;
+    width: 59px;
+}
+
+.tg .tg-0pky {
+    text-align: center;
+    vertical-align: middle;
+    height: 13px;
+    max-width: 59px;
+    width: 59px;
+    border: grey solid 1px;
+    padding-top: 0px;
+    padding-bottom: 0;
+}
+
+.tg .tg-9rbh {
+    font-weight: bold;
+    background-color: #3166ff;
+    color: #ffffff;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tg .tg-yw59 {
+    font-weight: bold;
+    background-color: #ffd43d;
+    text-align: center;
+    vertical-align: middle;
+}

@@ -392,6 +392,10 @@ import { ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService } from './servicos/ab-d
 import { ABDICDOSIFICACAOHORARIOSVERIFICACAOService } from './servicos/ab-dic-dosificacao-horarios-verificacao.service';
 import { ABDICDOSIFICACAOService } from './servicos/ab-dic-dosificacao.service';
 import { ABMOVMANUTENCAODOSIFICADORESService } from './servicos/ab-mov-manutencao-dosificadores.service';
+import { ListaPlanosEstrategicosComponent } from './paginas/modulo-planos-estrategicos/lista-planos-estrategicos/lista-planos-estrategicos.component';
+import { FormPlanosEstrategicosComponent } from './paginas/modulo-planos-estrategicos/form-planos-estrategicos/form-planos-estrategicos.component';
+import { PEMOVFICHEIROSService } from './servicos/pe-mov-ficheiros.service';
+import { PEMOVCABService } from './servicos/pe-mov-cab.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -723,6 +727,88 @@ const routes: Routes = [
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
 
+  {
+    path: 'planosestrategicos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+
+  {
+    path: 'planosestrategicosengenaria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Engenharia" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  }
+  ,
+  {
+    path: 'planosestrategicosproducao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Produção" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicoslogistica', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Logística" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosmanutencao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Manutenção" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosinjecao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Injeção" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosqualidade', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Qualidade" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosFinanceira', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Financeira" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosComercial', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Comercial" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  {
+    path: 'planosestrategicosProjetos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos - Projetos" },
+    children: [
+      { path: '', component: ListaPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Plano Estratégico" } },
+      { path: 'editar', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FormPlanosEstrategicosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
 
   {
     path: 'analise_dividas', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Análise de Dívidas" },
@@ -1146,7 +1232,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PlaneamentoBarrasAnaliseComponent,
     TipologiaDosificadoresComponent,
     DosificacaoComponent,
-    DosificadoresComponent
+    DosificadoresComponent,
+    ListaPlanosEstrategicosComponent,
+    FormPlanosEstrategicosComponent
   ],
   imports: [
     BrowserModule,
@@ -1389,6 +1477,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ABDICDOSIFICACAOHORARIOSVERIFICACAOService,
     ABDICDOSIFICACAOService,
     ABMOVMANUTENCAODOSIFICADORESService,
+    PEMOVFICHEIROSService,
+    PEMOVCABService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

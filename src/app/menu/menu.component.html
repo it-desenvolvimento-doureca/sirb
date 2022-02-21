@@ -64,6 +64,60 @@
 
                 </div>
 
+                <!-- MENU Planos Estratégicos -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('planosacao',true) || isLinkActive('ambitos',true)">
+                        <h4 class="panel-title">
+                            <a id="node170" data-toggle="collapse" data-parent="#accordion" href="#collapsePlanosAcao">
+                                <span class="fa fa-list-ul" style="margin-right: 12px;">
+                                </span>Planos Estratégicos</a>
+                        </h4>
+                    </div>
+                    <div id="collapsePlanosAcao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+
+                                <tr>
+                                    <td>
+                                        <li id="node17011" data-toggle="collapse" data-target="#PlanosAcao"
+                                            class="collapsed" [routerLink]="['/planosacao']"
+                                            [ngClass]="{ 'active':  isLinkActive('/planosacao',true) }">
+                                            <a>Planos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <!--tr>
+                                    <td>
+                                        <li id="node17012" data-toggle="collapse" data-target="#ListaAcoes"
+                                            class="collapsed" [routerLink]="['/listaacoes']"
+                                            [ngClass]="{ 'active':  isLinkActive('/listaacoes',true) }">
+                                            <a>Lista de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr-->
+                                <!--tr>
+                                    <td>
+                                        <li id="node17010" data-toggle="collapse" data-target="#parametrosPlanosAcao"
+                                            class="collapsed" [ngClass]="{ 'active':  isLinkActive('/ambitos',true) }">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosPlanosAcao">
+                                            <li id="node170101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ambitos']">
+                                                <a>Âmbitos</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr-->
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!-- MENU REUNIAO -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
@@ -138,7 +192,7 @@
                 <!-- MENU Comercial -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="isLinkActive('/planosacaoComercial',false) || isLinkActive('/analiseencomendas',false) || isLinkActive('/analise_clientes',false) || isLinkActive('/analise_acordos',false) || 
+                        [class.active]="isLinkActive('/planosacaoComercial',false) || isLinkActive('/planosestrategicosComercial',false)  || isLinkActive('/analiseencomendas',false) || isLinkActive('/analise_clientes',false) || isLinkActive('/analise_acordos',false) || 
                         isLinkActive('/comercial_limites_encomendas',true) || isLinkActive('/comercial_oem',true) || isLinkActive('/comercial_veiculos',true) || isLinkActive('/comercial_projetos',true) || 
                                             isLinkActive('/comercial_fabricas',true) || isLinkActive('/comercial_programas',true) || isLinkActive('/comercial_contratos',true) || isLinkActive('/comercial_referencias',true) || isLinkActive('/comercial_acordos',true) ">
                         <h4 class="panel-title">
@@ -154,6 +208,13 @@
                                     <td>
                                         <li id="node1581" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoComercial']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1671" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosComercial']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -278,7 +339,7 @@
                 <!-- MENU BANHOS -->
                 <div class="panel panel-default">
                     <div (click)="abrirdashboard()" class="panel-heading"
-                        [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_engenharia',true) || isLinkActive('/planosacaoengenaria',false) || isLinkActive('/alertasePrioridades',false) ||  isLinkActive('/registo',true) ||isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)|| isLinkActive('/banhos',true)
+                        [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_engenharia',true) || isLinkActive('/planosacaoengenaria',false) || isLinkActive('/planosestrategicosengenaria',false) || isLinkActive('/alertasePrioridades',false) ||  isLinkActive('/registo',true) ||isLinkActive('/fornecedor',true) || isLinkActive('/tinas',true)|| isLinkActive('/componentes',true)|| isLinkActive('/banhos',true)
                         || isLinkActive('/business_analytics',true) || isLinkActive('/gestaobanhos_relatorios',true) || isLinkActive('/grid',true) || isLinkActive('/lmep_relatorios',true) || isLinkActive('/operacoes',true)|| isLinkActive('/homegestaobanhos',true) || isLinkActive('/linhas',true) || isLinkActive('/unidades',true)|| isLinkActive('/zonas',true)|| isLinkActive('/turnos',true) || isLinkActive('/adicoes',true) || isLinkActive('/manutencoes',true) || isLinkActive('/registopara',true)  || isLinkActive('/manutencaonaoprogramada',true) || isLinkActive('/manutencaoreposicao',true) || isLinkActive('/construcaobanhos',true) 
                         || isLinkActive('/manutencao',true)  || isLinkActive('/dosificacao',true) || isLinkActive('/tipologia_dosificadores',true) || isLinkActive('/dosificadores',true) }">
                         <h4 class="panel-title">
@@ -352,6 +413,13 @@
                                     <td>
                                         <li id="node07" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoengenaria']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1611" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosengenaria']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -526,7 +594,7 @@
                 <!-- MENU Financeira -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="isLinkActive('/planosacaoFinanceira',false) || isLinkActive('/controloassiduidade_financeira',true) || isLinkActive('/pausas',true) || isLinkActive('/tiposcacifos',true) || isLinkActive('/cacifos',true) || isLinkActive('/estadosfuncionarios',true) 
+                        [class.active]="isLinkActive('/planosacaoFinanceira',false) || isLinkActive('/planosestrategicosFinanceira',false) || isLinkActive('/controloassiduidade_financeira',true) || isLinkActive('/pausas',true) || isLinkActive('/tiposcacifos',true) || isLinkActive('/cacifos',true) || isLinkActive('/estadosfuncionarios',true) 
                     || isLinkActive('/sectores',true) || isLinkActive('/analise_dividas',true) || isLinkActive('/turnosrecursos',true) || isLinkActive('/funcionarios',true) || isLinkActive('/seguimento_faturacao',true)   || isLinkActive('/seguimento_faturacao_anual',true)  || isLinkActive('/objetivos_faturacao',true)  || isLinkActive('/parametros_seguimento_faturacao_anual',true)
                     || isLinkActive('/sectores_absentismo_financeira',true) || isLinkActive('/tipos_documento',true) || isLinkActive('/evolucao_dividas',true) ">
                         <h4 class="panel-title">
@@ -542,6 +610,13 @@
                                     <td>
                                         <li id="node1601" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoFinanceira']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1691" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosFinanceira']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -644,7 +719,7 @@
 
                 <!-- MENU Injecao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoinjecao',false)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoinjecao',false) || isLinkActive('/planosestrategicosinjecao',false) ">
                         <h4 class="panel-title">
                             <a id="node157" data-toggle="collapse" data-parent="#accordion" href="#collapseInjecao">
                                 <span class="fa fa-industry" style="margin-right: 12px;">
@@ -658,6 +733,13 @@
                                     <td>
                                         <li id="node1571" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoinjecao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1661" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosinjecao']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -684,6 +766,13 @@
                                     <td>
                                         <li id="node1011" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaologistica']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1641" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicoslogistica']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -741,7 +830,7 @@
 
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
                     || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/ficha_manutencao',true)
                     || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true)  ">
                         <h4 class="panel-title">
@@ -778,6 +867,13 @@
                                     <td>
                                         <li id="node1561" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaomanutencao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1651" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosmanutencao']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -900,6 +996,13 @@
                                     <td>
                                         <li id="node97" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoproducao']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1631" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosproducao']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
@@ -1072,7 +1175,7 @@
 
                 <!-- MENU Projetos -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoProjetos',false)">
+                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoProjetos',false) || isLinkActive('/planosestrategicosProjetos',false)">
                         <h4 class="panel-title">
                             <a id="node159" data-toggle="collapse" data-parent="#accordion" href="#collapseProjetos">
                                 <span class="fa fa-industry" style="margin-right: 12px;">
@@ -1089,6 +1192,13 @@
                                         </li>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1681" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosProjetos']">Planos Estratégicos</a>
+                                        </li>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -1099,7 +1209,7 @@
                 <!---->
                 <div class="panel panel-default">
                     <div class="panel-heading" [ngClass]="{ 'active': isLinkActive('/analise_rejeicoes_qualidade',true) || isLinkActive('/seguranca_trabalho',true) || isLinkActive('/reclamacoes_relatorios',true) || isLinkActive('/reclamacoesfornecedores',true) || isLinkActive('/reclamacoesclientes',true) || isLinkActive('/temposresposta',true) 
-                        || isLinkActive('/planosacaoqualidade',false) || isLinkActive('/rejeicoes',true)  || isLinkActive('/tiposreclamacoes',true) || isLinkActive('/grausimportancia',true)|| isLinkActive('/tiposdefeito',true) || isLinkActive('/ficheirosanalise',true) || isLinkActive('/tiposocorrencia',true)  
+                        || isLinkActive('/planosacaoqualidade',false) || isLinkActive('/planosestrategicosqualidade',false) || isLinkActive('/rejeicoes',true)  || isLinkActive('/tiposreclamacoes',true) || isLinkActive('/grausimportancia',true)|| isLinkActive('/tiposdefeito',true) || isLinkActive('/ficheirosanalise',true) || isLinkActive('/tiposocorrencia',true)  
                         || isLinkActive('/tipos_ocorrencia',true) || isLinkActive('/causas_acidente',true) || isLinkActive('/epis',true) ||  isLinkActive('/tiposnaodetecao',true) 
                         || isLinkActive('/auditorias',true) || isLinkActive('/derrogacoes',true) || isLinkActive('/tipo_auditoria',true)  
                     }">
@@ -1150,6 +1260,13 @@
                                     <td>
                                         <li id="node54" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/planosacaoqualidade']">Plano de Ações</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1621" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/planosestrategicosqualidade']">Planos Estratégicos</a>
                                         </li>
                                     </td>
                                 </tr>
