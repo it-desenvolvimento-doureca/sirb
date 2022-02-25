@@ -1,0 +1,62 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
+import { PE_MOV_CAB_HISTORICO } from 'app/entidades/PE_MOV_CAB_HISTORICO';
+import { webUrl } from 'assets/config/webUrl';
+import { Observable } from "rxjs/Observable";
+
+
+@Injectable()
+export class PEMOVCABHISTORICOService {
+  handleError: any;
+
+
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  constructor(private http: Http) { }
+
+  create(data: PE_MOV_CAB_HISTORICO) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/createPE_MOV_CAB_HISTORICO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getAll(): Observable<PE_MOV_CAB_HISTORICO[]> {
+    const url = webUrl.host + '/rest/sirb/getPE_MOV_CAB_HISTORICO';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  delete(id) {
+    return this.http
+      .delete(webUrl.host + '/rest/sirb/deletePE_MOV_CAB_HISTORICO/' + id + '')
+      .toPromise()
+      .then(res => res)
+      .catch(this.handleError);
+  }
+
+
+
+  getbyid(id): Observable<PE_MOV_CAB_HISTORICO[]> {
+    const url = webUrl.host + '/rest/sirb/getPE_MOV_CAB_HISTORICObyid/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  update(data: PE_MOV_CAB_HISTORICO) {
+    return this.http
+      .put(webUrl.host + '/rest/sirb/updatePE_MOV_CAB_HISTORICO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body;
+  }
+}

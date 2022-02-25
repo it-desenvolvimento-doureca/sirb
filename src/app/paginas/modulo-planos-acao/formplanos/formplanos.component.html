@@ -112,9 +112,9 @@
                     <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2">
                       <label style="display: -webkit-box;">Data Objetivo do Plano:</label>
                       <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}"
-                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
-                        yearRange="2000:2050" [(ngModel)]="data_OBJETIVO" [ngModelOptions]="{standalone: true}"
-                        [showIcon]="false" [required]="true"></p-calendar>
+                        (onChange)="data_OBJETIVO_DATA = data_OBJETIVO" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_OBJETIVO"
+                        [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true"></p-calendar>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
@@ -155,13 +155,13 @@
 
 
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
                       <label>Origem:</label>
                       <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
                         [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
                       <label>Referência:</label><br>
                       <!--<p-dropdown *ngIf="novo" (onChange)="alteraRef($event)" [options]="drop_artigos" filter="filter"
                         [style]="{'width':'100%','height':'25px'}" [(ngModel)]="referencia" lazy="true"
@@ -171,24 +171,20 @@
                         class="autocompleseguranca" [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
                         (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
                         (onClear)="limpapesquisa()" emptyMessage="Sem Resultados..."
-                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"
-                        (completeMethod)="filterRef($event)" field="label" placeholder="Pesquisar..." [minLength]="1">
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="id_PLANO_ESTRATEGICO == null" (completeMethod)="filterRef($event)" field="label"
+                        placeholder="Pesquisar..." [minLength]="1">
                       </p-autoComplete>
                       <input *ngIf="!novo" [disabled]="!modoedicao || !novo" type="text" class="form-control2"
                         [(ngModel)]="referencia" [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
                       <label>Designação Referência:</label>
                       <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="design_REFERENCIA"
                         [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
-                      <label>Descrição:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="descricao"
-                        [ngModelOptions]="{standalone: true}">
-                    </div>
 
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
@@ -215,6 +211,27 @@
 
                     </div>
 
+                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
+                      <label style="font-size: 14px;">PLano Estratégico:</label><br>
+                      <p-dropdown [filter]="true" [options]="planos_estrategicos" [disabled]="!modoedicao"
+                        [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="id_PLANO_ESTRATEGICO"
+                        [ngModelOptions]="{standalone: true}">
+                      </p-dropdown>
+                    </div>
+
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 ">
+                      <label>Descrição:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="descricao"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 "
+                      *ngIf="id_PLANO_ESTRATEGICO != null">
+                      <label>Objetivo:</label>
+                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="objetivo"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
 
                     <div class="col-md-12" style="padding-right: 0; padding-left: 0;">
                       <div style="display: inline-block; width: 100%;">
@@ -353,7 +370,7 @@
                             <!-- {{car[col.field] | date: 'yyyy-MM-dd'}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">-->
-                            <p-calendar
+                            <p-calendar [minDate]="data_OBJETIVO_DATA"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
                               [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                               [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
@@ -445,7 +462,7 @@
                             <p-dropdown [filter]="true" [options]="tipos_acao"
                               [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                               [(ngModel)]="car['tipo_ACAO']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao" appendTo="body" [required]="true">
+                              [disabled]="!modoedicao" appendTo="body" [required]="id_PLANO_ESTRATEGICO == null">
                             </p-dropdown>
                           </ng-template>
                         </p-column>
@@ -655,6 +672,31 @@
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
       <button type="button" class="btn btn-default" (click)="displayJustificacao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+<p-dialog header="VERIFICAÇÃO DA EFICÁCIA / CUMPRIMENTO DO OBJECTIVO" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayMotivoAlteracao" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="VERIFICACAODAEFICACIA_CUMPRIMENTO_OBJECTIVO()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px;  " class="form-group col-md-12 col-lg-12">
+        <label>Descrição:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="motivoAlteracao" class="form-control2 enabled"
+          [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayMotivoAlteracao = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
   </form>

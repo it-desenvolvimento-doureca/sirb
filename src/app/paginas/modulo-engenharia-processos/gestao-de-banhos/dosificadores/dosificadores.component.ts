@@ -88,16 +88,16 @@ export class DosificadoresComponent implements OnInit {
           var y = parseInt(x);
           var cor1 = "";
           var cor2 = "";
-          if (y > 0) {
-            var DOSEADOR_AB_NIVEL_old = response[y - 1][9];
-            var DOSEADOR_AB_REPOSICAO_old = response[y - 1][10];
-            var DOSEADOR_NIV_NIVEL_old = response[y - 1][11];
-            var DOSEADOR_NIV_REPOSICAO_old = response[y - 1][12];
-            var AMPERES_old = response[y - 1][13];
+          if (y > 0 || (y == 0 && response[x][15] == null)) {
+            var DOSEADOR_AB_NIVEL_old = (y == 0) ? null : response[y - 1][9];
+            var DOSEADOR_AB_REPOSICAO_old = (y == 0) ? null : response[y - 1][10];
+            var DOSEADOR_NIV_NIVEL_old = (y == 0) ? null : response[y - 1][11];
+            var DOSEADOR_NIV_REPOSICAO_old = (y == 0) ? null : response[y - 1][12];
+            var AMPERES_old = (y == 0) ? null : response[y - 1][13];
 
 
-            if (DOSEADOR_AB_NIVEL != null || DOSEADOR_AB_REPOSICAO != null) variacao_AB = Math.max(DOSEADOR_AB_NIVEL_old, DOSEADOR_AB_REPOSICAO_old) - Math.max(DOSEADOR_AB_NIVEL, DOSEADOR_AB_REPOSICAO);
-            if (DOSEADOR_NIV_NIVEL != null || DOSEADOR_NIV_REPOSICAO != null) variacao_NIV = Math.max(DOSEADOR_NIV_NIVEL_old, DOSEADOR_NIV_REPOSICAO_old) - Math.max(DOSEADOR_NIV_NIVEL, DOSEADOR_NIV_REPOSICAO);
+            if (DOSEADOR_AB_NIVEL != null || DOSEADOR_AB_REPOSICAO != null) variacao_AB = Math.max(DOSEADOR_AB_NIVEL_old, DOSEADOR_AB_REPOSICAO_old) - this.MIN(DOSEADOR_AB_NIVEL, DOSEADOR_AB_REPOSICAO);
+            if (DOSEADOR_NIV_NIVEL != null || DOSEADOR_NIV_REPOSICAO != null) variacao_NIV = Math.max(DOSEADOR_NIV_NIVEL_old, DOSEADOR_NIV_REPOSICAO_old) - this.MIN(DOSEADOR_NIV_NIVEL, DOSEADOR_NIV_REPOSICAO);
             if (AMPERES != null) variacao_AMPERES = AMPERES - AMPERES_old;
 
             if (variacao_AMPERES > 0) consumo_AB = ((intervalo_amperes * variacao_AB) / variacao_AMPERES) * 1000;
@@ -108,9 +108,12 @@ export class DosificadoresComponent implements OnInit {
             if (objetivos1 && variacao_AMPERES > 0) cor1 = (objetivos1.COR == null) ? '' : '#' + objetivos1.COR;
             if (objetivos2 && variacao_AMPERES > 0) cor2 = (objetivos2.COR == null) ? '' : '#' + objetivos2.COR;
 
-          } else {
+          }
+
+          if (y == 0) {
             this.nome_tipo = response[x][19] + ' - ' + response[x][18];
           }
+
           var array = this.dosificadores.find(item => item.DATA_PREVISTA == response[x][4])
           var linha = {
             ID: response[x][0],
@@ -129,13 +132,15 @@ export class DosificadoresComponent implements OnInit {
             DOSEADOR_NIV_REPOSICAO: response[x][12],
             AMPERES: response[x][13],
             OBSERVACOES: response[x][14],
-            VARIACAO_AB: (y == 0) ? null : variacao_AB,
-            VARIACAO_NIV: (y == 0) ? null : variacao_NIV,
-            VARIACAO_AMPERES: (y == 0) ? null : variacao_AMPERES,
-            CONSUMO_AB: (y == 0) ? null : consumo_AB,
-            CONSUMO_NIV: (y == 0) ? null : consumo_NIV,
+            VARIACAO_AB: (y == 0 && response[x][15] != null) ? null : variacao_AB,
+            VARIACAO_NIV: (y == 0 && response[x][15] != null) ? null : variacao_NIV,
+            VARIACAO_AMPERES: (y == 0 && response[x][15] != null) ? null : variacao_AMPERES,
+            CONSUMO_AB: (y == 0 && response[x][15] != null) ? null : consumo_AB,
+            CONSUMO_NIV: (y == 0 && response[x][15] != null) ? null : consumo_NIV,
             cor1: cor1,
             cor2: cor2,
+            dia: days[new Date(response[x][4]).getDay()],
+            data: response[x][4], id_feriado: response[x][15]
           };
 
 
@@ -162,9 +167,9 @@ export class DosificadoresComponent implements OnInit {
             //tipo response[x][17]
             this.dosificadores.push({
               DATA_PREVISTA: response[x][4],
-              dia: (response[x][17] != null) ? "" : days[new Date(response[x][4]).getDay()],
-              data: (response[x][17] != null) ? "" : response[x][4],
-              linhas: [linha]
+              dia: days[new Date(response[x][4]).getDay()],
+              data: response[x][4],
+              linhas: [linha], id_feriado: response[x][15]
             });
           } else {
             array.linhas.push(linha)
@@ -183,6 +188,19 @@ export class DosificadoresComponent implements OnInit {
 
   }
 
+  MIN(value1, value2) {
+    if (value1 == null && value2 == null) {
+      return 0;
+    } else if (value1 == null) {
+      return value2;
+    } else if (value2 == null) {
+      return value1;
+    } else if (value2 < value1) {
+      return value2;
+    } else if (value2 > value1) {
+      return value1;
+    }
+  }
 
 
   //ao alterar semana
@@ -203,12 +221,12 @@ export class DosificadoresComponent implements OnInit {
 
   preencheTinas() {
     //preenche combobox linhas
-    this.ABDICTINAService.getAll().subscribe(
+    this.ABDICTINAService.getAll2(0).subscribe(
       response => {
         this.tinas = [];
         this.tinas.push({ label: "Sel. Tina", value: "" });
         for (var x in response) {
-          this.tinas.push({ label: response[x].cod_TINA, value: response[x].id_TINA });
+          if (response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES != null) this.tinas.push({ label: response[x][0].cod_TINA + ' / ' + response[x][1].nome_LINHA, value: response[x][0].id_TINA });
         }
 
         this.tinas = this.tinas.slice();

@@ -92,8 +92,7 @@ export class LoginService implements CanActivate {
 
                 var valida = this.valida2(urlarray, 'node001', access);
                 var valida2 = this.valida2(urlarray, 'node006', access);
-                console.log(valida)
-                console.log(valida2)
+
                 if (!valida && !valida2) {
                     this.router.navigate(['./home']);
                     return false;

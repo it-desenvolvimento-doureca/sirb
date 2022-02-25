@@ -148,6 +148,7 @@ export class ManutencaoformComponent implements OnInit {
   adit_design_subst: any;
   mostraAB = false
   mostraNiv = false;
+  classif: any;
 
 
   constructor(private ABMOVMANUTENCAOETIQService: ABMOVMANUTENCAOETIQService, private UploadService: UploadService,
@@ -381,6 +382,7 @@ export class ManutencaoformComponent implements OnInit {
   }
 
   inicia(id, classif) {
+
     this.planeado = false;
     this.preparado = false;
     this.planeamento = false;
@@ -393,6 +395,7 @@ export class ManutencaoformComponent implements OnInit {
           if (count > 0) {
             for (var x in response) {
               classif = response[x][0].classif;
+              this.classif = classif;
               this.manutencao_dados = response[x][0];
               this.num_manutencao = response[x][0].id_MANUTENCAO;
               this.tipo_manu_id = (response[x][0].classif == 'D') ? response[x][0].id_TIPO_MANUTENCAO + '_' + response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES : response[x][0].id_TIPO_MANUTENCAO;
@@ -1046,30 +1049,30 @@ export class ManutencaoformComponent implements OnInit {
     this.i = this.i + 1;
     this.i = this.i % this.manutencao.length;
     if (this.manutencao.length > 0) {
-      this.preenchedados(false, this.manutencao[this.i], this.manutencao[this.i].classif);
-      this.inicia(this.manutencao[this.i], this.manutencao[this.i].classif);
+      this.preenchedados(false, this.manutencao[this.i], this.classif);
+      this.inicia(this.manutencao[this.i], this.classif);
 
       if (this.url != null) {
-        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif, redirect: "listagem" } });
+        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.classif, redirect: "listagem" } });
       } else {
-        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif } });
+        this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.classif } });
       }
     }
   }
 
   anterior() {
-    if (this.i === 0) {
+    if (this.i <= 0) {
       this.i = this.manutencao.length;
     }
-    this.i = this.i - 1;
+    this.i = this.i - 1; 
     if (this.url != null) {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif, redirect: "listagem" } });
+      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.classif, redirect: "listagem" } });
     } else {
-      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.manutencao[this.i].classif } });
+      this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.classif } });
     }
     if (this.manutencao.length > 0) {
-      this.preenchedados(false, this.manutencao[this.i], this.manutencao[this.i].classif);
-      this.inicia(this.manutencao[this.i], this.manutencao[this.i].classif);
+      this.preenchedados(false, this.manutencao[this.i], this.classif);
+      this.inicia(this.manutencao[this.i], this.classif);
     }
   }
 
@@ -3110,6 +3113,8 @@ export class ManutencaoformComponent implements OnInit {
               dados: response[x][0],
             });
           }
+
+          this.dosificadores.sort((a, b) => (a.COD_TINA > b.COD_TINA) ? 1 : ((b.COD_TINA > a.COD_TINA) ? -1 : 0));
           this.dosificadores = this.dosificadores.slice();
         }
       },

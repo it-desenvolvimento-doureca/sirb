@@ -384,17 +384,17 @@ export class PaginatarefaComponent implements OnInit {
         if (resp[x][4] != null) this.disencaminhar = true;
         ids.push(resp[x][15]);
 
-      }
-      this.modulo = resp[x][28];
-      this.sub_modulo = resp[x][29];
 
-      this.globalVar.setfiltros("reclamacaocliente_id", ids);
-      if (resp[x][28] == 5 && resp[x][29] != 'D') {
-        this.carregatabelaFiles_RECLAMACAO(id);
-      } else {
-        this.carregatabelaFiles_TAREFA(id);
-      }
+        this.modulo = resp[x][28];
+        this.sub_modulo = resp[x][29];
 
+        this.globalVar.setfiltros("reclamacaocliente_id", ids);
+        if (resp[x][28] == 5 && resp[x][29] != 'D') {
+          this.carregatabelaFiles_RECLAMACAO(id);
+        } else {
+          this.carregatabelaFiles_TAREFA(id);
+        }
+      }
       this.carregasubtarefas(id);
     }, error => {
       console.log(error);

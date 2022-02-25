@@ -13,7 +13,7 @@
                 <!-- MENU Planos Ação -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="isLinkActive('planosacao',true) || isLinkActive('ambitos',true)">
+                        [class.active]="isLinkActive('planosacao',true) || isLinkActive('ambitos',true) || isLinkActive('listaacoes',true)">
                         <h4 class="panel-title">
                             <a id="node155" data-toggle="collapse" data-parent="#accordion" href="#collapsePlanosAcao">
                                 <span class="fa fa-list-ul" style="margin-right: 12px;">
@@ -66,23 +66,23 @@
 
                 <!-- MENU Planos Estratégicos -->
                 <div class="panel panel-default">
-                    <div class="panel-heading"
-                        [class.active]="isLinkActive('planosacao',true) || isLinkActive('ambitos',true)">
+                    <div class="panel-heading" [class.active]="isLinkActive('planosestrategicos',true)">
                         <h4 class="panel-title">
-                            <a id="node170" data-toggle="collapse" data-parent="#accordion" href="#collapsePlanosAcao">
+                            <a id="node170" data-toggle="collapse" data-parent="#accordion"
+                                href="#collapsePlanosEstrategicos">
                                 <span class="fa fa-list-ul" style="margin-right: 12px;">
                                 </span>Planos Estratégicos</a>
                         </h4>
                     </div>
-                    <div id="collapsePlanosAcao" class="panel-collapse collapse">
+                    <div id="collapsePlanosEstrategicos" class="panel-collapse collapse">
                         <div class="panel-body">
                             <table class="table">
 
                                 <tr>
                                     <td>
                                         <li id="node17011" data-toggle="collapse" data-target="#PlanosAcao"
-                                            class="collapsed" [routerLink]="['/planosacao']"
-                                            [ngClass]="{ 'active':  isLinkActive('/planosacao',true) }">
+                                            class="collapsed" [routerLink]="['/planosestrategicos']"
+                                            [ngClass]="{ 'active':  isLinkActive('/planosestrategicos',true) }">
                                             <a>Planos</a>
                                         </li>
                                     </td>
@@ -719,7 +719,8 @@
 
                 <!-- MENU Injecao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoinjecao',false) || isLinkActive('/planosestrategicosinjecao',false) ">
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('/planosacaoinjecao',false) || isLinkActive('/planosestrategicosinjecao',false) ">
                         <h4 class="panel-title">
                             <a id="node157" data-toggle="collapse" data-parent="#accordion" href="#collapseInjecao">
                                 <span class="fa fa-industry" style="margin-right: 12px;">
@@ -1175,7 +1176,8 @@
 
                 <!-- MENU Projetos -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaoProjetos',false) || isLinkActive('/planosestrategicosProjetos',false)">
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('/planosacaoProjetos',false) || isLinkActive('/planosestrategicosProjetos',false)">
                         <h4 class="panel-title">
                             <a id="node159" data-toggle="collapse" data-parent="#accordion" href="#collapseProjetos">
                                 <span class="fa fa-industry" style="margin-right: 12px;">

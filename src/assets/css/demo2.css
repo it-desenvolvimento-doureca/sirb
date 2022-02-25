@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 .blink {
     animation: blink 2s steps(5, start) infinite;
     -webkit-animation: blink 1s steps(5, start) infinite;
@@ -45,9 +46,9 @@ body .ui-widget, body .ui-widget .ui-widget, body .ui-widget input, body .ui-wid
 }*/
 
 .fc th {
-    background-color: #f4f4f4!important;
-    border: 1px solid #c8c8c8!important;
-    color: #333333!important;
+    background-color: #f4f4f4 !important;
+    border: 1px solid #c8c8c8 !important;
+    color: #333333 !important;
 }
 
 .fc tbody {
@@ -1886,11 +1887,13 @@ body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
         display: inline-block;
         height: auto
     }
+
     .ui-orderlist.ui-orderlist-responsive .ui-orderlist-controls .ui-button {
         display: inline-block;
         width: 20%;
         margin-right: .25em
     }
+
     .ui-orderlist.ui-orderlist-responsive .ui-orderlist-list-container {
         width: 100%
     }
@@ -4514,35 +4517,44 @@ checkbox {
     .ui-picklist.ui-picklist-responsive {
         display: block
     }
+
     .ui-picklist.ui-picklist-responsive>div {
         display: block;
         width: 100% !important
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons {
         text-align: center;
         height: auto;
         padding: .4em 0
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons button {
         display: inline;
         width: 20%;
         margin-bottom: 0
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-source-controls.ui-picklist-buttons {
         padding-bottom: .4em
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-target-controls.ui-picklist-buttons {
         padding-top: .4em
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-right:before {
         content: "\F107"
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-double-right:before {
         content: "\F103"
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-left:before {
         content: "\F106"
     }
+
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-double-left:before {
         content: "\F102"
     }
@@ -5579,13 +5591,16 @@ body .ui-panel .ui-panel-footer {
         position: absolute;
         width: 191px !important;
     }
+
     .versao {
         margin-left: 52px !important;
         margin-top: 4px !important;
     }
+
     .top_text {
         height: 52px;
     }
+
     .top_text .utz {
         top: 23px;
     }
@@ -5941,4 +5956,8 @@ body>.ui-dropdown-panel {
     font-size: 10.5px;
     vertical-align: middle !important;
     padding: 1px 2px 3px 2px !important;
+}
+
+.lista_planosestrategicos .ui-datatable-data tr.ui-datatable-even {
+    background-color: #f7f7f7 !important;
 }

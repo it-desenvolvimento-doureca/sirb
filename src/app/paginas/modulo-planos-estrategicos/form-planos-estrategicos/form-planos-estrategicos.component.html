@@ -21,7 +21,7 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disLancarPlano" [hidden]="!btLancarPlano">
+          <!--li [class.disabled]="disLancarPlano" [hidden]="!btLancarPlano">
             <a (click)="lancarPlano()">
               <i class="material-icons">playlist_play</i>Lançar Plano
               <div class="ripple-container"></div>
@@ -40,10 +40,17 @@
               <i class="material-icons">check</i>Aprovar
               <div class="ripple-container"></div>
             </a>
+          </li-->
+
+          <li [class.disabled]="disValidar" [hidden]="!btValidar">
+            <a (click)="validar()">
+              <i class="material-icons">check</i>Validar
+              <div class="ripple-container"></div>
+            </a>
           </li>
 
           <li [class.disabled]="disCancelar" [hidden]="!btCancelar">
-            <a (click)="cancelar()">
+            <a (click)="cancelarPlano()">
               <i class="material-icons">close</i>Cancelar
               <div class="ripple-container"></div>
             </a>
@@ -53,13 +60,13 @@
               <i class="material-icons">close</i>Fechar
               <div class="ripple-container"></div>
             </a>
-          </li>-->
+          </li>>
           <li [class.disabled]="disImprimir" [hidden]="!btimprimir">
             <a (click)="imprimir('pdf','planos_de_acao_detalhada_id')">
               <i class="material-icons">print</i>Imprimir
               <div class="ripple-container"></div>
             </a>
-          </li>
+          </li-->
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
@@ -110,16 +117,16 @@
                         ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                     </div>
                     <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2">
-                      <label style="display: -webkit-box;">Data Objetivo do Plano:</label>
-                      <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}"
-                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
-                        yearRange="2000:2050" [(ngModel)]="data_OBJETIVO" [ngModelOptions]="{standalone: true}"
-                        [showIcon]="false" [required]="true"></p-calendar>
+                      <label style="display: -webkit-box;">Ano do Plano:</label>
+                      <p-dropdown [options]="anos" class="droplinha" [style]="{'width':'185px','height':'25px'}"
+                        [(ngModel)]="ano" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true">
+                      </p-dropdown>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
                       <label style="display: -webkit-box;">Responsável do Plano:</label>
-                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="utilizador"
+                      <input [disabled]="true" style="padding: 5px 4px;height: 25px;" [(ngModel)]="responsavel"
                         [ngModelOptions]="{standalone: true}" type="text"
                         class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
                         ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
@@ -128,83 +135,26 @@
                     <div style="padding: 1px 5px 1px 10px; width: 15%;" class="form-group col-md-2 ">
                       <label>Departamento:</label>
                       <p-dropdown filter="filter" [options]="drop_departamentos" styleClass="dropDownSemIcon"
-                        [style]="{'width':'100%','height':'25px'}" [(ngModel)]="departamento_ORIGEM" lazy="true"
-                        [ngModelOptions]="{standalone: true}" [disabled]="true" [required]="true">
+                        [style]="{'width':'100%','height':'25px'}" [(ngModel)]="departamento" lazy="true"
+                        [ngModelOptions]="{standalone: true}" [disabled]="true">
                       </p-dropdown>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2 ">
-                      <label style="font-size: 14px;">Âmbito:</label><br>
-                      <p-dropdown [options]="ambitos" [style]="{'width':'100%','height':'25px','display':'block'}"
-                        [required]="true" [(ngModel)]="ambito" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao">
-                      </p-dropdown>
+                      <label>% Conlusão:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="percentagem_conclusao"
+                        [ngModelOptions]="{standalone: true}">
                     </div>
-
-
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
                       <label>Estado Plano:</label>
                       <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado_texto"
                         [ngModelOptions]="{standalone: true}">
-                      <!--<p-dropdown *ngIf="modoedicao" [options]="estados" [style]="{'width':'100%','height':'25px'}"
-                        [(ngModel)]="estado" lazy="true" [ngModelOptions]="{standalone: true}" [disabled]="true"
-                        [required]="true">
-                      </p-dropdown>-->
-                    </div>
-
-
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
-                      <label>Origem:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
-                        [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
-                      <label>Referência:</label><br>
-
-                    </div>
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
-                      <label>Designação Referência:</label>
-                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="design_REFERENCIA"
-                        [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 ">
-                      <label>Descrição:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="descricao"
-                        [ngModelOptions]="{standalone: true}">
-                    </div>
-
-
-                    <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
-                      <label style="font-size: 14px;">Linha:</label><br>
-                      <p-dropdown [style.background]="cor_linha" class="droplinha droplinha_amostra"
-                        (onChange)="alteracorlinha($event)" [options]="linhas"
-                        [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="id_LINHA"
-                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
-                        <ng-template let-car pTemplate="item">
-                          <div class="ui-helper-clearfix" [style.background]="(car.value != null)?car.value.cor : ''"
-                            style="position: relative;height: 25px;">
-                            {{car.label}}
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
-
-                    <div class="col-md-2 form-group" style="padding: 1px 5px 1px 10px; height: 48px;">
-                      <label for="tipoop">Unidade</label>
-                      <p-dropdown [filter]="true" [options]="unidades" [disabled]="!modoedicao"
-                        [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="unidade"
-                        [ngModelOptions]="{standalone: true}">
-                      </p-dropdown>
-
                     </div>
 
 
                     <div class="col-md-12" style="padding-right: 0; padding-left: 0;">
+                      <label>Anexos:</label>
                       <div style="display: inline-block; width: 100%;">
                         <div class="form-group col-md-4 col-lg-4">
                           <p-fileUpload [disabled]="!modoedicao" #fileInput name="myfile[]" customUpload="true"
@@ -235,6 +185,8 @@
                             </ng-template>
                           </p-fileUpload>
                         </div>
+
+
 
                         <div class="form-group col-md-8 col-lg-8">
                           <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="uploadedFiles"
@@ -292,221 +244,105 @@
                       </div>
                     </div>
 
-
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 ">
+                      <button type="button" (click)="associar_plano()" class="btn btn-warning pull-left"
+                        [disabled]="!modoedicao">Associar</button>
+                      <button type="button" [hidden]="novo" (click)="criar_plano()" class="btn btn-success pull-left"
+                        [disabled]="!modoedicao">Criar Novo
+                        Plano</button>
+                    </div>
                     <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
-                      <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
-                        (onRowSelect)="onRowSelect($event)" styleClass="ExcelTable2007" id="tabelaplanos"
-                        [(selection)]="linhasSelecionadas" expandableRows="true" [expandedRows]="tabelaaccoes">
-
-                        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-
-                        <!--p-column [style]="{'width':'24px','padding-left':'2px'}" header="REF." expander="true"
-                          styleClass="col-icon">
-                        </p-column-->
-                        <ng-template let-car pTemplate="rowexpansion">
-                          <table style="border: none;">
-                            <th class="ui-state-default ui-unselectable-text"
-                              style="width: 100px; display: table-cell; padding-left: 7px;">
-                              <span class="ui-column-title">REFERÊNCIA</span>
-                            </th>
-                            <th style="border-top: none; border-right: none; border-left: none;">
-                               
-                            </th>
-                          </table>
-                          <table style="border: none;">
-                            <th class="ui-state-default ui-unselectable-text"
-                              style="width: 100px; display: table-cell; padding-left: 7px;">
-                              <span class="ui-column-title">CAUSA</span>
-                            </th>
-                            <th style="border-top: none; border-right: none; border-left: none;">
-                              <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;"
-                                [(ngModel)]="car['causa']" [ngModelOptions]="{standalone: true}" type="text"
-                                class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
-                            </th>
-                          </table>
-                        </ng-template>
-
-
-                        <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO"
-                          [style]="{'width':'100px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <!-- {{car[col.field] | date: 'yyyy-MM-dd'}}
+                      <p-dataTable [value]="tabelaplanos" styleClass="ExcelTable2007" id="tabelaplanos"
+                        expandableRows="true" [expandedRows]="lista_expand_planos">
+                        <p-column [style]="{'width':'6px','padding':'0'}" expander="true" styleClass="col-icon">
+                          <ng-template pTemplate="filter" let-col>
+                            <button *ngIf="lista_expand_planos.length == 0 || lista_expand_planos.length == null"
+                              pButton type="button" (click)="listartudo_planos()" icon="fa-eye"
+                              style="margin-bottom: 5px;" label=" "></button>
+                            <button *ngIf="lista_expand_planos.length > 0" pButton type="button"
+                              (click)="listartudo_planos()" style="margin-bottom: 5px;" icon="fa-eye-slash"
+                              label=" "></button>
                           </ng-template>
-                          <ng-template let-col let-car="rowData" pTemplate="editor">-->
-                            <p-calendar
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
-                              [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
-                              [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
-                              [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true">
-                            </p-calendar>
+                        </p-column>
+                        <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}" field="numero"
+                          header="Nº">
+                        </p-column>
+                        <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano">
+                          <ng-template let-car="rowData" pTemplate="body">
+                            <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
+                              {{car['data_objetivo']}}
+                            </div>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'30px'}" field="objetivo" header="Objetivo">
+                        </p-column>
+                        <p-column [style]="{'width':'25px'}" field="utilizador" header="Responsável do Plano">
+                        </p-column>
+                        <p-column [style]="{'width':'10px','padding-left': '0','padding-right': '0'}" field="conclusao"
+                          header="% Conclusão" styleClass="coluna_conclusao">
+                          <ng-template let-car="rowData" pTemplate="body">
+                            <span>
+                              {{car['conclusao']}} %
+                            </span>
+                            <p-progressBar [showValue]="false" [value]="car['conclusao']"></p-progressBar>
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="false" field="hora_ACCAO" header="HORA AÇÃO" [style]="{'width':'75px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <!--  {{car[col.field]}}
-                          </ng-template>
-                          <ng-template let-col let-car="rowData" pTemplate="editor">-->
-                            <input
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
-                              style="padding: 5px 4px;height: 25px; text-align: center;" [required]="true"
-                              [(ngModel)]="car['hora_ACCAO']" [ngModelOptions]="{standalone: true}" type="time" min
-                              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
-                          </ng-template>
+                        <p-column [style]="{'width':'30px'}" field="estado" header="Estado">
                         </p-column>
 
-                        <!--
-                        <p-column [editable]="true" field="descricao" header="DEPARTAMENTO">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            {{car['departamento'] }}
-                          </ng-template>
-                          <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
-                            <p-dropdown [filter]="true" (onChange)="car['departamento'] = nomeDEPARTAMENTO($event)"
-                              [options]="drop_departamentos"
-                              [style]="{'width':'100%','height':'25px','background':'white'}"
-                              [(ngModel)]="car['id_departamento']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao " appendTo="body" [required]="true">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-column>-->
-
-                        <p-column [editable]="false" field="responsavel" header="RESPONSÁVEL AÇÃO"
-                          [style]="{'width':'140px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <!--{{getResponsavel(car[col.field]) }}
-                          </ng-template>
-                          <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">-->
-                            <p-dropdown [filter]="true" [options]="drop_utilizadores"
-                              [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
-                              [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
-                              appendTo="body" [required]="true">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [editable]="false" field="encaminhado" header="ENCAMINHADO PARA"
-                          [style]="{'width':'110px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            {{car[col.field]}}
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [editable]="true" field="descricao" [style]="{'width':'245px'}" header="ACÇÃO">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <input [disabled]="!modoedicao"
-                              style="padding: 5px 4px;height: 25px; color: transparent; text-shadow: 0 0 0 black;"
-                              [required]="true" [(ngModel)]="car['descricao']" [ngModelOptions]="{standalone: true}"
-                              type="text"
-                              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
-                          </ng-template>
-                          <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
-                            <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
-                              [options]="drop_accoes" [style]="{'width':'80%','height':'25px','background':'white'}"
-                              [(ngModel)]="car['id_ACCAO']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
-                              appendTo="body">
-                            </p-dropdown>
-                            <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao"
-                              title="Adicionar" (click)="showDialogToAdd(index)">
-                              <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [editable]="false" field="tipo_ACAO" header="TIPO DE AÇÃO"
-                          [style]="{'width':'102px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <!--{{getResponsavel(car[col.field]) }}
-                          </ng-template>
-                          <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">-->
-                            <p-dropdown [filter]="true" [options]="tipos_acao"
-                              [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
-                              [(ngModel)]="car['tipo_ACAO']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao" appendTo="body" [required]="true">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [editable]="false" field="item" header="ITEM" [style]="{'width':'102px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px; text-align: center;"
-                              [(ngModel)]="car['item']" [ngModelOptions]="{standalone: true}" type="text" maxlength="15"
-                              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              title="Ex. Código da ação definida pelo relatório de auditoria."
-                              ng-reflect-ng-class=" ui-inputtext ui-widget ui-stat">
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [editable]="true" field="observacao" header="DESCRIÇÃO">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            {{car[col.field]}}
-                          </ng-template>
-                          <ng-template let-col let-car="rowData" pTemplate="editor">
-                            <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;"
-                              [(ngModel)]="car['observacao']" [ngModelOptions]="{standalone: true}" type="text"
-                              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
-                          </ng-template>
-                        </p-column>
-
-                        <p-column field="fastresponse" header="FASTRESP." [style]="{'width':'72px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <p-checkbox [disabled]="!modoedicao" [(ngModel)]="car['fastresponse']"
-                              [ngModelOptions]="{standalone: true}" binary="true"></p-checkbox>
-                          </ng-template>
-                        </p-column>
-
-                        <!--p-column [editable]="false" field="prioridade" header="PRIORIDADE" [style]="{'width':'102px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body"-->
-                        <!--{{getResponsavel(car[col.field]) }}
-                          </ng-template>
-                          <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">-->
-                        <!--p-dropdown [filter]="true" [options]="drop_prioridades"
-                              [style]="{'width':'100%','height':'25px','background':'white'}"
-                              [(ngModel)]="car['prioridade']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
-                              appendTo="body" [required]="true">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-column-->
-
-                        <!--p-column [editable]="false" field="unidade" header="UNIDADE" [style]="{'width':'102px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <p-dropdown [filter]="true" [options]="unidades"
-                              [style]="{'width':'100%','height':'25px','background':'white'}"
-                              [(ngModel)]="car['unidade']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
-                              appendTo="body">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-column-->
-
-
-                        <p-column field="estado_texto" header="ESTADO AÇÃO" [style]="{'width':'104px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
-                            <a *ngIf="car['id_TAREFA']!=null" title="Tarefa: {{car['id_TAREFA']}}"
-                              (click)="IrPara(car['id_TAREFA'])"> {{car[col.field]}}</a>
-                          </ng-template>
-                        </p-column>
-
-                        <p-column [style]="{'width':'52px'}">
+                        <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}">
                           <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                             <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
-                              (click)="apagar_linha( index)">
+                              (click)="removerplano(index,car['id'])">
                               <span class="glyphicon glyphicon-trash"></span>
                             </button>
                           </ng-template>
                         </p-column>
-                        <p-footer [style]="{'text-align':'center'}">
-                          <a (click)="adicionar_linha()" [class.disabled]="!modoedicao"
-                            style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
-                            <i class="material-icons">add</i> Adicionar
-                          </a>
-                        </p-footer>
+
+
+                        <ng-template let-car pTemplate="rowexpansion">
+                          <div class="ui-grid ui-grid-responsive ui-fluid">
+                            <table class="tg">
+                              <tr>
+                                <th class="tg-wfll" style="width: 65px;">Nº</th>
+                                <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
+                                <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
+                                <th class="tg-wfll">Ação</th>
+                                <th class="tg-wfll">Objetivo</th>
+                                <th class="tg-wfll">Investimentos</th>
+                                <th class="tg-wfll" style="width: 71px;">% Conclusão</th>
+                                <th class="tg-wfll" style="width: 168px;">Estado</th>
+                              </tr>
+                              <ng-container *ngFor="let col of car.filho">
+                                <tr>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.numero}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
+                                    [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.investimentos}}</td>
+                                  <td class="tg-0pky coluna_conclusao" style="min-width: 120px;">{{col.conclusao}} %
+                                    <br>
+                                    <p-progressBar [showValue]="false" [value]="col.conclusao"></p-progressBar>
+                                  </td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+
+                                </tr>
+                                <tr *ngIf="col.estadolinha == 'V'">
+                                  <th colspan="3" class="tg-wfll" style="min-width: 120px;"> Verificação da Eficácia /
+                                    Cumprimento do Objetivo</th>
+                                  <td colspan="5" class="tg-0pky" style="min-width: 120px;">
+                                    {{col.EFICACIA_CUMPRIMENTO_OBJETIVO}}</td>
+                                </tr>
+                              </ng-container>
+                            </table>
+                          </div>
+                        </ng-template>
+
+
+
                       </p-dataTable>
                     </div>
                   </div>
@@ -572,8 +408,8 @@
 <!-- Modal dados-->
 
 <p-dialog header="Ações de Planos de Ação" [responsive]="true" [positionTop]="0"
-  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
-  [draggable]="false" [(visible)]="displayAddAccao" [modal]="true">
+  [style]="{'max-height':'99vh','width': '100%'}" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displayAddAccao" [modal]="true">
 
   <!-- Modal Header -->
 
@@ -616,28 +452,371 @@
 
 
 
-<p-dialog header="Justificação Alteração de Estado" [responsive]="true" [positionTop]="0"
-  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
-  [draggable]="false" [(visible)]="displayJustificacao" [modal]="true">
+<!-- ADICIONAR planos -->
+
+<!-- Modal dados-->
+
+<p-dialog header="Adicionar de Planos de Ação" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displayAddPlano" [modal]="true" (onHide)="onHidePlano()">
 
   <!-- Modal Header -->
 
-  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhas(linhasSelecionadas, estado_justificacao)">
+  <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravarPLANOACOES()"
+    ngNativeValidate>
+    <div class="container-fluid" style="padding: 0;">
+
+
+      <div style="display: inline-block;">
+
+        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12">
+
+          <div style="padding: 1px 5px 1px 10px; height: 48px; width: 13%;" class="form-group col-md-2">
+            <label style="display: -webkit-box;">Data Registo:</label>
+            <p-calendar [disabled]="true" [style]="{'height':'25px','width':'68%'}" dateFormat="yy-mm-dd"
+              placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+              [(ngModel)]="data_CRIA" [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true">
+            </p-calendar>
+            <input [disabled]="true" style="width:25%; padding: 5px 4px;height: 25px;" [(ngModel)]="hora_CRIA"
+              [ngModelOptions]="{standalone: true}" type="text"
+              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
+          </div>
+          <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2">
+            <label style="display: -webkit-box;">Data Objetivo do Plano:</label>
+            <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd"
+              placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+              [(ngModel)]="data_OBJETIVO" [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true">
+            </p-calendar>
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
+            <label style="display: -webkit-box;">Responsável do Plano:</label>
+            <p-dropdown [filter]="true" [options]="drop_utilizadores_planos" (onChange)="alteraDepartamento($event)"
+              [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="utilizador"
+              [ngModelOptions]="{standalone: true}" [disabled]="false" appendTo="body" [required]="true">
+            </p-dropdown>
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px; width: 15%;" class="form-group col-md-2 ">
+            <label>Departamento:</label>
+            <p-dropdown filter="filter" [options]="drop_departamentos" styleClass="dropDownSemIcon"
+              [style]="{'width':'100%','height':'25px'}" [(ngModel)]="departamento_ORIGEM" lazy="true"
+              [ngModelOptions]="{standalone: true}" [disabled]="true" [required]="true">
+            </p-dropdown>
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2 ">
+            <label style="font-size: 14px;">Âmbito:</label><br>
+            <p-dropdown [options]="ambitos" [style]="{'width':'100%','height':'25px','display':'block'}"
+              [required]="true" [(ngModel)]="ambito" [ngModelOptions]="{standalone: true}" [disabled]="true">
+            </p-dropdown>
+          </div>
+
+
+
+          <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-2 ">
+            <label>Estado Plano:</label>
+            <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="estado_texto"
+              [ngModelOptions]="{standalone: true}">
+
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-6 ">
+            <label>Origem:</label>
+            <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
+            <label style="font-size: 14px;">Linha:</label><br>
+            <p-dropdown [style.background]="cor_linha" class="droplinha droplinha_amostra"
+              (onChange)="alteracorlinha($event)" [options]="linhas"
+              [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="id_LINHA"
+              [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
+              <ng-template let-car pTemplate="item">
+                <div class="ui-helper-clearfix" [style.background]="(car.value != null)?car.value.cor : ''"
+                  style="position: relative;height: 25px;">
+                  {{car.label}}
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+          <div class="col-md-2 form-group" style="padding: 1px 5px 1px 10px; height: 48px;">
+            <label for="tipoop">Unidade:</label>
+            <p-dropdown [filter]="true" [options]="unidades" [disabled]="!modoedicao"
+              [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="unidade"
+              [ngModelOptions]="{standalone: true}">
+            </p-dropdown>
+
+          </div>
+
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 ">
+            <label>Descrição:</label>
+            <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="descricao"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 ">
+            <label>Objetivo:</label>
+            <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="objetivo"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+
+          <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
+            <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
+              styleClass="ExcelTable2007" id="tabelaaccoes">
+              <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO" [style]="{'width':'146px'}">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <p-calendar [minDate]="data_OBJETIVO"
+                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
+                    [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                    [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
+                    [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true">
+                  </p-calendar>
+                </ng-template>
+              </p-column>
+
+              <p-column [editable]="false" field="responsavel" header="RESPONSÁVEL AÇÃO" [style]="{'width':'140px'}">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+
+                  <p-dropdown [filter]="true" [options]="drop_utilizadores"
+                    [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
+                    [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
+                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')" appendTo="body"
+                    [required]="true">
+                  </p-dropdown>
+                </ng-template>
+              </p-column>
+
+
+              <p-column [editable]="true" field="descricao" [style]="{'width':'245px'}" header="ACÇÃO">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <input [disabled]="!modoedicao"
+                    style="padding: 5px 4px;height: 25px; color: transparent; text-shadow: 0 0 0 black;"
+                    [required]="true" [(ngModel)]="car['descricao']" [ngModelOptions]="{standalone: true}" type="text"
+                    class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
+                  <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)" [options]="drop_accoes"
+                    [style]="{'width':'80%','height':'25px','background':'white'}" [(ngModel)]="car['id_ACCAO']"
+                    [ngModelOptions]="{standalone: true}"
+                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')" appendTo="body">
+                  </p-dropdown>
+                  <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao" title="Adicionar"
+                    (click)="showDialogToAdd(index)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </ng-template>
+              </p-column>
+
+              <p-column [editable]="false" field="investimentos" header="INVESTIMENTOS">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px; text-align: center;"
+                    [(ngModel)]="car['item']" [ngModelOptions]="{standalone: true}" type="text" maxlength="15"
+                    class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    title="Ex. Código da ação definida pelo relatório de auditoria."
+                    ng-reflect-ng-class=" ui-inputtext ui-widget ui-stat">
+                </ng-template>
+              </p-column>
+
+              <p-column [editable]="true" field="observacao" header="OBJETIVO">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  {{car[col.field]}}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
+                  <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;" [(ngModel)]="car['observacao']"
+                    [ngModelOptions]="{standalone: true}" type="text"
+                    class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                </ng-template>
+              </p-column>
+
+              <p-column field="estado_texto" header="ESTADO AÇÃO" [style]="{'width':'104px'}">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <a *ngIf="car['id_TAREFA']!=null" title="Tarefa: {{car['id_TAREFA']}}"
+                    (click)="IrPara(car['id_TAREFA'])"> {{car[col.field]}}</a>
+                </ng-template>
+              </p-column>
+
+              <p-column [style]="{'width':'52px'}">
+                <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                  <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                    (click)="apagar_linha( index)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </ng-template>
+              </p-column>
+              <p-footer [style]="{'text-align':'center'}">
+                <a (click)="adicionar_linha()" [class.disabled]="!modoedicao"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="reset" (click)="displayAddPlano = false" class="btn btn-danger pull-right"
+      [hidden]="!modoedicao">Cancelar</button>
+    <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+    <div class="clearfix"></div>
+  </form>
+
+</p-dialog>
+
+<p-dialog header="Associar Planos de Ação" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayAssociarPlano" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravarPLANOACOES()"
+    ngNativeValidate>
+    <div class="container-fluid" style="padding: 0;">
+
+
+      <div style="display: inline-block;">
+        <div style="padding: 1px 5px 1px 10px; width: 98vw;" class="form-group col-md-12">
+          <div *ngIf="displayAssociarPlano">
+            <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"
+              (onRowDblclick)="selectLinha($event)" [rowsPerPageOptions]="[25,50,100,'todos']" expandableRows="true"
+              [expandedRows]="lista_expand">
+              <p-column [style]="{'width':'6px','padding':'0'}" expander="true" styleClass="col-icon">
+                <ng-template pTemplate="filter" let-col>
+                  <button *ngIf="lista_expand.length == 0 || lista_expand.length == null" pButton type="button"
+                    (click)="listartudo()" icon="fa-eye" style="margin-bottom: 12px;" label=" "></button>
+                  <button *ngIf="lista_expand.length > 0" pButton type="button" (click)="listartudo()"
+                    style="margin-bottom: 12px;" icon="fa-eye-slash" label=" "></button>
+                </ng-template>
+              </p-column>
+              <p-column [style]="{'width':'20px'}" field="id" header="Nº" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'25px'}" field="data_registo" header="Data Criação" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano" [filter]="true"
+                [sortable]="true">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
+                    {{car['data_objetivo']}}
+                  </div>
+                </ng-template>
+              </p-column>
+
+              <p-column [style]="{'width':'30px'}" field="ambito" header="Âmbito" [filter]="true" [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'60px'}" field="origem" header="Origem" [filter]="true" [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'25px'}" field="utilizador" header="Responsável do Plano" [filter]="true"
+                [sortable]="true">
+              </p-column>
+              <p-column [style]="{'width':'50px'}" field="descricao" header="Descrição" [filter]="true"
+                [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [options]="estados" [(ngModel)]="estado_filtro" [style]="{'width':'100%'}"
+                    appendTo="body" [ngModelOptions]="{standalone: true}"
+                    (onChange)="filtrar($event.value,col.field,true,'in')" styleClass="ui-column-filter">
+                  </p-multiSelect>
+                </ng-template>
+                <ng-template let-car="rowData" pTemplate="body">
+                  {{car['estado']}}
+                </ng-template>
+              </p-column>
+
+              <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}">
+                <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                  <button type="button" class="btn btn-defaultbtn-xs" [disabled]="!modoedicao" title="Associar Plano"
+                    style="width: 10px; padding-left: 5px; padding-right: 18px; height: 25px; padding-top: 3px; padding-bottom: 16px; margin: 0;"
+                    (click)="associarplano(car['id'])">
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                  </button>
+                </ng-template>
+              </p-column>
+
+              <ng-template let-car pTemplate="rowexpansion">
+                <div class="ui-grid ui-grid-responsive ui-fluid">
+                  <table class="tg">
+                    <tr>
+                      <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
+                      <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
+                      <th class="tg-wfll">Ação</th>
+                      <th class="tg-wfll">Descrição</th>
+                      <th class="tg-wfll" style="width: 100px;">FastResponse</th>
+                      <th class="tg-wfll" style="width: 110px;">Prioridade</th>
+                      <th class="tg-wfll" style="width: 168px;">Estado</th>
+                    </tr>
+                    <tr *ngFor="let col of car.filho">
+                      <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
+                        [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">
+                        <i *ngIf="col.FastResponse == false" class="material-icons"
+                          style="color: red; font-size: 20px;">close</i>
+                        <i *ngIf="col.FastResponse == true" class="material-icons"
+                          style="color: green; font-size: 20px;">check</i>
+                      </td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
+                      <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </ng-template>
+
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="reset" (click)="displayAssociarPlano = false" class="btn btn-danger pull-right"
+      [hidden]="!modoedicao">Cancelar</button>
+  </form>
+
+</p-dialog>
+
+
+<p-dialog header="Motivo Alteração" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayMotivoAlteracao" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizaestadoPLano()">
     <!-- Modal Body -->
     <div class="">
-      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
-        <label>Justificação:</label>
-        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_ALTERACAO_ESTADO"
-          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
-          style="height: auto; width: 500px;"></textarea>
+      <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-12 col-lg-12">
+        <label>Motivo:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="motivoAlteracao" class="form-control2 enabled"
+          [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
       </div>
 
     </div>
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
-      <button type="button" class="btn btn-default" (click)="displayJustificacao = false">Fechar</button>
+      <button type="button" class="btn btn-default" (click)="displayMotivoAlteracao = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
   </form>
 
+</p-dialog>
+
+<p-dialog header="Planos de Ações Associados" [(visible)]="displayApagar" [draggable]="false" [modal]="true"
+  [responsive]="true" [style]="{'max-height':'99vh','width': '100%'}" appendTo="body" [closeOnEscape]="true">
+  <p> Remover a associação entre o Plano Estratégico e os Planos de Ações, ou anular todas as suas dependências?</p>
+  <p-footer>
+    <button type="button" class="btn btn-default" (click)="removerassociacao()">Remover a associação</button>
+    <button type="button" class="btn btn-default" (click)="anulardependecias()">Anular todas as suas
+      dependências</button>
+    <button type="button" class="btn btn-danger" (click)="displayApagar = false">Fechar</button>
+  </p-footer>
 </p-dialog>

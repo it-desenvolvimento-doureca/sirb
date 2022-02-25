@@ -26,6 +26,7 @@ import * as FileSaver from 'file-saver';
 import { PADICAMBITOSService } from 'app/servicos/pa-dic-ambitos.service';
 import { GTDICTIPOACAOService } from 'app/servicos/gt-dic-tipo-acao.service';
 import { RelatoriosService } from 'app/servicos/relatorios.service';
+import { PEMOVCABService } from 'app/servicos/pe-mov-cab.service';
 
 @Component({
   selector: 'app-formplanos',
@@ -112,6 +113,8 @@ export class FormplanosComponent implements OnInit {
   btAprovar: boolean;
   data_OBJETIVO;
   origem: any;
+  objetivo;
+  id_PLANO_ESTRATEGICO;
   //drop_prioridades: any[];
   linhasSelecionadas: any;
   mensagem_verifica: string;
@@ -140,10 +143,15 @@ export class FormplanosComponent implements OnInit {
   class_numexiste: string;
   unidades = [{ label: "Selecionar Unidade", value: null }, { value: 1, label: "Formariz" }, { value: 2, label: "São Bento" }];
   unidade: any;
+  planos_estrategicos: any[];
+  displayMotivoAlteracao: boolean;
+  motivoAlteracao: any;
+  data_OBJETIVO_DATA: Date;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
     private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PAMOVFICHEIROSService: PAMOVFICHEIROSService,
     private PAMOVLINHAService: PAMOVLINHAService, private PAMOVCABService: PAMOVCABService, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private sanitizer: DomSanitizer,
     private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private ABDICLINHAService: ABDICLINHAService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService
+    , private PEMOVCABService: PEMOVCABService
     , private RelatoriosService: RelatoriosService, private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private PADICAMBITOSService: PADICAMBITOSService) { }
 
   ngOnInit() {
@@ -287,6 +295,7 @@ export class FormplanosComponent implements OnInit {
 
 
     this.carrega_PRIORIDADE();
+    this.carrega_PLANOS_ESTRATEGICOS();
     this.listar_ambitos();
     this.listar_tipos_accao();
     if (this.modoedicao) this.artigos();
@@ -433,6 +442,18 @@ export class FormplanosComponent implements OnInit {
       error => { console.log(error); if (inicia) this.inicia(id); });
   }
 
+  carrega_PLANOS_ESTRATEGICOS() {
+    this.planos_estrategicos = [];
+    this.PEMOVCABService.getAll().subscribe(
+      response => {
+        this.planos_estrategicos = [];
+        this.planos_estrategicos.push({ label: 'Sel. Plano Estratégico', value: null });
+        for (var x in response) {
+          /*if (response[x][0].TIPO == this.tipo)*/ this.planos_estrategicos.push({ label: response[x][0].ID, value: response[x][0].ID });
+        }
+
+      }, error => { console.log(error); });
+  }
 
   carrega_PRIORIDADE() {
     /* this.drop_prioridades = [];
@@ -473,8 +494,12 @@ export class FormplanosComponent implements OnInit {
             this.departamento_ORIGEM = response[x][0].departamento_ORIGEM;
 
             this.data_OBJETIVO = (response[x][0].data_OBJETIVO == null) ? null : this.formatDate(response[x][0].data_OBJETIVO);
+            this.data_OBJETIVO_DATA = (response[x][0].data_OBJETIVO == null) ? null : new Date(response[x][0].data_OBJETIVO);
             this.ambito = response[x][0].ambito;
             this.origem = response[x][0].origem;
+
+            this.objetivo = response[x][0].objetivo;
+            this.id_PLANO_ESTRATEGICO = response[x][0].id_PLANO_ESTRATEGICO;;
 
             if (response[x][0].estado == 'E') {
               this.btControlar = false;
@@ -637,6 +662,9 @@ export class FormplanosComponent implements OnInit {
     plano.data_OBJETIVO = this.data_OBJETIVO;
     plano.ambito = this.ambito;
     plano.origem = this.origem;
+
+    plano.objetivo = this.objetivo;
+    plano.id_PLANO_ESTRATEGICO = this.id_PLANO_ESTRATEGICO;
 
     plano.estado = (estado == 'P') ? estado : this.estado;
     if (this.novo) {
@@ -1255,15 +1283,20 @@ export class FormplanosComponent implements OnInit {
         header: 'Confirmação',
         icon: 'fa fa-check',
         accept: () => {
-          if (this.linhasSelecionadas.estado != 'P') {
-            this.linhasSelecionadas.estado = 'V';
-            this.linhasSelecionadas.estado_texto = this.getestado('V');
-            this.atualizarlinhas(this.linhasSelecionadas, 'V');
-
+          if (this.id_PLANO_ESTRATEGICO != null) {
+            this.motivoAlteracao = null;
+            this.displayMotivoAlteracao = true;
           } else {
-            this.estado_justificacao = 'V';
-            this.justificacao_ALTERACAO_ESTADO = null;
-            this.displayJustificacao = true;
+            if (this.linhasSelecionadas.estado != 'P') {
+              this.linhasSelecionadas.estado = 'V';
+              this.linhasSelecionadas.estado_texto = this.getestado('V');
+              this.atualizarlinhas(this.linhasSelecionadas, 'V');
+
+            } else {
+              this.estado_justificacao = 'V';
+              this.justificacao_ALTERACAO_ESTADO = null;
+              this.displayJustificacao = true;
+            }
           }
         }
       });
@@ -1272,6 +1305,21 @@ export class FormplanosComponent implements OnInit {
       this.mensagem_verifica = "É necessário seleccionar uma linha!";
       this.displayverificar = true
     }
+  }
+
+  VERIFICACAODAEFICACIA_CUMPRIMENTO_OBJECTIVO() {
+    this.displayMotivoAlteracao = false;
+
+    if (this.linhasSelecionadas.estado != 'P') {
+      this.linhasSelecionadas.estado = 'V';
+      this.linhasSelecionadas.estado_texto = this.getestado('V');
+      this.atualizarlinhas(this.linhasSelecionadas, 'V');
+
+    } else {
+      this.estado_justificacao = 'V';
+      this.justificacao_ALTERACAO_ESTADO = null;
+      this.displayJustificacao = true;
+    };
   }
 
   cancelar() {
@@ -1341,6 +1389,7 @@ export class FormplanosComponent implements OnInit {
     } else if (estado == 'V') {
       accoes.data_APROVADO = new Date();
       accoes.utz_APROVADO = this.user;
+      accoes.eficacia_CUMPRIMENTO_OBJETIVO = this.motivoAlteracao;
     } else if (estado == 'D') {
       accoes.data_CANCELADO = new Date();
       accoes.utz_CANCELADO = this.user;

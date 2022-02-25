@@ -107,7 +107,8 @@ export class MenuComponent implements OnInit {
 
   isLinkActive(url: string, val = true): boolean {
     //router.isActive
-    if (this.router.url.indexOf(url) > -1) {
+
+    if (this.router.url.split('/')[1] && (this.router.url.split('/')[1] == url || '/' + this.router.url.split('/')[1] == url)/*this.router.url.indexOf(url) > -1*/) {
       return true;
     }
 

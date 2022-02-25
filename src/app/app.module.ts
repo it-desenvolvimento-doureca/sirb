@@ -396,6 +396,7 @@ import { ListaPlanosEstrategicosComponent } from './paginas/modulo-planos-estrat
 import { FormPlanosEstrategicosComponent } from './paginas/modulo-planos-estrategicos/form-planos-estrategicos/form-planos-estrategicos.component';
 import { PEMOVFICHEIROSService } from './servicos/pe-mov-ficheiros.service';
 import { PEMOVCABService } from './servicos/pe-mov-cab.service';
+import { PEMOVCABHISTORICOService } from './servicos/pe-mov-cab-historico.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1479,6 +1480,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ABMOVMANUTENCAODOSIFICADORESService,
     PEMOVFICHEIROSService,
     PEMOVCABService,
+    PEMOVCABHISTORICOService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

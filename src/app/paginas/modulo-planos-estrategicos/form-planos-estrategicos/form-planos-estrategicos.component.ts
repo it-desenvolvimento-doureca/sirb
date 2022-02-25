@@ -15,7 +15,7 @@ import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclama
 import { RCDICGRAUIMPORTANCIAService } from 'app/servicos/rc-dic-grau-importancia.service';
 import { RelatoriosService } from 'app/servicos/relatorios.service';
 import { UploadService } from 'app/servicos/upload.service';
-import { ConfirmationService, FileUpload } from 'primeng/primeng';
+import { ConfirmationService, DataTable, FileUpload } from 'primeng/primeng';
 import { Location } from '@angular/common';
 import * as FileSaver from 'file-saver';
 import { webUrl } from 'assets/config/webUrl';
@@ -26,6 +26,10 @@ import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
 import { PAMOVCABService } from 'app/servicos/pa-mov-cab.service';
 import { PAMOVLINHAService } from 'app/servicos/pa-mov-linha.service';
 import { PA_MOV_LINHA } from 'app/entidades/PA_MOV_LINHA';
+import { PA_MOV_CAB } from 'app/entidades/PA_MOV_CAB';
+import { PE_MOV_CAB_HISTORICO } from 'app/entidades/PE_MOV_CAB_HISTORICO';
+import { PEMOVCABHISTORICOService } from 'app/servicos/pe-mov-cab-historico.service';
+import { reject } from 'core-js/fn/promise';
 
 @Component({
   selector: 'app-form-planos-estrategicos',
@@ -41,7 +45,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('escondebt') escondebt: ElementRef;
+  @ViewChild("tabeladados") dataTableComponent: DataTable;
   user: any;
+  yearTimeout: any;
   user_nome: any;
   adminuser: any;
   modoedicao: boolean;
@@ -50,16 +56,18 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   cor_linha: any;
   drop_accoes: any;
   drop_departamentos: any[];
-
+  tabelaplanos = [];
   id_PLANO: number;
 
   id_LINHA;
   descricao: string;
+  objetivo: string;
+  responsavel;
 
   estado: string = 'E';
 
   estado_texto: string;
-  utilizador: string;
+  utilizador;
   data_CRIA;
   hora_CRIA: string;
   tabelaaccoes = [];
@@ -67,10 +75,14 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   drop_utilizadores: any[];
   id_selected: number;
   displayAddAccao: boolean;
-  estados = [{ value: "", label: "Sel. Estado" }, { value: "P", label: "Planeado" }, { value: "I", label: "Desenvolvido/Realizado" },
-  { value: "C", label: "Controlado/Verificado" }, { label: "Aprovado/Fechado", value: "V" }, { value: "D", label: "Cancelado" },];
+  /* estados = [{ value: "", label: "Sel. Estado" }, { value: "P", label: "Planeado" }, { value: "I", label: "Desenvolvido/Realizado" },
+   { value: "C", label: "Controlado/Verificado" }, { label: "Aprovado/Fechado", value: "V" }, { value: "D", label: "Cancelado" },];*/
+  estados = [{ label: "Sel. Estado", value: null }, { label: "Em Elaboração", value: "Em Elaboração" }, { label: "Planeado", value: "Planeado" },
+  { label: "Desenvolvido/Realizado", value: "Desenvolvido/ Realizado" }, { label: "Controlado/Verificado", value: "Controlado/ Verificado" },
+  { label: "Aprovado/Finalizado", value: "Aprovado/ Finalizado" }, { value: "Rejeitado", label: "Rejeitado" }, { value: "Cancelado", label: "Cancelado" }];
 
   departamento_ORIGEM: number;
+  departamento: number;
   descricaopt: string;
   descricaoeng: string;
   descricaofr: string;
@@ -78,21 +90,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   caminho: string;
 
   ambitos = [];
-  /* [
-    { value: "", label: "Sel. Âmbito" },
-    { value: 1, label: "Reclamações Clientes" },
-    { value: 2, label: "Reclamações Fornecedores" },
-    { value: 3, label: "Amostras" },
-    { value: 4, label: "Auditoria Externa" },
-    { value: 5, label: "Auditoria Interna" },
-    { value: 6, label: "Visita de Cliente" },
-    { value: 7, label: "Performance Cliente" },
-    { value: 8, label: "Metalização" },
-    { value: 9, label: "Seguimento de Peças Injetadas" },
-    { value: 10, label: "Melhoria Interna" },
-    { value: 11, label: "Auditoria Produto" },
-    { value: 12, label: "Checklist Arranque" },
-  ];*/
+  percentagem_conclusao = 0;
   ambito = null;
   disEditar: boolean;
   disCriar: boolean;
@@ -107,6 +105,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   btControlar: boolean;
   disAprovar: boolean;
   btAprovar: boolean;
+  disValidar: boolean;
+  btValidar: boolean;
   data_OBJETIVO;
   origem: any;
   //drop_prioridades: any[];
@@ -137,7 +137,21 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   class_numexiste: string;
   unidades = [{ label: "Selecionar Unidade", value: null }, { value: 1, label: "Formariz" }, { value: 2, label: "São Bento" }];
   unidade: any;
-  plano: PE_MOV_CAB;
+  //plano: PE_MOV_CAB;
+  displayAddPlano: boolean;
+  ambito_atual: any;
+  anos = [];
+  drop_utilizadores_planos: any[];
+  ano;
+  displayAddPlano_show: boolean;
+  dados = [];
+  lista_expand = [];
+  displayAssociarPlano: boolean;
+  lista_expand_planos = [];
+  numero = 1.1;
+  motivoAlteracao: any;
+  displayMotivoAlteracao: boolean;
+  displayApagar: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -154,10 +168,17 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     private elementRef: ElementRef, private confirmationService: ConfirmationService
     , private RelatoriosService: RelatoriosService, private route: ActivatedRoute,
     private renderer: Renderer, private globalVar: AppGlobals, private router: Router,
-    private PADICAMBITOSService: PADICAMBITOSService
+    private PADICAMBITOSService: PADICAMBITOSService, private PEMOVCABHISTORICOService: PEMOVCABHISTORICOService
   ) { }
 
   ngOnInit() {
+
+    for (var x = 2005; x <= 2075; x++) {
+      this.anos.push({ value: x, label: x })
+    }
+
+
+    this.ano = new Date().getFullYear();
 
     this.globalVar.setapagar(true);
     this.globalVar.seteditar(true);
@@ -172,13 +193,14 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.globalVar.setdisCriarmanutencao(true);
     this.btcriar = true;
     this.btapagar = true;
-    this.btimprimir = true;
+    this.btimprimir = false;
     this.btvoltar = true;
     this.bteditar = true;
     this.btLancarPlano = false;
     this.btControlar = false;
     this.btAprovar = false;
     this.btCancelar = false;
+    this.btValidar = false;
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.user_nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
@@ -234,11 +256,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       if (urlarray[1].match("editar")) {
         //this.btapagar = false;
         this.btapagar = true;
-        this.btimprimir = true;
+        //this.btimprimir = true;
         this.modoedicao = true;
         this.btControlar = true;
         this.btAprovar = true;
-        this.btCancelar = true;
+        this.btValidar = false;
+        this.btCancelar = false;
 
       } else if (urlarray[1].match("novo")) {
         this.btapagar = false;
@@ -247,6 +270,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.btLancarPlano = false;
         this.btControlar = false;
         this.btAprovar = false;
+        this.btValidar = false;
         this.btCancelar = false;
 
         this.novo = true;
@@ -260,7 +284,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.data_agora = data;
         this.data_CRIA = this.formatDate(data);
         this.hora_CRIA = new Date(data).toLocaleTimeString().slice(0, 5);
-        this.utilizador = this.user_nome;
+        //this.utilizador = this.user_nome;
         this.estado_texto = this.getestado(this.estado);
         //this.carregaDados(false, null);
 
@@ -271,6 +295,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.btCancelar = false;
         this.btcriar = true;
         this.btapagar = true;
+        this.btValidar = false;
+        this.btCancelar = false;
+
       }
     }
 
@@ -283,6 +310,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       this.btAprovar = false;
       this.bteditar = false;
       this.btCancelar = false;
+      this.btValidar = false;
+      this.btCancelar = false;
+
     }
 
     this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "editar");
@@ -293,9 +323,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.disLancarPlano = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "lancarplano");
     this.disControlar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "controloar");
     this.disAprovar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "aprovar");
-    this.disCancelar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "cancelar");
+    this.disCancelar = false; //!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "cancelar");
 
-
+    this.disValidar = false;
 
     this.carrega_PRIORIDADE();
     this.listar_ambitos();
@@ -318,6 +348,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.ambitos.push({ value: "", label: "Sel. Âmbito" })
         for (var x in response) {
           this.ambitos.push({ value: response[x].id_AMBITO, label: response[x].descricao });
+          if (response[x].descricao == 'Plano Estratégico') {
+            this.ambito_atual = response[x].id_AMBITO;
+          }
         }
         this.ambitos = this.ambitos.slice();
       },
@@ -345,8 +378,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       response => {
 
         for (var x in response) {
-          this.utilizador = this.user_nome + '/' + ((response[x][0] == null) ? "--" : response[x][0]);
-          this.departamento_ORIGEM = response[x][1];
+          this.responsavel = this.user_nome + '/' + ((response[x][0] == null) ? "--" : response[x][0]);
+          this.departamento = response[x][1];
         }
 
       },
@@ -400,10 +433,18 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         }
 
         this.drop_accoes = this.drop_accoes.slice();
-        if (countinua) this.carregaUtilizadores(inicia, id)
+        if (countinua) {
+          this.carregaUtilizadores(inicia, id);
+          this.carregaUtilizadores_planos();
+        }
 
       },
-      error => { console.log(error); if (countinua) this.carregaUtilizadores(inicia, id) });
+      error => {
+        console.log(error); if (countinua) {
+          this.carregaUtilizadores(inicia, id);
+          this.carregaUtilizadores_planos();
+        }
+      });
   }
 
   carregaUtilizadores(inicia, id) {
@@ -420,11 +461,26 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.drop_utilizadores.unshift({ label: "Selecionar Utilizador", value: "" });
         this.drop_utilizadores = this.drop_utilizadores.slice();
 
-        if (inicia) this.inicia(id);
+        if (inicia) this.inicia(id, true);
       },
-      error => { console.log(error); if (inicia) this.inicia(id); });
+      error => { console.log(error); if (inicia) this.inicia(id, true); });
   }
 
+  carregaUtilizadores_planos() {
+    this.drop_utilizadores_planos = [];
+    this.GERUTILIZADORESService.getDadosUtilizadorAll().subscribe(
+      response => {
+        this.drop_utilizadores_planos.unshift({ label: "Selecionar Utilizador", value: "" });
+        for (var x in response) {
+
+          this.drop_utilizadores_planos.push({ label: response[x][0] + '/' + ((response[x][1] == null) ? "--" : response[x][1]), value: response[x][3], departamento: response[x][2] });
+        }
+
+        this.drop_utilizadores_planos = this.drop_utilizadores_planos.slice();
+
+      },
+      error => { console.log(error); });
+  }
 
   carrega_PRIORIDADE() {
     /* this.drop_prioridades = [];
@@ -439,7 +495,16 @@ export class FormPlanosEstrategicosComponent implements OnInit {
        }, error => { console.log(error); });*/
   }
 
-  inicia(id) {
+  alteraDepartamento(event) {
+    if (event.value != null) {
+      var array = this.drop_utilizadores_planos.find(item => item.value == event.value);
+      this.departamento_ORIGEM = array.departamento;
+    } else {
+      this.departamento_ORIGEM = null;
+    }
+
+  }
+  inicia(id, atualizalinhas) {
     this.PEMOVCABService.getById(id).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -447,33 +512,20 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         if (count > 0) {
           for (var x in response) {
             this.plano_estrategico = response[x][0];
-            this.id_PLANO = response[x][0].id_PLANO_CAB;
+            this.id_PLANO = response[x][0].id;
 
-            this.id_LINHA = response[x][0].id_LINHA;
-            this.unidade = response[x][0].unidade;
-            this.descricao = response[x][0].descricao;
+
 
             this.estado = (response[x][0].estado);
             this.estado_texto = this.getestado(response[x][0].estado);
-            this.utilizador = response[x][1] + '/' + ((response[x][2] == null) ? "--" : response[x][2]);
+            this.responsavel = response[x][1] + '/' + ((response[x][2] == null) ? "--" : response[x][2]);
             this.data_CRIA = this.formatDate(response[x][0].data_CRIA);
             this.hora_CRIA = new Date(response[x][0].data_CRIA).toLocaleTimeString().slice(0, 5);
 
 
-            this.departamento_ORIGEM = response[x][0].departamento_ORIGEM;
+            this.departamento = response[x][0].departamento_ORIGEM;
 
-            this.data_OBJETIVO = (response[x][0].data_OBJETIVO == null) ? null : this.formatDate(response[x][0].data_OBJETIVO);
 
-            if (response[x][0].estado == 'E') {
-              this.btControlar = false;
-              this.btCancelar = false;
-              this.btAprovar = false;
-            }
-            if (response[x][0].estado != 'E') {
-              this.btLancarPlano = false;
-            } else {
-              if (this.tipo != "T") this.btLancarPlano = true;
-            }
 
             if (!this.adminuser && this.user != response[x][0].utz_CRIA) {
               this.btControlar = false;
@@ -482,61 +534,123 @@ export class FormPlanosEstrategicosComponent implements OnInit {
               this.btAprovar = false;
               this.btLancarPlano = false;
               this.btapagar = false;
+
+            } else {
+              if (response[x][0].estado == 'E' || response[x][0].estado == 'EL') {
+                this.btValidar = true;
+              }
+
+              if (response[x][0].estado == 'EX') {
+                this.btCancelar = true;
+              }
+
+              if (response[x][0].estado == 'A') {
+                this.bteditar = false;
+                this.btapagar = false;
+              }
+            }
+
+            if (this.tipo == "T") {
+              this.btCancelar = false;
+              this.btValidar = false;
             }
           }
 
           //if (this.estado == 'A') this.globalVar.setdisApagar(true);
-          this.carregarlinhas(id);
-          this.carregatabelaFiles(id);
+          if (atualizalinhas) this.carregarplanos('ID_PLANO_ESTRATEGICO', id);
+          if (atualizalinhas) this.carregatabelaFiles(id);
         }
       }, error => { console.log(error); });
   }
 
+  carregarplanos(tipo, id) {
+    if (tipo == 'ID_PLANO_ESTRATEGICO') {
+      this.tabelaplanos = [];
+      this.lista_expand_planos = [];
+      this.numero = 1.1;
+    }
 
-  carregarlinhas(id) {
-    this.tabelaaccoes = [];
-    this.linhasSelecionadas = null;
-    this.PAMOVLINHAService.getById(id).subscribe(
+    this.PAMOVCABService.getPA_MOV_CABbyidPlanoEstrategico(tipo, id).subscribe(
       response => {
         var count = Object.keys(response).length;
 
         if (count > 0) {
           for (var x in response) {
-
-            var accao = null;
-            if (this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO)) {
-              accao = this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO).label
-            }
-
-            var departamento = null;
-            if (this.drop_departamentos.find(item => item.value == response[x][0].departamento)) {
-              departamento = this.drop_departamentos.find(item => item.value == response[x][0].departamento).label
-            }
-
-            var referencia_campo = (response[x][0].referencia == null) ? null : { value: response[x][0].referencia, label: response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA, descricao: response[x][0].design_REFERENCIA }
-
-            this.tabelaaccoes.push({
-              dados: response[x][0],
-              id_PLANO_LINHA: response[x][0].id_PLANO_LINHA, id_ACCAO: response[x][0].id_ACCAO, responsavel: response[x][0].responsavel,
-              data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO)
-              , hora_ACCAO: response[x][0].hora_ACCAO, id_PLANO_CAB: response[x][0].id_PLANO_CAB, descricao: accao,
-              id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
-              unidade: response[x][0].unidade,
-              filteredreferencias: [],
-              referencia_campo: referencia_campo,
-              referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
-              causa: response[x][0].causa,
-              descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
-              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
-            });
-
+            var linha = this.tabelaplanos.find(item => item.id == response[x][0]);
+            if (!linha && (parseInt(x) != 0 || tipo != 'ID_PLANO_ESTRATEGICO')) this.numero = this.numero + 0.1
+            this.carregarlinhas(response, x, parseFloat(this.numero.toString()).toFixed(1));
           }
-
-          this.tabelaaccoes = this.tabelaaccoes.slice();
+          this.tabelaplanos = this.tabelaplanos.slice();
+          this.calcucarpercentagem_conclusao();
         }
       }, error => { console.log(error); });
   }
 
+  carregarlinhas(response, x, numero) {
+
+    var linha = this.tabelaplanos.find(item => item.id == response[x][0]);
+    var cor = "";
+    var corlinha = "";
+    var cor_letra = "";
+    var cor_letra_linha = "";
+    var data = this.formatDate(new Date());
+
+    if (response[x][2] != null) {
+      if (new Date(response[x][2]).getTime() < new Date(data).getTime()) {
+        cor = "red";
+        cor_letra = "white";
+      } else if (new Date(response[x][2]).getTime() == new Date(data).getTime()) {
+        cor = "yellow";
+      }
+    }
+
+    if (new Date(response[x][8]).getTime() < new Date(data).getTime()) {
+      corlinha = "red";
+      cor_letra_linha = "white";
+    } else if (new Date(response[x][8]).getTime() == new Date(data).getTime()) {
+      corlinha = "yellow";
+    }
+
+    if (response[x][13] != "E" && response[x][13] != "P" && response[x][13] != null) { corlinha = ""; cor_letra_linha = ""; }
+    if (response[x][7] != "E" && response[x][7] != "P" && response[x][7] != null) { cor = ""; cor_letra = ""; }
+
+    if (linha) {
+      linha.filho.push({
+        numero: numero + '.' + (linha.filho.length + 1),
+        conclusao: response[x][21],
+        corlinha: corlinha, cor_letra_linha: cor_letra_linha,
+        data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+        , descricao: response[x][11]
+        , investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]),
+        EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
+      });
+    } else {
+
+      this.tabelaplanos.push({
+        id_PLANO_ESTRATEGICO: response[x][18],
+        numero: numero,
+        conclusao: 0,
+        id: response[x][0], cor: cor, cor_letra: cor_letra,
+        data_registo: (response[x][1] == null) ? "" : this.formatDate(response[x][1]),
+        data_objetivo: (response[x][2] == null) ? "" : this.formatDate(response[x][2]),
+        /*linha: response[x][0].id_LINHA, designacao: response[x][0].design_REFERENCIA, referencia: response[x][0].referencia, departamento_origem: response[x][2],*/
+        descricao: response[x][6],
+        objetivo: response[x][20],
+        ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
+        estado: this.getestado(response[x][7]), //cor: response[x][1],
+        utilizador: response[x][5],
+        filho: [{
+          conclusao: response[x][21],
+          numero: numero + '.1',
+          corlinha: corlinha, cor_letra_linha: cor_letra_linha,
+          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+          , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+          , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
+        }]
+      });
+
+    }
+  }
   //simular click para mostrar mensagem
   simular(element) {
     let event = new MouseEvent('click', { bubbles: true });
@@ -574,6 +688,10 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   getestado(valor) {
     if (valor == "E") {
       return "Em Elaboração"
+    } if (valor == "EX") {
+      return "Em Execução"
+    } if (valor == "EL") {
+      return "Em Alteração"
     } if (valor == "P") {
       return "Planeado"
     } else if (valor == "I") {
@@ -605,47 +723,78 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
 
-  gravar(estado = 'E') {
+  gravar(estado = 'E', observacoes = null) {
+    if (this.estado == 'EX') {
+      this.motivoAlteracao = null;
+      this.displayMotivoAlteracao = true;
+    } else {
+      this.gravar2(estado, observacoes);
+    }
+  }
+
+  gravar2(estado = 'E', observacoes = null) {
     var plano = new PE_MOV_CAB;
-    if (!this.novo) plano = this.plano;
-    plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
+    if (!this.novo) plano = this.plano_estrategico;
 
 
-    plano.data_MODIF = new Date();
-    plano.utz_MODIF = this.user;
 
-    plano.descricao = this.descricao;
+    plano.DATA_MODIF = new Date();
+    plano.UTZ_MODIF = this.user;
 
-    plano.unidade = this.unidade;
-    plano.departamento_ORIGEM = this.departamento_ORIGEM;
 
-    plano.data_OBJETIVO = this.data_OBJETIVO;
-    plano.ambito = this.ambito;
-    plano.origem = this.origem;
 
-    plano.estado = (estado == 'P') ? estado : this.estado;
+
+    plano.DEPARTAMENTO = this.departamento;
+    plano.ANO_PLANO = this.ano;
+    plano.TIPO = this.tipo;
+    plano.RESPONSAVEL = this.user;
+
+    plano.ESTADO = (estado == 'EX') ? estado : this.estado;
     if (this.novo) {
-      plano.estado = "E";
-      plano.data_CRIA = this.data_agora;
-      plano.utz_CRIA = this.user;
-      plano.ativo = true;
-      this.PAMOVCABService.create(plano).subscribe(
+      plano.ESTADO = "E";
+      plano.DATA_CRIA = this.data_agora;
+      plano.UTZ_CRIA = this.user;
+      plano.ATIVO = true;
+      this.PEMOVCABService.create(plano).subscribe(
         response => {
-          this.gravarTabelaFicheiros(response.id_PLANO_CAB);
+          this.gravarTabelaFicheiros(response.ID);
+          this.gravartabela_historico(response.ID, "Criou Plano", observacoes);
+          this.associarPlanos(response.ID);
         }, error => { console.log(error); });
     } else {
-      this.PAMOVCABService.update(plano).then(
+      this.PEMOVCABService.update(plano).then(
         response => {
-          this.gravarTabelaFicheiros(plano.id_PLANO_CAB);
+          this.gravarTabelaFicheiros(plano.ID);
+          if (estado == 'EX' && estado != this.estado) {
+            this.gravartabela_historico(plano.ID, "Atualizou Estado para Em Execução", observacoes);
+          } else {
+            this.gravartabela_historico(plano.ID, "Atualizou Plano", observacoes);
+          }
+
+          this.associarPlanos(plano.ID);
         }, error => { console.log(error); });
     }
 
   }
 
+  associarPlanos(id_plano) {
+    for (var x in this.tabelaplanos) {
+      if (this.tabelaplanos[x].id_PLANO_ESTRATEGICO == null) this.associarPlanos2(id_plano, this.tabelaplanos[x].id);
+    }
+  }
+
+  associarPlanos2(id_plano, id) {
+    this.PAMOVCABService.getPA_MOV_CABAssociarPlanoEstrategico(id_plano, id).subscribe(
+      response => {
+
+      }, error => { console.log(error); });
+  }
 
   gravarPLANOACOES(estado = 'E', cria_tarefas = false) {
-    var plano = new PE_MOV_CAB;
-    if (!this.novo) plano = this.plano;
+    estado = 'P';
+    cria_tarefas = true;
+    var plano = new PA_MOV_CAB;
+
     plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
 
 
@@ -662,23 +811,25 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     plano.data_OBJETIVO = this.data_OBJETIVO;
     plano.ambito = this.ambito;
     plano.origem = this.origem;
+    plano.objetivo = this.objetivo;
+    plano.id_PLANO_ESTRATEGICO = this.id_PLANO;
 
     plano.estado = (estado == 'P') ? estado : this.estado;
-    if (this.novo) {
-      plano.estado = "E";
-      plano.data_CRIA = this.data_agora;
-      plano.utz_CRIA = this.user;
-      plano.ativo = true;
-      this.PAMOVCABService.create(plano).subscribe(
-        response => {
-          this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas);
-        }, error => { console.log(error); });
-    } else {
+    /* if (this.novo) {*/
+    plano.estado = "E";
+    plano.data_CRIA = this.data_agora;
+    plano.utz_CRIA = this.utilizador;
+    plano.ativo = true;
+    this.PAMOVCABService.create(plano).subscribe(
+      response => {
+        this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas);
+      }, error => { console.log(error); });
+    /*} else {
       this.PAMOVCABService.update(plano).then(
         response => {
           this.gravalinhasPLANOACOES(plano.id_PLANO_CAB, plano.estado, cria_tarefas);
         }, error => { console.log(error); });
-    }
+    }*/
 
 
 
@@ -691,9 +842,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       var atualizou_datas = false;
       if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
         accoes = this.tabelaaccoes[x].dados;
-        if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
+        /*if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
           atualizou_datas = true;
-        }
+        }*/
       }
 
       accoes.id_PLANO_CAB = id;
@@ -749,20 +900,17 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
-              this.inicia(id);
-            }, error => { console.log(error); this.inicia(id); });
+              this.displayAddPlano = false;
+              this.carregarplanos('ID_PLANO_CAB', id);
+            }, error => { console.log(error); });
         }
       }
     }
 
-    if (this.novo) {
-      //this.simular(this.inputnotifi);
-      // this.gravarTabelaFicheiros(id);
-      //this.router.navigate(['/' + this.caminho + '/editar'], { queryParams: { id: id } });
-    } else {
-      this.simular(this.inputgravou);
-      this.router.navigate(['/' + this.caminho + '/view'], { queryParams: { id: id } });
-    }
+
+    this.simular(this.inputnotifi);
+    this.displayAddPlano = false;
+
 
   }
 
@@ -812,7 +960,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             // Defaults to 0 if no query param provided.
             back = params['redirect'] || 0;
           });
-
+        this.inicia(this.id_PLANO, true)
         if (back != 0) {
           this.router.navigate(['/' + this.caminho + '/view'], { queryParams: { id: id, redirect: back } });
         } else {
@@ -842,8 +990,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         if (count == total) {
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
-              this.inicia(id);
-            }, error => { console.log(error); this.inicia(id); });
+              this.displayAddPlano = false;
+              this.carregarplanos('ID_PLANO_CAB', id);
+            }, error => {
+              console.log(error); this.displayAddPlano = false;
+              this.carregarplanos('ID_PLANO_CAB', id);
+            });
 
         }
 
@@ -868,7 +1020,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           tarefa.observacoes = descricao;
 
           //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
-          this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
+          //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
         }
       }, error => { console.log(error); });
   }
@@ -880,25 +1032,81 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       header: 'Apagar Confirmação',
       icon: 'fa fa-trash',
       accept: () => {
+        if (this.tabelaplanos.length > 0) {
+          this.displayApagar = true;
+        } else {
+          this.anular();
+        }
 
-        var plano = new PE_MOV_CAB;
-
-        if (!this.novo) plano = this.plano;
-        plano.ativo = false;
-        plano.data_ANULA = new Date();
-        plano.utz_ANULA = this.user;
-        plano.estado = 'A';
-
-        this.PEMOVCABService.update(plano).then(
-          res => {
-            this.estadosaccoes(id);
-            this.simular(this.inputapagar)
-
-            this.router.navigate(['planosacao']);
-          },
-          error => { console.log(error); this.simular(this.inputerro); });
       }
     });
+  }
+
+
+  removerassociacao() {
+    this.anular();
+    for (var x in this.tabelaplanos) {
+      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.tabelaplanos[x].id).subscribe(
+        res => {
+        },
+        error => { console.log(error); })
+    }
+  }
+
+
+  anulardependecias() {
+    this.anular();
+    for (var x in this.tabelaplanos) {
+
+      this.PAMOVCABService.getById(this.tabelaplanos[x].id).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+
+          if (count > 0) {
+
+            var plano = new PA_MOV_CAB;
+            if (!this.novo) plano = response[0][0];;
+            plano.ativo = false;
+            plano.data_ANULA = new Date();
+            plano.utz_ANULA = this.user;
+            plano.estado = 'A';
+
+            this.anulardependecias2(plano, plano.id_PLANO_CAB);
+
+          }
+        }, error => { console.log(error); });
+
+
+    }
+  }
+
+  anulardependecias2(plano, id) {
+    this.PAMOVCABService.update(plano).then(
+      res => {
+        this.estadosaccoes(id);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
+  }
+
+  anular() {
+    var plano = new PE_MOV_CAB;
+
+    if (!this.novo) plano = this.plano_estrategico;
+    plano.ATIVO = false;
+    plano.DATA_ANULA = new Date();
+    plano.UTZ_ANULA = this.user;
+    plano.ESTADO = 'A';
+
+    this.PEMOVCABService.update(plano).then(
+      res => {
+        //this.estadosaccoes(id);
+        this.gravartabela_historico(this.id_PLANO, "Apagou Plano", null);
+        this.simular(this.inputapagar)
+
+        this.router.navigate([this.caminho]);
+        this.displayApagar = false;
+      },
+      error => { console.log(error); this.simular(this.inputerro); this.displayApagar = false; });
   }
 
   estadosaccoes(id) {
@@ -973,6 +1181,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   //abre popup para adicionar acções
   showDialogToAdd(index) {
     //this.novo = true;
+    this.displayAddPlano = false;
     this.resetclass();
     this.id_selected = 0;
     this.descricaoeng = "";
@@ -982,6 +1191,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.index_linha = index;
   }
 
+  onHide() {
+    if (this.displayAddPlano_show) {
+      this.displayAddPlano = true;
+    }
+  }
 
   gravardados() {
     this.resetclass();
@@ -1295,6 +1509,55 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
   }
 
+  validar() {
+
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Validar?',
+      header: 'Confirmação',
+      icon: 'fa fa-check',
+      accept: () => {
+        /*this.motivoAlteracao = null;
+        this.displayMotivoAlteracao = true;*/
+        this.gravar('EX');
+      }
+    });
+
+  }
+
+
+  cancelarPlano() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Cancelar?',
+      header: 'Confirmação',
+      icon: 'fa fa-check',
+      accept: () => {
+
+        var plano = new PE_MOV_CAB;
+
+        if (!this.novo) plano = this.plano_estrategico;
+
+        plano.DATA_MODIF = new Date();
+        plano.UTZ_MODIF = this.user;
+        plano.ESTADO = 'EL';
+
+        this.PEMOVCABService.update(plano).then(
+          res => {
+            //this.estadosaccoes(id);
+            this.gravartabela_historico(this.id_PLANO, "Cancelou Plano e Atualizou Estado para Em Alteração", null);
+            this.simular(this.inputgravou)
+            this.inicia(plano.ID, false);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+
+    });
+  }
+
+  atualizaestadoPLano() {
+    this.displayMotivoAlteracao = false;
+    this.gravar2(this.estado, this.motivoAlteracao);
+  }
+
   cancelar() {
     if (this.linhasSelecionadas != null && this.linhasSelecionadas.id_PLANO_LINHA != null) {
       this.confirmationService.confirm({
@@ -1353,6 +1616,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     accoes.item = tabelaaccoes.item;
     accoes.estado = estado;
     accoes.causa = tabelaaccoes.causa;
+    accoes.investimentos = tabelaaccoes.investimentos;
     accoes.responsavel = id_resp;
 
 
@@ -1386,8 +1650,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(accoes.id_PLANO_CAB).subscribe(
           response => {
 
-            this.inicia(tabelaaccoes.id_PLANO_CAB);
-          }, error => { console.log(error); this.inicia(tabelaaccoes.id_PLANO_CAB); });
+            this.inicia(tabelaaccoes.id_PLANO_CAB, true);
+          }, error => { console.log(error); this.inicia(tabelaaccoes.id_PLANO_CAB, true); });
         if (estado == 'D') {
           this.atualizaestadoTarefa(response.id_PLANO_LINHA, 'A');
         } else if (estado == 'V') {
@@ -1736,4 +2000,244 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     );
   }
 
+  gravartabela_historico(id, alteracoes, observacoes) {
+
+    var tabela = new PE_MOV_CAB_HISTORICO;
+    tabela.ID_PLANO_ESTRATEGICO = id;
+    tabela.DESCRICAO = alteracoes;
+    tabela.OBSERVACOES = observacoes;
+    tabela.DATA_CRIA = new Date();
+    tabela.UTZ_CRIA = this.user;
+    this.gravartabela_historico2(tabela);
+
+  }
+
+  gravartabela_historico2(tabela) {
+    this.PEMOVCABHISTORICOService.update(tabela).subscribe(
+      res => {
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  associar_plano() {
+    this.carregarlista(this.tipo);
+  }
+
+  criar_plano() {
+    this.tabelaaccoes = [];
+    this.id_LINHA = null;
+    this.unidade = null;
+    this.descricao = null;
+
+    this.estado = 'E';
+    this.estado_texto = this.getestado('E');
+    this.utilizador = null;
+    this.data_CRIA = this.formatDate(new Date());
+    this.hora_CRIA = new Date(new Date()).toLocaleTimeString().slice(0, 5);
+
+    this.id_LINHA = null
+    this.cor_linha = ""; ""
+    this.departamento_ORIGEM = null;
+
+    this.data_OBJETIVO = null;
+    this.ambito = this.ambito_atual;
+    this.origem = null;
+    this.objetivo = null;
+    this.displayAddPlano = true;
+    this.displayAddPlano_show = true;
+  }
+
+  onHidePlano() {
+    if (!this.displayAddPlano) {
+      this.displayAddPlano_show = false;
+    }
+  }
+
+  carregarlista(tipo) {
+    this.dados = [];
+    this.lista_expand = [];
+    //acoes_em_ATRASO
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false }];
+    this.PAMOVCABService.getPA_MOV_CABbyTIPO(tipo, filtros).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        //se existir banhos com o id
+        if (count > 0) {
+          for (var x in response) {
+            if (response[x][18] == null) this.adicionar_linhas(response, x);
+          }
+
+          this.dados = this.dados.slice();
+          this.displayAssociarPlano = true;
+        } else {
+          this.displayAssociarPlano = true;
+        }
+      }, error => { console.log(error); this.displayAssociarPlano = true; });
+
+  }
+
+  adicionar_linhas(response, x) {
+    var linha = this.dados.find(item => item.id == response[x][0]);
+    var cor = "";
+    var corlinha = "";
+    var cor_letra = "";
+    var cor_letra_linha = "";
+    var data = this.formatDate(new Date());
+
+    if (response[x][2] != null) {
+      if (new Date(response[x][2]).getTime() < new Date(data).getTime()) {
+        cor = "red";
+        cor_letra = "white";
+      } else if (new Date(response[x][2]).getTime() == new Date(data).getTime()) {
+        cor = "yellow";
+      }
+    }
+
+    if (new Date(response[x][8]).getTime() < new Date(data).getTime()) {
+      corlinha = "red";
+      cor_letra_linha = "white";
+    } else if (new Date(response[x][8]).getTime() == new Date(data).getTime()) {
+      corlinha = "yellow";
+    }
+
+    if (response[x][13] != "E" && response[x][13] != "P" && response[x][13] != null) { corlinha = ""; cor_letra_linha = ""; }
+    if (response[x][7] != "E" && response[x][7] != "P" && response[x][7] != null) { cor = ""; cor_letra = ""; }
+
+    if (linha) {
+      linha.filho.push({
+        corlinha: corlinha, cor_letra_linha: cor_letra_linha,
+        data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+        , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+      });
+    } else {
+      this.dados.push({
+        id: response[x][0], cor: cor, cor_letra: cor_letra,
+        data_registo: (response[x][1] == null) ? "" : this.formatDate(response[x][1]),
+        data_objetivo: (response[x][2] == null) ? "" : this.formatDate(response[x][2]),
+        /*linha: response[x][0].id_LINHA, designacao: response[x][0].design_REFERENCIA, referencia: response[x][0].referencia, departamento_origem: response[x][2],*/
+        descricao: response[x][6],
+        ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
+        estado: this.getestado(response[x][7]), //cor: response[x][1],
+        utilizador: response[x][5],
+        filho: [{
+          corlinha: corlinha, cor_letra_linha: cor_letra_linha,
+          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+          , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+        }]
+      });
+    }
+  }
+
+  listartudo() {
+    if (this.lista_expand.length == 0) {
+      this.lista_expand = this.dados;
+    } else {
+      this.lista_expand = [];
+    }
+
+  }
+
+
+
+  listartudo_planos() {
+    if (this.lista_expand_planos.length == 0) {
+      this.lista_expand_planos = this.dados;
+    } else {
+      this.lista_expand_planos = [];
+    }
+
+  }
+  //filtro coluna linha
+  filtrar(value, coluna, fil = false, filtro = "contains") {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      if (value == 0 && fil) {
+        value = "";
+      }
+      if (value != null) {
+        value = value.toString();
+      }
+
+      this.dataTableComponent.filter(value, coluna, filtro);
+
+
+    }, 250);
+  }
+
+  selectLinha(event) {
+    var id = event.data.id;
+    this.carregarplanos('ID_PLANO_CAB', id);
+    this.displayAssociarPlano = false;
+  }
+
+  associarplano(id) {
+    this.carregarplanos('ID_PLANO_CAB', id);
+    this.displayAssociarPlano = false;
+  }
+
+
+  removerplano(index, id) {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar esta linha?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+
+        this.removeplano(index, id);
+      }
+    });
+  }
+  removeplano(index, id) {
+    var tab = this.tabelaplanos[index];
+    if (tab.id_PLANO_ESTRATEGICO == null) {
+      this.tabelaplanos = this.tabelaplanos.slice(0, index).concat(this.tabelaplanos.slice(index + 1));
+      this.atualizanumeracao();
+      this.calcucarpercentagem_conclusao();
+    } else {
+      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(id).subscribe(
+        res => {
+          this.tabelaplanos = this.tabelaplanos.slice(0, index).concat(this.tabelaplanos.slice(index + 1));
+          this.atualizanumeracao();
+          this.calcucarpercentagem_conclusao();
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+    }
+  }
+
+  atualizanumeracao() {
+    this.numero = 1.1;
+
+    for (var x in this.tabelaplanos) {
+      this.tabelaplanos[x].numero = parseFloat(this.numero.toString());
+      for (var y in this.tabelaplanos[x].filho) {
+        this.tabelaplanos[x].filho[y].numero = parseFloat(this.numero.toString()) + '.' + (parseInt(y) + 1);
+      }
+      this.numero = this.numero + 0.1
+    }
+  }
+
+  calcucarpercentagem_conclusao() {
+    this.percentagem_conclusao;
+    var conclusao = 0;
+    var total = 0;
+    for (var x in this.tabelaplanos) {
+      var conclusao2 = 0;
+      var total2 = 0;
+      for (var y in this.tabelaplanos[x].filho) {
+        conclusao2 += this.tabelaplanos[x].filho[y].conclusao;
+        total2++;
+      }
+
+      this.tabelaplanos[x].conclusao = (total2 == 0) ? 0 : conclusao2 / total2;
+      conclusao += this.tabelaplanos[x].conclusao;
+      total++;
+    }
+
+    this.percentagem_conclusao = (total == 0) ? 0 : conclusao / total;
+  }
 }

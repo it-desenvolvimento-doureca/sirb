@@ -25,4 +25,8 @@ export class PA_MOV_LINHA {
     referencia: string;
     design_REFERENCIA: string;
     causa: string;
+
+    investimentos: string;
+    eficacia_CUMPRIMENTO_OBJETIVO: string;
+    seguir_LINHA: boolean;
 }

@@ -20,4 +20,7 @@ export class PA_MOV_CAB {
     data_OBJETIVO: Date;
     ambito: number;
     origem: string;
+
+    id_PLANO_ESTRATEGICO: number;
+    objetivo: string;
 }

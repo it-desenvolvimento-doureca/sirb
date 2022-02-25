@@ -15,14 +15,13 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   linhas: any;
   yearTimeout: any;
   @ViewChild(DataTable) dataTableComponent: DataTable;
-  estados = [{ label: "Sel. Estado", value: null }, { label: "Em Elaboração", value: "Em Elaboração" }, { label: "Planeado", value: "Planeado" },
+  estados = [{ label: "Sel. Estado", value: null }, { label: "Em Elaboração", value: "Em Elaboração" }, { label: "Em Execução", value: "Em Execução" }, { label: "Em Alteração", value: "Em Alteração" }, { label: "Planeado", value: "Planeado" },
   { label: "Desenvolvido/Realizado", value: "Desenvolvido/ Realizado" }, { label: "Controlado/Verificado", value: "Controlado/ Verificado" },
-  { label: "Aprovado/Finalizado", value: "Aprovado/ Finalizado" }, { value: "Rejeitado", label: "Rejeitado" }, { value: "Cancelado", label: "Cancelado" }];
+  { label: "Aprovado/Finalizado", value: "Aprovado/ Finalizado" }, { value: "Rejeitado", label: "Rejeitado" }, { value: "Cancelado", label: "Cancelado" }, { value: "Anulado", label: "Anulado" }];
   tipo: any;
   caminho: string;
   estado_filtro = [];
   lista_expand = [];
-  FastResponse = false;
   acoes_em_ATRASO = false;
 
   constructor(
@@ -86,7 +85,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
     }
 
     if (this.tipo != "T") {
-      this.estado_filtro = ["Em Elaboração", "Planeado", "Desenvolvido/ Realizado", "Controlado/ Verificado"];
+      this.estado_filtro = ["Em Elaboração", "Em Execução", "Em Alteração", "Planeado", "Desenvolvido/ Realizado", "Controlado/ Verificado",];
       this.filtrar(this.estado_filtro, "estado", true, "in");
     }
 
@@ -107,20 +106,25 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: this.FastResponse, EM_ATRASO: this.acoes_em_ATRASO }];
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: this.acoes_em_ATRASO }];
     this.PEMOVCABService.getPE_MOV_CABbyTIPO(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
-        //se existir banhos com o id
         if (count > 0) {
           for (var x in response) {
-            /*if (this.FastResponse) {
-              if (response[x][14]) this.adicionar_linhas(response, x);
-            } else {
-              this.adicionar_linhas(response, x);
-            }*/
-            this.adicionar_linhas(response, x);
-            //this.dataTableComponent.filter("Ativo", 'estado', 'equals');
+
+            if (!this.dados.find(item => item.id == response[x][19])) this.dados.push({
+              id: response[x][19],
+              data_registo: (response[x][22] == null) ? "" : this.formatDate(response[x][22]),
+              ano: response[x][20],
+              conclusao: response[x][26],
+              estado: this.getestado(response[x][23]),
+              utilizador: response[x][21]
+              , planos: []
+            });
+
+            if (response[x][0] != null) this.adicionar_linhas(response, x);
+
           }
 
           this.dados = this.dados.slice();
@@ -130,8 +134,9 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
 
   }
 
+
   adicionar_linhas(response, x) {
-    var linha = this.dados.find(item => item.id == response[x][0]);
+    var linha = this.dados.find(item => item.id == response[x][19]).planos.find(item => item.id == response[x][0]);
     var cor = "";
     var corlinha = "";
     var cor_letra = "";
@@ -162,9 +167,10 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+        , conclusao: response[x][24],
       });
     } else {
-      this.dados.push({
+      this.dados.find(item => item.id == response[x][19]).planos.push({
         id: response[x][0], cor: cor, cor_letra: cor_letra,
         data_registo: (response[x][1] == null) ? "" : this.formatDate(response[x][1]),
         data_objetivo: (response[x][2] == null) ? "" : this.formatDate(response[x][2]),
@@ -172,11 +178,12 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         descricao: response[x][6],
         ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
         estado: this.getestado(response[x][7]), //cor: response[x][1],
-        utilizador: response[x][5],
+        utilizador: response[x][5], conclusao: response[x][25],
         filho: [{
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+          , conclusao: response[x][24],
         }]
       });
     }
@@ -190,6 +197,10 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   getestado(valor) {
     if (valor == "E") {
       return "Em Elaboração"
+    } if (valor == "EX") {
+      return "Em Execução"
+    } if (valor == "EL") {
+      return "Em Alteração"
     } if (valor == "P") {
       return "Planeado"
     } else if (valor == "I") {
@@ -201,7 +212,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
     } else if (valor == "R") {
       return "Rejeitado"
     } else if (valor == "A") {
-      //return "Anulado"
+      return "Anulado"
     } else if (valor == "D") {
       return "Cancelado"
     }

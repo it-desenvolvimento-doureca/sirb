@@ -97,7 +97,7 @@ export class DosificacaoComponent implements OnInit {
   gravarlinhas(id) {
     for (var z in this.horarios) {
       var horario = new AB_DIC_DOSIFICACAO_HORARIOS_VERIFICACAO;
-      if (this.horarios[z].ID != null) {
+      if (this.horarios[z].id != null) {
         horario = this.horarios[z].dados;
       } else {
         horario.DATA_CRIA = new Date();
@@ -116,7 +116,7 @@ export class DosificacaoComponent implements OnInit {
   gravarlinhas2(obj, z) {
     this.ABDICDOSIFICACAOHORARIOSVERIFICACAOService.update(obj).subscribe(
       res => {
-        this.horarios[z].ID = res.ID;
+        this.horarios[z].id = res.ID;
       },
       error => { console.log(error); })
   }

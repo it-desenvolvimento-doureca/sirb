@@ -44,6 +44,14 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getDadosUtilizadorAll(): Observable<GER_UTILIZADORES[]> {
+    const url = webUrl.host + '/rest/sirb/getDadosUtilizadorAll';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getAllfromsilver() {
     const url = webUrl.host + '/rest/sirb/getusers';
     return this.http

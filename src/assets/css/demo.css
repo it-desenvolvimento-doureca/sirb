@@ -847,3 +847,15 @@ p-chart>div {
 .tabeladosificadores td {
     vertical-align: middle !important;
 }
+
+.coluna_conclusao .ui-progressbar .ui-progressbar-value {
+    background: #002169 !important;
+}
+
+.coluna_conclusao .ui-progressbar {
+    height: 10px;
+}
+
+.coluna_conclusao.tg-0pky .ui-progressbar {
+    bottom: -5px;
+}
