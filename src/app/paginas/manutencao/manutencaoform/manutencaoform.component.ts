@@ -149,6 +149,7 @@ export class ManutencaoformComponent implements OnInit {
   mostraAB = false
   mostraNiv = false;
   classif: any;
+  editarlinhas: boolean;
 
 
   constructor(private ABMOVMANUTENCAOETIQService: ABMOVMANUTENCAOETIQService, private UploadService: UploadService,
@@ -344,6 +345,9 @@ export class ManutencaoformComponent implements OnInit {
     this.disprevetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "prevetiquetas");
     this.disaddetiquetas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "addetiquetas");
     this.dishistorico = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "historico");
+
+    this.editarlinhas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == node + "editarlinhas");
+
 
     if (inicia) {
       if (this.estado == "Planeado") {
@@ -1064,7 +1068,7 @@ export class ManutencaoformComponent implements OnInit {
     if (this.i <= 0) {
       this.i = this.manutencao.length;
     }
-    this.i = this.i - 1; 
+    this.i = this.i - 1;
     if (this.url != null) {
       this.router.navigate(['manutencao/view'], { queryParams: { id: this.manutencao[this.i], classif: this.classif, redirect: "listagem" } });
     } else {
@@ -3111,8 +3115,10 @@ export class ManutencaoformComponent implements OnInit {
               OBSERVACOES: response[x][0].OBSERVACOES,
               executado: (response[x][0].DATA_EXECUCAO == null) ? false : true,
               dados: response[x][0],
+              editar: false
             });
           }
+
 
           this.dosificadores.sort((a, b) => (a.COD_TINA > b.COD_TINA) ? 1 : ((b.COD_TINA > a.COD_TINA) ? -1 : 0));
           this.dosificadores = this.dosificadores.slice();
@@ -3123,7 +3129,46 @@ export class ManutencaoformComponent implements OnInit {
 
   }
 
+  atualizarlinha(id) {
 
+    var index = this.dosificadores.findIndex(item => item.ID == id);
+    var dados = new AB_MOV_MANUTENCAO_DOSIFICADORES;
+    dados = this.dosificadores.find(item => item.ID == id).dados;
+
+    this.dosificadores[index].editar = false;
+    this.dosificadores[index].DOSEADOR_AB_NIVEL = dados.DOSEADOR_AB_NIVEL;
+    this.dosificadores[index].DOSEADOR_AB_REPOSICAO = dados.DOSEADOR_AB_REPOSICAO;
+    this.dosificadores[index].DOSEADOR_NIV_NIVEL = dados.DOSEADOR_NIV_NIVEL;
+    this.dosificadores[index].DOSEADOR_NIV_REPOSICAO = dados.DOSEADOR_NIV_REPOSICAO;
+    this.dosificadores[index].AMPERES = dados.AMPERES;
+    this.dosificadores[index].OBSERVACOES = dados.OBSERVACOES;
+  }
+
+  gravardados(id) {
+
+    var array = this.dosificadores.find(item => item.ID == id);
+
+
+    var MANUTENCAO_DOSIFICADORES = new AB_MOV_MANUTENCAO_DOSIFICADORES;
+    MANUTENCAO_DOSIFICADORES = array.dados;
+    MANUTENCAO_DOSIFICADORES.DATA_ULT_MODIF = new Date();
+    MANUTENCAO_DOSIFICADORES.UTZ_ULT_MODIF = this.user;
+    MANUTENCAO_DOSIFICADORES.OBSERVACOES = array.OBSERVACOES;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_AB_NIVEL = array.DOSEADOR_AB_NIVEL;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_AB_REPOSICAO = array.DOSEADOR_AB_REPOSICAO;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_NIV_NIVEL = array.DOSEADOR_NIV_NIVEL;
+    MANUTENCAO_DOSIFICADORES.DOSEADOR_NIV_REPOSICAO = array.DOSEADOR_NIV_REPOSICAO;
+    MANUTENCAO_DOSIFICADORES.AMPERES = array.AMPERES;
+
+    array.editar = false;
+
+    this.ABMOVMANUTENCAODOSIFICADORESService.update(MANUTENCAO_DOSIFICADORES).then(() => {
+      this.simular(this.inputgravou);
+    }, error => {
+      console.log(error); this.simular(this.inputerro);
+    });
+
+  }
   confirmar_linhaDosificadores(id) {
 
     var array = this.dosificadores.find(item => item.ID == id);

@@ -165,7 +165,7 @@
                                   '1.2-2'}}</span>
                               </td>
                               <td style="padding: 0px 4px 0px 0px; text-align: right;">
-                                <span style="display: block;"> {{linha.AMPERES }}</span>
+                                <span style="display: block;"> {{linha.AMPERES | number: '1.0-0' }}</span>
                               </td>
                               <td *ngIf="mostraAB" style="padding: 7px 4px 0px 0px; text-align: right;">
                                 <span style="display: block;"> {{linha.VARIACAO_AB | number: '1.2-2'}}</span>

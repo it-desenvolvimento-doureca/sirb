@@ -9,6 +9,7 @@
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+            [(selection)]="selectedRow"
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
               </p-column>

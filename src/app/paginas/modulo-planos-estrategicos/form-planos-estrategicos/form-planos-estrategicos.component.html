@@ -267,12 +267,15 @@
                         <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}" field="numero"
                           header="Nº">
                         </p-column>
-                        <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano">
+                        <p-column [style]="{'width':'14px','padding-left': '0','padding-right': '0'}"
+                          field="data_objetivo" header="Data Objetivo do Plano">
                           <ng-template let-car="rowData" pTemplate="body">
                             <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
                               {{car['data_objetivo']}}
                             </div>
                           </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'30px'}" field="descricao" header="Descrição">
                         </p-column>
                         <p-column [style]="{'width':'30px'}" field="objetivo" header="Objetivo">
                         </p-column>
@@ -282,7 +285,7 @@
                           header="% Conclusão" styleClass="coluna_conclusao">
                           <ng-template let-car="rowData" pTemplate="body">
                             <span>
-                              {{car['conclusao']}} %
+                              {{car['conclusao'] | number: '1.2-2'}} %
                             </span>
                             <p-progressBar [showValue]="false" [value]="car['conclusao']"></p-progressBar>
                           </ng-template>
@@ -291,11 +294,16 @@
                         <p-column [style]="{'width':'30px'}" field="estado" header="Estado">
                         </p-column>
 
-                        <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}">
+                        <p-column [style]="{'width':'10px','padding-left': '0','padding-right': '0'}">
                           <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                             <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
                               (click)="removerplano(index,car['id'])">
                               <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+
+                            <button type="button" class="btn btn-warning btn-xs" [disabled]="!modoedicao"
+                              title="Editar Plano" (click)="abrirplano(index,car['id'])">
+                              <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                           </ng-template>
                         </p-column>
@@ -323,7 +331,8 @@
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.investimentos}}</td>
-                                  <td class="tg-0pky coluna_conclusao" style="min-width: 120px;">{{col.conclusao}} %
+                                  <td class="tg-0pky coluna_conclusao" style="min-width: 120px;">{{col.conclusao |
+                                    number: '1.2-2' }} %
                                     <br>
                                     <p-progressBar [showValue]="false" [value]="col.conclusao"></p-progressBar>
                                   </td>
@@ -486,7 +495,9 @@
             <label style="display: -webkit-box;">Data Objetivo do Plano:</label>
             <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd"
               placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
-              [(ngModel)]="data_OBJETIVO" [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true">
+              [(ngModel)]="data_OBJETIVO" (onSelect)="data_OBJETIVO_DATA = data_OBJETIVO"
+              (onChange)="data_OBJETIVO_DATA = data_OBJETIVO" [ngModelOptions]="{standalone: true}" [showIcon]="false"
+              [required]="true">
             </p-calendar>
           </div>
 
@@ -569,7 +580,7 @@
               styleClass="ExcelTable2007" id="tabelaaccoes">
               <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO" [style]="{'width':'146px'}">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <p-calendar [minDate]="data_OBJETIVO"
+                  <p-calendar [maxDate]="data_OBJETIVO_DATA"
                     [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
                     [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                     [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
@@ -612,12 +623,14 @@
                 </ng-template>
               </p-column>
 
-              <p-column [editable]="false" field="investimentos" header="INVESTIMENTOS">
+              <p-column [editable]="true" field="investimentos" header="INVESTIMENTOS">
                 <ng-template let-col let-car="rowData" pTemplate="body">
+                  {{car[col.field]}}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
                   <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px; text-align: center;"
-                    [(ngModel)]="car['item']" [ngModelOptions]="{standalone: true}" type="text" maxlength="15"
+                    [(ngModel)]="car['investimentos']" [ngModelOptions]="{standalone: true}" type="text"
                     class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    title="Ex. Código da ação definida pelo relatório de auditoria."
                     ng-reflect-ng-class=" ui-inputtext ui-widget ui-stat">
                 </ng-template>
               </p-column>

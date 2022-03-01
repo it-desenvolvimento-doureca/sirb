@@ -79,4 +79,34 @@ export class PEMOVCABService {
     let body = res.json();
     return body;
   }
+
+  PE_GET_ACOES_EM_ATRASO(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/PE_GET_ACOES_EM_ATRASO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+  PE_GET_ULTIMAS_ACOES_CONCLUIDAS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/PE_GET_ULTIMAS_ACOES_CONCLUIDAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  PE_GET_ANALISE_CONTADORES(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/PE_GET_ANALISE_CONTADORES', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  PE_GET_ANALISE_GRAFICO(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/PE_GET_ANALISE_GRAFICO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
 }

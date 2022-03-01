@@ -112,9 +112,10 @@
                     <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2">
                       <label style="display: -webkit-box;">Data Objetivo do Plano:</label>
                       <p-calendar [disabled]="!modoedicao" [style]="{'height':'25px','width':'100%'}"
-                        (onChange)="data_OBJETIVO_DATA = data_OBJETIVO" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
-                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_OBJETIVO"
-                        [ngModelOptions]="{standalone: true}" [showIcon]="false" [required]="true"></p-calendar>
+                        (onSelect)="data_OBJETIVO_DATA = data_OBJETIVO" (onChange)="data_OBJETIVO_DATA = data_OBJETIVO"
+                        dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                        yearRange="2000:2050" [(ngModel)]="data_OBJETIVO" [ngModelOptions]="{standalone: true}"
+                        [showIcon]="false" [required]="true"></p-calendar>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2">
@@ -370,7 +371,7 @@
                             <!-- {{car[col.field] | date: 'yyyy-MM-dd'}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">-->
-                            <p-calendar [minDate]="data_OBJETIVO_DATA"
+                            <p-calendar [maxDate]="data_OBJETIVO_DATA"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
                               [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                               [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"

@@ -1,0 +1,158 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="background: none; box-shadow: none;">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Análise Planos Estratégicos</h4>
+          </div>
+          <div class="card-content">
+
+            <section id="content" class="content-container animate-fade-up">
+              <div class="page page-dashboard ng-scope" data-ng-controller="DashboardCtrl">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="panel panel-default panel-minimal">
+                      <div class="panel-body analiseplanosestrategicos">
+                        <label
+                          style="color: black; margin-top: 10px; margin-bottom: 10px; padding-right: 11px;">Ano:</label>
+                        <p-dropdown [options]="anos" class="droplinha" [style]="{'width':'185px'}"
+                          (onChange)="atualiza()" [(ngModel)]="ano" [ngModelOptions]="{standalone: true}"
+                          [required]="true">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="text-center">
+                    <!-- Stats -->
+                    <div class="col-lg-3 col-sm-6">
+                      <div class="panel mini-box">
+                        <div class="box-info">
+                          <p class="size-h2" style="margin-top: 10px; font-weight: 800;">N.º Ações Planeadas</p>
+                          <p class="text-muted"><span class="ng-scope">{{accoes_planeadas}}</span></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                      <div class="panel mini-box">
+                        <div class="box-info">
+                          <p class="size-h2" style="margin-top: 10px; font-weight: 800;">% Execução Planeada </p>
+                          <p class="text-muted"><span class="ng-scope">{{execucao_planeada}} %</span></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                      <div class="panel mini-box">
+                        <div class="box-info">
+                          <p class="size-h2" style="margin-top: 10px; font-weight: 800;">% Execução Atual </p>
+                          <p class="text-muted"><span class="ng-scope" style="color: red;">{{execucao_atual}} %</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                      <div class="panel mini-box">
+                        <div class="box-info">
+                          <p class="size-h2" style="margin-top: 10px; font-weight: 800;">Nº Ações em Atraso</p>
+                          <p class="text-muted"><span class="ng-scope" style="color: red;">{{accoes_atraso}}</span></p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end stats -->
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="panel panel-default panel-minimal">
+                      <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
+                        <p-chart type="horizontalBar" [data]="data1" [options]="options1" height="350">
+                        </p-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-body table-responsive">
+                        <label style="color: #666666;  width: 100%; text-align: center;">Ações em Atraso</label>
+                        <table class="table tabelahometarefa2" style="font-size: 12px;">
+                          <thead>
+                            <tr>
+                              <th>Ação</th>
+                              <th>Responsável</th>
+                              <th>Departamento</th>
+                              <th style="width: 101px;">Data Objetivo</th>
+                              <th style="width: 60px;">Nº Dias Atraso</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of tabela1">
+                              <td>{{item.acao}}</td>
+                              <td>{{item.responsavel}}</td>
+                              <td>{{item.departamento}}</td>
+                              <td>{{item.data_objetivo}}</td>
+                              <td style="text-align: right;">{{item.n_dias}}</td>
+                            </tr>
+                            <tr *ngIf="tabela1.length == 0">
+                              <td colspan="5" style="text-align: center;">Sem dados</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <label *ngIf="vermais1"
+                          style="cursor: pointer;  width: 100%; text-align: center; text-decoration: underline; color: orange;"
+                          (click)="carregatabela1(false)">Ver Mais</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-body table-responsive">
+                        <label style="color: #666666; width: 100%; text-align: center;">Últimas Ações Concluídas</label>
+                        <table class="table tabelahometarefa2" style="font-size: 12px;">
+                          <thead>
+                            <tr>
+                              <th>Ação</th>
+                              <th>Responsável</th>
+                              <th>Departamento</th>
+                              <th style="width: 101px;">Data Objetivo</th>
+                              <th style="width: 101px;">Data Conclusão</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of tabela2">
+                              <td>{{item.acao}}</td>
+                              <td>{{item.responsavel}}</td>
+                              <td>{{item.departamento}}</td>
+                              <td>{{item.data_objetivo}}</td>
+                              <td>{{item.data_conclusao}}</td>
+                            </tr>
+                            <tr *ngIf="tabela2.length == 0">
+                              <td colspan="5" style="text-align: center;">Sem dados</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <label *ngIf="vermais2"
+                          style="cursor: pointer;  width: 100%; text-align: center; text-decoration: underline; color: orange;"
+                          (click)="carregatabela2(false)">Ver Mais</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

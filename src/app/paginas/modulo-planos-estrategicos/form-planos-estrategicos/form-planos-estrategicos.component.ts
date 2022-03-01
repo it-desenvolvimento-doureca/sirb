@@ -152,6 +152,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   motivoAlteracao: any;
   displayMotivoAlteracao: boolean;
   displayApagar: boolean;
+  plano: any = null;
+  data_OBJETIVO_DATA: Date;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -173,7 +175,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   ngOnInit() {
 
-    for (var x = 2005; x <= 2075; x++) {
+    for (var x = 2021; x <= 2075; x++) {
       this.anos.push({ value: x, label: x })
     }
 
@@ -523,7 +525,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             this.hora_CRIA = new Date(response[x][0].data_CRIA).toLocaleTimeString().slice(0, 5);
 
 
-            this.departamento = response[x][0].departamento_ORIGEM;
+            this.departamento = response[x][0].departamento;
 
 
 
@@ -557,13 +559,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           }
 
           //if (this.estado == 'A') this.globalVar.setdisApagar(true);
-          if (atualizalinhas) this.carregarplanos('ID_PLANO_ESTRATEGICO', id);
+          if (atualizalinhas) this.carregarplanos('ID_PLANO_ESTRATEGICO', id, false);
           if (atualizalinhas) this.carregatabelaFiles(id);
         }
       }, error => { console.log(error); });
   }
 
-  carregarplanos(tipo, id) {
+  carregarplanos(tipo, id, updateplano) {
     if (tipo == 'ID_PLANO_ESTRATEGICO') {
       this.tabelaplanos = [];
       this.lista_expand_planos = [];
@@ -577,7 +579,34 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         if (count > 0) {
           for (var x in response) {
             var linha = this.tabelaplanos.find(item => item.id == response[x][0]);
+
             if (!linha && (parseInt(x) != 0 || tipo != 'ID_PLANO_ESTRATEGICO')) this.numero = this.numero + 0.1
+
+            if (linha && updateplano && parseInt(x) == 0) {
+              var cor = "";
+              var cor_letra = "";
+              var data = this.formatDate(new Date());
+              if (response[x][2] != null) {
+                if (new Date(response[x][2]).getTime() < new Date(data).getTime()) {
+                  cor = "red";
+                  cor_letra = "white";
+                } else if (new Date(response[x][2]).getTime() == new Date(data).getTime()) {
+                  cor = "yellow";
+                }
+              }
+              linha.cor = cor;
+              linha.cor_letra = cor_letra;
+              linha.data_registo = (response[x][1] == null) ? "" : this.formatDate(response[x][1]);
+              linha.data_objetivo = (response[x][2] == null) ? "" : this.formatDate(response[x][2]);
+
+              linha.descricao = response[x][6];
+              linha.objetivo = response[x][20];
+              linha.ambito = response[x][15];
+              linha.origem = response[x][4];
+              linha.estado = this.getestado(response[x][7]);
+              linha.utilizador = response[x][5];
+              linha.filho = [];
+            }
             this.carregarlinhas(response, x, parseFloat(this.numero.toString()).toFixed(1));
           }
           this.tabelaplanos = this.tabelaplanos.slice();
@@ -791,9 +820,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
   gravarPLANOACOES(estado = 'E', cria_tarefas = false) {
+    var novo = true;
     estado = 'P';
     cria_tarefas = true;
     var plano = new PA_MOV_CAB;
+
+    if (this.plano != null) { plano = this.plano; novo = false }
 
     plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
 
@@ -815,28 +847,28 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     plano.id_PLANO_ESTRATEGICO = this.id_PLANO;
 
     plano.estado = (estado == 'P') ? estado : this.estado;
-    /* if (this.novo) {*/
-    plano.estado = "E";
-    plano.data_CRIA = this.data_agora;
-    plano.utz_CRIA = this.utilizador;
-    plano.ativo = true;
-    this.PAMOVCABService.create(plano).subscribe(
-      response => {
-        this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas);
-      }, error => { console.log(error); });
-    /*} else {
+    if (novo) {
+      plano.estado = "E";
+      plano.data_CRIA = this.data_agora;
+      plano.utz_CRIA = this.utilizador;
+      plano.ativo = true;
+      this.PAMOVCABService.create(plano).subscribe(
+        response => {
+          this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas, false);
+        }, error => { console.log(error); });
+    } else {
       this.PAMOVCABService.update(plano).then(
         response => {
-          this.gravalinhasPLANOACOES(plano.id_PLANO_CAB, plano.estado, cria_tarefas);
+          this.gravalinhasPLANOACOES(plano.id_PLANO_CAB, plano.estado, cria_tarefas, true);
         }, error => { console.log(error); });
-    }*/
+    }
 
 
 
   }
 
 
-  gravalinhasPLANOACOES(id, estado, cria_tarefas) {
+  gravalinhasPLANOACOES(id, estado, cria_tarefas, updateplano) {
     for (var x in this.tabelaaccoes) {
       var accoes = new PA_MOV_LINHA;
       var atualizou_datas = false;
@@ -870,6 +902,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       accoes.tipo_ACAO = this.tabelaaccoes[x].tipo_ACAO;
       accoes.item = this.tabelaaccoes[x].item;
       accoes.referencia = this.tabelaaccoes[x].referencia;
+      accoes.investimentos = this.tabelaaccoes[x].investimentos;
       accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
       accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
       accoes.causa = this.tabelaaccoes[x].causa;
@@ -894,21 +927,25 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
 
       if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia);
+        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano);
       } else {
         if (parseInt(x) + 1 == this.tabelaaccoes.length) {
 
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
               this.displayAddPlano = false;
-              this.carregarplanos('ID_PLANO_CAB', id);
+              this.carregarplanos('ID_PLANO_CAB', id, updateplano);
             }, error => { console.log(error); });
         }
       }
     }
 
 
-    this.simular(this.inputnotifi);
+    if (updateplano) {
+      this.simular(this.inputgravou);
+    } else {
+      this.simular(this.inputnotifi);
+    }
     this.displayAddPlano = false;
 
 
@@ -972,7 +1009,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
-  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia) {
+  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, updateplano) {
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -991,10 +1028,10 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
               this.displayAddPlano = false;
-              this.carregarplanos('ID_PLANO_CAB', id);
+              this.carregarplanos('ID_PLANO_CAB', id, updateplano);
             }, error => {
               console.log(error); this.displayAddPlano = false;
-              this.carregarplanos('ID_PLANO_CAB', id);
+              this.carregarplanos('ID_PLANO_CAB', id, updateplano);
             });
 
         }
@@ -1020,7 +1057,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           tarefa.observacoes = descricao;
 
           //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
-          //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
+          this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
         }
       }, error => { console.log(error); });
   }
@@ -1245,8 +1282,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       logs.descricao = "Adicionada nova Tarefa";
       this.criaLogs(logs);
       var email_para = email_p;
-      this.enviarEvento(response.data_INICIO, response.id_TAREFA, "Ao Criar Tarefa", email_para, referencia, id
-        , this.data_CRIA, nome_accao, descricao);
+      /* this.enviarEvento(response.data_INICIO, response.id_TAREFA, "Ao Criar Tarefa", email_para, referencia, id
+         , this.data_CRIA, nome_accao, descricao);*/
 
     }, error => {
       console.log(error);
@@ -2027,6 +2064,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   criar_plano() {
     this.tabelaaccoes = [];
+    this.plano = null;
     this.id_LINHA = null;
     this.unidade = null;
     this.descricao = null;
@@ -2171,15 +2209,104 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   selectLinha(event) {
     var id = event.data.id;
-    this.carregarplanos('ID_PLANO_CAB', id);
+    this.carregarplanos('ID_PLANO_CAB', id, false);
     this.displayAssociarPlano = false;
   }
 
   associarplano(id) {
-    this.carregarplanos('ID_PLANO_CAB', id);
+    this.carregarplanos('ID_PLANO_CAB', id, false);
     this.displayAssociarPlano = false;
   }
 
+
+  abrirplano(index, id) {
+    this.tabelaaccoes = [];
+
+    this.PAMOVCABService.getById(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+          for (var x in response) {
+            this.plano = response[x][0];
+
+
+            this.id_LINHA = response[x][0].id_LINHA;
+            this.unidade = response[x][0].unidade;
+            this.descricao = response[x][0].descricao;
+
+            this.estado = (response[x][0].estado);
+            this.estado_texto = this.getestado(response[x][0].estado);
+            this.utilizador = response[x][0].utz_CRIA;
+            this.data_CRIA = this.formatDate(response[x][0].data_CRIA);
+            this.hora_CRIA = new Date(response[x][0].data_CRIA).toLocaleTimeString().slice(0, 5);
+
+
+            this.id_LINHA = (this.id_LINHA == null) ? null : this.linhas.find(item => item.value != null && item.value.id === response[x][0].id_LINHA).value;
+            this.cor_linha = (this.id_LINHA == null) ? "" : this.linhas.find(item => item.value != null && item.value.id === response[x][0].id_LINHA).value.cor;
+            this.departamento_ORIGEM = response[x][0].departamento_ORIGEM;
+
+            this.data_OBJETIVO = (response[x][0].data_OBJETIVO == null) ? null : this.formatDate(response[x][0].data_OBJETIVO);
+            this.data_OBJETIVO_DATA = (response[x][0].data_OBJETIVO == null) ? null : new Date(response[x][0].data_OBJETIVO);
+            this.ambito = response[x][0].ambito;
+            this.origem = response[x][0].origem;
+
+            this.objetivo = response[x][0].objetivo;
+
+          }
+
+
+          this.carregarlinhasAcoes(id);
+          this.displayAddPlano = true;
+          this.displayAddPlano_show = true;
+        }
+      }, error => { console.log(error); });
+  }
+
+  carregarlinhasAcoes(id) {
+    this.tabelaaccoes = [];
+    this.linhasSelecionadas = null;
+    this.PAMOVLINHAService.getById(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+          for (var x in response) {
+
+            var accao = null;
+            if (this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO)) {
+              accao = this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO).label
+            }
+
+            var departamento = null;
+            if (this.drop_departamentos.find(item => item.value == response[x][0].departamento)) {
+              departamento = this.drop_departamentos.find(item => item.value == response[x][0].departamento).label
+            }
+
+            var referencia_campo = (response[x][0].referencia == null) ? null : { value: response[x][0].referencia, label: response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA, descricao: response[x][0].design_REFERENCIA }
+
+            this.tabelaaccoes.push({
+              dados: response[x][0],
+              id_PLANO_LINHA: response[x][0].id_PLANO_LINHA, id_ACCAO: response[x][0].id_ACCAO, responsavel: response[x][0].responsavel,
+              data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO)
+              , hora_ACCAO: response[x][0].hora_ACCAO, id_PLANO_CAB: response[x][0].id_PLANO_CAB, descricao: accao,
+              id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
+              fastresponse: response[x][0].fastresponse, encaminhado: response[x][1], prioridade: response[x][0].prioridade, estado: response[x][0].estado,
+              unidade: response[x][0].unidade,
+              filteredreferencias: [],
+              referencia_campo: referencia_campo,
+              referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
+              causa: response[x][0].causa, investimentos: response[x][0].investimentos,
+              descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
+              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
+            });
+
+          }
+
+          this.tabelaaccoes = this.tabelaaccoes.slice();
+        }
+      }, error => { console.log(error); });
+  }
 
   removerplano(index, id) {
     this.confirmationService.confirm({
@@ -2192,6 +2319,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       }
     });
   }
+
   removeplano(index, id) {
     var tab = this.tabelaplanos[index];
     if (tab.id_PLANO_ESTRATEGICO == null) {
@@ -2240,4 +2368,6 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
     this.percentagem_conclusao = (total == 0) ? 0 : conclusao / total;
   }
+
+
 }

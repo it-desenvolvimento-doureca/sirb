@@ -397,6 +397,7 @@ import { FormPlanosEstrategicosComponent } from './paginas/modulo-planos-estrate
 import { PEMOVFICHEIROSService } from './servicos/pe-mov-ficheiros.service';
 import { PEMOVCABService } from './servicos/pe-mov-cab.service';
 import { PEMOVCABHISTORICOService } from './servicos/pe-mov-cab-historico.service';
+import { DashboardComponent } from './paginas/modulo-planos-estrategicos/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -727,6 +728,7 @@ const routes: Routes = [
       { path: 'editar', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: FormplanosComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
+  { path: 'analise_planosestrategicos', component: DashboardComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Planos Estratégicos" } },
 
   {
     path: 'planosestrategicos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Planos Estratégicos" },
@@ -1235,7 +1237,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DosificacaoComponent,
     DosificadoresComponent,
     ListaPlanosEstrategicosComponent,
-    FormPlanosEstrategicosComponent
+    FormPlanosEstrategicosComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

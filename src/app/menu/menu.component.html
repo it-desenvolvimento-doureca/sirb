@@ -66,7 +66,8 @@
 
                 <!-- MENU Planos Estratégicos -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('planosestrategicos',true)">
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('planosestrategicos',true) || isLinkActive('analise_planosestrategicos',true)">
                         <h4 class="panel-title">
                             <a id="node170" data-toggle="collapse" data-parent="#accordion"
                                 href="#collapsePlanosEstrategicos">
@@ -84,6 +85,16 @@
                                             class="collapsed" [routerLink]="['/planosestrategicos']"
                                             [ngClass]="{ 'active':  isLinkActive('/planosestrategicos',true) }">
                                             <a>Planos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node17012" data-toggle="collapse"
+                                            data-target="#Analise_planosestrategicos" class="collapsed"
+                                            [routerLink]="['/analise_planosestrategicos']"
+                                            [ngClass]="{ 'active':  isLinkActive('/analise_planosestrategicos',true) }">
+                                            <a>Análise</a>
                                         </li>
                                     </td>
                                 </tr>

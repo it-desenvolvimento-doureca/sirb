@@ -1,0 +1,10 @@
+.mini-box {
+    color: rgb(238, 238, 238) !important;
+    background-color: rgb(55, 65, 75) !important;
+    border: 2px solid rgb(255 169 31);
+}
+
+.mini-box span {
+    color: beige;
+    font-weight: 600;
+}

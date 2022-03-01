@@ -29,6 +29,7 @@ export class TipologiaDosificadoresComponent implements OnInit {
   nome: any;
   dados: any;
   departs: any[];
+  selectedRow: any[];
 
   constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
     private ABDICTIPOTIPOLOGIADOSIFICADORESService: ABDICTIPOTIPOLOGIADOSIFICADORESService,
@@ -158,6 +159,7 @@ export class TipologiaDosificadoresComponent implements OnInit {
 
   //ao clicar na tabela abrir popup para editar
   onRowSelect(event) {
+
     this.dados = event.data.dados;
     this.id_depart_selected = event.data.id;
     this.nome = event.data.nome
@@ -209,6 +211,7 @@ export class TipologiaDosificadoresComponent implements OnInit {
       obj.COR = this.objetivos[z].COR;
 
       this.gravarlinhas2(obj);
+      this.selectedRow = [];
     }
   }
 
