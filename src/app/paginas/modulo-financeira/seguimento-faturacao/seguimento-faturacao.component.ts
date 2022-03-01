@@ -164,7 +164,7 @@ export class SeguimentoFaturacaoComponent implements OnInit {
         datasetsgraf.push({ label: 'Realizado', data: data_real, fill: false, borderColor: this.getRandomColor(4), borderWidth: 2 });
         datasetsgraf.push({ label: 'Encomendado (inclui atrasos)', data: data_enc, fill: false, borderColor: this.getRandomColor(5), borderWidth: 2 });
         datasetsgraf.push({ label: 'Atraso', data: data_atras, fill: false, borderColor: this.getRandomColor(6), borderWidth: 2 });
-        datasetsgraf.push({ label: 'Valor de strock PF', data: data_stock, fill: false, borderColor: this.getRandomColor(7), borderWidth: 2 });
+        datasetsgraf.push({ label: 'Valor de stock PF', data: data_stock, fill: false, borderColor: this.getRandomColor(7), borderWidth: 2 });
         this.carregagraficos(labelgraf, datasetsgraf)
       },
       error => console.log(error));
