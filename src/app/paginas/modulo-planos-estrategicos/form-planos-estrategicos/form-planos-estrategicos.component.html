@@ -141,7 +141,7 @@
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px; width: 15%;" class="form-group col-md-2 ">
-                      <label>% Conlusão:</label>
+                      <label>% Conclusão:</label>
                       <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="percentagem_conclusao"
                         [ngModelOptions]="{standalone: true}">
                     </div>
@@ -416,7 +416,7 @@
 
 <!-- Modal dados-->
 
-<p-dialog header="Ações de Planos de Ação" [responsive]="true" [positionTop]="0"
+<p-dialog header="Ações de Planos de Ação" [responsive]="true" [positionTop]="0" (onHide)="onHide()"
   [style]="{'max-height':'99vh','width': '100%'}" appendTo="body" [closeOnEscape]="true" [draggable]="false"
   [(visible)]="displayAddAccao" [modal]="true">
 
@@ -602,7 +602,7 @@
               </p-column>
 
 
-              <p-column [editable]="true" field="descricao" [style]="{'width':'245px'}" header="ACÇÃO">
+              <p-column [editable]="true" field="descricao" [style]="{'width':'425px'}" header="AÇÃO">
                 <ng-template let-col let-car="rowData" pTemplate="body">
                   <input [disabled]="!modoedicao"
                     style="padding: 5px 4px;height: 25px; color: transparent; text-shadow: 0 0 0 black;"

@@ -90,7 +90,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   caminho: string;
 
   ambitos = [];
-  percentagem_conclusao = 0;
+  percentagem_conclusao = '0';
   ambito = null;
   disEditar: boolean;
   disCriar: boolean;
@@ -654,7 +654,17 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
       });
     } else {
-
+      var filho = [];
+      if (response[x][10] != null) {
+        filho = [{
+          conclusao: response[x][21],
+          numero: numero + '.1',
+          corlinha: corlinha, cor_letra_linha: cor_letra_linha,
+          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+          , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+          , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
+        }];
+      }
       this.tabelaplanos.push({
         id_PLANO_ESTRATEGICO: response[x][18],
         numero: numero,
@@ -668,14 +678,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
         estado: this.getestado(response[x][7]), //cor: response[x][1],
         utilizador: response[x][5],
-        filho: [{
-          conclusao: response[x][21],
-          numero: numero + '.1',
-          corlinha: corlinha, cor_letra_linha: cor_letra_linha,
-          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
-          , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
-        }]
+        filho: filho
       });
 
     }
@@ -869,77 +872,80 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
 
   gravalinhasPLANOACOES(id, estado, cria_tarefas, updateplano) {
-    for (var x in this.tabelaaccoes) {
-      var accoes = new PA_MOV_LINHA;
-      var atualizou_datas = false;
-      if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
-        accoes = this.tabelaaccoes[x].dados;
-        /*if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
-          atualizou_datas = true;
-        }*/
-      }
+    if (this.tabelaaccoes.length > 0) {
+      for (var x in this.tabelaaccoes) {
+        var accoes = new PA_MOV_LINHA;
+        var atualizou_datas = false;
+        if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
+          accoes = this.tabelaaccoes[x].dados;
+          /*if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
+            atualizou_datas = true;
+          }*/
+        }
 
-      accoes.id_PLANO_CAB = id;
-
-
-      var id_resp = this.tabelaaccoes[x].responsavel;
-      /* var tipo = "";
-       if (this.tabelaaccoes[x].responsavel.charAt(0) == 'u' || this.tabelaaccoes[x].responsavel.charAt(0) == 's') {
-         tipo = this.tabelaaccoes[x].responsavel.charAt(0);
-         id_resp = this.tabelaaccoes[x].responsavel.substr(1);
-       }*/
+        accoes.id_PLANO_CAB = id;
 
 
-      accoes.id_PLANO_LINHA = this.tabelaaccoes[x].id_PLANO_LINHA;
-      accoes.departamento = this.tabelaaccoes[x].id_departamento;
-      accoes.descricao = this.tabelaaccoes[x].observacao;
-      accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
-      accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
-      accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
-      accoes.fastresponse = this.tabelaaccoes[x].fastresponse;
-      accoes.prioridade = this.tabelaaccoes[x].prioridade;
-      accoes.unidade = this.tabelaaccoes[x].unidade;
-      accoes.tipo_ACAO = this.tabelaaccoes[x].tipo_ACAO;
-      accoes.item = this.tabelaaccoes[x].item;
-      accoes.referencia = this.tabelaaccoes[x].referencia;
-      accoes.investimentos = this.tabelaaccoes[x].investimentos;
-      accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
-      accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
-      accoes.causa = this.tabelaaccoes[x].causa;
-
-      accoes.responsavel = id_resp;
-      var novo = false;
-      if (accoes.id_PLANO_LINHA == null) novo = true;
-      var email_p = "";
-
-      if (novo && estado != 'E') {
-        accoes.estado = 'P';
-      } else if (estado == 'P' && this.tabelaaccoes[x].estado != "V" && this.tabelaaccoes[x].estado != "C" && this.tabelaaccoes[x].estado != "D") {
-        accoes.estado = 'P';
-      } else {
-        accoes.estado = this.tabelaaccoes[x].estado;
-      }
-
-      var utz = this.drop_utilizadores.find(item => item.value == id_resp);
-      if (utz) email_p = utz.email;
+        var id_resp = this.tabelaaccoes[x].responsavel;
+        /* var tipo = "";
+         if (this.tabelaaccoes[x].responsavel.charAt(0) == 'u' || this.tabelaaccoes[x].responsavel.charAt(0) == 's') {
+           tipo = this.tabelaaccoes[x].responsavel.charAt(0);
+           id_resp = this.tabelaaccoes[x].responsavel.substr(1);
+         }*/
 
 
-      var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
+        accoes.id_PLANO_LINHA = this.tabelaaccoes[x].id_PLANO_LINHA;
+        accoes.departamento = this.tabelaaccoes[x].id_departamento;
+        accoes.descricao = this.tabelaaccoes[x].observacao;
+        accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
+        accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
+        accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
+        accoes.fastresponse = this.tabelaaccoes[x].fastresponse;
+        accoes.prioridade = this.tabelaaccoes[x].prioridade;
+        accoes.unidade = this.tabelaaccoes[x].unidade;
+        accoes.tipo_ACAO = this.tabelaaccoes[x].tipo_ACAO;
+        accoes.item = this.tabelaaccoes[x].item;
+        accoes.referencia = this.tabelaaccoes[x].referencia;
+        accoes.investimentos = this.tabelaaccoes[x].investimentos;
+        accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
+        accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
+        accoes.causa = this.tabelaaccoes[x].causa;
 
-      if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano);
-      } else {
-        if (parseInt(x) + 1 == this.tabelaaccoes.length) {
+        accoes.responsavel = id_resp;
+        var novo = false;
+        if (accoes.id_PLANO_LINHA == null) novo = true;
+        var email_p = "";
 
-          this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
-            response => {
-              this.displayAddPlano = false;
-              this.carregarplanos('ID_PLANO_CAB', id, updateplano);
-            }, error => { console.log(error); });
+        if (novo && estado != 'E') {
+          accoes.estado = 'P';
+        } else if (estado == 'P' && this.tabelaaccoes[x].estado != "V" && this.tabelaaccoes[x].estado != "C" && this.tabelaaccoes[x].estado != "D") {
+          accoes.estado = 'P';
+        } else {
+          accoes.estado = this.tabelaaccoes[x].estado;
+        }
+
+        var utz = this.drop_utilizadores.find(item => item.value == id_resp);
+        if (utz) email_p = utz.email;
+
+
+        var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
+
+        if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
+          this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano);
+        } else {
+          if (parseInt(x) + 1 == this.tabelaaccoes.length) {
+
+            this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
+              response => {
+                this.displayAddPlano = false;
+                this.carregarplanos('ID_PLANO_CAB', id, updateplano);
+              }, error => { console.log(error); });
+          }
         }
       }
+    } else {
+      this.carregarplanos('ID_PLANO_CAB', id, updateplano);
     }
-
 
     if (updateplano) {
       this.simular(this.inputgravou);
@@ -1218,19 +1224,25 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   //abre popup para adicionar acções
   showDialogToAdd(index) {
     //this.novo = true;
+
+    this.displayAddPlano_show = true;
     this.displayAddPlano = false;
     this.resetclass();
     this.id_selected = 0;
     this.descricaoeng = "";
     this.descricaopt = "";
     this.descricaofr = "";
-    this.displayAddAccao = true;
+    this.yearTimeout = setTimeout(() => {
+      this.displayAddAccao = true;
+    }, 100);
+
     this.index_linha = index;
   }
 
   onHide() {
     if (this.displayAddPlano_show) {
       this.displayAddPlano = true;
+      this.displayAddPlano_show = false;
     }
   }
 
@@ -1258,6 +1270,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           this.tabelaaccoes[this.index_linha].id_ACCAO = response.id;
           this.tabelaaccoes[this.index_linha].descricao = response.descricao_PT;
           this.displayAddAccao = false;
+          this.displayAddPlano = true;
+          this.displayAddPlano_show = false;
+
           this.simular(this.inputgravou);
         },
           error => { console.log(error); this.simular(this.inputerro); });
@@ -2088,9 +2103,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
   onHidePlano() {
-    if (!this.displayAddPlano) {
-      this.displayAddPlano_show = false;
-    }
+
   }
 
   carregarlista(tipo) {
@@ -2341,11 +2354,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.numero = 1.1;
 
     for (var x in this.tabelaplanos) {
-      this.tabelaplanos[x].numero = parseFloat(this.numero.toString());
+      this.tabelaplanos[x].numero = parseFloat(this.numero.toString()).toFixed(1);
       for (var y in this.tabelaplanos[x].filho) {
-        this.tabelaplanos[x].filho[y].numero = parseFloat(this.numero.toString()) + '.' + (parseInt(y) + 1);
+        this.tabelaplanos[x].filho[y].numero = parseFloat(this.numero.toString()).toFixed(1) + '.' + (parseInt(y) + 1);
       }
-      this.numero = this.numero + 0.1
+      this.numero = this.numero;// + 0.1
     }
   }
 
@@ -2365,9 +2378,27 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       conclusao += this.tabelaplanos[x].conclusao;
       total++;
     }
+    var percentagem_conclusao = (total == 0) ? 0 : conclusao / total;
+    this.percentagem_conclusao = (percentagem_conclusao == 0) ? '0' : this.formatMoney(percentagem_conclusao, 2, ',', '.');
 
-    this.percentagem_conclusao = (total == 0) ? 0 : conclusao / total;
   }
+
+  formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",", symbol = '') {
+    try {
+      decimalCount = Math.abs(decimalCount);
+      decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+      const negativeSign = amount < 0 ? "-" : "";
+
+      let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+      let j = (i.length > 3) ? i.length % 3 : 0;
+
+      return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - parseInt(i)).toFixed(decimalCount).slice(2) : "") + symbol;
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
 
 }

@@ -464,7 +464,7 @@ export class AcordosFormComponent implements OnInit {
       DATA_INICIO: (this.SOP == null) ? null : this.formatDate(new Date(this.SOP + '-01')),
       DATA_FIM: (this.EOP == null) ? null : this.formatDate(new Date(this.EOP + '-01')),
       CONTRATO: (contrato) ? contrato.label : null,
-      ID_REFERENCIA: this.ID_REFERENCIA
+      ID_REFERENCIA: this.ID_REFERENCIA, VERSAO: this.VERSAO, ID_ACORDO: this.ID_ACORDO
     }];
     this.loading_analise = true;
     this.COMACORDOSService.COM_ACORDOS_ANALISE(dados).subscribe(
@@ -1990,7 +1990,7 @@ export class AcordosFormComponent implements OnInit {
     } else {
       this.router.navigate(['comercial_acordos']);
     }
-    
+
   }
 
 
