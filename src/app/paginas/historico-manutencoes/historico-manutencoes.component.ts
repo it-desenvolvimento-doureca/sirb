@@ -88,8 +88,8 @@ export class HistoricoManutencoesComponent implements OnInit {
 
 
   manutencoes(id, id_banho, inicio, fim) {
-    if(this.classif == 0) this.classif = "M";
-    this.ABMOVMANUTENCAOCABService.getbyID_banho(id_banho, inicio, fim, this.id,this.classif).subscribe(
+    if (this.classif == 0) this.classif = "M";
+    this.ABMOVMANUTENCAOCABService.getbyID_banho(id_banho, inicio, fim, this.id, this.classif).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -224,7 +224,29 @@ export class HistoricoManutencoesComponent implements OnInit {
       }, legend: {
         labels: {
           fontColor: "black"
-        }
+        },
+        onClick: function (event, elem) {
+          let index = elem.datasetIndex;
+
+          var ci = this.chart;
+          var alreadyHidden =
+            ci.getDatasetMeta(index).hidden === null ? false : ci.getDatasetMeta(index).hidden;
+          if (elem.text == 'Todos') {
+            var encontrou = !alreadyHidden;
+            ci.data.datasets.forEach(function (e, i) {
+              var meta = ci.getDatasetMeta(i);
+
+              if (encontrou) {
+                meta.hidden = true;
+              } else {
+                meta.hidden = null;
+              }
+            });
+          } else {
+            ci.getDatasetMeta(index).hidden = !ci.getDatasetMeta(index).hidden;
+          }
+          ci.update();
+        },
       },
     }
   }

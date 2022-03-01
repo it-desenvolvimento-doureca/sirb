@@ -293,7 +293,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
         for (var x in response) {
           this.subcontrato['acumulado'] = response[x][3];
           this.subcontrato[response[x][1]] = response[x][0];
-           dia = response[x][4];
+          dia = response[x][4];
         }
         this.atualiza_subcontrato = false;
         this.calcular_totais(dia);
@@ -1796,7 +1796,29 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
         }, legend: {
           labels: {
             fontColor: "black"
-          }
+          },
+          onClick: function (event, elem) {
+            let index = elem.datasetIndex;
+
+            var ci = this.chart;
+            var alreadyHidden = ci.getDatasetMeta(index).hidden === null ? false : ci.getDatasetMeta(index).hidden;
+
+            if (elem.text == 'Todos') {
+              var encontrou = !alreadyHidden;
+              ci.data.datasets.forEach(function (e, i) {
+                var meta = ci.getDatasetMeta(i);
+
+                if (encontrou) {
+                  meta.hidden = true;
+                } else {
+                  meta.hidden = null;
+                }
+              });
+            } else {
+              ci.getDatasetMeta(index).hidden = !ci.getDatasetMeta(index).hidden;
+            }
+            ci.update();
+          },
         }, tooltips: {
           custom: function (tooltip) {
             if (!tooltip) return;
@@ -1903,9 +1925,9 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
 
       var img_logo = new Image()
       img_logo.src = 'assets/img/logo_doureca.png'
-      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
+      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10, '', 'FAST');
 
-      doc.addImage(img, 'PNG', 2, 20, pageWidth - 4, 0,'','FAST');
+      doc.addImage(img, 'PNG', 2, 20, pageWidth - 4, 0, '', 'FAST');
       if (pagecount > 0) {
         var j = 1;
         while (j != pagecount) {
@@ -1923,7 +1945,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
           var img_logo = new Image()
           img_logo.src = 'assets/img/logo_doureca.png'
           doc.addImage(img_logo, 'PNG', 10, 5, 50, 10);*/
-          doc.addImage(img, 'PNG', 2, -(j * pageHeight) + 25, pageWidth - 4, 0,'','FAST');
+          doc.addImage(img, 'PNG', 2, -(j * pageHeight) + 25, pageWidth - 4, 0, '', 'FAST');
           j++;
         }
       }
@@ -1979,7 +2001,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
 
       var img_logo = new Image()
       img_logo.src = 'assets/img/logo_doureca.png'
-      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10,'','FAST');
+      doc.addImage(img_logo, 'PNG', 10, 5, 50, 10, '', 'FAST');
 
       var imgs = canvas.toDataURL("image/png");
       const bufferXs = 5;
@@ -1987,7 +2009,7 @@ export class SeguimentoFaturacaoAnualComponent implements OnInit {
       const imgProps = (<any>doc).getImageProperties(imgs);
       const pdfWidths = doc.internal.pageSize.getWidth() - 2 * bufferXs;
       const pdfHeights = (imgProps.height * pdfWidths) / imgProps.width;
-      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined,'FAST');
+      doc.addImage(imgs, 'PNG', bufferXs, bufferYs, pdfWidths, pdfHeights, undefined, 'FAST');
       //doc.save('test.pdf');
     });
 

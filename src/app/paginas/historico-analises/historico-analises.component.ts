@@ -47,7 +47,7 @@ export class HistoricoAnalisesComponent implements OnInit {
 
     var acessohistorico = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node000historico");
 
-    if(!acessohistorico){
+    if (!acessohistorico) {
       this.location.back();
     }
     var id;
@@ -120,7 +120,8 @@ export class HistoricoAnalisesComponent implements OnInit {
             label: "Todos", data: [], fill: false, borderColor: [
               '#black'
             ],
-            borderWidth: 2});
+            borderWidth: 2
+          });
           for (var x in response) {
             id_comp.push(response[x][1].id_COMPONENTE)
 
@@ -133,8 +134,8 @@ export class HistoricoAnalisesComponent implements OnInit {
               dados.push({ valor: "", cor: "" });
               dados2.push(null);
             }
-            
-            var cor = this.verificalimites(response[x][0].calculo,response[x][0].limite_AMARELO_INF, response[x][0].limite_AMARELO_SUP, response[x][0].limite_VERDE_INF, response[x][0].limite_VERDE_SUP);
+
+            var cor = this.verificalimites(response[x][0].calculo, response[x][0].limite_AMARELO_INF, response[x][0].limite_AMARELO_SUP, response[x][0].limite_VERDE_INF, response[x][0].limite_VERDE_SUP);
             this.corpo.push({ cor: cor, id: response[x][1].id_COMPONENTE, componente: response[x][1].nome_COMPONENTE, resultado: calculo, valores: dados })
             this.datasetsgraf.push({ id: response[x][1].id_COMPONENTE, label: response[x][1].nome_COMPONENTE, data: dados2, fill: false, borderColor: this.getRandomColor(x), borderWidth: 2 });
           }
@@ -165,7 +166,7 @@ export class HistoricoAnalisesComponent implements OnInit {
           //console.log(response)
           if (index_comp != null && index_analise != null) {
             index_comp.valores[index_analise].valor = (response[x].calculo != null) ? response[x].calculo.toLocaleString(undefined, { minimumFractionDigits: 3 }).replace(/\s/g, '') : "";
-            index_comp.valores[index_analise].cor = this.verificalimites(response[x].calculo,response[x].limite_AMARELO_INF, response[x].limite_AMARELO_SUP, response[x].limite_VERDE_INF, response[x].limite_VERDE_SUP);
+            index_comp.valores[index_analise].cor = this.verificalimites(response[x].calculo, response[x].limite_AMARELO_INF, response[x].limite_AMARELO_SUP, response[x].limite_VERDE_INF, response[x].limite_VERDE_SUP);
             var calculo3 = (response[x].calculo != null) ? response[x].calculo.toFixed(3) : null;
 
             index_datasetsgraf.data[index_analise + 1] = calculo3
@@ -254,11 +255,33 @@ export class HistoricoAnalisesComponent implements OnInit {
             beginAtZero: true
           }
         }]
-      },legend: {
+      }, legend: {
         labels: {
-            fontColor: "black"
-        }
-    },
+          fontColor: "black"
+        },
+        onClick: function (event, elem) {
+          let index = elem.datasetIndex;
+
+          var ci = this.chart;
+          var alreadyHidden =
+            ci.getDatasetMeta(index).hidden === null ? false : ci.getDatasetMeta(index).hidden;
+          if (elem.text == 'Todos') {
+            var encontrou = !alreadyHidden;
+            ci.data.datasets.forEach(function (e, i) {
+              var meta = ci.getDatasetMeta(i);
+
+              if (encontrou) {
+                meta.hidden = true;
+              } else {
+                meta.hidden = null;
+              }
+            });
+          } else {
+            ci.getDatasetMeta(index).hidden = !ci.getDatasetMeta(index).hidden;
+          }
+          ci.update();
+        },
+      },
     }
   }
 
