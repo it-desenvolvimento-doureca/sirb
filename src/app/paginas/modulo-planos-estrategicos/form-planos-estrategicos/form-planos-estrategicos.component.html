@@ -232,9 +232,8 @@
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
-                                  class="btn btn-danger btn-xs"
-                                  [disabled]="!modoedicao || (!apagarficheiros && car.id != null) || car['id_TAREFA'] != null || car['id_FICHEIRO'] != null"
-                                  title="Apagar" (click)="removerficheiro(index)">
+                                  class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
+                                  (click)="removerficheiro(index)">
                                   <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                               </ng-template>
