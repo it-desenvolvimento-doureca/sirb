@@ -539,6 +539,7 @@ export class AmostrasformComponent implements OnInit {
           tarefa.id_ACCAO = accoes.id_ACCAO;
           tarefa.sub_MODULO = "A";
           tarefa.prioridade = 3;
+          tarefa.data_FIM_ANTIGA = tarefa.data_FIM;
 
           this.criarTarefa(tarefa, nome_accao, email_p, id);
         }

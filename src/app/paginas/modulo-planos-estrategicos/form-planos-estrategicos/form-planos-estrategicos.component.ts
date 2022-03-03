@@ -1061,7 +1061,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           tarefa.sub_MODULO = "PA";
           tarefa.prioridade = accoes.prioridade;
           tarefa.observacoes = descricao;
-
+          tarefa.data_FIM_ANTIGA = tarefa.data_FIM;
           //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
           this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
         }

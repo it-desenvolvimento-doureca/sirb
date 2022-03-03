@@ -6,6 +6,8 @@ export class GT_MOV_TAREFAS {
     estado: string;
     data_INICIO: Date;
     data_FIM: Date;
+    data_FIM_ANTIGA: Date;
+    justificacao_DATA_FIM: string
     data_CONCLUSAO: Date;
     utz_CONCLUSAO: number;
     observacoes: string;

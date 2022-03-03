@@ -339,7 +339,7 @@
 
                       <p-column [editable]="true" field="PRECO" header="Preço">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{car[col.field] | number: '1.2-2'}}
+                          {{car[col.field] | number: '1.2-4'}}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
                           <input [disabled]="!modoedicao" [(ngModel)]="car['PRECO']"
@@ -447,7 +447,7 @@
 
                       <p-column [editable]="true" field="VALOR" header="Valor">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{car[col.field] | number: '1.2-2' }}
+                          {{car[col.field] | number: '1.2-4' }}
                         </ng-template>
                         <ng-template let-col let-car="rowData" pTemplate="editor">
                           <input [disabled]="!modoedicao || DATA_FECHO_AMORTIZACOES != null" [(ngModel)]="car['VALOR']"

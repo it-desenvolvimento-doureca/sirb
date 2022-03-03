@@ -371,8 +371,8 @@
                             <!-- {{car[col.field] | date: 'yyyy-MM-dd'}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">-->
-                            <p-calendar [maxDate]="data_OBJETIVO_DATA"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
+                            <p-calendar [maxDate]="data_OBJETIVO_DATA" (ngModelChange)="verificadatas(car)"
+                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'  &&  car['estado']!= null))"
                               [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                               [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
                               [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true">
@@ -386,9 +386,10 @@
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">-->
                             <input
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
+                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P' &&  car['estado']!= null))"
                               style="padding: 5px 4px;height: 25px; text-align: center;" [required]="true"
-                              [(ngModel)]="car['hora_ACCAO']" [ngModelOptions]="{standalone: true}" type="time" min
+                              (ngModelChange)="verificadatas(car)" [(ngModel)]="car['hora_ACCAO']"
+                              [ngModelOptions]="{standalone: true}" type="time"
                               class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
                               ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                           </ng-template>
@@ -418,7 +419,7 @@
                             <p-dropdown [filter]="true" [options]="drop_utilizadores"
                               [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                               [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
+                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'  &&  car['estado']!= null))"
                               appendTo="body" [required]="true">
                             </p-dropdown>
                           </ng-template>
@@ -673,6 +674,32 @@
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
       <button type="button" class="btn btn-default" (click)="displayJustificacao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+<p-dialog header="Justificação Alteração de Data Objetivo" [responsive]="true" [positionTop]="0" (onHide)="onHide()"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayJustificacaoDATAFIM" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_DATA_FIM()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_DATA_FIM"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoDATAFIM = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
   </form>

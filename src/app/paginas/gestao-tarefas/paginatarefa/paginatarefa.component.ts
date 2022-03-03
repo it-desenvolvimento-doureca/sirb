@@ -1612,6 +1612,7 @@ export class PaginatarefaComponent implements OnInit {
         tarefa.utz_REJEITA = null;
         tarefa.data_REJEITA = null;
         tarefa.motivo_REJEICAO = null;
+        tarefa.data_FIM_ANTIGA = tarefa.data_FIM;
 
         var email_p = "";
 

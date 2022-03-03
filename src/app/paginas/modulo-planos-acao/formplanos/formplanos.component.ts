@@ -147,6 +147,10 @@ export class FormplanosComponent implements OnInit {
   displayMotivoAlteracao: boolean;
   motivoAlteracao: any;
   data_OBJETIVO_DATA: Date;
+  selected_row: any = null;
+  justificacao_DATA_FIM: any = null;
+  displayJustificacaoDATAFIM: boolean;
+  yearTimeout: NodeJS.Timer;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
     private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PAMOVFICHEIROSService: PAMOVFICHEIROSService,
     private PAMOVLINHAService: PAMOVLINHAService, private PAMOVCABService: PAMOVCABService, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private sanitizer: DomSanitizer,
@@ -565,6 +569,7 @@ export class FormplanosComponent implements OnInit {
               referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
               causa: response[x][0].causa,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
+              justificacao_DATA_FIM: null,
               departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
             });
 
@@ -687,6 +692,45 @@ export class FormplanosComponent implements OnInit {
 
   }
 
+  verificadatas(row) {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      var accoes = new PA_MOV_LINHA;
+      var atualizou_datas = false;
+      this.selected_row = null;
+      this.justificacao_DATA_FIM = null;
+      if (row.id_PLANO_LINHA != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+        accoes = row.dados;
+        if (this.formatDate(accoes.data_ACCAO) != this.formatDate(row.data_ACCAO) || accoes.hora_ACCAO != ((row.hora_ACCAO == null) ? null : (row.hora_ACCAO + ":00").slice(0, 8))) {
+          atualizou_datas = true;
+        }
+      }
+      if (atualizou_datas) {
+        this.selected_row = row;
+        this.displayJustificacaoDATAFIM = true;
+      }
+
+      // console.log('atualizou_datas ', atualizou_datas)
+    }, 1000);
+
+  }
+
+  onHide() {
+    if (this.justificacao_DATA_FIM == null && this.selected_row != null) {
+      var accoes = new PA_MOV_LINHA;
+      accoes = this.selected_row.dados;
+      this.selected_row.data_ACCAO = this.formatDate(accoes.data_ACCAO);
+      this.selected_row.hora_ACCAO = accoes.hora_ACCAO;
+    }
+  }
+
+  atualizarlinhajustificacao_DATA_FIM() {
+    this.selected_row.justificacao_DATA_FIM = this.justificacao_DATA_FIM;
+    this.displayJustificacaoDATAFIM = false;
+  }
 
   gravalinhas(id, estado, cria_tarefas) {
     for (var x in this.tabelaaccoes) {
@@ -699,6 +743,17 @@ export class FormplanosComponent implements OnInit {
         }
       }
 
+      var id_resp_old = null;
+      var atualizou_responsavel = false;
+      if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
+        accoes = this.tabelaaccoes[x].dados;
+        id_resp_old = accoes.responsavel;
+        if (accoes.responsavel != this.tabelaaccoes[x].responsavel) {
+          atualizou_responsavel = true;
+        }
+      }
+
+
       accoes.id_PLANO_CAB = id;
 
 
@@ -709,7 +764,7 @@ export class FormplanosComponent implements OnInit {
          id_resp = this.tabelaaccoes[x].responsavel.substr(1);
        }*/
 
-
+      var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
       accoes.id_PLANO_LINHA = this.tabelaaccoes[x].id_PLANO_LINHA;
       accoes.departamento = this.tabelaaccoes[x].id_departamento;
       accoes.descricao = this.tabelaaccoes[x].observacao;
@@ -746,7 +801,7 @@ export class FormplanosComponent implements OnInit {
       var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
 
       if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia);
+        this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, atualizou_responsavel, id_resp_old, justificacao_DATA_FIM);
       } else {
         if (parseInt(x) + 1 == this.tabelaaccoes.length) {
 
@@ -827,7 +882,7 @@ export class FormplanosComponent implements OnInit {
 
   }
 
-  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia) {
+  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, atualizou_reponsavel, id_resp, justificacao_DATA_FIM) {
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -840,8 +895,41 @@ export class FormplanosComponent implements OnInit {
           tarefa.data_ULT_MODIF = new Date();
           tarefa.utz_ULT_MODIF = this.user;
           tarefa.data_FIM = new Date(this.formatDate(response.data_ACCAO) + ' ' + response.hora_ACCAO);
-          this.atualizaTarefa(tarefa);
+          tarefa.justificacao_DATA_FIM = justificacao_DATA_FIM;
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+          logs.descricao = "Alterou Prazo Conclusão";
+          var email_para = email_p;
+          this.atualizaTarefa(tarefa, logs, false, null, null, null, null);
         }
+
+        if (atualizou_reponsavel) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa.id_MODULO = 13;
+          tarefa.sub_MODULO = "PA";
+          tarefa.id_CAMPO = response.id_PLANO_LINHA;
+          tarefa.utz_ID = response.responsavel;
+          tarefa.utz_CRIA = this.user;
+          tarefa.data_ULT_MODIF = new Date();
+          tarefa.utz_ULT_MODIF = this.user;
+
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+
+          var nome1 = ''
+          var nome2 = ''
+          var utz1 = this.drop_utilizadores.find(item => item.value == id_resp);
+          if (utz1) nome1 = utz1.label;
+
+          var utz2 = this.drop_utilizadores.find(item => item.value == response.responsavel);
+          if (utz2) nome2 = utz2.label;
+
+          logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
+          this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, descricao, referencia);
+        }
+
         if (count == total) {
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
@@ -870,6 +958,7 @@ export class FormplanosComponent implements OnInit {
           tarefa.prioridade = accoes.prioridade;
           tarefa.observacoes = descricao;
 
+          tarefa.data_FIM_ANTIGA = tarefa.data_FIM;
           //this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, this.referencia + ' - ' + this.design_REFERENCIA);
           this.criarTarefa(tarefa, nome_accao, descricao, email_p, id, referencia);
         }
@@ -923,7 +1012,7 @@ export class FormplanosComponent implements OnInit {
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
-      descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA,
+      descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA, justificacao_DATA_FIM: null,
       causa: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
@@ -1048,11 +1137,15 @@ export class FormplanosComponent implements OnInit {
     });
   }
 
-  atualizaTarefa(tarefa) {
+  atualizaTarefa(tarefa, logs, enviarEvento, email_para, nome_accao, descricao, referencia) {
 
     this.GTMOVTAREFASService.atualizaTAREFA(tarefa).subscribe(response => {
-
-
+      logs.id_TAREFA = response[0][0];
+      this.criaLogs(logs);
+      if (enviarEvento) {
+        this.enviarEvento(response[0][1], response[0][0], "Ao Alterar Responsável", email_para, referencia, response[0][2]
+          , this.data_CRIA, nome_accao, descricao);
+      }
     }, error => {
       console.log(error);
       this.simular(this.inputerro);
@@ -1135,7 +1228,7 @@ export class FormplanosComponent implements OnInit {
         this.GTMOVTAREFASService.update(tarefa).then(response => {
           for (var x in data_logs) {
             var logs = new GT_LOGS;
-            logs.id_TAREFA = id;
+            logs.id_TAREFA = response.id_TAREFA;
             logs.utz_CRIA = this.user;
             logs.data_CRIA = new Date();
             logs.descricao = data_logs[x].descricao;
@@ -1416,6 +1509,7 @@ export class FormplanosComponent implements OnInit {
 
             this.inicia(tabelaaccoes.id_PLANO_CAB);
           }, error => { console.log(error); this.inicia(tabelaaccoes.id_PLANO_CAB); });
+
         if (estado == 'D') {
           this.atualizaestadoTarefa(response.id_PLANO_LINHA, 'A');
         } else if (estado == 'V') {
