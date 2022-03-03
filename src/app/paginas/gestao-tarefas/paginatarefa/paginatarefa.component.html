@@ -33,6 +33,9 @@
               <li role="presentation">
                 <a href="#ficheiro" aria-controls="ficheiro" role="tab" data-toggle="tab">Ficheiros</a>
               </li>
+              <li role="presentation">
+                <a href="#atividade" aria-controls="atividade" role="tab" data-toggle="tab">Atividade</a>
+              </li>
             </ul>
             <!--*************Detalhes****************-->
             <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="gravar(false)"
@@ -136,7 +139,9 @@
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                         <label>Conclusão (%):</label>
                         <input [disabled]="!modoedicao" min="0" max="100" [disabled]="true" type="number"
-                          class="form-control2 enabled" [(ngModel)]="percentagem_conclusao"
+                          style="color: black; font-weight: 500;" class="form-control2 enabled"
+                          [(ngModel)]="percentagem_conclusao"
+                          [style.background]="(percentagem_conclusao == null)? '': ('linear-gradient(to right, #299bfd '+percentagem_conclusao+'%, white '+percentagem_conclusao+'%)')"
                           [ngModelOptions]="{standalone: true}">
                       </div>
 
@@ -358,6 +363,36 @@
 
                   </div>
                 </div>
+
+                <!--*************ATIVADE****************-->
+                <div role="tabpanel" class="tab-pane" id="atividade">
+                  <div class="form-group col-md-12 col-lg-12">
+                    <p-dataTable [style]="{'width':'100%'}" [value]="atividades" styleClass="ExcelTable2007">
+                      <p-column [style]="{'width':'136px'}" field="data" styleClass="ExcelTable2007tdname"
+                        header="Data/Hora">
+                      </p-column>
+                      <p-column [style]="{'text-align':'left','width':'290px'}" field="utilizador" header="Utilizador">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="padding-left: 5px;">{{car['utilizador']}}</span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'text-align':'left'}" field="descricao" header="Descrição">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="padding-left: 5px;">{{car['descricao']}}</span>
+                        </ng-template>
+                      </p-column>
+                      <p-column [style]="{'text-align':'left'}" field="justificacao" header="Justificação">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <span style="padding-left: 5px;">{{car['justificacao']}}</span>
+                        </ng-template>
+                      </p-column>
+                    </p-dataTable>
+                    <div class="clearfix"></div>
+
+                  </div>
+                </div>
+
+
 
               </div>
             </form>
@@ -626,4 +661,30 @@
     <button type="button" class="btn btn-default" (click)="displaylistasubtarefasdialog = false">Fechar</button>
 
   </div>
+</p-dialog>
+
+
+
+<p-dialog header="Justificação Alteração de Conclusão" [responsive]="true" [positionTop]="0"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="false"
+  [draggable]="false" [(visible)]="displayJustificacaoCONCLUSAO" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao" class="form-control2 enabled"
+          [ngModelOptions]="{standalone: true}" style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>

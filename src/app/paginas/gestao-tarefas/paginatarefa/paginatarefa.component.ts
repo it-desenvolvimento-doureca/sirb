@@ -112,6 +112,10 @@ export class PaginatarefaComponent implements OnInit {
   novo_observacoes: any;
   listasubtarefasdialog: any[];
   displaylistasubtarefasdialog: boolean;
+  justificacao: any;
+  encaminhadojustificacao: any;
+  displayJustificacaoCONCLUSAO: boolean;
+  atividades: any[];
 
   constructor(private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
     if (document.getElementById("script1")) document.getElementById("script1").remove();
@@ -396,9 +400,33 @@ export class PaginatarefaComponent implements OnInit {
         }
       }
       this.carregasubtarefas(id);
+      this.carregaatividade(id);
     }, error => {
       console.log(error);
     });
+  }
+
+  carregaatividade(id) {
+    this.atividades = [];
+
+    this.GTMOVTAREFASService.getByid(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            this.atividades.push({
+              descricao: response[x][0].descricao + '.',
+              data: this.formatDate(response[x][0].data_CRIA) + " " + new Date(response[x][0].data_CRIA).toLocaleTimeString().slice(0, 5),
+              utilizador: response[x][1],
+              justificacao: response[x][0].justificacao
+            });
+
+          }
+          this.atividades = this.atividades.slice();
+        }
+
+      }, error => { console.log(error); });
+
   }
 
   carregatabelaFiles_RECLAMACAO(id) {
@@ -645,6 +673,21 @@ export class PaginatarefaComponent implements OnInit {
   }
 
   gravar(encaminhado) {
+    if (this.percentagem_conclusao_old != null && this.percentagem_conclusao_old != this.percentagem_conclusao) {
+      this.justificacao = null;
+      this.displayJustificacaoCONCLUSAO = true;
+      this.encaminhadojustificacao = encaminhado;
+    } else {
+      this.gravar2(encaminhado);
+    }
+  }
+
+  atualizarlinhajustificacao() {
+    this.displayJustificacaoCONCLUSAO = false;
+    this.gravar2(this.encaminhadojustificacao);
+  }
+
+  gravar2(encaminhado) {
     this.GTMOVTAREFASService.getbyid(this.id_tarefa).subscribe(response => {
 
       var count = Object.keys(response).length;
@@ -657,7 +700,7 @@ export class PaginatarefaComponent implements OnInit {
 
         if (encaminhado) {
           if (tarefa.utz_ENCAMINHADO != this.utz_encaminhado) {
-            data_logs.push({ descricao: "Alterado Utilizador Encaminhado de " + this.getNomeUser(tarefa.utz_ENCAMINHADO) + " para " + this.getNomeUser(this.utz_encaminhado) })
+            data_logs.push({ justificacao: null, descricao: "Alterado Utilizador Encaminhado de " + this.getNomeUser(tarefa.utz_ENCAMINHADO) + " para " + this.getNomeUser(this.utz_encaminhado) })
             alteracoes = true;
           }
           tarefa.utz_ENCAMINHADO = this.utz_encaminhado;
@@ -667,17 +710,17 @@ export class PaginatarefaComponent implements OnInit {
         }
 
         if (this.descricao_old != this.descricao) {
-          data_logs.push({ descricao: "Alterado a Descrição de " + ((this.descricao_old == null) ? "_" : this.descricao_old) + " para " + ((this.descricao == null) ? "_" : this.descricao) });
+          data_logs.push({ justificacao: null, descricao: "Alterado a Descrição de " + ((this.descricao_old == null) ? "_" : this.descricao_old) + " para " + ((this.descricao == null) ? "_" : this.descricao) });
           alteracoes = true;
         }
 
-        if (this.percentagem_conclusao_old != this.percentagem_conclusao) {
-          data_logs.push({ descricao: "Alterado a Percentagem de Conlusão de " + ((this.percentagem_conclusao_old == null) ? "_" : this.percentagem_conclusao_old) + " para " + ((this.percentagem_conclusao == null) ? "_" : this.percentagem_conclusao) });
+        if (this.percentagem_conclusao_old != null && this.percentagem_conclusao_old != this.percentagem_conclusao) {
+          data_logs.push({ justificacao: this.justificacao, descricao: "Alterado a Percentagem de Conlusão de " + ((this.percentagem_conclusao_old == null) ? "_" : this.percentagem_conclusao_old) + " para " + ((this.percentagem_conclusao == null) ? "_" : this.percentagem_conclusao) });
           alteracoes = true;
         }
 
         if (this.tempo_gasto_old != this.tempo_gasto) {
-          data_logs.push({ descricao: "Alterado Tempo Gasto de " + ((this.tempo_gasto_old == null) ? "_" : this.tempo_gasto_old) + " para " + ((this.tempo_gasto == null) ? "_" : this.tempo_gasto) });
+          data_logs.push({ justificacao: null, descricao: "Alterado Tempo Gasto de " + ((this.tempo_gasto_old == null) ? "_" : this.tempo_gasto_old) + " para " + ((this.tempo_gasto == null) ? "_" : this.tempo_gasto) });
           alteracoes = true;
         }
 
@@ -705,6 +748,7 @@ export class PaginatarefaComponent implements OnInit {
             logs.utz_CRIA = this.user;
             logs.data_CRIA = new Date();
             logs.descricao = data_logs[x].descricao;
+            logs.justificacao = data_logs[x].justificacao;
             this.criaLogs(logs);
           }
 
@@ -1138,6 +1182,7 @@ export class PaginatarefaComponent implements OnInit {
 
         tarefa.estado = estado;
         if (estado == "C") {
+          tarefa.percentagem_CONCLUSAO = 100;
           tarefa.utz_CONCLUSAO = this.user;
           tarefa.data_CONCLUSAO = new Date();
         } else if (estado == "A") {

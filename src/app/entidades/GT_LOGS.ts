@@ -4,4 +4,5 @@ export class GT_LOGS {
     utz_CRIA: number;
     descricao: string;
     id_TAREFA: number;
+    justificacao: string;
 }

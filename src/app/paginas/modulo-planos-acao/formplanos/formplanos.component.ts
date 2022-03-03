@@ -900,6 +900,7 @@ export class FormplanosComponent implements OnInit {
           logs.utz_CRIA = this.user;
           logs.data_CRIA = new Date();
           logs.descricao = "Alterou Prazo Conclusão";
+          logs.justificacao = justificacao_DATA_FIM;
           var email_para = email_p;
           this.atualizaTarefa(tarefa, logs, false, null, null, null, null);
         }
