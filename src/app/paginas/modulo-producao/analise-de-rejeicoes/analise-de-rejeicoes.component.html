@@ -383,13 +383,14 @@
                   </div>
 
                   <div class="table-row table-header" style="background: #757676; color: white; font-weight: 500;">
-                    <div class="table-row-column col-md-2">Cód. Referência<br>
+                    <div class="table-row-column col-md-3">Cód. Referência - Designação da Referência<br>
                       <p-checkbox (onChange)="selecttable()" [(ngModel)]="select_table" binary="true"></p-checkbox>
                       <input style="font-weight: 100; height: 19px; color: black; float: right; width: 88%;" #myInput
                         type="text" class="form-control2" (input)="filterItem(myInput.value)" />
                     </div>
-                    <div class=" table-row-column col-md-2">Designação da Referência</div>
+
                     <div class="table-row-column col-md-1">Fase</div>
+                    <div class=" table-row-column col-md-1">Área Peça</div>
                     <!--<div class="table-row-column col-md-1">Nº Barras Produzidas</div>-->
                     <div class="table-row-column col-md-2">Família de Defeito</div>
                     <div class="table-row-column col-md-1">Tipo de Defeito</div>
@@ -411,7 +412,7 @@
                       data-toggle="collapse" id="referencia{{ref.id}}" [attr.data-target]="'#collapseref'+ref.id"
                       (click)="getfamdefeitos(ref.id); " style="background: #d9d9d9;" [class.disabled]="ref.atualiza">
 
-                      <div class="col-md-4" style="text-align: left; padding-left: 25px;">
+                      <div class="col-md-3" style="text-align: left; padding-left: 25px;">
                         <span style="pointer-events: none;" *ngIf="!ref.iconplus" class="fa fa-minus"
                           aria-hidden="true"></span>
                         <span style="pointer-events: none;" *ngIf="ref.iconplus" class="fa fa-plus"
@@ -420,6 +421,9 @@
                       </div>
                       <div class="col-md-1">
                         {{ref.fase}}
+                      </div>
+                      <div class="col-md-1">
+                        {{ref.areapeca}}
                       </div>
                       <!--<div class="col-md-1">
                    Nº Barras Produzidas
