@@ -13,15 +13,15 @@
               <div class="row">
                 <div class="col-md-1">
                   <div [ngClass]="id_utl == '' ? 'is-empty' : null" class="form-group form-black label-floating ">
-                    <label class="control-label">ID Utilizador</label>
-                    <input type="text" class="form-control" [(ngModel)]="id_utl" [ngModelOptions]="{standalone: true}"
+                    <label>ID Utilizador</label>
+                    <input type="text" class="form-control2" [(ngModel)]="id_utl" [ngModelOptions]="{standalone: true}"
                       disabled>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div [ngClass]="login == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                    <label class="control-label">Login</label>
-                    <input [ngClass]="class_numexiste" type="text" class="form-control" (change)="resetclass()"
+                    <label>Login</label>
+                    <input [ngClass]="class_numexiste" type="text" class="form-control2" (change)="resetclass()"
                       [(ngModel)]="login" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" required>
                     <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe">Nome para Login
                       não se encontra disponível! </span>
@@ -29,11 +29,11 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group form-black label-floating">
-                    <label class="control-label" style="top: -28px; left: 0; font-size: 13px; line-height: 1.07143;">Login
+                    <label style="top: -28px; left: 0; font-size: 13px; line-height: 1.07143;">Login
                       Windows</label>
-                    <p-dropdown [filter]="true" [options]="users_ldap" (onChange)="resetclass2()" [ngClass]="class_numexiste2"
-                      [style]="{'width':'100%'}" [(ngModel)]="user_WINDOWS" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao"></p-dropdown>
+                    <p-dropdown [filter]="true" [options]="users_ldap" (onChange)="resetclass2()"
+                      [ngClass]="class_numexiste2" [style]="{'width':'100%'}" [(ngModel)]="user_WINDOWS"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
                     <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!num_existe2">Utilizador já
                       se
                       encontra ocupado! </span>
@@ -41,93 +41,98 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group form-black label-floating">
-                    <label class="control-label">Código Utilizador</label>
-                    <p-dropdown [filter]="true" [options]="users_silver" (onChange)="resetclasscode()" [ngClass]="class_codexiste"
-                      [style]="{'width':'100%'}" [(ngModel)]="code_user" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao"></p-dropdown>
+                    <label>Código Utilizador</label>
+                    <p-dropdown [filter]="true" [options]="users_silver" (onChange)="resetclasscode()"
+                      [ngClass]="class_codexiste" [style]="{'width':'100%'}" [(ngModel)]="code_user"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
                     <span style="font-size: 12px; color: red; font-weight: 500;" [hidden]="!code_existe">Código já se
                       encontra ocupado! </span>
                   </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2" style="padding-top: 20px;">
                   <p-checkbox [disabled]="!modoedicao" [(ngModel)]="administrador" label="Administrador"
+                    [ngModelOptions]="{standalone: true}" binary="true"></p-checkbox>
+                  <br>
+                  <p-checkbox [disabled]="!modoedicao" [(ngModel)]="bloqueado" label="Bloqueado"
                     [ngModelOptions]="{standalone: true}" binary="true"></p-checkbox>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                    <label class="control-label">Nome Utilizador</label>
-                    <input type="text" class="form-control" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+                    <label>Nome Utilizador</label>
+                    <input type="text" class="form-control2" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
                       [disabled]="!modoedicao" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                    <label class="control-label">Utilizador Jasper</label>
-                    <input type="text" class="form-control" [(ngModel)]="user_jasper" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao">
+                    <label>Utilizador Jasper</label>
+                    <input type="text" class="form-control2" [(ngModel)]="user_jasper"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div [ngClass]="nome == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                    <label class="control-label">Password Jasper</label>
-                    <input type="password" class="form-control" [(ngModel)]="pass_jasper" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao">
+                    <label>Password Jasper</label>
+                    <input type="password" class="form-control2" [(ngModel)]="pass_jasper"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-3">
                   <div [ngClass]="password == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                    <label class="control-label">Password</label>
-                    <input type="password" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
-                      [disabled]="!modoedicao" required>
+                    <label>Password</label>
+                    <input type="password" class="form-control2" [(ngModel)]="password"
+                      [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" required>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <div [ngClass]="email == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                      <label class="control-label">Email</label>
-                      <input type="email" class="form-control" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao" required>
+                      <label>Email</label>
+                      <input type="email" class="form-control2" [(ngModel)]="email"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" required>
                     </div>
                   </div>
                 </div>
-              
+
                 <div class="col-md-3">
                   <div class="form-group">
                     <div [ngClass]="telefone == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                      <label class="control-label">Telefone</label>
-                      <input type="telefone" class="form-control" [(ngModel)]="telefone" [ngModelOptions]="{standalone: true}"
-                        [disabled]="!modoedicao" required>
+                      <label>Telefone</label>
+                      <input type="telefone" class="form-control2" [(ngModel)]="telefone"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" required>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
                     <div [ngClass]="area == '' ? 'is-empty' : null" class="form-group form-black label-floating">
-                      <label class="control-label">Área</label>
-                      <input type="area" class="form-control" [(ngModel)]="area" [ngModelOptions]="{standalone: true}"
+                      <label>Área</label>
+                      <input type="area" class="form-control2" [(ngModel)]="area" [ngModelOptions]="{standalone: true}"
                         [disabled]="!modoedicao" required>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="padding-left: 15px;">
                   <div class="form-group form-black label-floating">
                     <label style="font-size: 14px;">Módulo</label>
-                    <p-dropdown [disabled]="!modoedicao || novo" [filter]="true" [options]="modulos" (onChange)="atualizaperfil()"
-                      [style]="{'width':'100%'}" [ngModelOptions]="{standalone: true}" [(ngModel)]="id_modulo"
-                      [ngModelOptions]="{standalone: true}"></p-dropdown>
+                    <p-dropdown [disabled]="!modoedicao || novo" [filter]="true" [options]="modulos"
+                      (onChange)="atualizaperfil()" [style]="{'width':'100%'}" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="id_modulo" [ngModelOptions]="{standalone: true}"></p-dropdown>
                   </div>
                 </div>
                 <div class="col-md-8">
                   <p-pickList [class.disabled]="!modoedicao || novo" (onMoveToTarget)="onMoveToTarget($event)"
                     (onMoveToSource)="onMoveToSource($event)" [source]="sourcePerfil" [showTargetControls]="false"
-                    [showSourceControls]="false" [target]="targetPerfil" sourceHeader="Perfis" targetHeader="Perfis do Utilizador"
-                    [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome" sourceFilterPlaceholder="Pesquisar pelo perfil"
-                    targetFilterPlaceholder="Pesquisar pelo perfil" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                    [showSourceControls]="false" [target]="targetPerfil" sourceHeader="Perfis"
+                    targetHeader="Perfis do Utilizador" [responsive]="true" filterBy="nome" dragdrop="true"
+                    filterBy="nome" sourceFilterPlaceholder="Pesquisar pelo perfil"
+                    targetFilterPlaceholder="Pesquisar pelo perfil" [sourceStyle]="{'height':'300px'}"
+                    [targetStyle]="{'height':'300px'}">
                     <ng-template let-car pTemplate="item">
 
                       {{car.modulo}} - {{car.nome}}
@@ -136,7 +141,8 @@
                   </p-pickList>
                 </div>
               </div>
-              <button type="reset" (click)="backview()" class="btn btn-danger pull-right" [hidden]="!modoedicao">Cancelar</button>
+              <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
+                [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>
             </form>
@@ -147,7 +153,11 @@
   </div>
 </div>
 
-<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true" onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputgravou [hidden]="true" onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputapagar [hidden]="true" onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
-<button class="btn btn-danger btn-block" #inputerro [hidden]="true" onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>

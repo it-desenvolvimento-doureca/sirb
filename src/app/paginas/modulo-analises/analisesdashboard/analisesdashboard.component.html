@@ -1,0 +1,277 @@
+<!--div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div-->
+<div class="main-content dashboard_css" style="display: inline;padding: 0; display: block; height: calc(100% - 145px);">
+  <div class="container-fluid" style="height: 100%;">
+    <div class="row" style="height: 100%;">
+      <div class="col-md-12" style="height: 100%;">
+        <div class="card" style="height: 100%; background: none; margin-top: 1px;">
+
+          <div class="card-content" style="height: 100%; padding: 0;">
+            <p-tabView orientation="bottom">
+              <p-tabPanel header="Geral">
+
+                <section style=" display: inline-block;  width: 100%;">
+                  <!--mini statistics start-->
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="col-md-3">
+                      <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon green"><i class="fa fa-gavel"></i></span>
+                        <div class="mini-stat-info">
+                          <span>320</span>
+                          Acidentes de Trabalho
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                  </div>
+                  <!--mini statistics end-->
+                  <div class="row" style="display: initial;">
+                    <div class="col-md-12">
+                      <div class="event-calendar clearfix">
+
+                        <div class="col-lg-12 event-list-block">
+                          <div class="cal-day">
+                            <span>Visits</span>
+
+                          </div>
+                          <div class="slimScrollDiv"
+                            style="position: relative; overflow: hidden; width: auto; height: 305px;">
+                            <ul class="event-list" style="overflow: hidden; width: auto; height: 305px;">
+                              <li>Lunch with jhon @ 3:30 </li>
+                              <li>Coffee meeting with Lisa @ 4:30 </li>
+                              <li>Skypee conf with patrick @ 5:45 </li>
+                              <li>Gym @ 7:00 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+                              <li>Dinner with daniel @ 9:30 </li>
+
+                            </ul>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Recursos Humanos">
+                <section style=" display: inline-block;  width: 100%;">
+                  <!--mini statistics start-->
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="col-md-3">
+                      <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon orange"><i class="fa fa-gavel"></i></span>
+                        <div class="mini-stat-info">
+                          <span>300</span>
+                          Funcionários Ativos
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon tar"><i class="fa fa-tag"></i></span>
+                        <div class="mini-stat-info">
+                          <span>150</span>
+                          Funcionários Ativos São Bento
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon pink"><i class="fa fa-money"></i></span>
+                        <div class="mini-stat-info">
+                          <span>150</span>
+                          Funcionários Ativos Formariz
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon green"><i class="fa fa-eye"></i></span>
+                        <div class="mini-stat-info">
+                          <span>32720</span>
+                          Unique Visitors
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--mini statistics end-->
+
+                  <div class="row" style="display: initial;">
+
+                    <div class="col-md-6">
+                      <section class="panel">
+                        <div class="panel-body">
+                          <div class="top-stats-panel">
+                            <h4 class="widget-h">Daily Sales</h4>
+                            <div class="bar-stats">
+                              <ul class="progress-stat-bar clearfix">
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="50%"><span class="progress-stat-percent pink"
+                                    style="height: 50%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="10%"><span class="progress-stat-percent" style="height: 10%;"></span>
+                                </li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent yellow-b"
+                                    style="height: 70%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent orange"
+                                    style="height: 70%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent blue-b"
+                                    style="height: 70%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent red-b"
+                                    style="height: 70%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent purple-b"
+                                    style="height: 70%;"></span></li>
+                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                                  data-percent="70%"><span class="progress-stat-percent gray*b"
+                                    style="height: 70%;"></span></li>
+                              </ul>
+                              <ul class="bar-legend">
+                                <li><span class="bar-legend-pointer pink"></span> Comercial</li>
+                                <li><span class="bar-legend-pointer green"></span> Engenharia Processos</li>
+                                <li><span class="bar-legend-pointer yellow-b"></span> Financeira</li>
+                                <li><span class="bar-legend-pointer orange"></span> Injeção</li>
+                                <li><span class="bar-legend-pointer blue-b"></span> Logística</li>
+                                <li><span class="bar-legend-pointer red-b"></span> Manutenção</li>
+                                <li><span class="bar-legend-pointer purple-b"></span> Produção</li>
+                                <li><span class="bar-legend-pointer gray-b"></span> Qualidade</li>
+                              </ul>
+                              <!--div class="daily-sales-info">
+                                <span class="sales-count">1200 </span> <span class="sales-label">Total</span>
+                              </div-->
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                    <div class="col-sm-6">
+                      <section class="panel">
+                        <header class="panel-heading">
+                          Absentismo
+                        </header>
+                        <div class="panel-body">
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Username</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                              </tr>
+                              <tr>
+                                <td>2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                              </tr>
+                              <tr>
+                                <td>3</td>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+
+
+                  <!--mini statistics start-->
+                              <div class="row" style="display: initial;">
+                                <div class="col-md-3">
+                                  <section class="panel">
+                                    <div class="panel-body">
+                                      <div class="top-stats-panel">
+                                        <div class="daily-visit">
+                                          <h4 class="widget-h">Daily Visitors</h4>
+                                          <div id="daily-visit-chart"
+                                            style="width: 100%; height: 100px; display: block; padding: 0px; position: relative;">
+
+                                          </div>
+                                          <ul class="chart-meta clearfix">
+                                            <li class="pull-left visit-chart-value">3233</li>
+                                            <li class="pull-right visit-chart-title"><i class="fa fa-arrow-up"></i> 15%
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </section>
+                                </div>
+
+                              </div>
+                              <!--mini statistics end-->
+
+
+                      </section>
+              </p-tabPanel>
+              <p-tabPanel header="Produção">
+                Content 3
+              </p-tabPanel>
+              <p-tabPanel header="Qualidade">
+                Content 3
+              </p-tabPanel>
+              <p-tabPanel header="Planos Ação">
+                Content 3
+              </p-tabPanel>
+              <p-tabPanel header="Financeira">
+                Content 3
+              </p-tabPanel>
+            </p-tabView>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -398,6 +398,7 @@ import { PEMOVFICHEIROSService } from './servicos/pe-mov-ficheiros.service';
 import { PEMOVCABService } from './servicos/pe-mov-cab.service';
 import { PEMOVCABHISTORICOService } from './servicos/pe-mov-cab-historico.service';
 import { DashboardComponent } from './paginas/modulo-planos-estrategicos/dashboard/dashboard.component';
+import { AnalisesdashboardComponent } from './paginas/modulo-analises/analisesdashboard/analisesdashboard.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -881,6 +882,7 @@ const routes: Routes = [
   { path: 'grid', component: ListaComponent, canActivate: [LoginService], data: { breadcrumb: "Grid" } },
   { path: 'cartelas', component: CartelasComponent, canActivate: [LoginService], data: { breadcrumb: "Cartelas" } },
   { path: 'analisesjasper', component: ViewerComponent, canActivate: [LoginService], data: { breadcrumb: "Análises Jasper" } },
+  { path: 'analisesdashboard', component: AnalisesdashboardComponent, canActivate: [LoginService], data: { breadcrumb: "Dashboard" } },
   { path: 'gestaobanhos_relatorios', component: ViewerComponent, canActivate: [LoginService], data: { breadcrumb: "Relatórios Gestão" } },
   { path: 'reclamacoes_relatorios', component: ViewerComponent, canActivate: [LoginService], data: { breadcrumb: "Relatórios Gestão" } },
   { path: 'lmep_relatorios', component: ViewerComponent, canActivate: [LoginService], data: { breadcrumb: "Relatórios Gestão" } },
@@ -1238,7 +1240,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DosificadoresComponent,
     ListaPlanosEstrategicosComponent,
     FormPlanosEstrategicosComponent,
-    DashboardComponent
+    DashboardComponent,
+    AnalisesdashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -1275,6 +1278,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     TriStateCheckboxModule,
     TooltipModule,
     ChartsModule,
+    TabViewModule,
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,

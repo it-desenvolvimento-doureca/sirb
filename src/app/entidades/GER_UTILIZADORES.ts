@@ -16,4 +16,5 @@ export class GER_UTILIZADORES {
     pass_JASPER: string;
     user_WINDOWS: string;
     tipo_LISTA_FAVORITOS: string;
+    bloqueado: boolean;
 }

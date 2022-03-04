@@ -44,6 +44,7 @@ export class UtlformComponent implements OnInit {
   class_codexiste = "";
   user;
   administrador = false;
+  bloqueado = false;
 
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
   @ViewChild('inputgravou') inputgravou: ElementRef;
@@ -187,6 +188,7 @@ export class UtlformComponent implements OnInit {
               this.password = atob(response[x].password);
               this.login = response[x].login;
               this.administrador = response[x].admin;
+              this.bloqueado = response[x].bloqueado;
               this.code_user = response[x].cod_UTZ;
               this.user_jasper = response[x].user_JASPER;
               this.user_WINDOWS = response[x].user_WINDOWS;
@@ -241,6 +243,7 @@ export class UtlformComponent implements OnInit {
       utilizador.area = this.area;
       utilizador.inativo = false;
       utilizador.admin = this.administrador;
+      utilizador.bloqueado = this.bloqueado;
       utilizador.cod_UTZ = this.code_user;
       utilizador.user_JASPER = this.user_jasper;
       utilizador.user_WINDOWS = this.user_WINDOWS;
@@ -303,6 +306,7 @@ export class UtlformComponent implements OnInit {
       utilizador.telefone = this.telefone;
       utilizador.area = this.area;
       utilizador.admin = this.administrador;
+      utilizador.bloqueado = this.bloqueado;
       utilizador.cod_UTZ = this.code_user;
       utilizador.user_JASPER = this.user_jasper;
       utilizador.user_WINDOWS = this.user_WINDOWS;
@@ -320,7 +324,7 @@ export class UtlformComponent implements OnInit {
                 if (count2 == 0) {
 
                   //verifica se existe algum utilizador com o mesmo LDAP
-                  this.GERUTILIZADORESService.verifica_LDAP(id,this.user_WINDOWS).subscribe(
+                  this.GERUTILIZADORESService.verifica_LDAP(id, this.user_WINDOWS).subscribe(
                     res2 => {
                       var count3 = Object.keys(res2).length;
                       if (count3 == 0) {
