@@ -25,7 +25,7 @@ export class MenuComponent implements OnInit {
       icon: 'fa-chevron-left'
     }
   ];
-
+  ano;
   constructor(private activatedRoute: ActivatedRoute, private comp: AppComponent, private globalVar: AppGlobals, private GERPERFILLINService: GERPERFILLINService, public router: Router, private renderer: Renderer) {
 
   }
@@ -33,6 +33,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     //this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.globalVar.setlinha(0);
+    this.ano = new Date().getFullYear();
   }
 
   click(event) {

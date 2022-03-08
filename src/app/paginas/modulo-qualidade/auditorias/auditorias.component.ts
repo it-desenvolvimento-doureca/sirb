@@ -90,13 +90,6 @@ export class AuditoriasComponent implements OnInit {
     var url = this.router.routerState.snapshot.url;
     url = url.slice(1);
     var urlarray = url.split("/");
-    var id;
-    var sub = this.route
-      .queryParams
-      .subscribe(params => {
-        id = params['id'] || 0;
-      });
-
 
     this.globalVar.setapagar(false);
     this.globalVar.seteditar(true);
@@ -145,8 +138,26 @@ export class AuditoriasComponent implements OnInit {
     this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node55apagar"));
 
 
+    var ano;
 
-    this.ano = new Date().getUTCFullYear();
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        ano = params['id'] || null;
+        //versao = params['versao'] || 0;
+      });
+
+    if (ano == null || ano == 0) {
+      this.ano = new Date().getUTCFullYear();
+      if (this.modoedicao) {
+        this.router.navigate(['auditorias/editar'], { queryParams: { id: this.ano } });
+      } else {
+        this.router.navigate(['auditorias/view'], { queryParams: { id: this.ano } });
+      }
+    } else {
+      this.ano = ano;
+    }
+
 
     this.carregalinhas(this.ano);
   }
@@ -157,12 +168,16 @@ export class AuditoriasComponent implements OnInit {
 
   //ao alterar ano
   alteraAno(event) {
-
     this.atualizatabela_linhas(event.value);
   }
 
   atualizatabela_linhas(ano) {
 
+    if (this.modoedicao) {
+      this.router.navigate(['auditorias/editar'], { queryParams: { id: ano } });
+    } else {
+      this.router.navigate(['auditorias/view'], { queryParams: { id: ano } });
+    }
     this.carregalinhas(ano)
   }
 
@@ -244,7 +259,8 @@ export class AuditoriasComponent implements OnInit {
 
   //bt cancelar
   backview() {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['auditorias/view'], { queryParams: { id: this.ano } });
   }
 
 
@@ -292,7 +308,7 @@ export class AuditoriasComponent implements OnInit {
     }
 
 
-    this.router.navigate(['auditorias']);
+    this.router.navigate(['auditorias/view'], { queryParams: { id: this.ano } });
 
 
     this.simular(this.inputgravou);

@@ -1,4 +1,5 @@
 export var webUrl = {
+  host_dashboard: 'http://192.168.40.101:8080/fr_formariz/rest/rest',
   /*
   host: 'http://192.168.40.101:8080/sgiid',
   mod_pro: true,

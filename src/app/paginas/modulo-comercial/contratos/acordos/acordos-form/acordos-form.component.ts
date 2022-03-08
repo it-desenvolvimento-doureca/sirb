@@ -852,7 +852,7 @@ export class AcordosFormComponent implements OnInit {
 
       acordo.INATIVO = false;
 
-      this.COMACORDOSService.valida_acordo(this.ID_REFERENCIA, this.ID_REFERENCIA).subscribe(
+      this.COMACORDOSService.valida_acordo(this.ID_REFERENCIA, this.ID_REFERENCIA, 0).subscribe(
         response => {
           var count = Object.keys(response).length;
           if (count == 0) {
@@ -870,7 +870,7 @@ export class AcordosFormComponent implements OnInit {
 
     } else {
       var id;
-      var versao;
+
       var sub = this.route
         .queryParams
         .subscribe(params => {
@@ -878,30 +878,50 @@ export class AcordosFormComponent implements OnInit {
           //versao = params['versao'] || 0;
         });
 
-      acordo.ID = id;
-      //console.log(reclamacao)
-      var alteracoes = this.ver_alteracoes();
-      if (alteracoes.length > 0) {
-        this.COMACORDOSService.update_NOVA_VERSAO(acordo).subscribe(
-          res => {
-            versao = res[0][1];
-            acordo.VERSAO = versao;
 
-            this.gravartabela_actividades(id, versao, true);
-            this.gravartabela_precos(id, versao, true);
-            this.gravartabela_amortizacoes(id, versao, true);
-            this.gravartabela_lta(id, versao, true);
-            this.gravartabela_volumes(id, versao);
-            this.gravarFicheiros(id, versao, true);
-            this.gravartabela_historico(alteracoes, versao);
-            this.simular(this.inputgravou);
-            this.locatiosave('view', this.ID_ACORDO, versao);
+      this.COMACORDOSService.valida_acordo(this.ID_REFERENCIA, this.ID_REFERENCIA, id).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          if (count == 0) {
+            this.atualiza_acordo(acordo, id);
+          } else {
+            if (response[0][0] > 0) {
+              this.simular(this.existerefcontrato);
+            } else {
+              this.atualiza_acordo(acordo, id);
 
-          },
-          error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
-      } else {
-        this.simular(this.sem_alteracoes);
-      }
+            }
+          }
+        },
+        error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
+    }
+  }
+
+  atualiza_acordo(acordo, id) {
+    var versao;
+    acordo.ID = id;
+    //console.log(reclamacao)
+    var alteracoes = this.ver_alteracoes();
+    if (alteracoes.length > 0) {
+      this.COMACORDOSService.update_NOVA_VERSAO(acordo).subscribe(
+        res => {
+          versao = res[0][1];
+          acordo.VERSAO = versao;
+
+          this.gravartabela_actividades(id, versao, true);
+          this.gravartabela_precos(id, versao, true);
+          this.gravartabela_amortizacoes(id, versao, true);
+          this.gravartabela_lta(id, versao, true);
+          this.gravartabela_volumes(id, versao);
+          this.gravarFicheiros(id, versao, true);
+          this.gravartabela_historico(alteracoes, versao);
+          this.simular(this.inputgravou);
+          this.locatiosave('view', this.ID_ACORDO, versao);
+
+        },
+        error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
+    } else {
+      this.simular(this.sem_alteracoes);
     }
   }
 

@@ -399,6 +399,7 @@ import { PEMOVCABService } from './servicos/pe-mov-cab.service';
 import { PEMOVCABHISTORICOService } from './servicos/pe-mov-cab-historico.service';
 import { DashboardComponent } from './paginas/modulo-planos-estrategicos/dashboard/dashboard.component';
 import { AnalisesdashboardComponent } from './paginas/modulo-analises/analisesdashboard/analisesdashboard.component';
+import { DASHBOARDANALISESService } from './servicos/dashboard-analises.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -829,6 +830,7 @@ const routes: Routes = [
     path: 'auditorias', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Auditorias" },
     children: [
       { path: '', component: AuditoriasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: AuditoriasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'editar', component: AuditoriasComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
   },
 
@@ -1488,6 +1490,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PEMOVFICHEIROSService,
     PEMOVCABService,
     PEMOVCABHISTORICOService,
+    DASHBOARDANALISESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

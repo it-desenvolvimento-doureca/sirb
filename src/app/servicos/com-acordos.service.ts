@@ -113,8 +113,8 @@ export class COMACORDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  valida_acordo(id_contrato, id_referencia): Observable<COM_ACORDOS[]> {
-    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VALIDA_ACORDO/' + id_contrato + '/' + id_referencia;
+  valida_acordo(id_contrato, id_referencia, id_acordo): Observable<COM_ACORDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getCOM_ACORDOS_VALIDA_ACORDO/' + id_contrato + '/' + id_referencia + '/' + id_acordo;
     return this.http
       .get(url)
       .map(this.extractData)
