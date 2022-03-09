@@ -159,14 +159,14 @@
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                         <label>Descrição das Ações Efetuadas:</label>
                         <textarea [disabled]="!modoedicao" rows="6" pInputTextarea [(ngModel)]="descricao"
-                          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
-                          style="height: auto; width: 100%;"></textarea>
+                          (keydown.enter)="$event.stopPropagation()" class="form-control2 enabled"
+                          [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
                       </div>
 
                       <div *ngIf="campo_estado == 'R'" style="padding: 1px 5px 1px 10px;"
                         class="form-group col-md-12 col-lg-12">
                         <label>Motivo Rejeição:</label>
-                        <textarea [disabled]="!modoedicao" rows="3" pInputTextarea [(ngModel)]="mototivoRejeicao_texto"
+                        <textarea  (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3" pInputTextarea [(ngModel)]="mototivoRejeicao_texto"
                           class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
                           style="height: auto; width: 100%;"></textarea>
                       </div>
@@ -174,7 +174,7 @@
                       <div *ngIf="justificacao_ALTERACAO_ESTADO != '' && justificacao_ALTERACAO_ESTADO != null"
                         style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                         <label>Justificação:</label>
-                        <textarea [disabled]="!modoedicao" rows="3" pInputTextarea
+                        <textarea  (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3" pInputTextarea
                           [(ngModel)]="justificacao_ALTERACAO_ESTADO" class="form-control2 enabled"
                           [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
                       </div>
