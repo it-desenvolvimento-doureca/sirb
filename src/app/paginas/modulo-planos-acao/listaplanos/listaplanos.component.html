@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header"  data-background-color="red">
+          <div class="card-header" data-background-color="red">
             <h4 class="title">Planos de Ação</h4>
           </div>
           <div class="card-content">
@@ -56,8 +56,8 @@
               </p-column>
               <p-column [style]="{'width':'25px'}" field="data_registo" header="Data Criação" [filter]="true"
                 [sortable]="true"></p-column>
-              <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano"
-                [filter]="true" [sortable]="true">
+              <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano" [filter]="true"
+                [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">
                   <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
                     {{car['data_objetivo']}}
@@ -93,6 +93,7 @@
                 <div class="ui-grid ui-grid-responsive ui-fluid">
                   <table class="tg">
                     <tr>
+                      <th class="tg-wfll" style="width: 65px;">Seguir</th>
                       <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
                       <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                       <th class="tg-wfll">Ação</th>
@@ -102,6 +103,12 @@
                       <th class="tg-wfll" style="width: 168px;">Estado</th>
                     </tr>
                     <tr *ngFor="let col of car.filho">
+                      <td>
+                        <a (click)="set_favoritos(col)" class="disabled fa "
+                          [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
+                          style="cursor: pointer; color: black; font-size: 20px;"
+                          [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
+                      </td>
                       <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
                         [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
                       <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>

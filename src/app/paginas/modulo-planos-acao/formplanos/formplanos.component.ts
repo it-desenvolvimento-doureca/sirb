@@ -570,7 +570,8 @@ export class FormplanosComponent implements OnInit {
               causa: response[x][0].causa,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
               justificacao_DATA_FIM: null,
-              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
+              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado),
+              seguir_LINHA: response[x][0].seguir_LINHA,
             });
 
           }
@@ -769,6 +770,7 @@ export class FormplanosComponent implements OnInit {
       accoes.departamento = this.tabelaaccoes[x].id_departamento;
       accoes.descricao = this.tabelaaccoes[x].observacao;
       accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
+      accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
       accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
       accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
       accoes.fastresponse = this.tabelaaccoes[x].fastresponse;
@@ -1013,7 +1015,7 @@ export class FormplanosComponent implements OnInit {
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
-      descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA, justificacao_DATA_FIM: null,
+      descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA, justificacao_DATA_FIM: null, seguir_LINHA: false,
       causa: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
@@ -1475,7 +1477,7 @@ export class FormplanosComponent implements OnInit {
     accoes.estado = estado;
     accoes.causa = tabelaaccoes.causa;
     accoes.responsavel = id_resp;
-
+    accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
 
     if (estado == 'C') {
       accoes.data_CONTROLADO = new Date();
@@ -1917,6 +1919,35 @@ export class FormplanosComponent implements OnInit {
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
       }
     );
+  }
+
+
+  set_favoritos(col) {
+    if (col.seguir_LINHA) {
+      if (col.id_PLANO_LINHA != null) {
+        this.delete_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = false;
+      }
+    } else {
+      if (col.id_PLANO_LINHA != null) {
+        this.add_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = true;
+      }
+    }
+  }
+
+  delete_favorito(id, col) {
+    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+      col.seguir_LINHA = false;
+    }, error => { console.log(error); col.seguir_LINHA = true; });
+  }
+
+  add_favorito(id, col) {
+    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+      col.seguir_LINHA = true;
+    }, error => { console.log(error); col.seguir_LINHA = false; });
   }
 
 }

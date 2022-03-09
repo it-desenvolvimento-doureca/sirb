@@ -50,6 +50,22 @@ export class PAMOVLINHAService {
       .catch(this.handleError);
   }
 
+  delete_favorito(id): Observable<PA_MOV_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAdelete_favorito/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  add_favorito(id): Observable<PA_MOV_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAadd_favorito/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   update(data: PA_MOV_LINHA) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updatePA_MOV_LINHA', JSON.stringify(data), { headers: this.headers })

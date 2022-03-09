@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/cor
 import { ActivatedRoute, Router } from '@angular/router';
 import { PE_MOV_CAB } from 'app/entidades/PE_MOV_CAB';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { PAMOVLINHAService } from 'app/servicos/pa-mov-linha.service';
 import { PEMOVCABService } from 'app/servicos/pe-mov-cab.service';
 import { DataTable } from 'primeng/primeng';
 
@@ -26,7 +27,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
 
   constructor(
     private PEMOVCABService: PEMOVCABService, private route: ActivatedRoute,
-    private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+    private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private PAMOVLINHAService: PAMOVLINHAService) { }
 
   ngOnInit() {
 
@@ -167,7 +168,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-        , conclusao: response[x][24],
+        , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29]
       });
     } else {
       this.dados.find(item => item.id == response[x][19]).planos.push({
@@ -183,7 +184,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , conclusao: response[x][24],
+          , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29]
         }]
       });
     }
@@ -263,6 +264,35 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
 
 
     }, 250);
+  }
+
+
+  set_favoritos(col) {
+    if (col.seguir_LINHA) {
+      if (col.id_PLANO_LINHA != null) {
+        this.delete_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = false;
+      }
+    } else {
+      if (col.id_PLANO_LINHA != null) {
+        this.add_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = true;
+      }
+    }
+  }
+
+  delete_favorito(id, col) {
+    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+      col.seguir_LINHA = false;
+    }, error => { console.log(error); col.seguir_LINHA = true; });
+  }
+
+  add_favorito(id, col) {
+    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+      col.seguir_LINHA = true;
+    }, error => { console.log(error); col.seguir_LINHA = false; });
   }
 
 

@@ -95,9 +95,11 @@
                     <div class="ui-grid ui-grid-responsive ui-fluid">
                       <table class="tg">
                         <tr>
+                          <th class="tg-wfll" style="width: 65px;">Seguir</th>
                           <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
                           <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                           <th class="tg-wfll">Ação</th>
+                          <th class="tg-wfll">Descrição</th>
                           <th class="tg-wfll">Objetivo</th>
                           <th class="tg-wfll">Investimentos</th>
                           <th class="tg-wfll" style="width: 71px;">% Conclusão</th>
@@ -105,11 +107,18 @@
                         </tr>
                         <ng-container *ngFor="let col of car.filho">
                           <tr>
+                            <td>
+                              <a (click)="set_favoritos(col)" class="disabled fa "
+                                [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
+                                style="cursor: pointer; color: black; font-size: 20px;"
+                                [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
+                            </td>
                             <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
                               [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                            <td class="tg-0pky" style="min-width: 120px;">{{col.objetivo}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.investimentos}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.conclusao}} %</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>

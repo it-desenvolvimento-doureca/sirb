@@ -67,6 +67,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   estado: string = 'E';
 
   estado_texto: string;
+  estado_texto_plano;
+  estado_plano;
   utilizador;
   data_CRIA;
   hora_CRIA: string;
@@ -154,6 +156,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   displayApagar: boolean;
   plano: any = null;
   data_OBJETIVO_DATA: Date;
+  selected_row: any;
+  justificacao_DATA_FIM: any;
+  displayJustificacaoDATAFIM: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -544,6 +549,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
               if (response[x][0].estado == 'EX') {
                 this.btCancelar = true;
+                this.btValidar = false;
               }
 
               if (response[x][0].estado == 'A') {
@@ -651,7 +657,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11]
         , investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]),
-        EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
+        EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
+        , id_PLANO_LINHA: response[x][25]
       });
     } else {
       var filho = [];
@@ -662,7 +669,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13]
+          , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
+          , id_PLANO_LINHA: response[x][25]
         }];
       }
       this.tabelaplanos.push({
@@ -677,6 +685,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         objetivo: response[x][20],
         ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
         estado: this.getestado(response[x][7]), //cor: response[x][1],
+        cod_estado: response[x][7],
         utilizador: response[x][5],
         filho: filho
       });
@@ -824,8 +833,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   gravarPLANOACOES(estado = 'E', cria_tarefas = false) {
     var novo = true;
-    estado = 'P';
-    cria_tarefas = true;
+    //estado = 'P';
+    cria_tarefas = false;
     var plano = new PA_MOV_CAB;
 
     if (this.plano != null) { plano = this.plano; novo = false }
@@ -849,7 +858,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     plano.objetivo = this.objetivo;
     plano.id_PLANO_ESTRATEGICO = this.id_PLANO;
 
-    plano.estado = (estado == 'P') ? estado : this.estado;
+    plano.estado = (estado == 'P') ? estado : this.estado_plano;
     if (novo) {
       plano.estado = "E";
       plano.data_CRIA = this.data_agora;
@@ -857,11 +866,17 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       plano.ativo = true;
       this.PAMOVCABService.create(plano).subscribe(
         response => {
+          if (this.estado = "EX") {
+            this.estado = "EL";
+            this.estado_texto = this.getestado("EL");
+          }
           this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas, false);
         }, error => { console.log(error); });
     } else {
       this.PAMOVCABService.update(plano).then(
         response => {
+          //cria_tarefas   
+          if (plano.estado != "P") cria_tarefas = true;
           this.gravalinhasPLANOACOES(plano.id_PLANO_CAB, plano.estado, cria_tarefas, true);
         }, error => { console.log(error); });
     }
@@ -878,10 +893,24 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         var atualizou_datas = false;
         if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
           accoes = this.tabelaaccoes[x].dados;
-          /*if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
+          if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
             atualizou_datas = true;
-          }*/
+          }
+          //cria_tarefas = false;
         }
+
+
+        var id_resp_old = null;
+        var atualizou_responsavel = false;
+        var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
+        if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
+          accoes = this.tabelaaccoes[x].dados;
+          id_resp_old = accoes.responsavel;
+          if (accoes.responsavel != this.tabelaaccoes[x].responsavel) {
+            atualizou_responsavel = true;
+          }
+        }
+
 
         accoes.id_PLANO_CAB = id;
 
@@ -897,6 +926,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         accoes.id_PLANO_LINHA = this.tabelaaccoes[x].id_PLANO_LINHA;
         accoes.departamento = this.tabelaaccoes[x].id_departamento;
         accoes.descricao = this.tabelaaccoes[x].observacao;
+        accoes.objetivo = this.tabelaaccoes[x].objetivo;
+        accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
         accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
         accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
         accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
@@ -913,13 +944,19 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
         accoes.responsavel = id_resp;
         var novo = false;
-        if (accoes.id_PLANO_LINHA == null) novo = true;
+        if (accoes.id_PLANO_LINHA == null) {
+          novo = true;
+        } else {
+          cria_tarefas = false;
+        }
         var email_p = "";
 
         if (novo && estado != 'E') {
           accoes.estado = 'P';
         } else if (estado == 'P' && this.tabelaaccoes[x].estado != "V" && this.tabelaaccoes[x].estado != "C" && this.tabelaaccoes[x].estado != "D") {
           accoes.estado = 'P';
+        } else if (estado = 'E') {
+          accoes.estado = 'E';
         } else {
           accoes.estado = this.tabelaaccoes[x].estado;
         }
@@ -931,7 +968,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
 
         if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-          this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano);
+          this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano, atualizou_responsavel, id_resp_old, justificacao_DATA_FIM);
         } else {
           if (parseInt(x) + 1 == this.tabelaaccoes.length) {
 
@@ -955,6 +992,63 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.displayAddPlano = false;
 
 
+  }
+
+  verificadatas(row) {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      var accoes = new PA_MOV_LINHA;
+      var atualizou_datas = false;
+      this.selected_row = null;
+      this.justificacao_DATA_FIM = null;
+      if (row.id_PLANO_LINHA != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+        accoes = row.dados;
+        if (this.formatDate(accoes.data_ACCAO) != this.formatDate(row.data_ACCAO) || accoes.hora_ACCAO != ((row.hora_ACCAO == null) ? null : (row.hora_ACCAO + ":00").slice(0, 8))) {
+          atualizou_datas = true;
+        }
+      }
+      if (atualizou_datas) {
+        this.selected_row = row;
+        this.displayAddPlano_show = true;
+        this.displayAddPlano = false;
+        this.yearTimeout = setTimeout(() => {
+          this.displayJustificacaoDATAFIM = true;
+        }, 100);
+
+      }
+
+      // console.log('atualizou_datas ', atualizou_datas)
+    }, 1000);
+
+  }
+
+  onHideJustificacao() {
+    if (this.justificacao_DATA_FIM == null && this.selected_row != null) {
+      var accoes = new PA_MOV_LINHA;
+      accoes = this.selected_row.dados;
+      this.selected_row.data_ACCAO = this.formatDate(accoes.data_ACCAO);
+      this.selected_row.hora_ACCAO = accoes.hora_ACCAO;
+      if (this.displayAddPlano_show) {
+        this.displayAddPlano = true;
+        this.displayAddPlano_show = false;
+      }
+    }
+  }
+
+
+  atualizarlinhajustificacao_DATA_FIM() {
+    this.selected_row.justificacao_DATA_FIM = this.justificacao_DATA_FIM;
+    this.displayJustificacaoDATAFIM = false;
+    if (this.displayAddPlano_show) {
+      this.yearTimeout = setTimeout(() => {
+        this.displayAddPlano = true;
+        this.displayAddPlano_show = false;
+      }, 100);
+
+    }
   }
 
 
@@ -1015,7 +1109,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
-  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, updateplano) {
+  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, updateplano, atualizou_reponsavel, id_resp, justificacao_DATA_FIM) {
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -1028,8 +1122,42 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           tarefa.data_ULT_MODIF = new Date();
           tarefa.utz_ULT_MODIF = this.user;
           tarefa.data_FIM = new Date(this.formatDate(response.data_ACCAO) + ' ' + response.hora_ACCAO);
-          this.atualizaTarefa(tarefa);
+          tarefa.justificacao_DATA_FIM = justificacao_DATA_FIM;
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+          logs.descricao = "Alterou Prazo Conclusão";
+          logs.justificacao = justificacao_DATA_FIM;
+          var email_para = email_p;
+          this.atualizaTarefa(tarefa, logs, false, null, null, null, null);
         }
+
+        if (atualizou_reponsavel) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa.id_MODULO = 13;
+          tarefa.sub_MODULO = "PA";
+          tarefa.id_CAMPO = response.id_PLANO_LINHA;
+          tarefa.utz_ID = response.responsavel;
+          tarefa.utz_CRIA = this.user;
+          tarefa.data_ULT_MODIF = new Date();
+          tarefa.utz_ULT_MODIF = this.user;
+
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+
+          var nome1 = ''
+          var nome2 = ''
+          var utz1 = this.drop_utilizadores.find(item => item.value == id_resp);
+          if (utz1) nome1 = utz1.label;
+
+          var utz2 = this.drop_utilizadores.find(item => item.value == response.responsavel);
+          if (utz2) nome2 = utz2.label;
+
+          logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
+          this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, descricao, referencia);
+        }
+
         if (count == total) {
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
             response => {
@@ -1043,7 +1171,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         }
 
 
-        if ((novo && estado != 'E') || cria_tarefas) {
+        if (/*(novo && estado != 'E') ||*/ cria_tarefas) {
           var tarefa = new GT_MOV_TAREFAS;
           tarefa.id_MODULO = 13;
           tarefa.id_CAMPO = response.id_PLANO_LINHA;
@@ -1096,6 +1224,75 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
   }
 
+  alterarestadoPLanoAcoes() {
+    for (var x in this.tabelaplanos) {
+      if (this.tabelaplanos[x].cod_estado == 'E') {
+        this.alterarestadoPLanoAcoes2(this.tabelaplanos[x].id);
+      }
+    }
+  }
+
+  alterarestadoPLanoAcoes2(id) {
+    this.PAMOVCABService.getById(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+
+          var plano = new PA_MOV_CAB;
+          plano = response[0][0];
+          plano.data_MODIF = new Date();
+          plano.utz_MODIF = this.user;
+          plano.estado = 'P';
+
+          this.updatePAMOVCAB(plano, plano.id_PLANO_CAB, false);
+          this.PAMOVLINHAService.getById(id).subscribe(
+            response => {
+              var count = Object.keys(response).length;
+              for (var x in response) {
+                if (response[x][2] == null) this.criarTarefaPlano(response[x][0]);
+              }
+
+            }, error => { console.log(error); });
+
+        }
+      }, error => { console.log(error); });
+
+  }
+
+
+  criarTarefaPlano(response) {
+
+    var tarefa = new GT_MOV_TAREFAS;
+    tarefa.id_MODULO = 13;
+    tarefa.id_CAMPO = response.id_PLANO_LINHA;
+    tarefa.data_FIM = new Date(this.formatDate(response.data_ACCAO) + ' ' + response.hora_ACCAO);
+    tarefa.data_INICIO = new Date(this.formatDate(response.data_ACCAO) + ' ' + response.hora_ACCAO);
+    tarefa.data_CRIA = new Date();
+    tarefa.utz_CRIA = this.user;
+    tarefa.data_ULT_MODIF = new Date();
+    tarefa.utz_ULT_MODIF = this.user;
+    tarefa.estado = 'P';
+    tarefa.inativo = false;
+    tarefa.utz_ID = response.responsavel;
+    tarefa.utz_TIPO = 'u';
+    tarefa.id_ACCAO = response.id_ACCAO;
+    tarefa.sub_MODULO = "PA";
+    tarefa.prioridade = response.prioridade;
+    tarefa.observacoes = response.descricao;
+    tarefa.data_FIM_ANTIGA = tarefa.data_FIM;
+    var email_p = "";
+    var utz = this.drop_utilizadores.find(item => item.value == response.responsavel);
+    if (utz) email_p = utz.email;
+
+    var referencia = ((response.referencia == null) ? '' : response.referencia) + ' - ' + ((response.design_REFERENCIA == null) ? '' : response.design_REFERENCIA);
+    var nome_accao = null;
+    if (this.drop_accoes.find(item => item.value == response.id_ACCAO)) {
+      nome_accao = this.drop_accoes.find(item => item.value == response.id_ACCAO).label
+    }
+
+    this.criarTarefa(tarefa, nome_accao, response.descricao, email_p, response.id_PLANO_CAB, referencia);
+  }
 
   anulardependecias() {
     this.anular();
@@ -1114,7 +1311,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             plano.utz_ANULA = this.user;
             plano.estado = 'A';
 
-            this.anulardependecias2(plano, plano.id_PLANO_CAB);
+            this.updatePAMOVCAB(plano, plano.id_PLANO_CAB, true);
 
           }
         }, error => { console.log(error); });
@@ -1123,10 +1320,10 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
   }
 
-  anulardependecias2(plano, id) {
+  updatePAMOVCAB(plano, id, atualiza) {
     this.PAMOVCABService.update(plano).then(
       res => {
-        this.estadosaccoes(id);
+        if (atualiza) this.estadosaccoes(id);
       },
       error => { console.log(error); this.simular(this.inputerro); });
   }
@@ -1166,8 +1363,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.tabelaaccoes.push({
       id_TAREFA: null,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
-      , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
-      , filteredreferencias: [], causa: null
+      , departamento: null, observacao: null, id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
+      , filteredreferencias: [], causa: null, justificacao_DATA_FIM: null, objetivo: null, seguir_LINHA: false
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1306,11 +1503,17 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     });
   }
 
-  atualizaTarefa(tarefa) {
+
+
+  atualizaTarefa(tarefa, logs, enviarEvento, email_para, nome_accao, descricao, referencia) {
 
     this.GTMOVTAREFASService.atualizaTAREFA(tarefa).subscribe(response => {
-
-
+      logs.id_TAREFA = response[0][0];
+      this.criaLogs(logs);
+      if (enviarEvento) {
+        this.enviarEvento(response[0][1], response[0][0], "Ao Alterar Responsável", email_para, referencia, response[0][2]
+          , this.data_CRIA, nome_accao, descricao);
+      }
     }, error => {
       console.log(error);
       this.simular(this.inputerro);
@@ -1571,6 +1774,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         /*this.motivoAlteracao = null;
         this.displayMotivoAlteracao = true;*/
         this.gravar('EX');
+        this.alterarestadoPLanoAcoes();
       }
     });
 
@@ -1657,6 +1861,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     accoes.id_PLANO_LINHA = tabelaaccoes.id_PLANO_LINHA;
     accoes.departamento = tabelaaccoes.id_departamento;
     accoes.descricao = tabelaaccoes.observacao;
+    accoes.objetivo = tabelaaccoes.objetivo;
+    accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
     accoes.data_ACCAO = tabelaaccoes.data_ACCAO;
     accoes.hora_ACCAO = (tabelaaccoes.hora_ACCAO == null) ? null : (tabelaaccoes.hora_ACCAO + ":00").slice(0, 8);;
     accoes.id_ACCAO = tabelaaccoes.id_ACCAO;
@@ -2084,8 +2290,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.unidade = null;
     this.descricao = null;
 
-    this.estado = 'E';
-    this.estado_texto = this.getestado('E');
+    this.estado_plano = 'E';
+    this.estado_texto_plano = this.getestado('E');
     this.utilizador = null;
     this.data_CRIA = this.formatDate(new Date());
     this.hora_CRIA = new Date(new Date()).toLocaleTimeString().slice(0, 5);
@@ -2248,8 +2454,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             this.unidade = response[x][0].unidade;
             this.descricao = response[x][0].descricao;
 
-            this.estado = (response[x][0].estado);
-            this.estado_texto = this.getestado(response[x][0].estado);
+            this.estado_plano = (response[x][0].estado);
+            this.estado_texto_plano = this.getestado(response[x][0].estado);
             this.utilizador = response[x][0].utz_CRIA;
             this.data_CRIA = this.formatDate(response[x][0].data_CRIA);
             this.hora_CRIA = new Date(response[x][0].data_CRIA).toLocaleTimeString().slice(0, 5);
@@ -2306,12 +2512,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
               id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
               fastresponse: response[x][0].fastresponse, encaminhado: response[x][1], prioridade: response[x][0].prioridade, estado: response[x][0].estado,
               unidade: response[x][0].unidade,
-              filteredreferencias: [],
+              filteredreferencias: [], justificacao_DATA_FIM: null,
               referencia_campo: referencia_campo,
               referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
               causa: response[x][0].causa, investimentos: response[x][0].investimentos,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
-              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado)
+              departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado),
+              objetivo: response[x][0].objetivo, seguir_LINHA: response[x][0].seguir_LINHA
             });
 
           }
@@ -2400,5 +2607,32 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
 
+  set_favoritos(col) {
+    if (col.seguir_LINHA) {
+      if (col.id_PLANO_LINHA != null) {
+        this.delete_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = false;
+      }
+    } else {
+      if (col.id_PLANO_LINHA != null) {
+        this.add_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = true;
+      }
+    }
+  }
+
+  delete_favorito(id, col) {
+    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+      col.seguir_LINHA = false;
+    }, error => { console.log(error); col.seguir_LINHA = true; });
+  }
+
+  add_favorito(id, col) {
+    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+      col.seguir_LINHA = true;
+    }, error => { console.log(error); col.seguir_LINHA = false; });
+  }
 
 }

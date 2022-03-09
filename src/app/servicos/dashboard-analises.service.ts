@@ -11,6 +11,30 @@ export class DASHBOARDANALISESService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
+  getDASHBOARD_PLANEAMENTO_GRAFICOS(data) {
+    const url = webUrl.host + '/getDASHBOARD_PLANEAMENTO_GRAFICOS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getDASHBOARD_PLANEAMENTO(data) {
+    const url = webUrl.host + '/getDASHBOARD_PLANEAMENTO_2';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getDASHBOARD_OCORRENCIAS(data) {
+    const url = webUrl.host_dashboard + '/getDASHBOARD_OCORRENCIAS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDASHBOARD_REJEICOES_AREA2(data) {
     const url = webUrl.host_dashboard + '/getDASHBOARD_REJEICOES_AREA2';
     return this.http

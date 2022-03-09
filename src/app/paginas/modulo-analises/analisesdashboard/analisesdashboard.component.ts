@@ -460,6 +460,9 @@ export class AnalisesdashboardComponent implements OnInit {
   filteredItems: any[];
   hora_ini: string;
   hora_fim: string;
+  anos: any;
+  semanas: any;
+  semana: any;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -479,6 +482,16 @@ export class AnalisesdashboardComponent implements OnInit {
     this.data_ini = this.formatDate(d);
     d.setDate(d.getDate() + 1);
     this.data_fim = this.formatDate(d);
+
+    for (var x = 2005; x <= 2075; x++) {
+      this.anos.push({ value: x, label: x })
+    }
+
+    for (var y = 1; y <= 53; y++) {
+      this.semanas.push({ value: y, label: y })
+    }
+
+    this.semana = this.getWeek(new Date()) + 1;
 
     this.data_CumprimentoPlanos_semana1 = {
       labels: ["dia 1", "dia 2", "dia 3", "dia 4", "dia 5"],
@@ -591,6 +604,15 @@ export class AnalisesdashboardComponent implements OnInit {
 
   }
 
+  getWeek(d) {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    var dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  }
+
+
   atualizar() {
 
 
@@ -604,6 +626,8 @@ export class AnalisesdashboardComponent implements OnInit {
     this.carregaReclamacoesClientes();
     this.carregaref();
     this.carregarlista('T');
+    this.carregaacidentes();
+    this.carregalinhas();
   }
 
 
@@ -1091,6 +1115,95 @@ export class AnalisesdashboardComponent implements OnInit {
   assignCopy() {
     this.filteredItems = Object.assign([], this.cars1);
     this.dados_analise = this.filteredItems;
+
+  }
+
+  abrir(row) {
+
+  }
+
+  carregaacidentes() {
+    this.DASHBOARDANALISESService.getDASHBOARD_OCORRENCIAS([]).subscribe(
+      response => {
+        //this.ocorrencias = [];
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            /*this.ocorrencias.push({
+              descricao: response[x][0],
+              tipo_ocorrencia: response[x][1],
+              data: this.formatDate(response[x][2]),
+              departamento: response[x][3],
+              funcao: response[x][4]
+            });*/
+
+            var data = new Date();
+            data.setDate(data.getDate() - 1);
+            var data_a = this.formatDate(data);
+
+            if (new Date(this.formatDate(response[x][2])).getTime() == new Date(data_a).getTime()) {
+              //this.cara16 = 2;
+            }
+          }
+          //this.ocorrencias = this.ocorrencias.slice();
+        }
+        //this.loadingAcidentes = true;
+      }, error => { console.log(error); /*this.loadingAcidentes = true;*/ });
+  }
+
+  carregalinhas() {
+    this.dados_indice_comprimento = [];
+
+
+
+    var dados = [{ ANO: this.ano, SEMANA: this.semana }];
+    this.DASHBOARDANALISESService.getDASHBOARD_PLANEAMENTO(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+
+          var dia_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+          for (var x in response) {
+            this.dados_indice_comprimento.push({
+              DATA: this.formatDate(response[x][0]) + ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')',
+              CUMP_PLANOL1T1: response[x][1],
+              CUMP_PLANOL1T2: response[x][2],
+              CUMP_PLANOL1T3: response[x][3],
+              CUMP_PLANOL2T1: response[x][4],
+              CUMP_PLANOL2T2: response[x][5],
+              CUMP_PLANOL2T3: response[x][6],
+              OCUP_LINHAL1T1: response[x][7],
+              OCUP_LINHAL1T2: response[x][8],
+              OCUP_LINHAL1T3: response[x][9],
+              OCUP_LINHAL2T1: response[x][10],
+              OCUP_LINHAL2T2: response[x][11],
+              OCUP_LINHAL2T3: response[x][12],
+              OCUP_TOTALL1T1: response[x][13],
+              OCUP_TOTALL1T2: response[x][14],
+              OCUP_TOTALL1T3: response[x][15],
+              OCUP_TOTALL2T1: response[x][16],
+              OCUP_TOTALL2T2: response[x][17],
+              OCUP_TOTALL2T3: response[x][18],
+
+            });
+          }
+
+
+
+          this.dados_indice_comprimento = this.dados_indice_comprimento.slice();
+
+          /* this.carregargraficos(this.dados_indice_comprimento, dados_dias, dados_dia_L1_C, dados_dia_L1_O, dados_dia_L1_OT,
+             dados_dia_L2_C, dados_dia_L2_O, dados_dia_L2_OT, response[x][7], response[x][8], response[x][9], response[x][10]
+           );*/
+
+          //this.loadingProducao = true;
+        } else {
+          //this.loadingProducao = true;
+          //this.carregargraficos([], [], [], [], null, null, null, null, 0, 0, 0, 0);
+        }
+
+      }, error => { console.log(error); /*this.loadingProducao = true;*/ });
 
   }
 

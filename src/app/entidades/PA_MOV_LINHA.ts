@@ -29,4 +29,5 @@ export class PA_MOV_LINHA {
     investimentos: string;
     eficacia_CUMPRIMENTO_OBJETIVO: string;
     seguir_LINHA: boolean;
+    objetivo: string;
 }
