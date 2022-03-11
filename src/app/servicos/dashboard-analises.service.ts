@@ -12,7 +12,7 @@ export class DASHBOARDANALISESService {
   constructor(private http: Http) { }
 
   getDASHBOARD_PLANEAMENTO_GRAFICOS(data) {
-    const url = webUrl.host + '/getDASHBOARD_PLANEAMENTO_GRAFICOS';
+    const url = webUrl.host + '/rest/sirb/getDASHBOARD_PLANEAMENTO_GRAFICOS';
     return this.http
       .post(url, JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)
@@ -20,7 +20,7 @@ export class DASHBOARDANALISESService {
   }
 
   getDASHBOARD_PLANEAMENTO(data) {
-    const url = webUrl.host + '/getDASHBOARD_PLANEAMENTO_2';
+    const url = webUrl.host + '/rest/sirb/getDASHBOARD_PLANEAMENTO_2';
     return this.http
       .post(url, JSON.stringify(data), { headers: this.headers })
       .map(this.extractData)

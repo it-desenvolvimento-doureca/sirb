@@ -426,6 +426,7 @@
                             <p-dropdown [filter]="true" [options]="drop_utilizadores"
                               [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                               [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
+                              (onChange)="verificaResponsavel(car,$event)"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'  &&  car['estado']!= null))"
                               appendTo="body" [required]="true">
                             </p-dropdown>
@@ -732,6 +733,34 @@
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
       <button type="button" class="btn btn-default" (click)="displayMotivoAlteracao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+
+<p-dialog header="Justificação Alteração do Responsável" [responsive]="true" [positionTop]="0"
+  (onHide)="onHideJustificacaoRESPONSAVEL()" [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayJustificacaoRESPONSAVEL"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_RESPONSAVEL()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_RESPONSAVEL"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoRESPONSAVEL = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
   </form>

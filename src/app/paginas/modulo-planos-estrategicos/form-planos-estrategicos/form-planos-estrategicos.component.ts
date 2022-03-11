@@ -158,7 +158,9 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   data_OBJETIVO_DATA: Date;
   selected_row: any;
   justificacao_DATA_FIM: any;
+  justificacao_RESPONSAVEL = null;
   displayJustificacaoDATAFIM: boolean;
+  displayJustificacaoRESPONSAVEL: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -903,6 +905,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         var id_resp_old = null;
         var atualizou_responsavel = false;
         var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
+        var justificacao_RESPONSAVEL = this.tabelaaccoes[x].justificacao_RESPONSAVEL;
         if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
           accoes = this.tabelaaccoes[x].dados;
           id_resp_old = accoes.responsavel;
@@ -968,7 +971,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         var referencia = ((this.tabelaaccoes[x].referencia == null) ? '' : this.tabelaaccoes[x].referencia) + ' - ' + ((this.tabelaaccoes[x].design_REFERENCIA == null) ? '' : this.tabelaaccoes[x].design_REFERENCIA);
 
         if (accoes.id_PLANO_CAB != null && accoes.responsavel != null /*&& accoes.departamento != null*/) {
-          this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano, atualizou_responsavel, id_resp_old, justificacao_DATA_FIM);
+          this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, accoes.descricao, email_p, id, estado, cria_tarefas, parseInt(x) + 1, this.tabelaaccoes.length, atualizou_datas, referencia, updateplano, atualizou_responsavel, id_resp_old, justificacao_DATA_FIM, justificacao_RESPONSAVEL);
         } else {
           if (parseInt(x) + 1 == this.tabelaaccoes.length) {
 
@@ -1025,6 +1028,39 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
+
+  verificaResponsavel(row, event) {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      var accoes = new PA_MOV_LINHA;
+      var atualizou_reponsavel = false;
+      this.selected_row = null;
+      this.justificacao_RESPONSAVEL = null;
+
+      if (row.id_PLANO_LINHA != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
+        accoes = row.dados;
+        if (accoes.responsavel != row.responsavel) {
+          atualizou_reponsavel = true;
+        }
+      }
+      if (atualizou_reponsavel) {
+        this.selected_row = row;
+        this.displayAddPlano_show = true;
+        this.displayAddPlano = false;
+        this.yearTimeout = setTimeout(() => {
+          this.displayJustificacaoRESPONSAVEL = true;
+        }, 100);
+
+      }
+
+      // console.log('atualizou_datas ', atualizou_datas)
+    }, 1000);
+
+  }
+
   onHideJustificacao() {
     if (this.justificacao_DATA_FIM == null && this.selected_row != null) {
       var accoes = new PA_MOV_LINHA;
@@ -1038,10 +1074,35 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
   }
 
+  onHideJustificacaoRESPONSAVEL() {
+    if (this.justificacao_RESPONSAVEL == null && this.selected_row != null) {
+      var accoes = new PA_MOV_LINHA;
+      accoes = this.selected_row.dados;
+      this.selected_row.responsavel = accoes.responsavel;
+      if (this.displayAddPlano_show) {
+        this.displayAddPlano = true;
+        this.displayAddPlano_show = false;
+      }
+    }
+  }
+
+
 
   atualizarlinhajustificacao_DATA_FIM() {
     this.selected_row.justificacao_DATA_FIM = this.justificacao_DATA_FIM;
     this.displayJustificacaoDATAFIM = false;
+    if (this.displayAddPlano_show) {
+      this.yearTimeout = setTimeout(() => {
+        this.displayAddPlano = true;
+        this.displayAddPlano_show = false;
+      }, 100);
+
+    }
+  }
+
+  atualizarlinhajustificacao_RESPONSAVEL() {
+    this.selected_row.justificacao_RESPONSAVEL = this.justificacao_RESPONSAVEL;
+    this.displayJustificacaoRESPONSAVEL = false;
     if (this.displayAddPlano_show) {
       this.yearTimeout = setTimeout(() => {
         this.displayAddPlano = true;
@@ -1109,7 +1170,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
-  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, updateplano, atualizou_reponsavel, id_resp, justificacao_DATA_FIM) {
+  savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, updateplano, atualizou_reponsavel, id_resp, justificacao_DATA_FIM, justificacao_RESPONSAVEL) {
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -1141,11 +1202,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           tarefa.utz_CRIA = this.user;
           tarefa.data_ULT_MODIF = new Date();
           tarefa.utz_ULT_MODIF = this.user;
-
+          tarefa.justificacao_RESPONSAVEL = justificacao_RESPONSAVEL;
           var logs = new GT_LOGS;
           logs.utz_CRIA = this.user;
           logs.data_CRIA = new Date();
-
+          logs.justificacao = justificacao_RESPONSAVEL;
           var nome1 = ''
           var nome2 = ''
           var utz1 = this.drop_utilizadores.find(item => item.value == id_resp);
@@ -1364,7 +1425,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       id_TAREFA: null,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: null, id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
-      , filteredreferencias: [], causa: null, justificacao_DATA_FIM: null, objetivo: null, seguir_LINHA: false
+      , filteredreferencias: [], causa: null, justificacao_DATA_FIM: null, objetivo: null, seguir_LINHA: false, justificacao_RESPONSAVEL: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -2512,7 +2573,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
               id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
               fastresponse: response[x][0].fastresponse, encaminhado: response[x][1], prioridade: response[x][0].prioridade, estado: response[x][0].estado,
               unidade: response[x][0].unidade,
-              filteredreferencias: [], justificacao_DATA_FIM: null,
+              filteredreferencias: [], justificacao_DATA_FIM: null, justificacao_RESPONSAVEL: null,
               referencia_campo: referencia_campo,
               referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
               causa: response[x][0].causa, investimentos: response[x][0].investimentos,

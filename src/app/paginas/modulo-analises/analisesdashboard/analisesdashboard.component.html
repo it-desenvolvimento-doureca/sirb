@@ -123,7 +123,7 @@
                         <span class="mini-stat-icon green"><i class="fa fa-users"></i></span>
                         <div class="mini-stat-info">
                           <span>32720</span>
-                          Unique Visitors
+                          Funcionários a Faltar
                         </div>
                       </div>
                     </div>
@@ -135,46 +135,25 @@
                     <div class="col-md-6">
                       <section class="panel">
                         <header class="panel-heading">
-                          <h4 class="widget-h">Funcionários por Departamento</h4>
+                          <h4 class="widget-h">Funcionários Ativos por Departamento</h4>
                         </header>
                         <div class="panel-body">
                           <div class="top-stats-panel">
                             <div class="bar-stats">
                               <ul class="progress-stat-bar clearfix">
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="50%"><span class="progress-stat-percent pink"
-                                    style="height: 50%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="10%"><span class="progress-stat-percent" style="height: 10%;"></span>
-                                </li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent yellow-b"
-                                    style="height: 70%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent orange"
-                                    style="height: 70%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent blue-b"
-                                    style="height: 70%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent red-b"
-                                    style="height: 70%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent purple-b"
-                                    style="height: 70%;"></span></li>
-                                <li pTooltip="10" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
-                                  data-percent="70%"><span class="progress-stat-percent gray*b"
-                                    style="height: 70%;"></span></li>
+                                <li *ngFor="let depart of departamentos " [escape]="false"
+                                  pTooltip="<span class='bar-legend-pointer {{depart.cor}}'></span> <b> {{depart.descricao}} : </b> {{depart.total}}"
+                                  tooltipStyleClass="tooltip_barras" tooltipPosition="top"><span
+                                    class="progress-stat-percent {{depart.cor}}"
+                                    [style.height]="depart.percentagem+'%'">
+                                    <span
+                                      style="position: absolute; bottom: -1px; left: 28%; font-weight: 600; margin-bottom: 17px; height: 22px; width: 20px; text-align: center; box-shadow: 0 0px 2px 0px #444141;">{{depart.total}}</span>
+                                  </span></li>
+
                               </ul>
                               <ul class="bar-legend">
-                                <li><span class="bar-legend-pointer pink"></span> Comercial</li>
-                                <li><span class="bar-legend-pointer green"></span> Engenharia Processos</li>
-                                <li><span class="bar-legend-pointer yellow-b"></span> Financeira</li>
-                                <li><span class="bar-legend-pointer orange"></span> Injeção</li>
-                                <li><span class="bar-legend-pointer blue-b"></span> Logística</li>
-                                <li><span class="bar-legend-pointer red-b"></span> Manutenção</li>
-                                <li><span class="bar-legend-pointer purple-b"></span> Produção</li>
-                                <li><span class="bar-legend-pointer gray-b"></span> Qualidade</li>
+                                <li *ngFor="let depart of departamentos "><span
+                                    class="bar-legend-pointer {{depart.cor}}"></span> {{depart.descricao}}</li>
                               </ul>
                               <!--div class="daily-sales-info">
                                 <span class="sales-count">1200 </span> <span class="sales-label">Total</span>

@@ -7,7 +7,8 @@ export class GT_MOV_TAREFAS {
     data_INICIO: Date;
     data_FIM: Date;
     data_FIM_ANTIGA: Date;
-    justificacao_DATA_FIM: string
+    justificacao_DATA_FIM: string;
+    justificacao_RESPONSAVEL: string;
     data_CONCLUSAO: Date;
     utz_CONCLUSAO: number;
     observacoes: string;

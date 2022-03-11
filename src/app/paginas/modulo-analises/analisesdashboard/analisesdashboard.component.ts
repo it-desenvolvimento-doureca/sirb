@@ -460,9 +460,10 @@ export class AnalisesdashboardComponent implements OnInit {
   filteredItems: any[];
   hora_ini: string;
   hora_fim: string;
-  anos: any;
-  semanas: any;
+  anos = [];
+  semanas = [];
   semana: any;
+  departamentos = [];
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -493,53 +494,7 @@ export class AnalisesdashboardComponent implements OnInit {
 
     this.semana = this.getWeek(new Date()) + 1;
 
-    this.data_CumprimentoPlanos_semana1 = {
-      labels: ["dia 1", "dia 2", "dia 3", "dia 4", "dia 5"],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Nº Barras Planeadas',
-          data: [10, 20, 30, 40, 50],
-          borderColor: '#ff6c60',
-          backgroundColor: '#ff6c60',
-          fill: false,
-          pointRadius: 0
-        },
-        {
-          type: 'line',
-          label: 'Nº Barras Executadas',
-          backgroundColor: '#1fb5ac',
-          borderColor: '#1fb5ac',
-          data: [15, 25, 35, 45, 55],
-          fill: false,
-          pointRadius: 0
-        },
-      ],
-    };
 
-    this.data_CumprimentoPlanos_semana2 = {
-      labels: ["dia 1", "dia 2", "dia 3", "dia 4", "dia 5"],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Nº Barras Planeadas',
-          data: [10, 20, 30, 40, 50],
-          borderColor: '#ff6c60',
-          backgroundColor: '#ff6c60',
-          fill: false,
-          pointRadius: 0
-        },
-        {
-          type: 'line',
-          label: 'Nº Barras Executadas',
-          backgroundColor: '#1fb5ac',
-          borderColor: '#1fb5ac',
-          data: [15, 25, 35, 45, 55],
-          fill: false,
-          pointRadius: 0
-        },
-      ],
-    };
 
 
     this.data_CumprimentoObjetivos = {
@@ -598,12 +553,28 @@ export class AnalisesdashboardComponent implements OnInit {
       ],
     };
 
-
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(0), total: 4, descricao: "Administrativo e Financeiro" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(1), total: 5, descricao: "Comercial" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(2), total: 1, descricao: "Direção" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(3), total: 23, descricao: "Engenharia Processos" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(4), total: 3, descricao: "Injeção" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(5), total: 6, descricao: "Logística S. Bento" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(6), total: 9, descricao: "Manutenção Formariz" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(7), total: 8, descricao: "Manutenção S. Bento" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(8), total: 92, descricao: "Produção Formariz" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(9), total: 71, descricao: "Produção S. Bento" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(10), total: 5, descricao: "Projetos" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(11), total: 27, descricao: "Qualidade" });
+    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(12), total: 22, descricao: "Sem Departamento" });
 
     this.atualizar();
 
   }
 
+  randomcolor(i) {
+    var cores = ["pink", "", "yellow-b", "orange", "blue-b", "red-b", "purple-b", "gray-b", "red-c", "blue-c", "pink", "blue-b", "yellow-b"];
+    return cores[i];
+  }
   getWeek(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -628,6 +599,7 @@ export class AnalisesdashboardComponent implements OnInit {
     this.carregarlista('T');
     this.carregaacidentes();
     this.carregalinhas();
+    this.carregaGraficoPLaneadas();
   }
 
 
@@ -1205,6 +1177,110 @@ export class AnalisesdashboardComponent implements OnInit {
 
       }, error => { console.log(error); /*this.loadingProducao = true;*/ });
 
+  }
+
+  carregaGraficoPLaneadas() {
+
+
+    var labels = [];
+    var data1 = [];
+    var data2 = [];
+    var labels_1 = [];
+    var data1_1 = [];
+    var data2_1 = [];
+    var dados = [{ ANO: this.ano, SEMANA: this.semana }];
+    this.DASHBOARDANALISESService.getDASHBOARD_PLANEAMENTO_GRAFICOS(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+
+          var dia_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+          for (var x in response) {
+
+            if (response[x][0] == 0) {
+              labels.push(this.formatDate(response[x][1]) /*+ ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')'*/);
+              data1.push(response[x][5]);
+              data2.push(response[x][4]);
+            } else {
+              labels_1.push(this.formatDate(response[x][1]) /*+ ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')'*/);
+              data1_1.push(response[x][5]);
+              data2_1.push(response[x][4]);
+            }
+
+          }
+
+
+
+          this.carregaGraficoPLaneadasSemana1_graf(labels, data1, data2);
+          this.carregaGraficoPLaneadasSemana2_graf(labels_1, data1_1, data2_1);
+          //this.loadingProducao = true;
+        } else {
+          //this.loadingProducao = true;
+          this.carregaGraficoPLaneadasSemana1_graf(labels, data1, data2);
+          this.carregaGraficoPLaneadasSemana2_graf(labels_1, data1_1, data2_1);
+        }
+
+      }, error => {
+        console.log(error);
+        this.carregaGraficoPLaneadasSemana1_graf(labels, data1, data2);
+        this.carregaGraficoPLaneadasSemana2_graf(labels_1, data1_1, data2_1);
+        /*this.loadingProducao = true;*/
+      });
+
+
+  }
+
+  carregaGraficoPLaneadasSemana1_graf(labels, data1, data2) {
+    this.data_CumprimentoPlanos_semana1 = {
+      labels: labels,
+      datasets: [
+        {
+          type: 'line',
+          label: 'Nº Barras Planeadas',
+          data: data1,
+          borderColor: '#ff6c60',
+          backgroundColor: '#ff6c60',
+          fill: false,
+          pointRadius: 0
+        },
+        {
+          type: 'line',
+          label: 'Nº Barras Executadas',
+          backgroundColor: '#1fb5ac',
+          borderColor: '#1fb5ac',
+          data: data2,
+          fill: false,
+          pointRadius: 0
+        },
+      ],
+    };
+  }
+
+  carregaGraficoPLaneadasSemana2_graf(labels, data1, data2) {
+    this.data_CumprimentoPlanos_semana2 = {
+      labels: labels,
+      datasets: [
+        {
+          type: 'line',
+          label: 'Nº Barras Planeadas',
+          data: data1,
+          borderColor: '#ff6c60',
+          backgroundColor: '#ff6c60',
+          fill: false,
+          pointRadius: 0
+        },
+        {
+          type: 'line',
+          label: 'Nº Barras Executadas',
+          backgroundColor: '#1fb5ac',
+          borderColor: '#1fb5ac',
+          data: data2,
+          fill: false,
+          pointRadius: 0
+        },
+      ],
+    };
   }
 
   getestado(valor) {

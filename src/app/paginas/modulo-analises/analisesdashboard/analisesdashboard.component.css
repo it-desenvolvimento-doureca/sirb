@@ -731,6 +731,14 @@ h4.widget-h {
     background: #7c7b74 !important;
 }
 
+.red-c {
+    background: rgba(255, 0, 0, 0.747)!important;
+}
+
+.blue-c {
+    background: rgba(0, 0, 255, 0.747) !important;
+}
+
 /*== Weather Widget ==*/
 .weather-widget {
     background: #fff;
@@ -812,6 +820,7 @@ h4.widget-h {
     right: 0px;*/
     padding-left: 0;
     display: inline-flex;
+    flex-wrap: wrap;
 }
 
 .bar-legend li {
@@ -819,7 +828,7 @@ h4.widget-h {
     margin-bottom: 5px;
     list-style: none;
     display: table-cell;
-    height: 100px;
+    height: 23px;
     list-style-type: none;
     /* margin: 13px; */
     vertical-align: middle;
