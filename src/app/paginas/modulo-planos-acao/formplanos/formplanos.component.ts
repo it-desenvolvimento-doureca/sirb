@@ -741,7 +741,9 @@ export class FormplanosComponent implements OnInit {
     if (this.validaPLANO_ESTRATEGICO()) {
       this.mensagem_verifica = "Não é possível seleccionar dois planos estratégico do mesmo ano!";
       this.displayverificar = true;
+      this.linhasSelecionadas = {};
     } else {
+      this.linhasSelecionadas = {};
       var plano = new PA_MOV_CAB;
       if (!this.novo) plano = this.plano;
       plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
@@ -1034,6 +1036,8 @@ export class FormplanosComponent implements OnInit {
   }
 
   savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, atualizou_reponsavel, id_resp, justificacao_DATA_FIM, justificacao_RESPONSAVEL) {
+    
+    delete accoes['_$visited'];
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         if (atualizou_datas) {
@@ -1681,7 +1685,8 @@ export class FormplanosComponent implements OnInit {
 
   onRowSelect(event) {
     if (!this.modoedicao || this.estado == "E") {
-      this.linhasSelecionadas = null;
+      //this.linhasSelecionadas = null;
+      this.linhasSelecionadas = {};
     } else {
       if (event.data.estado == 'C') {
         this.btCancelar = true;

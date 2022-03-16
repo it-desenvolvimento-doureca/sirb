@@ -331,6 +331,7 @@
                     <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
                       <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                         (onRowSelect)="onRowSelect($event)" styleClass="ExcelTable2007" id="tabelaplanos"
+                        selectionMode="single" 
                         [(selection)]="linhasSelecionadas" expandableRows="true" [expandedRows]="tabelaaccoes">
 
                         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
