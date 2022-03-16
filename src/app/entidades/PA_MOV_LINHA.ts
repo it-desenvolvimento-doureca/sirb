@@ -30,4 +30,9 @@ export class PA_MOV_LINHA {
     eficacia_CUMPRIMENTO_OBJETIVO: string;
     seguir_LINHA: boolean;
     objetivo: string;
+
+    data_CRIA: Date;
+    utz_CRIA: number;
+    data_MODIF: Date;
+    utz_MODIF: number;
 }

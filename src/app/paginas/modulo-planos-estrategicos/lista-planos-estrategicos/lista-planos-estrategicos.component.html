@@ -75,6 +75,8 @@
                       </div>
                     </ng-template>
                   </p-column>
+                  <p-column [style]="{'width':'27px'}" field="data_registo" header="Data Criação">
+                  </p-column>
                   <p-column [style]="{'width':'30px'}" field="objetivo" header="Objetivo">
                   </p-column>
                   <p-column [style]="{'width':'25px'}" field="utilizador" header="Responsável do Plano">
@@ -97,6 +99,7 @@
                         <tr>
                           <th class="tg-wfll" style="width: 65px;">Seguir</th>
                           <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
+                          <th class="tg-wfll" style="width: 100px;">Data Criação</th>
                           <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                           <th class="tg-wfll">Ação</th>
                           <th class="tg-wfll">Descrição</th>
@@ -106,7 +109,7 @@
                           <th class="tg-wfll" style="width: 168px;">Estado</th>
                         </tr>
                         <ng-container *ngFor="let col of car.filho">
-                          <tr>
+                          <tr (dblclick)="verTarefa(col.id_TAREFA)">
                             <td>
                               <a (click)="set_favoritos(col)" class="disabled fa "
                                 [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
@@ -115,6 +118,7 @@
                             </td>
                             <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
                               [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                            <td class="tg-0pky" style="min-width: 120px;">{{col.data_registo}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
@@ -144,3 +148,20 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="Tarefa" [responsive]="true" [positionTop]="0" [style]="{'height':'99vh','width': '100vw'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayTarefa"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
+    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input"></app-paginatarefa>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" style="margin: 0;" (click)="displayTarefa = false">Fechar</button>
+  </div>
+
+</p-dialog>

@@ -102,27 +102,29 @@
                       <th class="tg-wfll" style="width: 110px;">Prioridade</th>
                       <th class="tg-wfll" style="width: 168px;">Estado</th>
                     </tr>
-                    <tr *ngFor="let col of car.filho">
-                      <td>
-                        <a (click)="set_favoritos(col)" class="disabled fa "
-                          [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
-                          style="cursor: pointer; color: black; font-size: 20px;"
-                          [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
-                      </td>
-                      <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
-                        [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
-                      <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
-                      <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
-                      <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
-                      <td class="tg-0pky" style="min-width: 120px;">
-                        <i *ngIf="col.FastResponse == false" class="material-icons"
-                          style="color: red; font-size: 20px;">close</i>
-                        <i *ngIf="col.FastResponse == true" class="material-icons"
-                          style="color: green; font-size: 20px;">check</i>
-                      </td>
-                      <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
-                      <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
-                    </tr>
+                    <ng-container *ngFor="let col of car.filho">
+                      <tr (dblclick)="verTarefa(col.id_TAREFA)">
+                        <td>
+                          <a (click)="set_favoritos(col)" class="disabled fa "
+                            [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
+                            style="cursor: pointer; color: black; font-size: 20px;"
+                            [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
+                        </td>
+                        <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
+                          [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">
+                          <i *ngIf="col.FastResponse == false" class="material-icons"
+                            style="color: red; font-size: 20px;">close</i>
+                          <i *ngIf="col.FastResponse == true" class="material-icons"
+                            style="color: green; font-size: 20px;">check</i>
+                        </td>
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+                      </tr>
+                    </ng-container>
                   </table>
                 </div>
               </ng-template>
@@ -134,3 +136,21 @@
     </div>
   </div>
 </div>
+
+
+<p-dialog header="Tarefa" [responsive]="true" [positionTop]="0" [style]="{'height':'99vh','width': '100vw'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayTarefa"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
+    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input"></app-paginatarefa>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" style="margin: 0;" (click)="displayTarefa = false">Fechar</button>
+  </div>
+
+</p-dialog>

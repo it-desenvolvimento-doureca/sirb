@@ -464,6 +464,10 @@ export class AnalisesdashboardComponent implements OnInit {
   semanas = [];
   semana: any;
   departamentos = [];
+  funcionarios_ativos = 0;
+  funcionarios_saobento = 0;
+  funcionarios_formariz = 0;
+  funcionarios_faltar = 0;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -553,19 +557,6 @@ export class AnalisesdashboardComponent implements OnInit {
       ],
     };
 
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(0), total: 4, descricao: "Administrativo e Financeiro" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(1), total: 5, descricao: "Comercial" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(2), total: 1, descricao: "Direção" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(3), total: 23, descricao: "Engenharia Processos" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(4), total: 3, descricao: "Injeção" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(5), total: 6, descricao: "Logística S. Bento" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(6), total: 9, descricao: "Manutenção Formariz" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(7), total: 8, descricao: "Manutenção S. Bento" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(8), total: 92, descricao: "Produção Formariz" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(9), total: 71, descricao: "Produção S. Bento" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(10), total: 5, descricao: "Projetos" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(11), total: 27, descricao: "Qualidade" });
-    this.departamentos.push({ percentagem: 10, cor: this.randomcolor(12), total: 22, descricao: "Sem Departamento" });
 
     this.atualizar();
 
@@ -591,7 +582,7 @@ export class AnalisesdashboardComponent implements OnInit {
 
     this.carregaRejeicoes_area();
     this.getVisitas();
-
+    this.carregaRecursosHumanos();
     this.carregaAmostras();
     this.carregaReclamacoesFornecedores();
     this.carregaReclamacoesClientes();
@@ -883,6 +874,37 @@ export class AnalisesdashboardComponent implements OnInit {
 
   }
 
+  carregaRecursosHumanos() {
+
+    var dados = [{ ANO: null, SEMANA: null }];
+    this.DASHBOARDANALISESService.getDASHBOARD_RECURSOS_HUMANOS(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        //console.log(response)
+        if (count > 0) {
+
+          for (var x in response) {
+            let index = parseInt(x);
+            if (index == 0) {
+              this.funcionarios_ativos = response[x][5];
+              this.funcionarios_saobento = response[x][4];
+              this.funcionarios_formariz = response[x][3];
+              this.funcionarios_faltar = response[x][6];
+            }
+            this.departamentos.push({ percentagem: response[x][2], cor: this.randomcolor(index), total: response[x][1], descricao: response[x][0] });
+          }
+          this.visitas = this.visitas.slice();
+
+          //this.loadingvisitas = true;
+        } else {
+          //this.loadingvisitas = true;
+        }
+      }, error => {
+        // this.loadingvisitas = true;
+        console.log(error)
+      });
+
+  }
 
   carregaRejeicoes_area() {
     /*this.limpar_dados();

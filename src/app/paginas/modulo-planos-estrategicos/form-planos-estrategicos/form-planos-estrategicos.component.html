@@ -274,6 +274,7 @@
                             </div>
                           </ng-template>
                         </p-column>
+                        <p-column [style]="{'width':'14px'}" field="data_registo" header="Data Criação"></p-column>
                         <p-column [style]="{'width':'45px'}" field="descricao" header="Descrição">
                         </p-column>
                         <p-column [style]="{'width':'45px'}" field="objetivo" header="Objetivo">
@@ -315,6 +316,7 @@
                                 <th class="tg-wfll" style="width: 65px;">Seguir</th>
                                 <th class="tg-wfll" style="width: 65px;">Nº</th>
                                 <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
+                                <th class="tg-wfll" style="width: 100px;">Data Criação</th>
                                 <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                                 <th class="tg-wfll">Ação</th>
                                 <th class="tg-wfll">Descrição</th>
@@ -334,6 +336,7 @@
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.numero}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
                                     [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                                  <td class="tg-0pky" style="min-width: 120px;">{{col.data_registo}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                                   <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
@@ -599,7 +602,7 @@
               <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO" [style]="{'width':'146px'}">
                 <ng-template let-col let-car="rowData" pTemplate="body">
                   <p-calendar [maxDate]="data_OBJETIVO_DATA" (ngModelChange)="verificadatas(car)"
-                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
+                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (car['estado']!=  'E' &&  car['estado']!= 'P'))"
                     [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                     [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
                     [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true">
@@ -614,7 +617,7 @@
                     [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
                     [(ngModel)]="car['responsavel']" [ngModelOptions]="{standalone: true}"
                     (onChange)="verificaResponsavel(car,$event)"
-                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'))"
+                    [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (car['estado']!=  'E' &&  car['estado']!= 'P'))"
                     appendTo="body" [required]="true">
                   </p-dropdown>
                 </ng-template>
@@ -817,13 +820,13 @@
               </ng-template>
 
             </p-dataTable>
+            <button type="reset" (click)="displayAssociarPlano = false"
+              class="btn btn-danger pull-right">Cancelar</button>
           </div>
         </div>
       </div>
     </div>
 
-    <button type="reset" (click)="displayAssociarPlano = false" class="btn btn-danger pull-right"
-      [hidden]="!modoedicao">Cancelar</button>
   </form>
 
 </p-dialog>

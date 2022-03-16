@@ -25,6 +25,8 @@ export class DosificadoresComponent implements OnInit {
   mostraNiv = false;
   objetivos: any[];
   nome_tipo: string;
+  MEDIACONSUMO_AB: number;
+  MEDIACONSUMO_NIV: number;
   constructor(private ABDICTINAService: ABDICTINAService, private location: Location, private ABMOVMANUTENCAODOSIFICADORESService: ABMOVMANUTENCAODOSIFICADORESService,
     private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService: ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService) { }
 
@@ -68,6 +70,12 @@ export class DosificadoresComponent implements OnInit {
     this.dosificadores = [];
     this.nome_tipo = "";
     this.loading_analise = true;
+    this.MEDIACONSUMO_AB = 0;
+    this.MEDIACONSUMO_NIV = 0;
+    var MEDIACONSUMO_AB = 0;
+    var MEDIACONSUMO_NIV = 0;
+    var TOTAL1 = 0;
+    var TOTAL2 = 0;
     this.ABMOVMANUTENCAODOSIFICADORESService.ANALISE_DOSIFICADORES([{ ANO: this.ano, SEMANA: this.semana, TINA: this.tina }]).subscribe(
       response => {
 
@@ -88,9 +96,10 @@ export class DosificadoresComponent implements OnInit {
           var y = parseInt(x);
           var cor1 = "";
           var cor2 = "";
+          var DOSEADOR_AB_NIVEL_old = (y == 0) ? null : response[y - 1][9];
+          var DOSEADOR_AB_REPOSICAO_old = (y == 0) ? null : response[y - 1][10];
           if (y > 0 || (y == 0 && response[x][15] == null)) {
-            var DOSEADOR_AB_NIVEL_old = (y == 0) ? null : response[y - 1][9];
-            var DOSEADOR_AB_REPOSICAO_old = (y == 0) ? null : response[y - 1][10];
+
             var DOSEADOR_NIV_NIVEL_old = (y == 0) ? null : response[y - 1][11];
             var DOSEADOR_NIV_REPOSICAO_old = (y == 0) ? null : response[y - 1][12];
             var AMPERES_old = (y == 0) ? null : response[y - 1][13];
@@ -143,7 +152,15 @@ export class DosificadoresComponent implements OnInit {
             data: response[x][4], id_feriado: response[x][15]
           };
 
+          if ((y > 0 || (y == 0 && response[x][15] == null)) && (DOSEADOR_AB_NIVEL != null || DOSEADOR_AB_REPOSICAO != null)) {
+            TOTAL1++;
+            MEDIACONSUMO_AB += consumo_AB;
+          }
 
+          if ((y > 0 || (y == 0 && response[x][15] == null)) && (DOSEADOR_NIV_NIVEL != null || DOSEADOR_NIV_REPOSICAO != null)) {
+            TOTAL2++;
+            MEDIACONSUMO_NIV += consumo_NIV;
+          }
 
           if (tipo == 1) {
             this.mostraAB = true;
@@ -178,6 +195,8 @@ export class DosificadoresComponent implements OnInit {
 
         }
 
+        this.MEDIACONSUMO_AB = (TOTAL1 == 0) ? 0 : (MEDIACONSUMO_AB / TOTAL1);
+        this.MEDIACONSUMO_NIV = (TOTAL2 == 0) ? 0 : (MEDIACONSUMO_NIV / TOTAL2);
         this.loading_analise = false;
       },
       error => {

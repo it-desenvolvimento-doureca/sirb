@@ -95,7 +95,7 @@
                       <div class="mini-stat clearfix">
                         <span class="mini-stat-icon orange"><i class="fa fa-users"></i></span>
                         <div class="mini-stat-info">
-                          <span>300</span>
+                          <span>{{funcionarios_ativos}}</span>
                           Funcionários Ativos
                         </div>
                       </div>
@@ -104,7 +104,7 @@
                       <div class="mini-stat clearfix">
                         <span class="mini-stat-icon tar"><i class="fa fa-users"></i></span>
                         <div class="mini-stat-info">
-                          <span>150</span>
+                          <span>{{funcionarios_saobento}}</span>
                           Funcionários Ativos São Bento
                         </div>
                       </div>
@@ -113,7 +113,7 @@
                       <div class="mini-stat clearfix">
                         <span class="mini-stat-icon pink"><i class="fa fa-users"></i></span>
                         <div class="mini-stat-info">
-                          <span>150</span>
+                          <span>{{funcionarios_formariz}}</span>
                           Funcionários Ativos Formariz
                         </div>
                       </div>
@@ -122,7 +122,7 @@
                       <div class="mini-stat clearfix">
                         <span class="mini-stat-icon green"><i class="fa fa-users"></i></span>
                         <div class="mini-stat-info">
-                          <span>32720</span>
+                          <span>{{funcionarios_faltar}}</span>
                           Funcionários a Faltar
                         </div>
                       </div>
@@ -142,13 +142,15 @@
                             <div class="bar-stats">
                               <ul class="progress-stat-bar clearfix">
                                 <li *ngFor="let depart of departamentos " [escape]="false"
+                                  style="padding-top: 40px; justify-content: center; align-items: center; display: flex;"
                                   pTooltip="<span class='bar-legend-pointer {{depart.cor}}'></span> <b> {{depart.descricao}} : </b> {{depart.total}}"
-                                  tooltipStyleClass="tooltip_barras" tooltipPosition="top"><span
-                                    class="progress-stat-percent {{depart.cor}}"
+                                  tooltipStyleClass="tooltip_barras" tooltipPosition="top">
+                                  <span
+                                    style="padding: 2px; font-weight: 600; height: 22px; width: 20px; text-align: center; box-shadow: 0 0px 2px 0px #444141; position: absolute; z-index: 9;">{{depart.total}}</span>
+                                  <span class="progress-stat-percent {{depart.cor}}"
                                     [style.height]="depart.percentagem+'%'">
-                                    <span
-                                      style="position: absolute; bottom: -1px; left: 28%; font-weight: 600; margin-bottom: 17px; height: 22px; width: 20px; text-align: center; box-shadow: 0 0px 2px 0px #444141;">{{depart.total}}</span>
-                                  </span></li>
+                                  </span>
+                                </li>
 
                               </ul>
                               <ul class="bar-legend">
@@ -338,7 +340,80 @@
                       </div>
                     </div>
 
+                    <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                      <div class="col-sm-12">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> Amostras</h4>
+                          </header>
+                          <div class="panel-body">
+                            <table class="table  table-bordered table-striped table-hover " id="tabelarejeicoes"
+                              style="border: 1px solid #ddd;   ">
+                              <thead>
+                                <tr>
+                                  <th scope="col" style="text-align: center;">Data Lanç.
+                                  </th>
+                                  <th scope="col" style="text-align: center;">Linha</th>
+                                  <th scope="col" style="text-align: center;">Referência
+                                  </th>
+                                  <th scope="col" style="text-align: center;">Descrição
+                                  </th>
+                                  <th scope="col" style="text-align: center;">Tipo</th>
+                                  <th scope="col" style="text-align: center;">Índice</th>
+                                  <th scope="col" style="text-align: center;">Nº Barras
+                                  </th>
+                                  <th scope="col" style="text-align: center;">Ação</th>
+                                  <th scope="col" style="text-align: center;">Responsável
+                                  </th>
+                                  <th scope="col" style="text-align: center;">Estado</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let amostra of amostras " style="border-top:1px grey solid;">
+                                  <!--<td>{{amostra.data}}</td>-->
+                                  <td>{{amostra.data_lacamento}}</td>
+                                  <td  [style.background]="amostra.cor_linha">{{amostra.linha}}</td>
+                                  <td>{{amostra.cod_ref}}</td>
+                                  <td>{{amostra.descricao_ref}}</td>
+                                  <td>{{amostra.tipo}}</td>
+                                  <td>{{amostra.indice}}</td>
+                                  <td>{{amostra.num_barras}}</td>
+                                  <td style="padding: 0;">
+                                    <table style="width: 100%;">
+                                      <tr *ngFor="let accao of amostra.acao;let i=index; first as isFirst"
+                                        [style.border-top]="isFirst ? 'none' : '1px #8080801a solid'"
+                                        style="background: none;">
+                                        <td style="border: none; padding-left: 15px;">
+                                          {{accao}}
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                  <td style="padding: 0;">
+                                    <table style="width: 100%;">
+                                      <tr *ngFor="let responsavel of amostra.responsavel;let i=index; first as isFirst"
+                                        [style.border-top]="isFirst ? 'none' : '1px #8080801a solid'"
+                                        style="background: none;">
+                                        <td style="border: none; padding-left: 15px;">
+                                          {{responsavel}}
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                  <td [style.background]="amostra.cor_estado"
+                                    [style.color]="(amostra.cor_estado != '')? 'white': '' ">{{amostra.estado}}</td>
+                                </tr>
+                                <tr *ngIf="amostras.length == 0">
+                                  <td colspan="11" style="text-align: center;">Sem Dados</td>
+                                </tr>
+                              </tbody>
+                            </table>
 
+                          </div>
+                        </section>
+                      </div>
+
+                    </div>
                   </div>
                 </section>
               </p-tabPanel>
@@ -347,7 +422,7 @@
                 <section style=" display: inline-block;  width: 100%;">
                   <!--mini statistics start-->
                   <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
-                    <div class="col-sm-7">
+                    <div class="col-sm-12">
                       <section class="panel">
                         <header class="panel-heading">
                           <h4 class="widget-h"> Análise de Rejeições</h4>
@@ -647,8 +722,14 @@
                         </div>
                       </div>
                     </div>
-
-                    <div class="col-sm-5">
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Reclamações">
+                <section style=" display: inline-block;  width: 100%;">
+                  <!--mini statistics start-->
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="col-sm-12">
                       <div class="col-sm-12">
                         <section class="panel">
                           <header class="panel-heading">
@@ -723,80 +804,7 @@
                       </div>
                     </div>
 
-                    <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
-                      <div class="col-sm-12">
-                        <section class="panel">
-                          <header class="panel-heading">
-                            <h4 class="widget-h"> Amostras</h4>
-                          </header>
-                          <div class="panel-body">
-                            <table class="table  table-bordered table-striped table-hover " id="tabelarejeicoes"
-                              style="border: 1px solid #ddd;   ">
-                              <thead>
-                                <tr>
-                                  <th scope="col" style="text-align: center;">Data Lanç.
-                                  </th>
-                                  <th scope="col" style="text-align: center;">Linha</th>
-                                  <th scope="col" style="text-align: center;">Referência
-                                  </th>
-                                  <th scope="col" style="text-align: center;">Descrição
-                                  </th>
-                                  <th scope="col" style="text-align: center;">Tipo</th>
-                                  <th scope="col" style="text-align: center;">Índice</th>
-                                  <th scope="col" style="text-align: center;">Nº Barras
-                                  </th>
-                                  <th scope="col" style="text-align: center;">Ação</th>
-                                  <th scope="col" style="text-align: center;">Responsável
-                                  </th>
-                                  <th scope="col" style="text-align: center;">Estado</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let amostra of amostras " style="border-top:1px grey solid;">
-                                  <!--<td>{{amostra.data}}</td>-->
-                                  <td>{{amostra.data_lacamento}}</td>
-                                  <td  [style.background]="amostra.cor_linha">{{amostra.linha}}</td>
-                                  <td>{{amostra.cod_ref}}</td>
-                                  <td>{{amostra.descricao_ref}}</td>
-                                  <td>{{amostra.tipo}}</td>
-                                  <td>{{amostra.indice}}</td>
-                                  <td>{{amostra.num_barras}}</td>
-                                  <td style="padding: 0;">
-                                    <table style="width: 100%;">
-                                      <tr *ngFor="let accao of amostra.acao;let i=index; first as isFirst"
-                                        [style.border-top]="isFirst ? 'none' : '1px #8080801a solid'"
-                                        style="background: none;">
-                                        <td style="border: none; padding-left: 15px;">
-                                          {{accao}}
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  </td>
-                                  <td style="padding: 0;">
-                                    <table style="width: 100%;">
-                                      <tr *ngFor="let responsavel of amostra.responsavel;let i=index; first as isFirst"
-                                        [style.border-top]="isFirst ? 'none' : '1px #8080801a solid'"
-                                        style="background: none;">
-                                        <td style="border: none; padding-left: 15px;">
-                                          {{responsavel}}
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  </td>
-                                  <td [style.background]="amostra.cor_estado"
-                                    [style.color]="(amostra.cor_estado != '')? 'white': '' ">{{amostra.estado}}</td>
-                                </tr>
-                                <tr *ngIf="amostras.length == 0">
-                                  <td colspan="11" style="text-align: center;">Sem Dados</td>
-                                </tr>
-                              </tbody>
-                            </table>
 
-                          </div>
-                        </section>
-                      </div>
-
-                    </div>
                   </div>
                 </section>
               </p-tabPanel>

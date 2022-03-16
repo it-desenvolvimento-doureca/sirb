@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer, Input } from '@angular/core';
 import { AppGlobals } from '../../../menu/sidebar.metadata';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -66,6 +66,7 @@ export class PaginatarefaComponent implements OnInit {
   @ViewChild('fileInput') fileInput: FileUpload;
   @ViewChild('dialoglinhas') dialoglinhas: ElementRef;
   @ViewChild('closedialoglinha') closedialoglinha: ElementRef;
+  @Input() id_tarefa_input;
 
   tempo_gasto_old: any;
   descricao_old: any;
@@ -150,6 +151,9 @@ export class PaginatarefaComponent implements OnInit {
     var urlarray = url.split("/");
 
     var estado = null;
+
+    if (this.id_tarefa_input != null) urlarray = ['tarefas', 'view']
+
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
         this.globalVar.setseguinte(false);
@@ -176,6 +180,9 @@ export class PaginatarefaComponent implements OnInit {
           id = params['id'] || 0;
           listar = params['listar'] || false;
         });
+
+      if (this.id_tarefa_input != null) id = this.id_tarefa_input
+
       if (this.globalVar.getfiltros("tarefas_id") && this.globalVar.getfiltros("tarefas_id").length > 0) {
         /*this.reclamacoes = this.globalVar.getfiltros("reclamacaocliente_id");
         this.i = this.reclamacoes.indexOf(+id);

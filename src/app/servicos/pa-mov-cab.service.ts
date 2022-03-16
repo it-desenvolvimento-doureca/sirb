@@ -34,6 +34,15 @@ export class PAMOVCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  getPA_MOV_CABbyTIPOASSOCIAR(tipo, data): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyTIPOASSOCIAR/' + tipo;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getPA_MOV_CABbyTIPOaccoes(tipo, data): Observable<PA_MOV_CAB[]> {
     const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyTIPOaccoes/' + tipo;
     return this.http
@@ -51,8 +60,8 @@ export class PAMOVCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getPA_MOV_CABRemoverPlanoEstrategico(id): Observable<PA_MOV_CAB[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABRemoverPlanoEstrategico/' + id;
+  getPA_MOV_CABRemoverPlanoEstrategico(idplano, id): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABRemoverPlanoEstrategico/' + idplano + '/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -67,6 +76,14 @@ export class PAMOVCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  getPlanosEstrategicosbyid(ip): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPlanosEstrategicosbyid/' + ip;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   getPA_MOV_CABbyidPlanoEstrategico(tipo, ip): Observable<PA_MOV_CAB[]> {
     const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyidPlanoEstrategico/' + tipo + '/' + ip;

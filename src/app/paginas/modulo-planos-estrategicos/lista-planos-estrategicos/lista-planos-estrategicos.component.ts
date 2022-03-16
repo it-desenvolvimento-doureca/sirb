@@ -24,6 +24,8 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   estado_filtro = [];
   lista_expand = [];
   acoes_em_ATRASO = false;
+  displayTarefa: boolean;
+  id_tarefa_input = null;
 
   constructor(
     private PEMOVCABService: PEMOVCABService, private route: ActivatedRoute,
@@ -169,6 +171,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
         , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29]
+        , data_registo: (response[x][30] == null) ? "" : this.formatDate(response[x][30]), id_TAREFA: response[x][17]
       });
     } else {
       this.dados.find(item => item.id == response[x][19]).planos.push({
@@ -184,7 +187,8 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29]
+          , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29],
+          data_registo: (response[x][30] == null) ? "" : this.formatDate(response[x][30]), id_TAREFA: response[x][17]
         }]
       });
     }
@@ -295,5 +299,13 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }
 
+  verTarefa(id_TAREFA) {
+    
+    if (id_TAREFA != null) {
+      this.id_tarefa_input = id_TAREFA;
+      this.displayTarefa = true;
+    }
+
+  }
 
 }

@@ -192,6 +192,37 @@
                           </ng-container>
                         </tbody>
                       </ng-container>
+                      <tr>
+                        <td style="padding: 0px 0px 0px 0px; text-align: center; background: #37414bd6;">
+                          Média
+                        </td>
+                        <td style="padding: 0px 0px 0px 0px; text-align: center; background: #37414bd6;"></td>
+                        <td style="padding: 0px 0px 0px 0px; text-align: center; background: #37414bd6;"></td>
+                        <td style="padding: 0px 0px 0px 0px; text-align: center; background: #37414bd6;"></td>
+                        <td *ngIf="mostraAB"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraAB"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraNiv"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraNiv"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td style="padding: 0px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraAB"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraNiv"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6;"></td>
+                        <td *ngIf="mostraAB"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6; color: white;font-weight: bold;">
+                          <span style="display: block;"> {{MEDIACONSUMO_AB | number: '1.0-0'}}</span>
+                        </td>
+                        <td *ngIf="mostraNiv"
+                          style="padding: 7px 4px 0px 0px; text-align: right; background: #37414bd6; color: white;font-weight: bold;">
+                          <span style="display: block;"> {{MEDIACONSUMO_NIV | number: '1.0-0'}}</span>
+                        </td>
+                        <td style="padding: 0px 4px 0px 7px; "></td>
+                      </tr>
 
                     </table>
                   </div>

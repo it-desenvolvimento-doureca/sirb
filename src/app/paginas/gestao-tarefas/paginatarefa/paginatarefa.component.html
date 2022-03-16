@@ -1,10 +1,10 @@
-<app-controlos (anteriorbt)="anterior()" (seguintebt)="seguinte()"></app-controlos>
+<app-controlos *ngIf="id_tarefa_input == null" (anteriorbt)="anterior()" (seguintebt)="seguinte()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header" data-background-color="red">
+      <div class="col-md-12 nopaddingcss">
+        <div class="card nomargincss">
+          <div *ngIf="id_tarefa_input == null" class="card-header" data-background-color="red">
             <h4 class="title" style="display: -webkit-inline-box;">Tarefas</h4>
 
             <button (click)="encaminharpara()" [disabled]="disencaminhar" class="btn btn-default" title="Encaminhar"
@@ -166,16 +166,16 @@
                       <div *ngIf="campo_estado == 'R'" style="padding: 1px 5px 1px 10px;"
                         class="form-group col-md-12 col-lg-12">
                         <label>Motivo Rejeição:</label>
-                        <textarea  (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3" pInputTextarea [(ngModel)]="mototivoRejeicao_texto"
-                          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
-                          style="height: auto; width: 100%;"></textarea>
+                        <textarea (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3"
+                          pInputTextarea [(ngModel)]="mototivoRejeicao_texto" class="form-control2 enabled"
+                          [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
                       </div>
 
                       <div *ngIf="justificacao_ALTERACAO_ESTADO != '' && justificacao_ALTERACAO_ESTADO != null"
                         style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                         <label>Justificação:</label>
-                        <textarea  (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3" pInputTextarea
-                          [(ngModel)]="justificacao_ALTERACAO_ESTADO" class="form-control2 enabled"
+                        <textarea (keydown.enter)="$event.stopPropagation()" [disabled]="!modoedicao" rows="3"
+                          pInputTextarea [(ngModel)]="justificacao_ALTERACAO_ESTADO" class="form-control2 enabled"
                           [ngModelOptions]="{standalone: true}" style="height: auto; width: 100%;"></textarea>
                       </div>
 

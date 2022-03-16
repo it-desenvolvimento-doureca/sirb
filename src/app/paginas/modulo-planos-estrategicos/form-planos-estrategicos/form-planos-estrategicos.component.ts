@@ -672,11 +672,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
           , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
-          , id_PLANO_LINHA: response[x][25]
+          , id_PLANO_LINHA: response[x][25], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
         }];
       }
       this.tabelaplanos.push({
-        id_PLANO_ESTRATEGICO: response[x][18],
+        id_PLANO_ESTRATEGICO: this.id_PLANO,
         numero: numero,
         conclusao: 0,
         id: response[x][0], cor: cor, cor_letra: cor_letra,
@@ -822,7 +822,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   associarPlanos(id_plano) {
     for (var x in this.tabelaplanos) {
-      if (this.tabelaplanos[x].id_PLANO_ESTRATEGICO == null) this.associarPlanos2(id_plano, this.tabelaplanos[x].id);
+      this.associarPlanos2(id_plano, this.tabelaplanos[x].id);
     }
   }
 
@@ -858,12 +858,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     plano.ambito = this.ambito;
     plano.origem = this.origem;
     plano.objetivo = this.objetivo;
-    plano.id_PLANO_ESTRATEGICO = this.id_PLANO;
+    //plano.id_PLANO_ESTRATEGICO = this.id_PLANO;
 
     plano.estado = (estado == 'P') ? estado : this.estado_plano;
     if (novo) {
       plano.estado = "E";
-      plano.data_CRIA = this.data_agora;
+      plano.data_CRIA = new Date();
       plano.utz_CRIA = this.utilizador;
       plano.ativo = true;
       this.PAMOVCABService.create(plano).subscribe(
@@ -1278,7 +1278,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   removerassociacao() {
     this.anular();
     for (var x in this.tabelaplanos) {
-      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.tabelaplanos[x].id).subscribe(
+      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.id_PLANO, this.tabelaplanos[x].id).subscribe(
         res => {
         },
         error => { console.log(error); })
@@ -1964,6 +1964,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       this.btCancelar = true;
     }
 
+    accoes.data_MODIF = new Date();
+    accoes.utz_MODIF = this.user;
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(accoes.id_PLANO_CAB).subscribe(
@@ -2377,14 +2379,14 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false }];
-    this.PAMOVCABService.getPA_MOV_CABbyTIPO(tipo, filtros).subscribe(
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false, ID_PLANO: (this.id_PLANO == null) ? 0 : this.id_PLANO, ANO: this.ano }];
+    this.PAMOVCABService.getPA_MOV_CABbyTIPOASSOCIAR(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
         //se existir banhos com o id
         if (count > 0) {
           for (var x in response) {
-            if (response[x][18] == null) this.adicionar_linhas(response, x);
+            this.adicionar_linhas(response, x);
           }
 
           this.dados = this.dados.slice();
@@ -2428,6 +2430,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+        , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]),
       });
     } else {
       this.dados.push({
@@ -2443,6 +2446,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+          , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]),
         }]
       });
     }
@@ -2608,7 +2612,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       this.atualizanumeracao();
       this.calcucarpercentagem_conclusao();
     } else {
-      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(id).subscribe(
+      this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.id_PLANO, id).subscribe(
         res => {
           this.tabelaplanos = this.tabelaplanos.slice(0, index).concat(this.tabelaplanos.slice(index + 1));
           this.atualizanumeracao();

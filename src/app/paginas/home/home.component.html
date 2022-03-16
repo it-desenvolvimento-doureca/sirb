@@ -350,6 +350,70 @@
 
         </div>
     </div-->
+    <div class="col-md-3 col-lg-3 col-sm-12" style="margin-bottom: 10px;">
+        <div class="card">
+            <div class="card-content table-responsive">
+                <div id="products" class="row list-group" style="margin: 0; margin-top: 7px;">
+                    <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon orange"><i class="fa fa-users"></i></span>
+                        <div class="mini-stat-info">
+                            <span>{{total_acoes}}</span>
+                            Nº de Ações
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-lg-3 col-sm-12" style="margin-bottom: 10px;">
+        <div class="card">
+            <div class="card-content table-responsive">
+                <div id="products" class="row list-group" style="margin: 0; margin-top: 7px;">
+                    <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon orange"><i class="fa fa-users"></i></span>
+                        <div class="mini-stat-info">
+                            <span>{{total_acoes_pendentes}}</span>
+                            Nº de Ações Pendentes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-lg-3 col-sm-12" style="margin-bottom: 10px;">
+        <div class="card">
+            <div class="card-content table-responsive">
+                <div id="products" class="row list-group" style="margin: 0; margin-top: 7px;">
+                    <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon orange"><i class="fa fa-users"></i></span>
+                        <div class="mini-stat-info">
+                            <span>{{total_acoes_em_curso}}</span>
+                            Nº de Ações em Curso
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-lg-3 col-sm-12" style="margin-bottom: 10px;">
+        <div class="card">
+            <div class="card-content table-responsive">
+                <div id="products" class="row list-group" style="margin: 0; margin-top: 7px;">
+                    <div class="mini-stat clearfix">
+                        <span class="mini-stat-icon orange"><i class="fa fa-users"></i></span>
+                        <div class="mini-stat-info">
+                            <span style="color: red">{{total_acoes_em_atraso}}</span>
+                            Nº de Ações em Atraso
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-md-8 col-lg-8 col-sm-12">
         <div class="card">
             <div class="card-header" data-background-color="gray"
@@ -394,15 +458,22 @@
                     <p-headerColumnGroup>
                         <p-row>
                             <p-column header="Nome Tarefa" rowspan="2"></p-column>
-                            <p-column [style]="{'width':'500px'}" header="Origem" colspan="5"></p-column>
+                            <p-column [style]="{'width':'500px'}" header="Origem" [colspan]="total_colspan"></p-column>
                         </p-row>
                         <p-row>
-                            <p-column [style]="{'padding':'0'}" header="Reclamações Clientes" colspan="1"></p-column>
-                            <p-column [style]="{'padding':'0'}" header="Reclamações Fornecedores" colspan="1">
+                            <p-column *ngIf="sow_col1" [style]="{'padding':'0'}" header="Reclamações Clientes"
+                                colspan="1"></p-column>
+                            <p-column *ngIf="sow_col2" [style]="{'padding':'0'}" header="Reclamações Fornecedores"
+                                colspan="1">
                             </p-column>
-                            <p-column [style]="{'padding':'0'}" header="Amostras" colspan="1"></p-column>
-                            <p-column [style]="{'padding':'0'}" header="Planos de Ação" colspan="1"></p-column>
-                            <p-column [style]="{'padding':'0'}" header="Derrogações" colspan="1"></p-column>
+                            <p-column *ngIf="sow_col3" [style]="{'padding':'0'}" header="Amostras" colspan="1">
+                            </p-column>
+                            <p-column *ngIf="sow_col4" [style]="{'padding':'0'}" header="Planos de Ação" colspan="1">
+                            </p-column>
+                            <p-column *ngIf="sow_col5" [style]="{'padding':'0'}" header="Planos Estratégicos"
+                                colspan="1"></p-column>
+                            <p-column *ngIf="sow_col6" [style]="{'padding':'0'}" header="Derrogações" colspan="1">
+                            </p-column>
                         </p-row>
                     </p-headerColumnGroup>
 
@@ -415,30 +486,60 @@
                             <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
                         </ng-template>
                     </p-column>
-                    <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="reclamacoes_clientes">
+                    <p-column *ngIf="sow_col1" [sortable]="true" [filter]="true" styleclass="text-danger"
+                        field="reclamacoes_clientes">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span class="goToTarefas_title"  (click)="goToTarefas(car['id_tarefa'],'reclamacoes_clientes')" title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}</span>
+                            <span class="goToTarefas_title"
+                                (click)="goToTarefas(car['id_tarefa'],'reclamacoes_clientes')"
+                                title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_atraso'] > 0"> -
+                                    {{car['tarefas_atraso']}}</span></span>
                         </ng-template>
                     </p-column>
-                    <p-column [sortable]="true" [filter]="true" styleclass="text-danger"
+                    <p-column *ngIf="sow_col2" [sortable]="true" [filter]="true" styleclass="text-danger"
                         field="reclamacoes_fornecedores">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span  class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'reclamacoes_fornecedores')" title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}</span>
+                            <span class="goToTarefas_title"
+                                (click)="goToTarefas(car['id_tarefa'],'reclamacoes_fornecedores')"
+                                title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_atraso_fornecedores'] > 0"> -
+                                    {{car['tarefas_atraso_fornecedores']}}</span></span>
                         </ng-template>
                     </p-column>
-                    <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
+                    <p-column *ngIf="sow_col3" [sortable]="true" [filter]="true" styleclass="text-danger"
+                        field="amostras">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span  class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'amostras')" title="{{car['title3'] }}">{{car['amostras'] }}</span>
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'amostras')"
+                                title="{{car['title3'] }}">{{car['amostras'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_amostras'] > 0"> -
+                                    {{car['tarefas_amostras']}}</span></span>
                         </ng-template>
                     </p-column>
-                    <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
+                    <p-column *ngIf="sow_col4" [sortable]="true" [filter]="true" styleclass="text-danger"
+                        field="planosacao">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosacao')" title="{{car['title4'] }}">{{car['planosacao'] }}</span>
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosacao')"
+                                title="{{car['title4'] }}">{{car['planosacao'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_atraso_planosaco'] > 0"> -
+                                    {{car['tarefas_atraso_planosaco']}}</span></span>
                         </ng-template>
                     </p-column>
-                    <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="derrogacoes">
+                    <p-column *ngIf="sow_col5" [sortable]="true" [filter]="true" styleclass="text-danger"
+                        field="planosestrategicos">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'derrogacoes')" title="{{car['title5'] }}">{{car['derrogacoes'] }}</span>
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosestrategicos')"
+                                title="{{car['title6'] }}">{{car['planosestrategicos'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_atraso_planosestrategicos'] > 0"> -
+                                    {{car['tarefas_atraso_planosestrategicos']}}</span></span>
+                        </ng-template>
+                    </p-column>
+                    <p-column *ngIf="sow_col6" [sortable]="true" [filter]="true" styleclass="text-danger"
+                        field="derrogacoes">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'derrogacoes')"
+                                title="{{car['title5'] }}">{{car['derrogacoes'] }}
+                                <span style="color: red;" *ngIf="car['tarefas_atraso_derrogacoes'] > 0"> -
+                                    {{car['tarefas_atraso_derrogacoes']}}</span></span>
                         </ng-template>
                     </p-column>
                 </p-dataTable>

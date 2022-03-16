@@ -1880,6 +1880,10 @@ body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
     color: #222222;
 }
 
+.ui-multiselect-pane {
+    z-index: 2000 !important;
+}
+
 @media (max-width:40em) {
     .ui-orderlist.ui-orderlist-responsive .ui-orderlist-controls {
         text-align: center;
@@ -5960,4 +5964,23 @@ body>.ui-dropdown-panel {
 
 .lista_planosestrategicos .ui-datatable-data tr.ui-datatable-even {
     background-color: #f7f7f7 !important;
+}
+
+
+.cssapp-paginatarefa .row {
+    padding: 0 !important;
+}
+
+.cssapp-paginatarefa .card {
+    margin: 0 !important;
+}
+
+.cssapp-paginatarefa .card-content {
+    padding: 0 !important;
+}
+
+
+
+.cssapp-paginatarefa .nopaddingcss {
+    padding: 0 !important;
 }

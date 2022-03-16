@@ -1044,7 +1044,8 @@ export class AnaliseencomendasComponent implements OnInit {
               if (response[x][6] == this.array_semanas[4].semana) { analise.prev_4 = response[x][8]; }
             }
 
-            if (response[x][6] == this.array_semanas[0].semana) { this.calcula = true; }
+            //if (response[x][6] == this.array_semanas[0].semana) { this.calcula = true; }
+            this.calcula = true;
             if (response[x][6] == this.array_semanas[1].semana) { this.calcula_1 = true; }
             if (response[x][6] == this.array_semanas[2].semana) { this.calcula_2 = true; }
             if (response[x][6] == this.array_semanas[3].semana) { this.calcula_3 = true; }

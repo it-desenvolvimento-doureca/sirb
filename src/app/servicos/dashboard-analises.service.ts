@@ -19,6 +19,23 @@ export class DASHBOARDANALISESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  getPA_GET_TOTAIS(data) {
+    const url = webUrl.host + '/rest/sirb/getPA_GET_TOTAIS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getDASHBOARD_RECURSOS_HUMANOS(data) {
+    const url = webUrl.host + '/rest/sirb/getDASHBOARD_RECURSOS_HUMANOS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDASHBOARD_PLANEAMENTO(data) {
     const url = webUrl.host + '/rest/sirb/getDASHBOARD_PLANEAMENTO_2';
     return this.http

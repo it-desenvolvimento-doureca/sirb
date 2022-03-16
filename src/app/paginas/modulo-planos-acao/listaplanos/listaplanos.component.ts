@@ -24,6 +24,8 @@ export class ListaplanosComponent implements OnInit {
   lista_expand = [];
   FastResponse = false;
   acoes_em_ATRASO = false;
+  displayTarefa: boolean;
+  id_tarefa_input = null;
 
   constructor(private ABDICLINHAService: ABDICLINHAService,
     private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute,
@@ -172,7 +174,7 @@ export class ListaplanosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-        , seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23]
+        , seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23], id_TAREFA: response[x][17]
       });
     } else {
       this.dados.push({
@@ -188,7 +190,7 @@ export class ListaplanosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23]
+          , seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23], id_TAREFA: response[x][17]
         }]
       });
     }
@@ -294,5 +296,14 @@ export class ListaplanosComponent implements OnInit {
     }
   }*/
 
+
+  verTarefa(id_TAREFA) {
+
+    if (id_TAREFA != null) {
+      this.id_tarefa_input = id_TAREFA;
+      this.displayTarefa = true;
+    }
+
+  }
 
 }

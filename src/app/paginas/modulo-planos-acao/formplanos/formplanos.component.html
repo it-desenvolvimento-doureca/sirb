@@ -214,10 +214,15 @@
 
                     <div style="padding: 1px 5px 1px 10px; height: 48px;" class="form-group col-md-2 ">
                       <label style="font-size: 14px;">PLano Estratégico:</label><br>
-                      <p-dropdown [filter]="true" [options]="planos_estrategicos" [disabled]="!modoedicao"
+                      <!--p-dropdown [filter]="true" [options]="planos_estrategicos" [disabled]="!modoedicao"
                         [style]="{'width':'100%','height':'25px','display':'block'}" [(ngModel)]="id_PLANO_ESTRATEGICO"
                         [ngModelOptions]="{standalone: true}">
-                      </p-dropdown>
+                      </p-dropdown-->
+                      <p-multiSelect [(ngModel)]="id_PLANO_ESTRATEGICO" [ngModelOptions]="{standalone: true}"
+                        [options]="planos_estrategicos"
+                        [style]="{'width':'100%','height':'25px','display':'block','padding-top': '2px'}"
+                        [disabled]="!modoedicao" (onChange)="aoAlterarPLANO_ESTRATEGICO($event)"
+                        styleClass="ui-column-filter"></p-multiSelect>
                     </div>
 
 

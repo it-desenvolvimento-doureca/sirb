@@ -114,7 +114,7 @@ export class FormplanosComponent implements OnInit {
   data_OBJETIVO;
   origem: any;
   objetivo;
-  id_PLANO_ESTRATEGICO;
+  id_PLANO_ESTRATEGICO = [];
   //drop_prioridades: any[];
   linhasSelecionadas: any;
   mensagem_verifica: string;
@@ -153,6 +153,7 @@ export class FormplanosComponent implements OnInit {
   displayJustificacaoDATAFIM: boolean;
   yearTimeout: NodeJS.Timer;
   displayJustificacaoRESPONSAVEL: boolean;
+  id_PLANO_ESTRATEGICO_OLD = [];
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
     private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PAMOVFICHEIROSService: PAMOVFICHEIROSService,
     private PAMOVLINHAService: PAMOVLINHAService, private PAMOVCABService: PAMOVCABService, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private sanitizer: DomSanitizer,
@@ -455,7 +456,12 @@ export class FormplanosComponent implements OnInit {
         this.planos_estrategicos = [];
         this.planos_estrategicos.push({ label: 'Sel. Plano Estratégico', value: null });
         for (var x in response) {
-          /*if (response[x][0].TIPO == this.tipo)*/ this.planos_estrategicos.push({ label: response[x][0].ID, value: response[x][0].ID });
+          /*if (response[x][0].TIPO == this.tipo)*/
+          this.planos_estrategicos.push({
+            label: response[x][0].ID + ' - ' + response[x][0].ANO_PLANO,
+            ANO_PLANO: response[x][0].ANO_PLANO,
+            value: response[x][0].ID
+          });
         }
 
       }, error => { console.log(error); });
@@ -505,7 +511,7 @@ export class FormplanosComponent implements OnInit {
             this.origem = response[x][0].origem;
 
             this.objetivo = response[x][0].objetivo;
-            this.id_PLANO_ESTRATEGICO = response[x][0].id_PLANO_ESTRATEGICO;;
+            //            this.id_PLANO_ESTRATEGICO = response[x][0].id_PLANO_ESTRATEGICO; 
 
             if (response[x][0].estado == 'E') {
               this.btControlar = false;
@@ -531,10 +537,70 @@ export class FormplanosComponent implements OnInit {
           //if (this.estado == 'A') this.globalVar.setdisApagar(true);
           this.carregarlinhas(id);
           this.carregatabelaFiles(id);
+          this.carregaPlanosEstrategicosAssociados(id);
         }
       }, error => { console.log(error); });
   }
 
+  carregaPlanosEstrategicosAssociados(id) {
+    this.id_PLANO_ESTRATEGICO = [];
+    this.id_PLANO_ESTRATEGICO_OLD = [];
+    this.PAMOVCABService.getPlanosEstrategicosbyid(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+          for (var x in response) {
+            this.id_PLANO_ESTRATEGICO.push(response[x][1]);
+            this.id_PLANO_ESTRATEGICO_OLD.push(response[x][1]);
+          }
+        }
+      }, error => { console.log(error); });
+  }
+
+  aoAlterarPLANO_ESTRATEGICO(event) {
+
+    var array = event.value;
+    var encontrou = false;
+    var anos = [];
+    for (var x in array) {
+      var ano = this.planos_estrategicos.find(item => item.value == array[x]).ANO_PLANO;
+      if (!anos.find(item => item == ano)) {
+        anos.push(ano);
+      } else {
+        encontrou = true;
+      }
+
+    }
+    if (encontrou) {
+      this.mensagem_verifica = "Não é possível seleccionar dois planos estratégico do mesmo ano!";
+      this.displayverificar = true;
+    }
+  }
+
+
+  associarPlanos(id_plano) {
+    for (var x in this.id_PLANO_ESTRATEGICO) {
+      this.associarPlanos2(this.id_PLANO_ESTRATEGICO[x], id_plano);
+    }
+  }
+
+  associarPlanos2(id_plano, id) {
+    this.PAMOVCABService.getPA_MOV_CABAssociarPlanoEstrategico(id_plano, id).subscribe(
+      response => {
+      }, error => { console.log(error); });
+  }
+
+  removerassociacao(id) {
+    for (var x in this.id_PLANO_ESTRATEGICO_OLD) {
+      if (!this.id_PLANO_ESTRATEGICO.find(item => item == this.id_PLANO_ESTRATEGICO_OLD[x])) {
+        this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.id_PLANO_ESTRATEGICO_OLD[x], id).subscribe(
+          res => {
+          },
+          error => { console.log(error); })
+      }
+    }
+  }
 
   carregarlinhas(id) {
     this.tabelaaccoes = [];
@@ -651,49 +717,75 @@ export class FormplanosComponent implements OnInit {
 
   }
 
+  validaPLANO_ESTRATEGICO() {
+    var array = this.id_PLANO_ESTRATEGICO;
+    var encontrou = false;
+    var anos = [];
+    for (var x in array) {
+      var ano = this.planos_estrategicos.find(item => item.value == array[x]).ANO_PLANO;
+      if (!anos.find(item => item == ano)) {
+        anos.push(ano);
+      } else {
+        encontrou = true;
+      }
 
-  gravar(estado = 'E', cria_tarefas = false) {
-    var plano = new PA_MOV_CAB;
-    if (!this.novo) plano = this.plano;
-    plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
-
-
-    plano.data_MODIF = new Date();
-    plano.utz_MODIF = this.user;
-
-    plano.descricao = this.descricao;
-
-    plano.unidade = this.unidade;
-    plano.referencia = this.referencia;
-    plano.design_REFERENCIA = this.design_REFERENCIA;
-    plano.departamento_ORIGEM = this.departamento_ORIGEM;
-
-    plano.data_OBJETIVO = this.data_OBJETIVO;
-    plano.ambito = this.ambito;
-    plano.origem = this.origem;
-
-    plano.objetivo = this.objetivo;
-    plano.id_PLANO_ESTRATEGICO = this.id_PLANO_ESTRATEGICO;
-
-    plano.estado = (estado == 'P') ? estado : this.estado;
-    if (this.novo) {
-      plano.estado = "E";
-      plano.data_CRIA = this.data_agora;
-      plano.utz_CRIA = this.user;
-      plano.ativo = true;
-      this.PAMOVCABService.create(plano).subscribe(
-        response => {
-          this.gravalinhas(response.id_PLANO_CAB, response.estado, cria_tarefas);
-        }, error => { console.log(error); });
-    } else {
-      this.PAMOVCABService.update(plano).then(
-        response => {
-          this.gravalinhas(plano.id_PLANO_CAB, plano.estado, cria_tarefas);
-        }, error => { console.log(error); });
+    }
+    if (encontrou) {
+      return encontrou;
     }
 
+    return encontrou;
+  }
+
+  gravar(estado = 'E', cria_tarefas = false) {
+    if (this.validaPLANO_ESTRATEGICO()) {
+      this.mensagem_verifica = "Não é possível seleccionar dois planos estratégico do mesmo ano!";
+      this.displayverificar = true;
+    } else {
+      var plano = new PA_MOV_CAB;
+      if (!this.novo) plano = this.plano;
+      plano.id_LINHA = (this.id_LINHA == null) ? null : this.id_LINHA.id;
 
 
+      plano.data_MODIF = new Date();
+      plano.utz_MODIF = this.user;
+
+      plano.descricao = this.descricao;
+
+      plano.unidade = this.unidade;
+      plano.referencia = this.referencia;
+      plano.design_REFERENCIA = this.design_REFERENCIA;
+      plano.departamento_ORIGEM = this.departamento_ORIGEM;
+
+      plano.data_OBJETIVO = this.data_OBJETIVO;
+      plano.ambito = this.ambito;
+      plano.origem = this.origem;
+
+      plano.objetivo = this.objetivo;
+      //plano.id_PLANO_ESTRATEGICO = this.id_PLANO_ESTRATEGICO;
+
+      plano.estado = (estado == 'P') ? estado : this.estado;
+      if (this.novo) {
+        plano.estado = "E";
+        plano.data_CRIA = this.data_agora;
+        plano.utz_CRIA = this.user;
+        plano.ativo = true;
+        this.PAMOVCABService.create(plano).subscribe(
+          response => {
+            this.gravalinhas(response.id_PLANO_CAB, response.estado, cria_tarefas);
+            this.associarPlanos(response.id_PLANO_CAB);
+          }, error => { console.log(error); });
+      } else {
+        this.PAMOVCABService.update(plano).then(
+          response => {
+            this.gravalinhas(plano.id_PLANO_CAB, plano.estado, cria_tarefas);
+            this.associarPlanos(plano.id_PLANO_CAB);
+            this.removerassociacao(plano.id_PLANO_CAB);
+          }, error => { console.log(error); });
+      }
+
+
+    }
   }
 
   verificadatas(row) {
@@ -845,6 +937,13 @@ export class FormplanosComponent implements OnInit {
       } else {
         accoes.estado = this.tabelaaccoes[x].estado;
       }
+
+      if (novo) {
+        accoes.data_CRIA = new Date();
+        accoes.utz_CRIA = this.user;
+      }
+      accoes.data_MODIF = new Date();
+      accoes.utz_MODIF = this.user;
 
       var utz = this.drop_utilizadores.find(item => item.value == id_resp);
       if (utz) email_p = utz.email;
@@ -1430,7 +1529,7 @@ export class FormplanosComponent implements OnInit {
         header: 'Confirmação',
         icon: 'fa fa-check',
         accept: () => {
-          if (this.id_PLANO_ESTRATEGICO != null) {
+          if (this.id_PLANO_ESTRATEGICO.length > 0) {
             this.motivoAlteracao = null;
             this.displayMotivoAlteracao = true;
           } else {
@@ -1555,6 +1654,9 @@ export class FormplanosComponent implements OnInit {
       this.btControlar = true;
       this.btCancelar = true;
     }
+
+    accoes.data_MODIF = new Date();
+    accoes.utz_MODIF = this.user;
 
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
