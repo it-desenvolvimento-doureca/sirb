@@ -526,7 +526,7 @@
                   <p style="font-size: 14px;">Ação</p>
                   <p-dropdown [filter]="true" [options]="drop_accoes" [style]="{'width':'90%'}"
                     [(ngModel)]="novo_id_ACCAO" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao "
-                    appendTo="body" [required]="true">
+                    [required]="true">
                   </p-dropdown>
                   <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao" title="Adicionar"
                     style="height: 27px; margin: 0;" (click)="showDialogToAdd()">
@@ -545,7 +545,7 @@
                   </select-->
                   <p-dropdown [filter]="true" [options]="drop_utilizadores" [style]="{'width':'100%'}"
                     [(ngModel)]="novo_responsavel" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                    appendTo="body" [required]="true">
+                    [required]="true">
                   </p-dropdown>
                 </div>
               </div>
@@ -595,9 +595,9 @@
 
 <!-- Modal dados-->
 
-<p-dialog header="Ações de Amostras" [responsive]="true" [positionTop]="0"
-  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
-  [draggable]="false" [(visible)]="displayAddAccao" [modal]="true">
+<p-dialog header="Adiconar Ação" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayAddAccao"
+  (onHide)="onHide()" [modal]="true">
 
   <!-- Modal Header -->
 
@@ -606,8 +606,9 @@
     <div class="">
       <div class="form-group">
         <label for="descricao">Descrição PT</label>
-        <input autocomplete="off" type="text" class="form-control2" id="descricaopt" [(ngModel)]="descricaopt"
-          [ngModelOptions]="{standalone: true}" placeholder="Introduza a Descrição em Português" required />
+        <input autocomplete="off" type="text" [disabled]="false" class="form-control2" id="descricaopt"
+          [(ngModel)]="descricaopt" [ngModelOptions]="{standalone: true}"
+          placeholder="Introduza a Descrição em Português" required />
       </div>
     </div>
     <!-- Modal Footer -->

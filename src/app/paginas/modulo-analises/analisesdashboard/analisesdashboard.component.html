@@ -740,7 +740,7 @@
                               style="border: 1px solid #ddd;  ">
                               <thead>
                                 <tr>
-                                  <th scope="col">Cód.</th>
+                                  <th scope="col" style="width: 190px;">Cód.</th>
                                   <th scope="col" style="text-align: left;">Referência</th>
                                   <th scope="col" style="text-align: center;">Tipo</th>
                                   <th scope="col" style="text-align: center;width: 97px;">Data Reg.
@@ -778,7 +778,7 @@
                               style="border: 1px solid #ddd;   ">
                               <thead>
                                 <tr>
-                                  <th scope="col">Cód.</th>
+                                  <th scope="col" style="width: 190px;">Cód.</th>
                                   <th scope="col" style="text-align: left;">Referência
                                   </th>
                                   <th scope="col" style="text-align: center;">Tipo</th>
@@ -929,11 +929,11 @@
                             <div class="row">
                               <div class="col-md-7">
                                 <div class="region-earning-stats">
-                                  Valor Vendas<span>68,4545,454 €</span>
+                                  Valor Vendas<span>{{valor_vendas | number: '1.2-2'}} €</span>
                                 </div>
                                 <ul class="clearfix location-earning-stats">
                                   <li class="stat-divider">
-                                    <span class="first-city">734503 €</span>
+                                    <span class="first-city">{{totaldividavenc | number: '1.2-2'}} €</span>
                                     Valor em Dívida Vencida
                                   </li>
                                   <li class="stat-divider">
@@ -941,8 +941,8 @@
                                     VS
                                   </li>
                                   <li>
-                                    <span class="third-city">734503 €</span>
-                                    Valor em Dívida
+                                    <span class="third-city">{{totalnaovencido | number: '1.2-2'}} €</span>
+                                    Valor Não Vencido
                                   </li>
                                 </ul>
                               </div>
@@ -965,7 +965,7 @@
                         <div class="mini-stat clearfix">
                           <span class="mini-stat-icon tar"><i class="fa fa-euro"></i></span>
                           <div class="mini-stat-info">
-                            <span>300 €</span>
+                            <span>{{totaldivida | number: '1.2-2'}} €</span>
                             Total Pendente em Curso
                           </div>
                         </div>
@@ -974,7 +974,7 @@
                         <div class="mini-stat clearfix">
                           <span class="mini-stat-icon green"><i class="fa fa-line-chart"></i></span>
                           <div class="mini-stat-info">
-                            <span>40</span>
+                            <span>{{average_due | number: '1.2-2'}}</span>
                             Prazo médio de Recebimentos (dias)
                           </div>
                         </div>
@@ -983,7 +983,7 @@
                         <div class="mini-stat clearfix">
                           <span class="mini-stat-icon orange"><i class="fa fa-percent"></i></span>
                           <div class="mini-stat-info">
-                            <span> 10 % </span>
+                            <span>{{total_dev | number: '1.0-0'}} %</span>
                             % Dívida > 31 dias
                           </div>
                         </div>

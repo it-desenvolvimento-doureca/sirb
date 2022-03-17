@@ -1621,6 +1621,9 @@ export class PaginatarefaComponent implements OnInit {
     this.simular(this.dialoglinhas);
   }
 
+  onHide() {
+    this.simular(this.dialoglinhas);
+  }
 
   criar_subtarefa() {
     this.GTMOVTAREFASService.getbyid(this.id_tarefa).subscribe(response => {
@@ -1753,6 +1756,7 @@ export class PaginatarefaComponent implements OnInit {
     this.descricaopt = "";
     this.descricaofr = "";
     this.displayAddAccao = true;
+    this.simular(this.dialoglinhas);
   }
 
 

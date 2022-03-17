@@ -11,6 +11,22 @@ export class DASHBOARDANALISESService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
+  getDASHBOARD_CUMPRIMENTO_OBJETIVO_VENDAS(data) {
+    const url = webUrl.host + '/rest/sirb/getDASHBOARD_CUMPRIMENTO_OBJETIVO_VENDAS';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getDASHBOARD_VARIACAO_STOCK(data) {
+    const url = webUrl.host + '/rest/sirb/getDASHBOARD_VARIACAO_STOCK';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDASHBOARD_PLANEAMENTO_GRAFICOS(data) {
     const url = webUrl.host + '/rest/sirb/getDASHBOARD_PLANEAMENTO_GRAFICOS';
     return this.http

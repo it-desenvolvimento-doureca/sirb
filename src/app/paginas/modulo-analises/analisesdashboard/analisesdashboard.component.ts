@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DASHBOARDANALISESService } from 'app/servicos/dashboard-analises.service';
+import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.service';
+import { FINSEGUIMENTOFATURACAOANUALService } from 'app/servicos/fin-seguimento-faturacao-anual.service';
 import { GERREFERENCIASFASTRESPONSEREJEICOESService } from 'app/servicos/ger-referencias-fastresponse-rejeicoes.service';
 import { PAMOVCABService } from 'app/servicos/pa-mov-cab.service';
 import { PEDIDOSPRODUCAOService } from 'app/servicos/pedidosproducao.service';
@@ -10,7 +12,20 @@ import { PEDIDOSPRODUCAOService } from 'app/servicos/pedidosproducao.service';
   styleUrls: ['./analisesdashboard.component.css']
 })
 export class AnalisesdashboardComponent implements OnInit {
+  totalprazopag = 0;
+  average_due = 0;
+  total_dev = 0;
+  totalprazoatraso = 0;
+  totaldivida = 0;
+  totaldividavenc = 0;
+  totalnaovencido = 0;
+  total31dias = 0;
+  total3160dias = 0;
+  total6190dias = 0;
+  total91dias = 0;
+  totalacordo = 0;
   area_peca = 0;
+  valor_vendas = 0;
   data_filtro;
   mes_absentismo: any = "--";
   dia_absentismo: any = "--";
@@ -228,21 +243,32 @@ export class AnalisesdashboardComponent implements OnInit {
           return data.labels[tooltipItem[0].index];
         },
         label: function (tooltipItems, data) {
-          return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
-            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' €';
 
+          return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
+            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' %';
+
+        }, afterBody: function (tooltipItem, data) {
+
+          var datasetIndex = tooltipItem[0].datasetIndex;
+          var index = tooltipItem[0].index;
+          var data = data.datasets[datasetIndex];
+          var multistringText = [''];
+          multistringText.push('Valor ' + data.ano + ': ' + formatMoney(data.ano1[index], 2, ",", ".") + ' €');
+          multistringText.push('Valor ' + (data.ano - 1) + ': ' + formatMoney(data.ano2[index], 2, ",", ".") + ' €');
+          multistringText.push('Variação: ' + formatMoney(data.valor[index], 2, ",", ".") + ' €');
+          return multistringText;
         }
       },
     },
     animation: {
-      onComplete: drawBarValuesMoney
+      onComplete: drawBarValues
     },
     hover: { animationDuration: 0 },
     scales: {
 
       yAxes: [{
         ticks: {
-          callback: function (value) { return formatMoney(value, 2, ",", ".") + "€" },
+          callback: function (value) { return formatMoney(value, 2, ",", ".") + "%" },
           label: 'label',
           beginAtZero: false,
         }, scaleLabel: {
@@ -288,6 +314,15 @@ export class AnalisesdashboardComponent implements OnInit {
           return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
             + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' €';
 
+        }, afterBody: function (tooltipItem, data) {
+
+          var datasetIndex = tooltipItem[0].datasetIndex;
+          var index = tooltipItem[0].index;
+          var data = data.datasets[datasetIndex];
+          var multistringText = [''];
+          multistringText.push('Realização: ' + formatMoney(data.realizado[index], 2, ",", ".") + ' %');
+          multistringText.push('Desvio: ' + formatMoney(data.desvio[index], 2, ",", ".") + ' €');
+          return multistringText;
         }
       },
     },
@@ -471,6 +506,8 @@ export class AnalisesdashboardComponent implements OnInit {
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
+    private FINANALISEDIVIDASService: FINANALISEDIVIDASService,
+    private FINSEGUIMENTOFATURACAOANUALService: FINSEGUIMENTOFATURACAOANUALService,
     private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
@@ -497,65 +534,6 @@ export class AnalisesdashboardComponent implements OnInit {
     }
 
     this.semana = this.getWeek(new Date()) + 1;
-
-
-
-
-    this.data_CumprimentoObjetivos = {
-      labels: ["mes - 12", "mes - 11", "mes - 10", "mes - 9", "mes - 8", "mes - 7", "mes - 6", "mes - 5", "mes - 4", "mes - 3", "mes - 2", "mes - 1", "mes"],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Objetivo',
-          data: [10, 20, 30, 40, 50, 60, 17, 10, 20, 30, 87, 55, 44],
-          borderColor: '#ff6c60',
-          backgroundColor: '#ff6c60',
-          fill: false,
-          //pointRadius: 0
-        },
-      ],
-    };
-
-
-    this.data_VariacaoStock = {
-      labels: ["semana - 10", "semana - 9", "semana - 8", "semana - 7", "semana - 6", "semana - 5", "semana - 4", "semana - 3", "semana - 2", "semana - 1", "semana"],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Variação',
-          data: [10, 20, 30, 40, 50, 60, 17, 10, 20, 30, 87],
-          borderColor: '#1fb5ac',
-          backgroundColor: '#1fb5ac',
-          fill: false,
-          //pointRadius: 0
-        },
-      ],
-    };
-
-
-    this.data_ValoresEmDivida = {
-      labels: ["2021", "2022"],
-      datasets: [
-        {
-          type: 'bar',
-          label: 'Valor Venda',
-          data: [3020, 1040,],
-          borderColor: '#ff6c60',
-          backgroundColor: '#ff6c60',
-          fill: false,
-          pointRadius: 0
-        },
-        {
-          type: 'bar',
-          label: 'Objetivo',
-          backgroundColor: '#1fb5ac',
-          borderColor: '#1fb5ac',
-          data: [2535, 1590],
-          fill: false,
-          pointRadius: 0
-        },
-      ],
-    };
 
 
     this.atualizar();
@@ -591,6 +569,7 @@ export class AnalisesdashboardComponent implements OnInit {
     this.carregaacidentes();
     this.carregalinhas();
     this.carregaGraficoPLaneadas();
+    this.carregaDadosFinanceira();
   }
 
 
@@ -1300,6 +1279,247 @@ export class AnalisesdashboardComponent implements OnInit {
           data: data2,
           fill: false,
           pointRadius: 0
+        },
+      ],
+    };
+  }
+
+  carregaDadosFinanceira() {
+    this.FINANALISEDIVIDASService.GET_DIVIDAS_LISTA([]).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        var average_due = 0;
+        var count_average_due = 0;
+        for (var x in response) {
+          if (parseInt(x) == 0) {
+            this.totalprazopag = response[x][13];
+            this.totalprazoatraso = response[x][14];
+            this.totaldivida = response[x][15];
+            this.totaldividavenc = response[x][16];
+            this.totalnaovencido = response[x][17];
+            this.total31dias = response[x][18];
+            this.total3160dias = response[x][19];
+            this.total6190dias = response[x][20];
+            this.total91dias = response[x][21];
+            this.totalacordo = response[x][22];
+            this.total_dev = ((this.total3160dias + this.total6190dias + this.total91dias) / this.totaldividavenc) * 100;
+          }
+          if (response[x][24] != null && response[x][24] > 0) {
+            average_due += response[x][24];
+            count_average_due++;
+          }
+
+
+
+        }
+
+        this.average_due = (count_average_due == 0) ? 0 : (average_due / count_average_due);
+
+
+
+      },
+      error => console.log(error));
+
+
+    var dados = [{
+      ANO: this.ano, PROREF: null, CLIENTES: null, ID_ANALISE: null,
+      PROJETOS: null, VEICULOS: null, OEM: null
+    }];
+    var acumulado2 = 0;
+    var acumulado1 = 0;
+    var objetivo1, objetivo2 = 0;
+    this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_TOTAL_REALIZADO(dados).subscribe(
+      response => {
+
+        for (var x in response) {
+          if (response[x][2] == this.ano) {
+            acumulado2 = response[x][3];
+            this.valor_vendas = acumulado2;
+            //this.ano2[response[x][1]] = response[x][0];
+          } else {
+            acumulado1 = response[x][3];
+            //this.ano1[response[x][1]] = response[x][0];
+          }
+
+        }
+        this.objetivoatual(acumulado1, acumulado2, objetivo1, objetivo2)
+      }, error => {
+        console.log(error);
+        this.objetivoatual(acumulado1, acumulado2, objetivo1, objetivo2)
+      });
+  }
+  objetivoatual(acumulado1, acumulado2, objetivo1, objetivo2) {
+    var dados = [{
+      ANO: this.ano, PROREF: null, CLIENTES: null, ID_ANALISE: null,
+      PROJETOS: null, VEICULOS: null, OEM: null
+    }];
+    this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_BUDGET(dados).subscribe(
+      response => {
+
+        for (var x in response) {
+          objetivo2 = response[x][3];
+        }
+        this.objetivoanoanterior(acumulado1, acumulado2, objetivo1, objetivo2)
+      }, error => {
+        console.log(error);
+        this.objetivoanoanterior(acumulado1, acumulado2, objetivo1, objetivo2)
+      });
+  }
+
+  objetivoanoanterior(acumulado1, acumulado2, objetivo1, objetivo2) {
+    var dados = [{
+      ANO: this.ano - 1, PROREF: null, CLIENTES: null, ID_ANALISE: null,
+      PROJETOS: null, VEICULOS: null, OEM: null
+    }];
+    this.FINSEGUIMENTOFATURACAOANUALService.GET_SEGUIMENTO_FATURACAO_BUDGET(dados).subscribe(
+      response => {
+
+        for (var x in response) {
+          objetivo1 = response[x][3];
+        }
+        this.carregagraficosFinanceira(acumulado1, acumulado2, objetivo1, objetivo2);
+        this.carregagraficosFinanceiraCumprimentoObjetivos();
+        this.carregagraficosFinanceiraVariacaoStock();
+      }, error => {
+        console.log(error);
+        this.carregagraficosFinanceira(acumulado1, acumulado2, objetivo1, objetivo2);
+        this.carregagraficosFinanceiraCumprimentoObjetivos();
+        this.carregagraficosFinanceiraVariacaoStock();
+      });
+  }
+
+  carregagraficosFinanceira(acumulado1, acumulado2, objetivo1, objetivo2) {
+
+    this.data_ValoresEmDivida = {
+      labels: [this.ano - 1, this.ano],
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Valor Venda',
+          data: [acumulado1, acumulado2],
+          borderColor: '#ff6c60',
+          backgroundColor: '#ff6c60',
+          fill: false,
+          pointRadius: 0
+        },
+        {
+          type: 'bar',
+          label: 'Objetivo',
+          backgroundColor: '#1fb5ac',
+          borderColor: '#1fb5ac',
+          data: [objetivo1, objetivo2],
+          fill: false,
+          pointRadius: 0
+        },
+      ],
+    };
+  }
+
+  carregagraficosFinanceiraCumprimentoObjetivos() {
+
+
+    var data1 = [null, null, null, null, null, null, null, null, null, null, null, null];
+    var data2 = [null, null, null, null, null, null, null, null, null, null, null, null];
+    var valor = [null, null, null, null, null, null, null, null, null, null, null, null];
+    var variacao = [null, null, null, null, null, null, null, null, null, null, null, null];
+
+    var dados = [{ ANO: this.ano, SEMANA: null }];
+    var labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    this.DASHBOARDANALISESService.getDASHBOARD_CUMPRIMENTO_OBJETIVO_VENDAS(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+
+          for (var x in response) {
+            data1[response[x][1] - 1] = response[x][0];
+            data2[response[x][1] - 1] = response[x][4];
+            valor[response[x][1] - 1] = response[x][8];
+            variacao[response[x][1] - 1] = response[x][9];
+          }
+
+          this.carregagraficosFinanceiraCumprimentoObjetivos2(labels, valor, data1, data2, variacao);
+        } else {
+          this.carregagraficosFinanceiraCumprimentoObjetivos2(labels, valor, data1, data2, variacao);
+        }
+
+      }, error => {
+        console.log(error);
+        this.carregagraficosFinanceiraCumprimentoObjetivos2(labels, valor, data1, data2, variacao);
+        /*this.loadingProducao = true;*/
+      });
+
+
+
+  }
+
+  carregagraficosFinanceiraCumprimentoObjetivos2(labels, valor, data1, data2, variacao) {
+    this.data_CumprimentoObjetivos = {
+      labels: labels,
+      datasets: [
+        {
+          type: 'line',
+          label: '% Variação',
+          data: variacao,
+          ano1: data1,
+          ano2: data2,
+          ano: this.ano,
+          valor: valor,
+          borderColor: '#ff6c60',
+          backgroundColor: '#ff6c60',
+          fill: false,
+          //pointRadius: 0
+        },
+      ],
+    };
+  }
+  carregagraficosFinanceiraVariacaoStock() {
+    var realizado = [];
+    var valor = [];
+    var desvio = [];
+
+    var dados = [{ ANO: this.ano, SEMANA: null }];
+    var labels = [];
+    this.DASHBOARDANALISESService.getDASHBOARD_VARIACAO_STOCK(dados).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+
+        if (count > 0) {
+
+          for (var x in response) {
+            labels.push(response[x][0]);
+            valor.push(response[x][1]);
+            realizado.push(response[x][2]);
+            desvio.push(response[x][3]);
+          }
+
+          this.carregagraficosFinanceiraVariacaoStock2(labels, valor, realizado, desvio);
+        } else {
+          this.carregagraficosFinanceiraVariacaoStock2(labels, valor, realizado, desvio);
+        }
+
+      }, error => {
+        console.log(error);
+        this.carregagraficosFinanceiraVariacaoStock2(labels, valor, realizado, desvio);
+        /*this.loadingProducao = true;*/
+      });
+  }
+
+  carregagraficosFinanceiraVariacaoStock2(labels, valor, realizado, desvio) {
+    this.data_VariacaoStock = {
+      labels: labels,
+      datasets: [
+        {
+          type: 'line',
+          label: 'Variação Stock',
+          data: valor,
+          realizado: realizado,
+          desvio: desvio,
+          borderColor: '#1fb5ac',
+          backgroundColor: '#1fb5ac',
+          fill: false,
+          //pointRadius: 0
         },
       ],
     };
