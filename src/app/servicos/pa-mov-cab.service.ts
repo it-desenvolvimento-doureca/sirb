@@ -52,8 +52,8 @@ export class PAMOVCABService {
   }
 
 
-  getPA_MOV_CABAssociarPlanoEstrategico(id_plano, id): Observable<PA_MOV_CAB[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABAssociarPlanoEstrategico/' + id_plano + '/' + id;
+  getPA_MOV_CABAssociarPlanoEstrategico(id_plano_estrategico, id_plano_acao): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABAssociarPlanoEstrategico/' + id_plano_estrategico + '/' + id_plano_acao;
     return this.http
       .get(url)
       .map(this.extractData)

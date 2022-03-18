@@ -294,7 +294,7 @@
                         <p-column [style]="{'width':'19px'}" field="estado" header="Estado">
                         </p-column>
 
-                        <p-column [style]="{'width':'10px','padding-left': '0','padding-right': '0'}">
+                        <p-column [style]="{'width':'12px','padding-left': '0','padding-right': '0'}">
                           <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                             <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
                               (click)="removerplano(index,car['id'])">
@@ -324,6 +324,9 @@
                                 <th class="tg-wfll">Investimentos</th>
                                 <th class="tg-wfll" style="width: 71px;">% Conclusão</th>
                                 <th class="tg-wfll" style="width: 168px;">Estado</th>
+                              </tr>
+                              <tr *ngIf="car.filho.length == 0">
+                                <td colspan="11" style="text-align: center;">Sem Ações...</td>
                               </tr>
                               <ng-container *ngFor="let col of car.filho">
                                 <tr>
@@ -729,7 +732,7 @@
 
       <div style="display: inline-block;">
         <div style="padding: 1px 5px 1px 10px; width: 98vw;" class="form-group col-md-12">
-          <div *ngIf="displayAssociarPlano">
+          <div *ngIf="displayAssociarPlano" style="max-height: 78vh; overflow-y: auto; overflow-x: hidden;">
             <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"
               (onRowDblclick)="selectLinha($event)" [rowsPerPageOptions]="[25,50,100,'todos']" expandableRows="true"
               [expandedRows]="lista_expand">
@@ -820,10 +823,12 @@
               </ng-template>
 
             </p-dataTable>
-            <button type="reset" (click)="displayAssociarPlano = false"
-              class="btn btn-danger pull-right">Cancelar</button>
           </div>
+
         </div>
+      </div>
+      <div class="" style="text-align: -webkit-center;">
+        <button type="reset" (click)="displayAssociarPlano = false" class="btn btn-danger pull-right">Cancelar</button>
       </div>
     </div>
 

@@ -276,10 +276,10 @@ export class HomeComponent implements OnInit {
         if (res[x][9] > 0) {
           show4 = true;
         }
-        if (res[x][12] > 0) {
+        if (res[x][15] > 0) {
           show5 = true;
         }
-        if (res[x][9] > 0) {
+        if (res[x][12] > 0) {
           show6 = true;
         }
         this.cols.push({
@@ -448,7 +448,7 @@ export class HomeComponent implements OnInit {
   }
 
   getTotais() {
-    var dados = [{ ANO: null, SEMANA: null }];
+    var dados = [{ ANO: null, SEMANA: null, UTILIZADOR: this.user }];
     this.DASHBOARDANALISESService.getPA_GET_TOTAIS(dados).subscribe(
       response => {
         var count = Object.keys(response).length;

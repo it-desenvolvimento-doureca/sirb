@@ -820,14 +820,14 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
-  associarPlanos(id_plano) {
+  associarPlanos(id_plano_estrategico) {
     for (var x in this.tabelaplanos) {
-      this.associarPlanos2(id_plano, this.tabelaplanos[x].id);
+      this.associarPlanos2(id_plano_estrategico, this.tabelaplanos[x].id);
     }
   }
 
-  associarPlanos2(id_plano, id) {
-    this.PAMOVCABService.getPA_MOV_CABAssociarPlanoEstrategico(id_plano, id).subscribe(
+  associarPlanos2(id_plano_estrategico, id_plano_acao) {
+    this.PAMOVCABService.getPA_MOV_CABAssociarPlanoEstrategico(id_plano_estrategico, id_plano_acao).subscribe(
       response => {
 
       }, error => { console.log(error); });
@@ -872,6 +872,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             this.estado = "EL";
             this.estado_texto = this.getestado("EL");
           }
+          this.associarPlanos2(this.id_PLANO, response.id_PLANO_CAB);
           this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas, false);
         }, error => { console.log(error); });
     } else {
