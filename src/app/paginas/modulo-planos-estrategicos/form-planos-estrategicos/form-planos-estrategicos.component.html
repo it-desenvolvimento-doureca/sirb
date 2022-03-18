@@ -379,7 +379,7 @@
               <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
                 [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
-              <button type="submit" class="btn btn-success pull-right" [hidden]="!modoedicao">Gravar</button>
+              <button type="submit" class="btn btn-success pull-right" [disabled]="disabled_save" [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>
             </form>
           </div>

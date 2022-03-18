@@ -1622,7 +1622,7 @@ export class PaginatarefaComponent implements OnInit {
   }
 
   onHide() {
-    this.simular(this.dialoglinhas);
+    if (this.id_tarefa_input == null) this.simular(this.dialoglinhas);
   }
 
   criar_subtarefa() {

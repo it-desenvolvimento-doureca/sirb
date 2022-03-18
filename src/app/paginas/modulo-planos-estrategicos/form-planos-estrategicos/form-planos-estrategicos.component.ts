@@ -161,6 +161,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   justificacao_RESPONSAVEL = null;
   displayJustificacaoDATAFIM: boolean;
   displayJustificacaoRESPONSAVEL: boolean;
+  disabled_save: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -776,6 +777,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
   gravar2(estado = 'E', observacoes = null) {
+    this.disabled_save = true;
     var plano = new PE_MOV_CAB;
     if (!this.novo) plano = this.plano_estrategico;
 
@@ -803,11 +805,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           this.gravarTabelaFicheiros(response.ID);
           this.gravartabela_historico(response.ID, "Criou Plano", observacoes);
           this.associarPlanos(response.ID);
-        }, error => { console.log(error); });
+          this.disabled_save = false;
+        }, error => { console.log(error); this.disabled_save = false; });
     } else {
       this.PEMOVCABService.update(plano).then(
         response => {
           this.gravarTabelaFicheiros(plano.ID);
+          this.disabled_save = false;
           if (estado == 'EX' && estado != this.estado) {
             this.gravartabela_historico(plano.ID, "Atualizou Estado para Em Execução", observacoes);
           } else {
@@ -815,7 +819,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           }
 
           this.associarPlanos(plano.ID);
-        }, error => { console.log(error); });
+        }, error => { console.log(error); this.disabled_save = false; });
     }
 
   }
