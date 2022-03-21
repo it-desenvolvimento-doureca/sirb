@@ -27,6 +27,7 @@ export class DosificadoresComponent implements OnInit {
   nome_tipo: string;
   MEDIACONSUMO_AB: number;
   MEDIACONSUMO_NIV: number;
+  i = 0;
   constructor(private ABDICTINAService: ABDICTINAService, private location: Location, private ABMOVMANUTENCAODOSIFICADORESService: ABMOVMANUTENCAODOSIFICADORESService,
     private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService: ABDICTIPOTIPOLOGIADOSIFICADORESOBJETIVOSService) { }
 
@@ -46,8 +47,8 @@ export class DosificadoresComponent implements OnInit {
     this.globalVar.seteditar(false);
     this.globalVar.setvoltar(true);
     this.globalVar.seteditar(false);
-    this.globalVar.setseguinte(false);
-    this.globalVar.setanterior(false);
+    this.globalVar.setseguinte(true);
+    this.globalVar.setanterior(true);
     this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
     this.globalVar.sethistorico(false);
@@ -59,6 +60,26 @@ export class DosificadoresComponent implements OnInit {
     this.preencheTinas();
     this.preencheobjetivos();
 
+  }
+
+  seguinte() {
+    this.i = this.i + 1;
+    this.i = this.i % this.tinas.length;
+    if (this.tinas.length > 0) {
+      this.tina = this.tinas[this.i].value;
+      this.atualiza_graficos();
+    }
+  }
+
+  anterior() {
+    if (this.i === 0) {
+      this.i = this.tinas.length;
+    }
+    this.i = this.i - 1;
+    if (this.tinas.length > 0) {
+      this.tina = this.tinas[this.i].value;
+      this.atualiza_graficos();
+    }
   }
 
   atualiza_graficos() {
@@ -243,13 +264,16 @@ export class DosificadoresComponent implements OnInit {
     this.ABDICTINAService.getAll2(0).subscribe(
       response => {
         this.tinas = [];
-        this.tinas.push({ label: "Sel. Tina", value: "" });
+        //this.tinas.push({ label: "Sel. Tina", value: "" });
         for (var x in response) {
           if (response[x][0].id_TIPO_TIPOLOGIA_DOSIFICADORES != null) this.tinas.push({ label: response[x][0].cod_TINA + ' / ' + response[x][1].nome_LINHA, value: response[x][0].id_TINA });
         }
 
         this.tinas = this.tinas.slice();
-
+        if (this.tinas.length > 0) {
+          this.tina = this.tinas[0].value;
+          this.atualiza_graficos();
+        }
       },
       error => { console.log(error); });
   }
