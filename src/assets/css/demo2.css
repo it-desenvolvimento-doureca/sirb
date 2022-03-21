@@ -3903,6 +3903,11 @@ input[type="date"]::-webkit-input-placeholder {
     color: black;
 }
 
+
+.tabelalistatarefas tr td:not(.ui-datatable-odd td):not(.ui-datatable-even td) {
+    padding: 0 !important;
+}
+
 .scrollup {
     width: 40px;
     height: 40px;

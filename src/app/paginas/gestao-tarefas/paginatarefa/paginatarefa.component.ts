@@ -117,6 +117,7 @@ export class PaginatarefaComponent implements OnInit {
   encaminhadojustificacao: any;
   displayJustificacaoCONCLUSAO: boolean;
   atividades: any[];
+  shodialoglinhas: any;
 
   constructor(private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
     if (document.getElementById("script1")) document.getElementById("script1").remove();
@@ -1618,11 +1619,12 @@ export class PaginatarefaComponent implements OnInit {
     this.novo_id_ACCAO = null;
     this.novo_observacoes = null;
     this.novo_responsavel = null;
+    this.shodialoglinhas = true;
     this.simular(this.dialoglinhas);
   }
 
   onHide() {
-    if (this.id_tarefa_input == null) this.simular(this.dialoglinhas);
+    if (this.shodialoglinhas) this.simular(this.dialoglinhas);
   }
 
   criar_subtarefa() {
@@ -1719,6 +1721,7 @@ export class PaginatarefaComponent implements OnInit {
       this.enviarEventoCriar(response.data_INICIO, response.id_TAREFA, "Ao Criar Tarefa", email_para, observacao, nome_accao);
 
       this.carregasubtarefas(this.id_tarefa);
+      this.shodialoglinhas = false;
       this.simular(this.closedialoglinha);
 
 
@@ -1756,6 +1759,7 @@ export class PaginatarefaComponent implements OnInit {
     this.descricaopt = "";
     this.descricaofr = "";
     this.displayAddAccao = true;
+    this.shodialoglinhas = true;
     this.simular(this.dialoglinhas);
   }
 

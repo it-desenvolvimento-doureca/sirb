@@ -223,6 +223,18 @@
                       <section class="panel">
                         <header class="panel-heading">
                           <h4 class="widget-h"> Índice de Cuprimento do Plano</h4>
+                          <div class="table-row-column col-md-2" style="height: 64px; padding-left: 6px;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="ano" [ngModelOptions]="{standalone: true}" [required]="true" appendTo="body">
+                            </p-dropdown>
+                            <p-dropdown [filter]="true" [options]="semanas" [style]="{'width':'40%','height': '25px'}"
+                              [(ngModel)]="semana" [ngModelOptions]="{standalone: true}" [required]="true"
+                              appendTo="body"></p-dropdown>
+                          </div>
+                          <div class="table-row-column col-md-3" style="height: 64px;">
+                            <button type="button" (click)="carregalinhas()" class="btn btn-success"
+                              style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
                         </header>
                         <div class="panel-body">
                           <table class="table  table-bordered table-striped table-hover tg" id="tg1">
