@@ -276,7 +276,7 @@ export class TarefasComponent implements OnInit {
         }
 
         var data = this.formatDate(new Date());
-        var prazo_conclusao = this.formatDate(resp[x][5]);
+        var prazo_conclusao = this.formatDate(resp[x][6]);
 
         var cor = "";
         var cor_letra = "";

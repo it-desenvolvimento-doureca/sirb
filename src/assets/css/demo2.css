@@ -5989,3 +5989,21 @@ body>.ui-dropdown-panel {
 .cssapp-paginatarefa .nopaddingcss {
     padding: 0 !important;
 }
+
+.notification_number {
+    position: absolute;
+    top: 5px;
+    border: 1px solid #fff;
+    right: 0px;
+    font-size: 9px;
+    background: #f44336;
+    color: #fff;
+    min-width: 20px;
+    padding: 0 5px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 19px;
+    vertical-align: middle;
+    display: block;
+}
