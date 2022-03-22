@@ -327,11 +327,9 @@
                       </div>
                     </div>
 
-
                     <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
                       <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                         (onRowSelect)="onRowSelect($event)" styleClass="ExcelTable2007" id="tabelaplanos"
-                        selectionMode="single" 
                         [(selection)]="linhasSelecionadas" expandableRows="true" [expandedRows]="tabelaaccoes">
 
                         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
@@ -448,12 +446,7 @@
 
                         <p-column [editable]="true" field="descricao" [style]="{'width':'245px'}" header="ACÇÃO">
                           <ng-template let-col let-car="rowData" pTemplate="body">
-                            <input [disabled]="!modoedicao"
-                              style="padding: 5px 4px;height: 25px; color: transparent; text-shadow: 0 0 0 black;"
-                              [required]="true" [(ngModel)]="car['descricao']" [ngModelOptions]="{standalone: true}"
-                              type="text"
-                              class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                            {{car[col.field]}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
                             <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
@@ -542,6 +535,7 @@
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             <a *ngIf="car['id_TAREFA']!=null" title="Tarefa: {{car['id_TAREFA']}}"
                               (click)="IrPara(car['id_TAREFA'])"> {{car[col.field]}}</a>
+                            <span *ngIf="car['id_TAREFA']==null"> {{car[col.field]}}</span>
                           </ng-template>
                         </p-column>
 

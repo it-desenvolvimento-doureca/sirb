@@ -84,6 +84,14 @@ export class DASHBOARDANALISESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getDASHBOARD_ACIDENTES_TRABALHO(data) {
+    const url = webUrl.host_dashboard + '/getDASHBOARD_ACIDENTES_TRABALHO';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDASHBOARD_RECLAMACOES_FORNECEDORES(data) {
     const url = webUrl.host_dashboard + '/getDASHBOARD_RECLAMACOES_FORNECEDORES';
     return this.http

@@ -31,9 +31,11 @@
                   <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
                     <div class="col-md-3">
                       <div class="mini-stat clearfix">
-                        <span class="mini-stat-icon green"><i style="font-size: 60px;" class="fa fa-smile-o"></i></span>
+                        <span class="mini-stat-icon " [ngClass]="(!caraacidentes)?'green':'red'">
+                          <i *ngIf="!caraacidentes" style="font-size: 60px;" class="fa fa-smile-o"></i>
+                          <i *ngIf="caraacidentes" style="font-size: 60px;" class="fa fa-frown-o"></i></span>
                         <div class="mini-stat-info">
-                          <span>0</span>
+                          <span>{{total_acidentes}}</span>
                           Acidentes de Trabalho
                         </div>
                       </div>
@@ -221,9 +223,13 @@
                   <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
                     <div class="col-sm-12">
                       <section class="panel">
-                        <header class="panel-heading">
-                          <h4 class="widget-h"> Índice de Cuprimento do Plano</h4>
-                          <div class="table-row-column col-md-2" style="height: 64px; padding-left: 6px;">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 300px; float: left;"> Índice de Cuprimento do Plano</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregalinhas()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
                             <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
                               [(ngModel)]="ano" [ngModelOptions]="{standalone: true}" [required]="true" appendTo="body">
                             </p-dropdown>
@@ -231,10 +237,7 @@
                               [(ngModel)]="semana" [ngModelOptions]="{standalone: true}" [required]="true"
                               appendTo="body"></p-dropdown>
                           </div>
-                          <div class="table-row-column col-md-3" style="height: 64px;">
-                            <button type="button" (click)="carregalinhas()" class="btn btn-success"
-                              style="margin: 23px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
-                          </div>
+
                         </header>
                         <div class="panel-body">
                           <table class="table  table-bordered table-striped table-hover tg" id="tg1">
@@ -327,7 +330,7 @@
                         </div>
                       </section>
                     </div>
-                    <div class="row" style="display: initial;">
+                    <div class="row" style="margin: 0;">
                       <div class="col-sm-6">
                         <section class="panel">
                           <header class="panel-heading">

@@ -503,6 +503,8 @@ export class AnalisesdashboardComponent implements OnInit {
   funcionarios_saobento = 0;
   funcionarios_formariz = 0;
   funcionarios_faltar = 0;
+  caraacidentes: boolean;
+  total_acidentes: number;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -1096,6 +1098,9 @@ export class AnalisesdashboardComponent implements OnInit {
   }
 
   carregaacidentes() {
+    var dados = [{ DATA: this.formatDate(this.data) }];
+    this.total_acidentes = 0;
+    this.caraacidentes = false;
     this.DASHBOARDANALISESService.getDASHBOARD_OCORRENCIAS([]).subscribe(
       response => {
         //this.ocorrencias = [];
@@ -1113,9 +1118,12 @@ export class AnalisesdashboardComponent implements OnInit {
             var data = new Date();
             data.setDate(data.getDate() - 1);
             var data_a = this.formatDate(data);
+            var datahj = new Date();
+            var data_hj = this.formatDate(datahj);
 
-            if (new Date(this.formatDate(response[x][2])).getTime() == new Date(data_a).getTime()) {
-              //this.cara16 = 2;
+            if (new Date(this.formatDate(response[x][2])).getTime() == new Date(data_a).getTime() || new Date(this.formatDate(response[x][2])).getTime() == new Date(data_hj).getTime()) {
+              this.caraacidentes = true;
+              this.total_acidentes++;
             }
           }
           //this.ocorrencias = this.ocorrencias.slice();
