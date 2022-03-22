@@ -791,59 +791,62 @@ export class FormplanosComponent implements OnInit {
   }
 
   verificadatas(row) {
-    if (this.yearTimeout) {
-      clearTimeout(this.yearTimeout);
-    }
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
 
-    this.yearTimeout = setTimeout(() => {
-      var accoes = new PA_MOV_LINHA;
-      var atualizou_datas = false;
-      this.selected_row = null;
-      this.justificacao_DATA_FIM = null;
-      if (row.id_PLANO_LINHA != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
-        accoes = row.dados;
-        if (this.formatDate(accoes.data_ACCAO) != this.formatDate(row.data_ACCAO) || accoes.hora_ACCAO != ((row.hora_ACCAO == null) ? null : (row.hora_ACCAO + ":00").slice(0, 8))) {
-          atualizou_datas = true;
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new PA_MOV_LINHA;
+        var atualizou_datas = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
+        if (row.id_PLANO_LINHA != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+          accoes = row.dados;
+          if (this.formatDate(accoes.data_ACCAO) != this.formatDate(row.data_ACCAO) || accoes.hora_ACCAO != ((row.hora_ACCAO == null) ? null : (row.hora_ACCAO + ":00").slice(0, 8))) {
+            atualizou_datas = true;
+          }
         }
-      }
-      if (atualizou_datas) {
-        this.selected_row = row;
-        this.displayJustificacaoDATAFIM = true;
-      }
+        if (atualizou_datas) {
+          this.selected_row = row;
+          this.displayJustificacaoDATAFIM = true;
+        }
 
-      // console.log('atualizou_datas ', atualizou_datas)
-    }, 1000);
-
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
   }
 
 
   verificaResponsavel(row, event) {
-    if (this.yearTimeout) {
-      clearTimeout(this.yearTimeout);
-    }
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
 
-    this.yearTimeout = setTimeout(() => {
-      var accoes = new PA_MOV_LINHA;
-      var atualizou_reponsavel = false;
-      this.selected_row = null;
-      this.justificacao_DATA_FIM = null;
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new PA_MOV_LINHA;
+        var atualizou_reponsavel = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
 
-      if (row.id_PLANO_LINHA != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
-        accoes = row.dados;
-        if (accoes.responsavel != row.responsavel) {
-          atualizou_reponsavel = true;
+        if (row.id_PLANO_LINHA != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
+          accoes = row.dados;
+          if (accoes.responsavel != row.responsavel) {
+            atualizou_reponsavel = true;
+          }
         }
-      }
-      if (atualizou_reponsavel) {
-        this.selected_row = row;
-        this.yearTimeout = setTimeout(() => {
-          this.displayJustificacaoRESPONSAVEL = true;
-        }, 100);
+        if (atualizou_reponsavel) {
+          this.selected_row = row;
+          this.yearTimeout = setTimeout(() => {
+            this.displayJustificacaoRESPONSAVEL = true;
+          }, 100);
 
-      }
+        }
 
-      // console.log('atualizou_datas ', atualizou_datas)
-    }, 1000);
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
 
   }
 
@@ -880,7 +883,7 @@ export class FormplanosComponent implements OnInit {
     for (var x in this.tabelaaccoes) {
       var accoes = new PA_MOV_LINHA;
       var atualizou_datas = false;
-      if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
+      if (this.tabelaaccoes[x].id_PLANO_LINHA != null && this.tabelaaccoes[x].estado != 'E') {
         accoes = this.tabelaaccoes[x].dados;
         if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
           atualizou_datas = true;
@@ -889,7 +892,7 @@ export class FormplanosComponent implements OnInit {
 
       var id_resp_old = null;
       var atualizou_responsavel = false;
-      if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
+      if (this.tabelaaccoes[x].id_PLANO_LINHA != null && this.tabelaaccoes[x].estado != 'E') {
         accoes = this.tabelaaccoes[x].dados;
         id_resp_old = accoes.responsavel;
         if (accoes.responsavel != this.tabelaaccoes[x].responsavel) {
@@ -1036,7 +1039,7 @@ export class FormplanosComponent implements OnInit {
   }
 
   savelinhas(accoes, novo, nome_accao, descricao, email_p, id, estado, cria_tarefas, count, total, atualizou_datas, referencia, atualizou_reponsavel, id_resp, justificacao_DATA_FIM, justificacao_RESPONSAVEL) {
-    
+
     delete accoes['_$visited'];
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
@@ -1167,10 +1170,10 @@ export class FormplanosComponent implements OnInit {
     this.tabelaaccoes.push({
       id_TAREFA: null,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
-      , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
+      , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: 'E', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
       descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA, justificacao_DATA_FIM: null, seguir_LINHA: false, justificacao_RESPONSAVEL: null,
-      causa: null
+      causa: null, estado_texto: this.getestado('E'),
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1684,9 +1687,12 @@ export class FormplanosComponent implements OnInit {
   }
 
   onRowSelect(event) {
+    if (!this.modoedicao) {
+      this.linhasSelecionadas = {};
+    }
+
     if (!this.modoedicao || this.estado == "E") {
       //this.linhasSelecionadas = null;
-      this.linhasSelecionadas = {};
     } else {
       if (event.data.estado == 'C') {
         this.btCancelar = true;
