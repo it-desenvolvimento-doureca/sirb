@@ -21,6 +21,8 @@ import { QUA_DERROGACOES_PLANOS_ACCOES } from 'app/entidades/QUA_DERROGACOES_PLA
 import { QUADERROGACOESPLANOSACCOESService } from 'app/servicos/qua-derrogacoes-planos-accoes.service';
 import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
 import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
+import { RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES } from 'app/entidades/RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES';
+import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from 'app/servicos/rc-mov-reclamacao-fornecedor-planos-accoes.service';
 @Component({
   selector: 'app-paginatarefa',
   templateUrl: './paginatarefa.component.html',
@@ -119,7 +121,7 @@ export class PaginatarefaComponent implements OnInit {
   atividades: any[];
   shodialoglinhas: any;
 
-  constructor(private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
+  constructor(private RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService: RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
@@ -300,7 +302,7 @@ export class PaginatarefaComponent implements OnInit {
         this.justificacao_ALTERACAO_ESTADO = resp[x][32];
         var step = "";
         var nome_step = "";
-        if (resp[x][28] == 5 && resp[x][29] != 'D') {
+        if (resp[x][28] == 5 && resp[x][29] != 'D' && resp[x][29] != 'F') {
           switch (resp[x][27]) {
             case 'I':
               step = "step-3";
@@ -323,6 +325,9 @@ export class PaginatarefaComponent implements OnInit {
 
           this.origem = "Reclamações de Clientes : " + resp[x][15] + nome_step;
           this.caminho_origem = "#/reclamacoesclientes/view?id=" + resp[x][15] + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
+        } else if (resp[x][28] == 5 && resp[x][29] == 'F') {
+          this.origem = "Reclamações de Fornecedores : " + resp[x][15];
+          this.caminho_origem = "#/reclamacoesfornecedores/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 5 && resp[x][29] == 'D') {
           this.origem = "Derrogação : " + resp[x][15];
           this.caminho_origem = "#/derrogacoes/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
@@ -401,7 +406,7 @@ export class PaginatarefaComponent implements OnInit {
         this.sub_modulo = resp[x][29];
 
         this.globalVar.setfiltros("reclamacaocliente_id", ids);
-        if (resp[x][28] == 5 && resp[x][29] != 'D') {
+        if (resp[x][28] == 5 && resp[x][29] != 'D' && resp[x][29] != 'F') {
           this.carregatabelaFiles_RECLAMACAO(id);
         } else {
           this.carregatabelaFiles_TAREFA(id);
@@ -705,7 +710,7 @@ export class PaginatarefaComponent implements OnInit {
 
         var data_logs = [];
         var alteracoes = false;
-
+        var estado_antigo = tarefa.estado;
         if (encaminhado) {
           if (tarefa.utz_ENCAMINHADO != this.utz_encaminhado) {
             data_logs.push({ justificacao: null, descricao: "Alterado Utilizador Encaminhado de " + this.getNomeUser(tarefa.utz_ENCAMINHADO) + " para " + this.getNomeUser(this.utz_encaminhado) })
@@ -743,7 +748,9 @@ export class PaginatarefaComponent implements OnInit {
         //alerta encaminhamento
 
         this.GTMOVTAREFASService.update(tarefa).then(response => {
-          if (alteracoes && tarefa.estado == "L") this.alterarEstadoPLANO(tarefa.id_CAMPO, "E");
+          if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'C') this.alterarEstadoPLANO(tarefa.id_CAMPO, "E");
+          if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'F') this.alterarEstadoPLANOFORNECEDOR(tarefa.id_CAMPO, "E");
+          if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'D') this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, "E");
           if (encaminhado) {
             this.disencaminhar = true;
             this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.getNomeUser(this.user), "Ao Encaminhar Tarefa",
@@ -764,7 +771,7 @@ export class PaginatarefaComponent implements OnInit {
             this.displayEncaminhar = false;
 
           } else {
-            if (this.modulo == 5 && this.sub_modulo != 'D') {
+            if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
               this.gravarTabelaFicheiros_RECLAMACAO(tarefa.id_TAREFA, encaminhado, this.id_RECLAMACAO);
             } else {
               this.gravarTabelaFicheiros_TAREFA(tarefa.id_TAREFA, encaminhado);
@@ -1208,8 +1215,10 @@ export class PaginatarefaComponent implements OnInit {
         this.GTMOVTAREFASService.update(tarefa).then(response => {
           this.displayMotivoRejeicao = false;
 
-          if (tarefa.id_MODULO == 5 && this.sub_modulo != 'D' && this.caminho_origem_pai == null) {
+          if (tarefa.id_MODULO == 5 && this.sub_modulo == 'C' && this.caminho_origem_pai == null) {
             this.alterarEstadoPLANO(tarefa.id_CAMPO, estado);
+          } else if (tarefa.id_MODULO == 5 && this.sub_modulo == 'F' && this.caminho_origem_pai == null) {
+            this.alterarEstadoPLANOFORNECEDOR(tarefa.id_CAMPO, estado);
           } else if (tarefa.id_MODULO == 5 && this.sub_modulo == 'D' && this.caminho_origem_pai == null) {
             this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, estado);
           }
@@ -1274,6 +1283,40 @@ export class PaginatarefaComponent implements OnInit {
         }
 
         this.RCMOVRECLAMACAOPLANOACCOESCORRETIVASService.update(accoes).subscribe(
+          res => {
+
+          },
+          error => { console.log(error); });
+      }
+    },
+      error => { console.log(error); });
+
+  }
+
+  alterarEstadoPLANOFORNECEDOR(id, estado) {
+
+    this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.getbyid(id).subscribe(res => {
+
+      var count = Object.keys(res).length;
+      if (count > 0) {
+        var accoes = new RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES
+        accoes = res[0];
+        if (estado == "C") {
+          accoes.concluido_UTZ = this.user;
+          accoes.concluido_DATA = new Date();
+          accoes.data_REAL = new Date();
+          accoes.estado = estado;
+        } else if (estado == "A") {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        } else {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        }
+
+        this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.update(accoes).subscribe(
           res => {
 
           },
@@ -1530,7 +1573,7 @@ export class PaginatarefaComponent implements OnInit {
       /*});*/
       this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
     } else {
-      if (this.modulo == 5 && this.sub_modulo != 'D') {
+      if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
         this.apaga_ficheiro_RECLAMACAO(tab, index);
       } else {
         this.apaga_ficheiro_TAREFA(tab, index);

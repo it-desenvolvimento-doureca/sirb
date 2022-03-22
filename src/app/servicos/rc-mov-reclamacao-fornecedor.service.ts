@@ -60,6 +60,13 @@ export class RCMOVRECLAMACAOFORNECEDORService {
   }
 
 
+  atualizaestadosaccoes(id, modulo) {
+    return this.http
+      .get(webUrl.host + '/rest/sirb/deleteRC_MOV_RECLAMACAO_FORNECEDORUPDATEESTADOS/' + id + '/' + modulo)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
 
   private extractData(res: Response) {
     let body = res.json();

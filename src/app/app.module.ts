@@ -400,6 +400,7 @@ import { PEMOVCABHISTORICOService } from './servicos/pe-mov-cab-historico.servic
 import { DashboardComponent } from './paginas/modulo-planos-estrategicos/dashboard/dashboard.component';
 import { AnalisesdashboardComponent } from './paginas/modulo-analises/analisesdashboard/analisesdashboard.component';
 import { DASHBOARDANALISESService } from './servicos/dashboard-analises.service';
+import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from './servicos/rc-mov-reclamacao-fornecedor-planos-accoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1491,6 +1492,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PEMOVCABService,
     PEMOVCABHISTORICOService,
     DASHBOARDANALISESService,
+    RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

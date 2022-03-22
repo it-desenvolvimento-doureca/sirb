@@ -18,7 +18,14 @@ import { webUrl } from 'assets/config/webUrl';
 import * as FileSaver from 'file-saver';
 import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
 import { RelatoriosService } from 'app/servicos/relatorios.service';
-
+import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
+import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
+import { GERGRUPOService } from 'app/servicos/ger-grupo.service';
+import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
+import { GT_LOGS } from 'app/entidades/GT_LOGS';
+import { GT_MOV_TAREFAS } from 'app/entidades/GT_MOV_TAREFAS';
+import { RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES } from 'app/entidades/RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES';
+import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from 'app/servicos/rc-mov-reclamacao-fornecedor-planos-accoes.service';
 @Component({
   selector: 'app-reclamacao-fornecedor',
   templateUrl: './reclamacao-fornecedor.component.html',
@@ -127,7 +134,16 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   bteditar: boolean;
   disFechar: boolean;
   btexportar: boolean;
-
+  descricaoeng: string;
+  id_selected: number;
+  descricaopt: string;
+  descricaofr: string;
+  displayAddAccao: boolean;
+  drop_accoes: any[];
+  tabelaaccoesrealizar = [];
+  acessoadicionarACCAO: any;
+  tabelagrupos: any;
+  drop_utilizadores: any;
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private RCMOVRECLAMACAOFICHEIROSFORNECEDORService: RCMOVRECLAMACAOFICHEIROSFORNECEDORService,
@@ -135,6 +151,10 @@ export class ReclamacaoFornecedorComponent implements OnInit {
     private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService, private renderer: Renderer, private RCDICTIPOLOGIAService: RCDICTIPOLOGIAService,
     private RCDICCLASSIFICACAOService: RCDICCLASSIFICACAOService, private GERFORNECEDORService: GERFORNECEDORService,
     private RCMOVRECLAMACAOFORNECEDORService: RCMOVRECLAMACAOFORNECEDORService, private location: Location, private sanitizer: DomSanitizer,
+    private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService,
+    private GERGRUPOService: GERGRUPOService,
+    private GTMOVTAREFASService: GTMOVTAREFASService,
+    private RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService: RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
     private UploadService: UploadService, private RelatoriosService: RelatoriosService) { }
 
   ngOnInit() {
@@ -237,6 +257,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501fechar");
 
       this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501imprimir");
+      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node526");
     }
 
     if (urlarray[1] != null) {
@@ -269,6 +290,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         this.getArtigos(false);
         //this.carregaDados(false, null);
 
+
         this.RCMOVRECLAMACAOFORNECEDORService.getAll().subscribe(
           response => {
             var count = Object.keys(response).length;
@@ -289,6 +311,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       }
 
     }
+    this.carregaaccoes();
   }
 
   filterRef(event) {
@@ -361,21 +384,22 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   }
 
   carregaDados(inicia, id) {
-    //this.drop_utilizadores = [];
+    this.drop_utilizadores = [];
     this.drop_utilizadores2 = [];
     this.GERUTILIZADORESService.getAll().subscribe(
       response => {
         this.drop_utilizadores2.push({ label: "Selecionar Utilizador", value: "" });
         var grupo = [];
         for (var x in response) {
-          //grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
+          grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
           this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
         }
-        //this.drop_utilizadores.push({ label: "Utilizadores", itens: grupo });
+        this.drop_utilizadores.push({ label: "Utilizadores", itens: grupo });
 
         //this.drop_utilizadores = this.drop_utilizadores.slice();
         this.drop_utilizadores2 = this.drop_utilizadores2.slice();
         this.grauimportancia(inicia, id);
+        this.carregaGrupos();
       },
       error => { console.log(error); this.grauimportancia(inicia, id); });
 
@@ -507,6 +531,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
           //this.getMoradas(this.fornecedor.id, true);
           this.getArtigos(true);
           this.carregatabelaFiles(id);
+          this.carregatabelasaccoes(id);
         }
 
       }, error => { console.log(error); });
@@ -812,6 +837,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       reclamacao.estado = "A";
       this.RCMOVRECLAMACAOFORNECEDORService.create(reclamacao).subscribe(
         res => {
+          this.gravarTabelaAccoesRealizar(id);
           this.gravarTabelaFicheiros(res.id_RECLAMACAO);
         },
         error => { console.log(error); this.simular(this.inputerro); this.displayLoading = false; });
@@ -828,8 +854,10 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       //console.log(reclamacao)
       this.RCMOVRECLAMACAOFORNECEDORService.update(reclamacao).subscribe(
         res => {
+          this.gravarTabelaAccoesRealizar(id);
           this.gravarTabelaFicheiros(id);
           //this.gravarTabelaStocks(id);
+          //fechar ações
         },
         error => { console.log(error); this.simular(this.inputerro); this.displayLoading = false; });
 
@@ -944,6 +972,76 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
   }
 
+  gravarTabelaAccoesRealizar(id) {
+    if (this.tabelaaccoesrealizar && this.tabelaaccoesrealizar.length > 0) {
+
+      var count = 0;
+      for (var x in this.tabelaaccoesrealizar) {
+        count++;
+        if (this.tabelaaccoesrealizar[x].responsavel != null && this.tabelaaccoesrealizar[x].responsavel != "" && this.tabelaaccoesrealizar[x].descricao != null && this.tabelaaccoesrealizar[x].descricao != "") {
+          var accoes = new RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES;
+          var novo = false;
+          if (this.tabelaaccoesrealizar[x].id != null) {
+            accoes = this.tabelaaccoesrealizar[x].data;
+          } else {
+            novo = true;
+            accoes.data_CRIA = new Date();
+            accoes.utz_CRIA = this.user;
+          }
+
+          accoes.id = this.tabelaaccoesrealizar[x].id;
+          accoes.id_RECLAMACAO = id;
+          accoes.ordem = this.tabelaaccoesrealizar[x].ordem;
+          accoes.id_ACCAO = this.tabelaaccoesrealizar[x].id_ACCOES;
+          accoes.tipo = "R";
+          accoes.observacoes = this.tabelaaccoesrealizar[x].observacoes;
+          accoes.estado = "P";
+          accoes.obriga_EVIDENCIAS = this.tabelaaccoesrealizar[x].obriga_EVIDENCIAS;
+
+
+          //var data = this.tabelaaccoesrealizar[x].data_REAL;
+          //accoes.data_REAL = (data!=null && data != "" )? new Date(data) : null;
+          accoes.data_PREVISTA = new Date(this.tabelaaccoesrealizar[x].data_PREVISTA);
+
+          var id_resp = this.tabelaaccoesrealizar[x].responsavel;
+          var tipo = "u";
+          if (this.tabelaaccoesrealizar[x].responsavel.charAt(0) == 'u' || this.tabelaaccoesrealizar[x].responsavel.charAt(0) == 'g') {
+            tipo = this.tabelaaccoesrealizar[x].responsavel.charAt(0);
+            id_resp = this.tabelaaccoesrealizar[x].responsavel.substr(1);
+          }
+
+          accoes.responsavel = id_resp;
+          accoes.tipo_RESPONSAVEL = tipo;
+
+
+          accoes.data_ULT_MODIF = new Date();
+          accoes.utz_ULT_MODIF = this.user;
+
+          if (novo) {
+            this.gravarTabelaAccoesRealizar2(accoes, count, this.tabelaaccoesrealizar.length, id);
+          }
+          if (count == this.tabelaaccoesrealizar.length) {
+            //seguinte
+            this.criarTarefas(id, 5);
+          }
+
+        }
+      }
+    } else {
+      //seguinte
+      this.criarTarefas(id, 5);
+    }
+  }
+
+  //atualiza ou cria tarefa
+  criarTarefas(id, modulo) {
+    var link = webUrl.host + '/#/tarefas/view?id=';
+    this.GTMOVTAREFASService.getAtualizaTarefaReclamacaoFornecedor(id, modulo, link).subscribe(
+      response => {
+
+      }, error => { console.log(error); });
+  }
+
   seguinte() {
     this.i = this.i + 1;
     this.i = this.i % this.reclamacoes.length;
@@ -1012,6 +1110,8 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
         this.RCMOVRECLAMACAOFORNECEDORService.update(reclamacao).subscribe(
           res => {
+            this.RCMOVRECLAMACAOFORNECEDORService.atualizaestadosaccoes(reclamacao.id_RECLAMACAO, 5).subscribe(
+              res => { }, error => { console.log(error); });
             this.router.navigate(['reclamacoesfornecedores']);
             this.simular(this.inputapagar);
           },
@@ -1299,5 +1399,368 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       }
     );
 
+  }
+
+
+  /* ADICIONAR ACÇÕES*/
+  //abre popup para adicionar acções
+  showDialogToAdd() {
+    //this.novo = true;
+    this.id_selected = 0;
+    this.descricaoeng = "";
+    this.descricaopt = "";
+    this.descricaofr = "";
+    this.displayAddAccao = true;
+  }
+
+  //gravar unidade de zona
+  gravardados() {
+    var ACCOES_RECLAMACAO = new GT_DIC_TAREFAS;
+    ACCOES_RECLAMACAO.descricao_ENG = this.descricaoeng;
+    ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
+    ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
+    ACCOES_RECLAMACAO.utz_ULT_MODIF = this.user;
+    ACCOES_RECLAMACAO.tipo_TAREFA = "RF";
+    ACCOES_RECLAMACAO.data_ULT_MODIF = new Date();
+
+    ACCOES_RECLAMACAO.utz_CRIA = this.user;
+    ACCOES_RECLAMACAO.data_CRIA = new Date();
+    this.RCDICACCOESRECLAMACAOService.create(ACCOES_RECLAMACAO).subscribe(response => {
+      this.carregaaccoes(false);
+      this.displayAddAccao = false;
+      this.simular(this.inputgravou);
+    },
+      error => { console.log(error); this.simular(this.inputerro); });
+
+  }
+
+  carregaaccoes(continua = true) {
+    this.drop_accoes = [];
+    this.RCDICACCOESRECLAMACAOService.getAll_TIPO("RF").subscribe(
+      response => {
+        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+
+        for (var x in response) {
+          this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
+        }
+
+        this.drop_accoes = this.drop_accoes.slice();
+        /* if (continua) this.carregaGrupos();*/
+      },
+      error => { console.log(error); /*if (continua) this.carregaGrupos();*/ });
+  }
+
+
+  alterarEmail2(index, event, tabela) {
+    if (event.target.value.toString().includes("u")) {
+      var id = event.target.value.toString().replace("u", "");
+      if (tabela == "tabelaaccoesrealizar") {
+        this.tabelaaccoesrealizar[index].area = this.drop_utilizadores2.find(item => item.value == id).area;
+      }
+    } else {
+      if (tabela == "tabelaaccoesrealizar") {
+        this.tabelaaccoesrealizar[index].area = "";
+      }
+    }
+  }
+
+  nomeACCAO(event) {
+    var id = event.value;
+    var data = this.drop_accoes.find(item => item.value == id);
+    var nome = "---";
+
+    if (data) {
+      nome = data.label;
+    }
+    return nome;
+  }
+
+  getResponsavel(id) {
+    if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
+    if (id != null && id.toString().includes("u")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Utilizadores").itens;
+      utz = utz2.find(item => item.value == id);
+    } else if (id != null && id.toString().includes("g")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Grupos").itens;
+      utz = utz2.find(item => item.value == id);
+    }
+    var nome = "---";
+    if (utz) {
+      nome = utz.label;
+    }
+    return nome;
+  }
+
+  carregaGrupos() {
+
+    this.GERGRUPOService.getAll().subscribe(
+      response => {
+        var grupo = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].descricao, value: "g" + response[x].id });
+          //this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
+        }
+        this.drop_utilizadores.push({ label: "Grupos", itens: grupo });
+
+        this.drop_utilizadores = this.drop_utilizadores.slice();
+        // this.tabelagrupos = this.tabelagrupos.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  IrPara(id, responsavel) {
+
+    var id_r = null;
+    if (responsavel.toString().charAt(0) == 'u') {
+      id_r = responsavel.substr(1);
+    }
+    if (this.adminuser || this.user == this.utz_RESPONSAVEL || this.user == this.utz_CRIA || id_r == this.user) {
+      this.router.navigateByUrl('tarefas/view?id=' + id + "&redirect=reclamacoesfornecedores/viewkvk\id=" + this.numero_RECLAMACAO);
+    }
+  }
+
+
+  adicionar_linha(tabela) {
+    if (tabela == "tabelaaccoesrealizar") {
+      let sum = 0;
+      if (this.tabelaaccoesrealizar.length > 0) sum = this.tabelaaccoesrealizar.reduce((max, b) => Math.max(max, b.ordem), this.tabelaaccoesrealizar[0].ordem);
+
+      this.tabelaaccoesrealizar.push({ area: "", obriga_EVIDENCIAS: false, id: null, ordem: sum + 1, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: null });
+      this.tabelaaccoesrealizar = this.tabelaaccoesrealizar.slice();
+    }
+
+  }
+
+  apagar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoesrealizar") {
+      var tab = this.tabelaaccoesrealizar[index];
+      if (tab.id == null) {
+        this.tabelaaccoesrealizar = this.tabelaaccoesrealizar.slice(0, index).concat(this.tabelaaccoesrealizar.slice(index + 1));
+        this.atualiza_ordem(tabela);
+      } else {
+        /*this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.delete(tab.id).then(
+          res => {
+            this.tabelaaccoesrealizar = this.tabelaaccoesrealizar.slice(0, index).concat(this.tabelaaccoesrealizar.slice(index + 1));
+            this.atualiza_ordem(tabela);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });*/
+
+        var accoes1 = new RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES;
+        accoes1 = this.tabelaaccoesrealizar[index].data;
+        this.tabelaaccoesrealizar[index].estado = 'A';
+        this.tabelaaccoesrealizar[index].nome_estado = this.geEstado('A');
+        accoes1.estado = 'A';
+        accoes1.data_ULT_MODIF = new Date();
+        accoes1.utz_ULT_MODIF = this.user;
+        this.gravarTabelaAccoesRealizar2(accoes1, 1, 2, 0, true, index, true);
+      }
+    }
+  }
+
+  gravarTabelaAccoesRealizar2(accoes, count, total, id, finaliza = false, index = 0, atualizatarefa = false) {
+    this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.update(accoes).subscribe(
+      res => {
+        if (atualizatarefa) {
+          this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
+        } else {
+          //this.criaTarefas(res.id, 5);
+        }
+
+
+        if (finaliza) this.tabelaaccoesrealizar[index].concluido_UTZ = this.user;
+      },
+      error => { console.log(error); });
+  }
+
+
+  atualizaestadoTarefa(id, estado) {
+    if (id != null) {
+      this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
+
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa = response[0]
+
+          var data_logs = [];
+
+
+          if (tarefa.estado != estado) {
+            data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+          }
+
+          tarefa.estado = estado;
+          if (estado == "C") {
+            tarefa.utz_CONCLUSAO = this.user;
+            tarefa.data_CONCLUSAO = new Date();
+          } else if (estado == "A") {
+            tarefa.utz_ANULACAO = this.user;
+            tarefa.data_ANULACAO = new Date();
+          }
+
+
+          this.GTMOVTAREFASService.update(tarefa).then(response => {
+            for (var x in data_logs) {
+              var logs = new GT_LOGS;
+              logs.id_TAREFA = id;
+              logs.utz_CRIA = this.user;
+              logs.data_CRIA = new Date();
+              logs.descricao = data_logs[x].descricao;
+              this.criaLogs(logs);
+              this.atualizaSUBTAREFAS(id, estado, this.user);
+            }
+
+
+          }, error => {
+            console.log(error);
+
+          });
+        }
+      }, error => {
+        console.log(error);
+        this.simular(this.inputerro);
+      });
+    }
+  }
+
+
+
+  atualizaSUBTAREFAS(id, estado, utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id, estado, utilizador).subscribe(response => {
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  criaLogs(log) {
+    this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {
+    }, error => {
+      console.log(error);
+
+    });
+  }
+
+  atualiza_ordem(tabela) {
+    var ordem = 1;
+    for (var x in this[tabela]) {
+      this[tabela][x].ordem = ordem;
+      ordem++;
+    }
+  }
+
+
+
+  finalizar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoesrealizar") {
+      var accoes = new RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES;
+
+      accoes = this.tabelaaccoesrealizar[index].data;
+
+      if (this.tabelaaccoesrealizar[index].data_REAL == null || this.tabelaaccoesrealizar[index].data_REAL == "") {
+        this.tabelaaccoesrealizar[index].data_REAL = new Date();
+      }
+      accoes.data_REAL = this.tabelaaccoesrealizar[index].data_REAL;
+      accoes.concluido_DATA = new Date();
+      accoes.concluido_UTZ = this.user;
+      accoes.estado = 'C';
+
+      this.tabelaaccoesrealizar[index].estado = 'C';
+      this.tabelaaccoesrealizar[index].nome_estado = this.geEstado('C');
+
+      this.gravarTabelaAccoesRealizar2(accoes, 1, 2, 0, true, index, true);
+
+    }
+  }
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+
+  /********************  TABELA ACOES **************************** */
+  carregatabelasaccoes(id) {
+
+    this.tabelaaccoesrealizar = [];
+
+    this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.getbyidreclamacao(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            var tipo = response[x].tipo_RESPONSAVEL;
+            var data_real = null;
+
+            var id2 = null;
+
+            id2 = response[x].id;
+
+            if (response[x].data_REAL != null) {
+              data_real = new Date(response[x].data_REAL);
+            }
+
+            var estados = response[x].estado
+
+            var accao = null;
+            if (this.drop_accoes.find(item => item.value == response[x].id_ACCAO)) {
+              accao = this.drop_accoes.find(item => item.value == response[x].id_ACCAO).label
+            }
+
+            if (response[x].tipo == "R") {
+
+              this.tabelaaccoesrealizar.push({
+                obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
+                data: response[x], concluido_UTZ: response[x].concluido_UTZ, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
+                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO,
+                data_PREVISTA: new Date(response[x].data_PREVISTA), ordem: response[x].ordem, descricao: accao, area: response[x].area
+              });
+
+            }
+
+          }
+
+          this.tabelaaccoesrealizar = this.tabelaaccoesrealizar.slice();
+        }
+        //this.carregatabelapreventivas(id);
+
+      }, error => {
+        //this.carregatabelapreventivas(id);
+
+        console.log(error);
+      });
   }
 }

@@ -94,6 +94,14 @@ export class GTMOVTAREFASService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAtualizaTarefaReclamacaoFornecedor(id, modulo, link): Observable<GT_MOV_TAREFAS[]> {
+    const url = webUrl.host + '/rest/sirb/getAtualizaTarefaReclamacaoFornecedor/' + id + '/' + modulo;
+    return this.http
+      .post(url, link, { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getAtualizaTarefaDerrogacoes(id, modulo, link): Observable<GT_MOV_TAREFAS[]> {
     const url = webUrl.host + '/rest/sirb/getAtualizaTarefaDerrogacoes/' + id + '/' + modulo;
     return this.http
