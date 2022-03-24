@@ -16,7 +16,7 @@ import { MANMOVMANUTENCAOEQUIPAMENTOSService } from 'app/servicos/man-mov-manute
 import { MANMOVMANUTENCAODADOSCOMPRAService } from 'app/servicos/man-mov-manutencao-dados-compra.service';
 import { MANMOVMANUTENCAODOCUMENTOSService } from 'app/servicos/man-mov-manutencao-documentos.service';
 import { MAN_MOV_MANUTENCAO_DOCUMENTOS } from 'app/entidades/MAN_MOV_MANUTENCAO_DOCUMENTOS';
-import { MAN_MOV_MANUTENCAO_COMPONENTES } from 'app/entidades/MAN_MOV_MANUTENCAO_COMPONENTES'; 
+import { MAN_MOV_MANUTENCAO_COMPONENTES } from 'app/entidades/MAN_MOV_MANUTENCAO_COMPONENTES';
 import { MAN_MOV_MANUTENCAO_PLANOS } from 'app/entidades/MAN_MOV_MANUTENCAO_PLANOS';
 import { MAN_MOV_MANUTENCAO_CONTRATOS_SUPORTE } from 'app/entidades/MAN_MOV_MANUTENCAO_CONTRATOS_SUPORTE';
 import { MAN_MOV_MANUTENCAO_DADOS_COMPRA } from 'app/entidades/MAN_MOV_MANUTENCAO_DADOS_COMPRA';
@@ -287,6 +287,7 @@ export class FichaEquipamentoComponent implements OnInit {
   }
 
   carregaTabelaListaComponentes(id) {
+    this.tabela_lista_componentes = [];
     this.mensagemtabela = "A Carregar...";
     this.MANMOVMANUTENCAOCOMPONENTESService.getbyID2(id).subscribe(
       response => {
@@ -573,7 +574,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
   adicionar_linha() {
-    this.tabela_lista_componentes.push({ id: null, PROREF: null, DESIGN: null, quantidade: null, STOCK_TOTAL: null, anexos: null, anexo: 0 });
+    this.tabela_lista_componentes.push({ id: null, PROREF: null, DESIGN: null, quantidade: null, STOCK_TOTAL: null, anexos: [], anexo: 0 });
     this.tabela_lista_componentes = this.tabela_lista_componentes.slice();
   }
 
@@ -1599,7 +1600,7 @@ export class FichaEquipamentoComponent implements OnInit {
   }
 
   gravarTabelaListaComponentes2(tabela, x) {
-    this.MANMOVMANUTENCAOCOMPONENTESService.update(tabela).then(
+    this.MANMOVMANUTENCAOCOMPONENTESService.update(tabela).subscribe(
       res => {
         this.gravarFicheirosAnexos(res.ID_MANUTENCAO, res.ID, 'componentes', this.tabela_lista_componentes[x].anexos);
       },
@@ -1794,7 +1795,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
   carregatabelaFilesAnexos(id, separador) {
 
-
+    this.uploadedFilesAnexos = [];
     this.MANMOVMANUTENCAOANEXOSService.getbyID2(id, separador).subscribe(
       response => {
         var count = Object.keys(response).length;

@@ -6007,3 +6007,13 @@ body>.ui-dropdown-panel {
     vertical-align: middle;
     display: block;
 }
+
+.tabela_planos_acao_dashboard th {
+    background: #3668f47d !important;
+    font-weight: 600 !important;
+    color: #292929 !important;
+}
+
+.tabela_planos_acao_dashboard tr tr th {
+    background: #8f95a77d !important;
+}

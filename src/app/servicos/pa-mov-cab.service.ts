@@ -34,6 +34,14 @@ export class PAMOVCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getPA_MOV_CABbyTIPOSEGUIR(tipo, data): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyTIPOSEGUIR/' + tipo;
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
 
   getPA_MOV_CABbyTIPOASSOCIAR(tipo, data): Observable<PA_MOV_CAB[]> {
     const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyTIPOASSOCIAR/' + tipo;

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DASHBOARDANALISESService } from 'app/servicos/dashboard-analises.service';
 import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.service';
 import { FINSEGUIMENTOFATURACAOANUALService } from 'app/servicos/fin-seguimento-faturacao-anual.service';
 import { GERREFERENCIASFASTRESPONSEREJEICOESService } from 'app/servicos/ger-referencias-fastresponse-rejeicoes.service';
 import { PAMOVCABService } from 'app/servicos/pa-mov-cab.service';
+import { PAMOVLINHAService } from 'app/servicos/pa-mov-linha.service';
 import { PEDIDOSPRODUCAOService } from 'app/servicos/pedidosproducao.service';
+import { DataTable } from 'primeng/primeng';
 
 @Component({
   selector: 'app-analisesdashboard',
@@ -12,6 +15,10 @@ import { PEDIDOSPRODUCAOService } from 'app/servicos/pedidosproducao.service';
   styleUrls: ['./analisesdashboard.component.css']
 })
 export class AnalisesdashboardComponent implements OnInit {
+  estados = [{ label: "Sel. Estado", value: null }, { label: "Em Elaboração", value: "Em Elaboração" }, { label: "Em Execução", value: "Em Execução" }, { label: "Em Alteração", value: "Em Alteração" }, { label: "Planeado", value: "Planeado" },
+  { label: "Desenvolvido/Realizado", value: "Desenvolvido/ Realizado" }, { label: "Controlado/Verificado", value: "Controlado/ Verificado" },
+  { label: "Aprovado/Finalizado", value: "Aprovado/ Finalizado" }, { value: "Rejeitado", label: "Rejeitado" }, { value: "Cancelado", label: "Cancelado" }, { value: "Anulado", label: "Anulado" }];
+  @ViewChild(DataTable) dataTableComponent: DataTable;
   totalprazopag = 0;
   average_due = 0;
   total_dev = 0;
@@ -505,11 +512,16 @@ export class AnalisesdashboardComponent implements OnInit {
   funcionarios_faltar = 0;
   caraacidentes: boolean;
   total_acidentes: number;
+  id_tarefa_input: any;
+  displayTarefa: boolean;
+  yearTimeout: any;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
     private FINANALISEDIVIDASService: FINANALISEDIVIDASService,
     private FINSEGUIMENTOFATURACAOANUALService: FINSEGUIMENTOFATURACAOANUALService,
+    private PAMOVLINHAService: PAMOVLINHAService,
+    private router: Router,
     private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
@@ -580,7 +592,7 @@ export class AnalisesdashboardComponent implements OnInit {
     this.lista_expand = [];
     //acoes_em_ATRASO
     var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false }];
-    this.PAMOVCABService.getPA_MOV_CABbyTIPO(tipo, filtros).subscribe(
+    this.PAMOVCABService.getPA_MOV_CABbyTIPOSEGUIR(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
         //se existir banhos com o id
@@ -626,8 +638,8 @@ export class AnalisesdashboardComponent implements OnInit {
     if (linha) {
       linha.filho.push({
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
-        data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
-        , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
+        data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10], seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23]
+        , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]), id_TAREFA: response[x][17]
       });
     } else {
       this.dados.push({
@@ -641,7 +653,7 @@ export class AnalisesdashboardComponent implements OnInit {
         utilizador: response[x][5],
         filho: [{
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
-          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
+          data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10], seguir_LINHA: response[x][22], id_PLANO_LINHA: response[x][23], id_TAREFA: response[x][17]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
         }]
       });
@@ -1093,7 +1105,17 @@ export class AnalisesdashboardComponent implements OnInit {
 
   }
 
-  abrir(row) {
+  //clicar 2 vezes na tabela abre linha
+  abrir(event) {
+    this.router.navigate(['planosacao/view'], { queryParams: { id: event.data.id, redirect: "analisesdashboard" } });
+  }
+
+  listartudo() {
+    if (this.lista_expand.length == 0) {
+      this.lista_expand = this.dados;
+    } else {
+      this.lista_expand = [];
+    }
 
   }
 
@@ -1621,6 +1643,63 @@ export class AnalisesdashboardComponent implements OnInit {
     } else {
       return [mes, ano].join('/');
     }
+  }
+
+  verTarefa(id_TAREFA) {
+
+    if (id_TAREFA != null) {
+      this.id_tarefa_input = id_TAREFA;
+      this.displayTarefa = true;
+    }
+
+  }
+
+  set_favoritos(col) {
+    if (col.seguir_LINHA) {
+      if (col.id_PLANO_LINHA != null) {
+        this.delete_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = false;
+      }
+    } else {
+      if (col.id_PLANO_LINHA != null) {
+        this.add_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = true;
+      }
+    }
+  }
+
+  delete_favorito(id, col) {
+    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+      col.seguir_LINHA = false;
+    }, error => { console.log(error); col.seguir_LINHA = true; });
+  }
+
+  add_favorito(id, col) {
+    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+      col.seguir_LINHA = true;
+    }, error => { console.log(error); col.seguir_LINHA = false; });
+  }
+
+  //filtro coluna linha
+  filtrar(value, coluna, fil = false, filtro = "contains") {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      if (value == 0 && fil) {
+        value = "";
+      }
+      if (value != null) {
+        value = value.toString();
+      }
+
+      this.dataTableComponent.filter(value, coluna, filtro);
+
+
+    }, 250);
   }
 
 }

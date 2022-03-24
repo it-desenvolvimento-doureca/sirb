@@ -279,7 +279,7 @@ export class PaginatarefaComponent implements OnInit {
           atribuido = resp[x][3];
         }
 
-        if (resp[x][8] == "P") {
+        if (resp[x][8] == "P" && this.id_tarefa_input == null) {
           this.atualizaestadoTarefa(id, "L");
           estados = this.geEstado("L");
         }

@@ -837,7 +837,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       reclamacao.estado = "A";
       this.RCMOVRECLAMACAOFORNECEDORService.create(reclamacao).subscribe(
         res => {
-          this.gravarTabelaAccoesRealizar(id);
+          this.gravarTabelaAccoesRealizar(res.id_RECLAMACAO);
           this.gravarTabelaFicheiros(res.id_RECLAMACAO);
         },
         error => { console.log(error); this.simular(this.inputerro); this.displayLoading = false; });
@@ -1018,9 +1018,8 @@ export class ReclamacaoFornecedorComponent implements OnInit {
           accoes.utz_ULT_MODIF = this.user;
 
           if (novo) {
-            this.gravarTabelaAccoesRealizar2(accoes, count, this.tabelaaccoesrealizar.length, id);
-          }
-          if (count == this.tabelaaccoesrealizar.length) {
+            this.gravarTabelaAccoesRealizar2(accoes, count, this.tabelaaccoesrealizar.length, id, false, 0, false, true);
+          } else if (count == this.tabelaaccoesrealizar.length) {
             //seguinte
             this.criarTarefas(id, 5);
           }
@@ -1554,14 +1553,19 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         accoes1.estado = 'A';
         accoes1.data_ULT_MODIF = new Date();
         accoes1.utz_ULT_MODIF = this.user;
-        this.gravarTabelaAccoesRealizar2(accoes1, 1, 2, 0, true, index, true);
+        this.gravarTabelaAccoesRealizar2(accoes1, 1, 2, 0, true, index, true, false);
       }
     }
   }
 
-  gravarTabelaAccoesRealizar2(accoes, count, total, id, finaliza = false, index = 0, atualizatarefa = false) {
+  gravarTabelaAccoesRealizar2(accoes, count, total, id, finaliza = false, index = 0, atualizatarefa = false, novo) {
     this.RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService.update(accoes).subscribe(
       res => {
+        if (novo) {
+
+          this.criarTarefas(id, 5);
+
+        }
         if (atualizatarefa) {
           this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
         } else {
@@ -1670,7 +1674,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.tabelaaccoesrealizar[index].estado = 'C';
       this.tabelaaccoesrealizar[index].nome_estado = this.geEstado('C');
 
-      this.gravarTabelaAccoesRealizar2(accoes, 1, 2, 0, true, index, true);
+      this.gravarTabelaAccoesRealizar2(accoes, 1, 2, 0, true, index, true, false);
 
     }
   }

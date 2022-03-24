@@ -836,7 +836,7 @@
                         <div class="panel-body">
                           <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"
                             (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']"
-                            expandableRows="true" [expandedRows]="lista_expand">
+                            class="tabela_planos_acao_dashboard" expandableRows="true" [expandedRows]="lista_expand">
                             <p-column [style]="{'width':'6px','padding':'0'}" expander="true" styleClass="col-icon">
                               <ng-template pTemplate="filter" let-col>
                                 <button *ngIf="lista_expand.length == 0 || lista_expand.length == null" pButton
@@ -892,6 +892,7 @@
                               <div class="ui-grid ui-grid-responsive ui-fluid">
                                 <table class="tg">
                                   <tr>
+                                    <th class="tg-wfll" style="width: 65px;">Seguir</th>
                                     <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
                                     <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                                     <th class="tg-wfll">Ação</th>
@@ -900,21 +901,29 @@
                                     <th class="tg-wfll" style="width: 110px;">Prioridade</th>
                                     <th class="tg-wfll" style="width: 168px;">Estado</th>
                                   </tr>
-                                  <tr *ngFor="let col of car.filho">
-                                    <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
-                                      [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
-                                    <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
-                                    <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
-                                    <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
-                                    <td class="tg-0pky" style="min-width: 120px;">
-                                      <i *ngIf="col.FastResponse == false" class="material-icons"
-                                        style="color: red; font-size: 20px;">close</i>
-                                      <i *ngIf="col.FastResponse == true" class="material-icons"
-                                        style="color: green; font-size: 20px;">check</i>
-                                    </td>
-                                    <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
-                                    <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
-                                  </tr>
+                                  <ng-container *ngFor="let col of car.filho">
+                                    <tr (dblclick)="verTarefa(col.id_TAREFA)">
+                                      <td>
+                                        <a (click)="set_favoritos(col)" class="disabled fa "
+                                          [title]="(col.seguir_LINHA)? 'Remova esta Linha' :'Adicione esta Linha'"
+                                          style="cursor: pointer; color: black; font-size: 20px;"
+                                          [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
+                                      </td>
+                                      <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
+                                        [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                                      <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
+                                      <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
+                                      <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
+                                      <td class="tg-0pky" style="min-width: 120px;">
+                                        <i *ngIf="col.FastResponse == false" class="material-icons"
+                                          style="color: red; font-size: 20px;">close</i>
+                                        <i *ngIf="col.FastResponse == true" class="material-icons"
+                                          style="color: green; font-size: 20px;">check</i>
+                                      </td>
+                                      <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
+                                      <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+                                    </tr>
+                                  </ng-container>
                                 </table>
                               </div>
                             </ng-template>
@@ -1042,3 +1051,22 @@
     </div>
   </div>
 </div>
+
+
+<p-dialog header="Tarefa" [responsive]="true" [positionTop]="0" [style]="{'height':'99vh','width': '100vw'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayTarefa"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
+    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input">
+    </app-paginatarefa>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" style="margin: 0;" (click)="displayTarefa = false">Fechar</button>
+  </div>
+
+</p-dialog>
