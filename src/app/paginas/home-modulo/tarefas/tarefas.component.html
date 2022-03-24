@@ -42,8 +42,7 @@
               <p-column *ngIf="sow_col1" [sortable]="true" [filter]="true" styleclass="text-danger"
                 field="reclamacoes_clientes">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'reclamacoes_clientes')"
-                    title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}
+                  <span class="goToTarefas_title" title="{{car['title1'] }}">{{car['reclamacoes_clientes'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso'] > 0"> -
                       {{car['tarefas_atraso']}}</span></span>
                 </ng-template>
@@ -51,24 +50,21 @@
               <p-column *ngIf="sow_col2" [sortable]="true" [filter]="true" styleclass="text-danger"
                 field="reclamacoes_fornecedores">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'reclamacoes_fornecedores')"
-                    title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}
+                  <span class="goToTarefas_title" title="{{car['title2'] }}">{{car['reclamacoes_fornecedores'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso_fornecedores'] > 0"> -
                       {{car['tarefas_atraso_fornecedores']}}</span></span>
                 </ng-template>
               </p-column>
               <p-column *ngIf="sow_col3" [sortable]="true" [filter]="true" styleclass="text-danger" field="amostras">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'amostras')"
-                    title="{{car['title3'] }}">{{car['amostras'] }}
+                  <span class="goToTarefas_title" title="{{car['title3'] }}">{{car['amostras'] }}
                     <span style="color: red;" *ngIf="car['tarefas_amostras'] > 0"> -
                       {{car['tarefas_amostras']}}</span></span>
                 </ng-template>
               </p-column>
               <p-column *ngIf="sow_col4" [sortable]="true" [filter]="true" styleclass="text-danger" field="planosacao">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosacao')"
-                    title="{{car['title4'] }}">{{car['planosacao'] }}
+                  <span class="goToTarefas_title" title="{{car['title4'] }}">{{car['planosacao'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso_planosaco'] > 0"> -
                       {{car['tarefas_atraso_planosaco']}}</span></span>
                 </ng-template>
@@ -76,16 +72,14 @@
               <p-column *ngIf="sow_col5" [sortable]="true" [filter]="true" styleclass="text-danger"
                 field="planosestrategicos">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'planosestrategicos')"
-                    title="{{car['title6'] }}">{{car['planosestrategicos'] }}
+                  <span class="goToTarefas_title" title="{{car['title6'] }}">{{car['planosestrategicos'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso_planosestrategicos'] > 0"> -
                       {{car['tarefas_atraso_planosestrategicos']}}</span></span>
                 </ng-template>
               </p-column>
               <p-column *ngIf="sow_col6" [sortable]="true" [filter]="true" styleclass="text-danger" field="derrogacoes">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <span class="goToTarefas_title" (click)="goToTarefas(car['id_tarefa'],'derrogacoes')"
-                    title="{{car['title5'] }}">{{car['derrogacoes'] }}
+                  <span class="goToTarefas_title" title="{{car['title5'] }}">{{car['derrogacoes'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso_derrogacoes'] > 0"> -
                       {{car['tarefas_atraso_derrogacoes']}}</span></span>
                 </ng-template>
@@ -109,6 +103,13 @@
                   [ngModelOptions]="{standalone: true}"
                   [style]="{'width':'100%','height':'25px','background':'white','padding': '3px'}" [(ngModel)]="accao">
                 </p-multiSelect>
+              </div>
+              <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                <label>Origem:</label>
+                <br>
+                <p-dropdown [filter]="true" [options]="drop_origens" [style]="{'width':'100%','height': '25px'}"
+                  [(ngModel)]="origem" [ngModelOptions]="{standalone: true}" [required]="true" appendTo="body">
+                </p-dropdown>
               </div>
               <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
                 <label>Estado:</label>

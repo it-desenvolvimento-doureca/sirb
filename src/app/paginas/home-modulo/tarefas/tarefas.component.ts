@@ -32,6 +32,16 @@ export class TarefasComponent implements OnInit {
   sow_col5 = false;
   sow_col6 = false;
   total_colspan = 0;
+  drop_origens = [
+    { label: "Escolher", value: null },
+    { label: 'Reclamações Clientes', value: 'reclamacoes_clientes' },
+    { label: 'Reclamações Fornecedores', value: 'reclamacoes_fornecedores' },
+    { label: 'Amostras', value: 'amostras' },
+    { label: 'Planos de Ação', value: 'planosacao' },
+    { label: 'Planos Estratégicos', value: 'planosestrategicos' },
+    { label: 'Derrogações', value: 'derrogacoes' }
+  ];
+  origem;
 
   constructor(private route: ActivatedRoute, private router: Router, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
   ngOnInit() {
@@ -64,26 +74,9 @@ export class TarefasComponent implements OnInit {
 
     if (id != null) this.accao = [id];
     this.tipo_utl = (tipo_utl == null) ? ['u'] : tipo_utl.split(',');
-    var id_modulo = null;
-    var sub_modulo = null;
-    if (modulo == 'reclamacoes_clientes') {
-      id_modulo = 5;
-      sub_modulo = 'C';
-    } else if (modulo == 'reclamacoes_fornecedores') {
-      id_modulo = 5;
-      sub_modulo = 'F';
-    } else if (modulo == 'amostras') {
-      id_modulo = 10;
-      sub_modulo = 'A';
-    } else if (modulo == 'planosacao') {
-      id_modulo = 13;
-      sub_modulo = 'PA';
-    } else if (modulo == 'derrogacoes') {
-      id_modulo = 5;
-      sub_modulo = 'D';
-    }
 
-    this.atualizar(id_modulo, sub_modulo);
+    this.origem = modulo;
+    this.atualizar();
 
     this.carregaaccoes();
 
@@ -113,6 +106,31 @@ export class TarefasComponent implements OnInit {
   }
 
   atualizar(id_modulo = null, sub_modulo = null) {
+    var id_modulo = null;
+    var sub_modulo = null;
+    var planosestrategicos = null;
+    if (this.origem == 'reclamacoes_clientes') {
+      id_modulo = 5;
+      sub_modulo = 'C';
+    } else if (this.origem == 'reclamacoes_fornecedores') {
+      id_modulo = 5;
+      sub_modulo = 'F';
+    } else if (this.origem == 'amostras') {
+      id_modulo = 10;
+      sub_modulo = 'A';
+    } else if (this.origem == 'planosacao') {
+      id_modulo = 13;
+      sub_modulo = 'PA';
+      planosestrategicos = 2;
+    } else if (this.origem == 'planosestrategicos') {
+      id_modulo = 13;
+      sub_modulo = 'PA';
+      planosestrategicos = 1;
+    } else if (this.origem == 'derrogacoes') {
+      id_modulo = 5;
+      sub_modulo = 'D';
+    }
+
     this.cols = [];
     this.tabelalistatarefas = [];
     this.tabelalistatarefas2 = [];
@@ -172,7 +190,7 @@ export class TarefasComponent implements OnInit {
       utilizador: this.user, tipo_utilizador: tipo_utilizador, estado: estado, utilizador_grupo: utilizador_grupo,
       utilizador_sector: utilizador_sector, modulo: id_modulo, submodulo: sub_modulo,
       datacria1: datacria1, datacria2: datacria2, datafim1: datafim1, datafim2: this.datafim2,
-      accao: accao
+      accao: accao, planosestrategicos: planosestrategicos
     }];
 
     var show1 = false;
@@ -189,7 +207,6 @@ export class TarefasComponent implements OnInit {
         }
         if (res[x][23] > 0) {
           show2 = true;
-          this.total_colspan++;
         }
         if (res[x][6] > 0) {
           show3 = true;
@@ -238,10 +255,10 @@ export class TarefasComponent implements OnInit {
       if (show1) {
         this.total_colspan++;
       }
-      /*if (show2) {
+      if (show2) {
         show2 = true;
         this.total_colspan++;
-      }*/
+      }
       if (show3) {
         this.total_colspan++;
       }

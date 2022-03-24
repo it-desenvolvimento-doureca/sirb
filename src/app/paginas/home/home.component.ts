@@ -267,7 +267,6 @@ export class HomeComponent implements OnInit {
         }
         if (res[x][23] > 0) {
           show2 = true;
-          this.total_colspan++;
         }
         if (res[x][6] > 0) {
           show3 = true;
@@ -288,7 +287,7 @@ export class HomeComponent implements OnInit {
           reclamacoes_clientes: res[x][2] + ' ( ' + res[x][3] + ' ) - ' + res[x][4],
           title1: "Tarefas não lidas: " + res[x][2] + ', Total Tarefas: ' + res[x][3] + ', Tarefas Encaminhadas: ' + res[x][4] + ', Tarefas em Atraso: ' + res[x][17],
           tarefas_atraso: res[x][17],
-          reclamacoes_fornecedores: res[x][22] + ' ( ' + res[x][23] + ' ) - ' +res[x][24],
+          reclamacoes_fornecedores: res[x][22] + ' ( ' + res[x][23] + ' ) - ' + res[x][24],
           title2: "Tarefas não lidas: " + res[x][22] + ', Total Tarefas: ' + res[x][23] + ', Tarefas Encaminhadas: ' + res[x][24] + ', Tarefas em Atraso:' + res[x][25],
           tarefas_atraso_fornecedores: res[x][25],
           amostras: res[x][5] + ' ( ' + res[x][6] + ' ) - ' + res[x][7],
@@ -316,10 +315,10 @@ export class HomeComponent implements OnInit {
       if (show1) {
         this.total_colspan++;
       }
-      /*if (show2) {
+      if (show2) {
         show2 = true;
         this.total_colspan++;
-      }*/
+      }
       if (show3) {
         this.total_colspan++;
       }
