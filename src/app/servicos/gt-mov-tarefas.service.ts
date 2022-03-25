@@ -129,9 +129,8 @@ export class GTMOVTAREFASService {
   update(data: GT_MOV_TAREFAS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateGT_MOV_TAREFAS', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
-      .catch(this.handleError);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
   }
 
 

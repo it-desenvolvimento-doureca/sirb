@@ -743,7 +743,7 @@ export class AmostrasformComponent implements OnInit {
         }
 
 
-        this.GTMOVTAREFASService.update(tarefa).then(response => {
+        this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
           for (var x in data_logs) {
             var logs = new GT_LOGS;
             logs.id_TAREFA = id;

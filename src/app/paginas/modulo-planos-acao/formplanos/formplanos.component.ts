@@ -27,6 +27,7 @@ import { PADICAMBITOSService } from 'app/servicos/pa-dic-ambitos.service';
 import { GTDICTIPOACAOService } from 'app/servicos/gt-dic-tipo-acao.service';
 import { RelatoriosService } from 'app/servicos/relatorios.service';
 import { PEMOVCABService } from 'app/servicos/pe-mov-cab.service';
+import { TreeModule } from 'angular-tree-component';
 
 @Component({
   selector: 'app-formplanos',
@@ -154,6 +155,26 @@ export class FormplanosComponent implements OnInit {
   yearTimeout: NodeJS.Timer;
   displayJustificacaoRESPONSAVEL: boolean;
   id_PLANO_ESTRATEGICO_OLD = [];
+  data_ACCAO_Reabrir = null;
+  justificacao_Reabrir = null;
+  estado_Reabrir = null;
+  id_ACCAO_Reabrir = null;
+  responsavel_Reabrir = null;
+  hora_ACCAO_Reabrir = null;
+  displayJustificacaoREABRIR = false;
+  selected_row_Reabrir: any;
+  estados_tarefas = [
+    { value: 'P', label: "Pendente" },
+    { value: 'E', label: "Em Curso" },
+    { value: 'C', label: "Desenvolvida/ Realizada" },
+    { value: 'A', label: "Cancelada" },
+    { value: 'R', label: "Rejeitada" },
+    { value: 'F', label: "Aprovada" },
+    { value: 'V', label: "Controlada/ Verificada" }]
+
+  editar_linha: boolean = true;
+
+
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
     private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PAMOVFICHEIROSService: PAMOVFICHEIROSService,
     private PAMOVLINHAService: PAMOVLINHAService, private PAMOVCABService: PAMOVCABService, private GERDEPARTAMENTOService: GERDEPARTAMENTOService, private sanitizer: DomSanitizer,
@@ -531,6 +552,7 @@ export class FormplanosComponent implements OnInit {
               this.btAprovar = false;
               this.btLancarPlano = false;
               this.btapagar = false;
+              this.editar_linha = false;
             }
           }
 
@@ -1043,13 +1065,13 @@ export class FormplanosComponent implements OnInit {
     delete accoes['_$visited'];
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
+
         if (atualizou_datas) {
-          this.enviarEventoaltera_data("Ao Alterar Data Objetivo Ação", email_p, id, accoes.data_ACCAO, accoes.hora_ACCAO, nome_accao, descricao);
+
           var tarefa = new GT_MOV_TAREFAS;
           tarefa.id_MODULO = 13;
           tarefa.sub_MODULO = "PA";
           tarefa.id_CAMPO = response.id_PLANO_LINHA;
-          tarefa.utz_CRIA = this.user;
           tarefa.data_ULT_MODIF = new Date();
           tarefa.utz_ULT_MODIF = this.user;
           tarefa.data_FIM = new Date(this.formatDate(response.data_ACCAO) + ' ' + response.hora_ACCAO);
@@ -1061,6 +1083,7 @@ export class FormplanosComponent implements OnInit {
           logs.justificacao = justificacao_DATA_FIM;
           var email_para = email_p;
           this.atualizaTarefa(tarefa, logs, false, null, null, null, null);
+          if (!atualizou_reponsavel) this.enviarEventoaltera_data("Ao Alterar Data Objetivo Ação", email_p, id, accoes.data_ACCAO, accoes.hora_ACCAO, nome_accao, descricao);
         }
 
         if (atualizou_reponsavel) {
@@ -1069,7 +1092,6 @@ export class FormplanosComponent implements OnInit {
           tarefa.sub_MODULO = "PA";
           tarefa.id_CAMPO = response.id_PLANO_LINHA;
           tarefa.utz_ID = response.responsavel;
-          tarefa.utz_CRIA = this.user;
           tarefa.data_ULT_MODIF = new Date();
           tarefa.utz_ULT_MODIF = this.user;
           tarefa.justificacao_RESPONSAVEL = justificacao_RESPONSAVEL;
@@ -1089,6 +1111,8 @@ export class FormplanosComponent implements OnInit {
           logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
           this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, descricao, referencia);
         }
+
+
 
         if (count == total) {
           this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(id).subscribe(
@@ -1385,7 +1409,7 @@ export class FormplanosComponent implements OnInit {
         }
         if (this.displayJustificacao) tarefa.justificacao_ALTERACAO_ESTADO = this.justificacao_ALTERACAO_ESTADO;
 
-        this.GTMOVTAREFASService.update(tarefa).then(response => {
+        this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
           for (var x in data_logs) {
             var logs = new GT_LOGS;
             logs.id_TAREFA = response.id_TAREFA;
@@ -1665,6 +1689,7 @@ export class FormplanosComponent implements OnInit {
     accoes.data_MODIF = new Date();
     accoes.utz_MODIF = this.user;
 
+    delete accoes['_$visited'];
     this.PAMOVLINHAService.update(accoes).subscribe(
       response => {
         this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(accoes.id_PLANO_CAB).subscribe(
@@ -2112,6 +2137,256 @@ export class FormplanosComponent implements OnInit {
     this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
       col.seguir_LINHA = true;
     }, error => { console.log(error); col.seguir_LINHA = false; });
+  }
+
+
+  EditarTarefa(row, index) {
+
+    var estado = 'P';
+    if (row.estado == 'E') {
+      estado = 'P'
+    } else if (row.estado == 'P') {
+      estado = 'E'
+    } else if (row.estado == 'I') {
+      estado = 'C'
+    } else if (row.estado == 'A') {
+      estado = 'A'
+    } else if (row.estado == 'R') {
+      estado = 'R'
+    } else if (row.estado == 'V') {
+      estado = 'F'
+    } else if (row.estado == 'C') {
+      estado = 'V'
+    }
+
+    this.selected_row_Reabrir = row;
+    this.data_ACCAO_Reabrir = row.data_ACCAO;
+    this.estado_Reabrir = estado;
+    this.id_ACCAO_Reabrir = row.id_ACCAO;
+    this.responsavel_Reabrir = row.responsavel;
+    this.hora_ACCAO_Reabrir = row.hora_ACCAO;
+    this.justificacao_Reabrir = null;
+    this.displayJustificacaoREABRIR = true;
+  }
+
+  atualizarACAOREABRIR() {
+    //var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
+    // var justificacao_RESPONSAVEL = this.tabelaaccoes[x].justificacao_RESPONSAVEL;
+    var row = this.selected_row_Reabrir;
+    var accoes = new PA_MOV_LINHA;
+    var atualizou_datas = false;
+    var atualizou_reponsavel = false;
+    var atualizou_estado = false;
+    accoes = row.dados;
+
+    var id_resp_old = accoes.responsavel;
+    if (row.id_PLANO_LINHA != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+      if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.data_ACCAO_Reabrir) || accoes.hora_ACCAO != ((this.hora_ACCAO_Reabrir == null) ? null : (this.hora_ACCAO_Reabrir + ":00").slice(0, 8))) {
+        atualizou_datas = true;
+      }
+    }
+    if (atualizou_datas) {
+      this.selected_row_Reabrir.justificacao_DATA_FIM = this.displayJustificacaoREABRIR;
+    }
+
+    if (row.id_PLANO_LINHA != null && this.responsavel_Reabrir != '' && this.responsavel_Reabrir != null && row.justificacao_RESPONSAVEL == null) {
+      if (accoes.responsavel != this.responsavel_Reabrir) {
+        atualizou_reponsavel = true;
+      }
+    }
+    if (atualizou_reponsavel) {
+      this.selected_row_Reabrir.justificacao_RESPONSAVEL = this.displayJustificacaoREABRIR;
+    }
+
+    var estado = 'P';
+    if (this.estado_Reabrir == 'P') {
+      estado = 'P'
+    } else if (this.estado_Reabrir == 'E') {
+      estado = 'P'
+    } else if (this.estado_Reabrir == 'C') {
+      estado = 'I'
+    } else if (this.estado_Reabrir == 'A') {
+      estado = 'A'
+    } else if (this.estado_Reabrir == 'R') {
+      estado = 'R'
+    } else if (this.estado_Reabrir == 'F') {
+      estado = 'V'
+    } else if (this.estado_Reabrir == 'V') {
+      estado = 'C'
+    }
+
+    var estado_antigo = row.estado;
+    if (row.estado == 'E') {
+      estado_antigo = 'P'
+    } else if (row.estado == 'P') {
+      estado_antigo = 'E'
+    } else if (row.estado == 'I') {
+      estado_antigo = 'C'
+    } else if (row.estado == 'A') {
+      estado_antigo = 'A'
+    } else if (row.estado == 'R') {
+      estado_antigo = 'R'
+    } else if (row.estado == 'V') {
+      estado_antigo = 'F'
+    } else if (row.estado == 'C') {
+      estado_antigo = 'V'
+    }
+
+    if (estado != row.estado) {
+      atualizou_estado = true;
+    }
+
+    this.selected_row_Reabrir.data_ACCAO = this.data_ACCAO_Reabrir;
+    this.selected_row_Reabrir.estado = estado;
+    this.selected_row_Reabrir.estado_texto = this.geEstadoTarefa(estado);
+    this.selected_row_Reabrir.id_ACCAO = this.id_ACCAO_Reabrir;
+    this.selected_row_Reabrir.responsavel = this.responsavel_Reabrir;
+    this.selected_row_Reabrir.hora_ACCAO = this.hora_ACCAO_Reabrir;
+
+    var id_resp = this.selected_row_Reabrir.responsavel;
+    accoes.data_MODIF = new Date();
+    accoes.utz_MODIF = this.user;
+    accoes.responsavel = id_resp;
+    accoes.estado = this.selected_row_Reabrir.estado;
+    accoes.id_ACCAO = this.selected_row_Reabrir.id_ACCAO;
+    accoes.id_ACCAO = this.selected_row_Reabrir.id_ACCAO;
+    accoes.data_ACCAO = this.selected_row_Reabrir.data_ACCAO;
+
+
+    var email_p = "";
+    var utz = this.drop_utilizadores.find(item => item.value == id_resp);
+    if (utz) email_p = utz.email;
+
+    var id = accoes.id_PLANO_CAB;
+
+    var referencia = ((this.selected_row_Reabrir.referencia == null) ? '' : this.selected_row_Reabrir.referencia) + ' - ' + ((this.selected_row_Reabrir.design_REFERENCIA == null) ? '' : this.selected_row_Reabrir.design_REFERENCIA);
+
+    this.atualizarlinhas_reabrir(accoes, this.selected_row_Reabrir.estado, this.estado_Reabrir, atualizou_estado, atualizou_datas, atualizou_reponsavel, email_p, this.selected_row_Reabrir.justificacao_DATA_FIM, this.selected_row_Reabrir.justificacao_RESPONSAVEL, this.selected_row_Reabrir.descricao, id_resp, referencia, estado_antigo, id_resp_old);
+
+
+    this.displayJustificacaoREABRIR = false;
+  }
+
+  atualizarlinhas_reabrir(accoes: PA_MOV_LINHA, estado, estado_tarefa, atualizou_estado, atualizou_datas, atualizou_reponsavel, email_p, justificacao_DATA_FIM, justificacao_RESPONSAVEL, nome_accao, id_resp, referencia, estado_antigo, id_resp_old) {
+
+    if (estado == 'C') {
+      accoes.data_CONTROLADO = new Date();
+      accoes.utz_CONTROLADO = this.user;
+    } else if (estado == 'V') {
+      accoes.data_APROVADO = new Date();
+      accoes.utz_APROVADO = this.user;
+      accoes.eficacia_CUMPRIMENTO_OBJETIVO = this.motivoAlteracao;
+    } else if (estado == 'D') {
+      accoes.data_CANCELADO = new Date();
+      accoes.utz_CANCELADO = this.user;
+    }
+
+
+    delete accoes['_$visited'];
+    this.PAMOVLINHAService.update(accoes).subscribe(
+      response => {
+
+        this.selected_row_Reabrir.dados.data_ACCAO = this.data_ACCAO_Reabrir;
+        this.selected_row_Reabrir.dados.estado = estado;
+        this.selected_row_Reabrir.dados.id_ACCAO = this.id_ACCAO_Reabrir;
+        this.selected_row_Reabrir.dados.responsavel = this.responsavel_Reabrir;
+        this.selected_row_Reabrir.dados.hora_ACCAO = this.hora_ACCAO_Reabrir;
+
+        this.PAMOVLINHAService.getPA_MOV_LINHAAtualizaESTADOS(accoes.id_PLANO_CAB).subscribe(
+          response => {
+
+          }, error => { console.log(error); });
+
+
+        this.atualizaestadoTarefa_reabrir(response.id_PLANO_LINHA, estado_tarefa, atualizou_estado, atualizou_datas, atualizou_reponsavel, accoes.responsavel, email_p,
+          accoes.data_ACCAO, accoes.hora_ACCAO, nome_accao, justificacao_DATA_FIM, justificacao_RESPONSAVEL, id_resp, referencia, estado_antigo, id_resp_old);
+
+
+
+      }, error => { console.log(error); });
+
+  }
+
+
+  atualizaestadoTarefa_reabrir(id, estado, atualizou_estado, atualizou_datas, atualizou_reponsavel, responsavel, email_p,
+    data_ACCAO, hora_ACCAO, nome_accao, justificacao_DATA_FIM, justificacao_RESPONSAVEL, id_resp, referencia, estado_antigo, id_resp_old) {
+
+    this.GTMOVTAREFASService.getbyids(id, 13, "PA").subscribe(response => {
+
+      var count = Object.keys(response).length;
+      if (count > 0) {
+        var tarefa = new GT_MOV_TAREFAS;
+        tarefa = response[0]
+
+        var data_logs = [];
+        if (atualizou_estado) {
+          tarefa.estado = estado;
+          tarefa.justificacao_ALTERACAO_ESTADO = this.justificacao_ALTERACAO_ESTADO;
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+          data_logs.push({ justificacao: null, descricao: "Alterado Estado de " + this.geEstadoTarefa(estado_antigo) + " para " + this.geEstadoTarefa(estado) })
+        }
+
+
+        if (atualizou_datas) {
+          tarefa.data_FIM = new Date(this.formatDate(data_ACCAO) + ' ' + hora_ACCAO);
+          tarefa.justificacao_DATA_FIM = justificacao_DATA_FIM;
+          logs.justificacao = justificacao_DATA_FIM;
+          data_logs.push({ justificacao: justificacao_DATA_FIM, descricao: "Alterou Prazo Conclusão" })
+        }
+
+        if (atualizou_reponsavel) {
+          tarefa.utz_ID = responsavel;
+          tarefa.justificacao_RESPONSAVEL = justificacao_RESPONSAVEL;
+          var logs = new GT_LOGS;
+          logs.utz_CRIA = this.user;
+          logs.data_CRIA = new Date();
+          logs.justificacao = justificacao_RESPONSAVEL;
+          var nome1 = ''
+          var nome2 = ''
+          var utz1 = this.drop_utilizadores.find(item => item.value == id_resp_old);
+          if (utz1) nome1 = utz1.label;
+          var utz2 = this.drop_utilizadores.find(item => item.value == responsavel);
+          if (utz2) nome2 = utz2.label;
+          data_logs.push({ justificacao: justificacao_DATA_FIM, descricao: "Alterado Responsável de " + nome1 + " para " + nome2 })
+
+        }
+
+        if (atualizou_reponsavel) {
+          this.enviarEvento(tarefa.data_INICIO, tarefa.id_TAREFA, "Ao Alterar Responsável", email_p, referencia, id
+            , this.data_CRIA, nome_accao, tarefa.observacoes);
+        } else if (atualizou_estado) {
+          this.enviarEvento(tarefa.data_INICIO, tarefa.id_TAREFA, "Ao Reabrir Tarefa", email_p, referencia, id
+            , this.data_CRIA, nome_accao, tarefa.observacoes);
+        } else if (atualizou_datas) {
+          this.enviarEventoaltera_data("Ao Alterar Data Objetivo Ação", email_p, id, data_ACCAO, hora_ACCAO, nome_accao, tarefa.observacoes);
+        }
+
+        tarefa.data_ULT_MODIF = new Date();
+        tarefa.utz_ULT_MODIF = this.user;
+
+        this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
+          for (var x in data_logs) {
+            var logs = new GT_LOGS;
+            logs.id_TAREFA = response.id_TAREFA;
+            logs.utz_CRIA = this.user;
+            logs.data_CRIA = new Date();
+            logs.descricao = data_logs[x].descricao;
+            this.criaLogs(logs);
+          }
+          this.displayJustificacao = false;
+
+        }, error => {
+          console.log(error);
+
+        });
+      }
+    }, error => {
+      console.log(error);
+      this.simular(this.inputerro);
+      this.displayJustificacao = false;
+    });
   }
 
 }

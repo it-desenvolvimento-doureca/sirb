@@ -639,7 +639,7 @@ export class PaginatarefaComponent implements OnInit {
           }
 
 
-          this.GTMOVTAREFASService.update(tarefa).then(response => {
+          this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
             for (var x in data_logs) {
               var logs = new GT_LOGS;
               logs.id_TAREFA = id;
@@ -747,7 +747,7 @@ export class PaginatarefaComponent implements OnInit {
 
         //alerta encaminhamento
 
-        this.GTMOVTAREFASService.update(tarefa).then(response => {
+        this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'C') this.alterarEstadoPLANO(tarefa.id_CAMPO, "E");
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'F') this.alterarEstadoPLANOFORNECEDOR(tarefa.id_CAMPO, "E");
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'D') this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, "E");
@@ -1192,7 +1192,11 @@ export class PaginatarefaComponent implements OnInit {
 
 
         if (tarefa.estado != estado) {
-          data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.estado) + " para " + this.geEstado(estado) })
+          var justificacao = null;
+          if (estado == "R") {
+            justificacao = this.mototivoRejeicao
+          }
+          data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.estado) + " para " + this.geEstado(estado), justificacao: justificacao })
         }
 
         tarefa.estado = estado;
@@ -1212,7 +1216,7 @@ export class PaginatarefaComponent implements OnInit {
           tarefa.data_ULT_MODIF = new Date();
         }
 
-        this.GTMOVTAREFASService.update(tarefa).then(response => {
+        this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
           this.displayMotivoRejeicao = false;
 
           if (tarefa.id_MODULO == 5 && this.sub_modulo == 'C' && this.caminho_origem_pai == null) {
@@ -1229,6 +1233,7 @@ export class PaginatarefaComponent implements OnInit {
             logs.utz_CRIA = this.user;
             logs.data_CRIA = new Date();
             logs.descricao = data_logs[x].descricao;
+            logs.justificacao = data_logs[x].justificacao;
             this.criaLogs(logs);
           }
           if (estado == "C") {

@@ -532,9 +532,12 @@
 
 
                         <p-column field="estado_texto" header="ESTADO AÇÃO" [style]="{'width':'104px'}">
-                          <ng-template let-col let-car="rowData" pTemplate="body">
+                          <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                             <a *ngIf="car['id_TAREFA']!=null" title="Tarefa: {{car['id_TAREFA']}}"
                               (click)="IrPara(car['id_TAREFA'])"> {{car[col.field]}}</a>
+                            <a *ngIf="(car['estado'] == 'R' || car['estado'] == 'I' || car['estado'] == 'V' || car['estado'] == 'C') && car['id_TAREFA']!=null && editar_linha && modoedicao"
+                              title="Editar dados Tarefa" (click)="EditarTarefa(car,index)"> <span class="fa fa-pencil"
+                                style="margin-left: 5px; color: orange;"></span></a>
                             <span *ngIf="car['id_TAREFA']==null"> {{car[col.field]}}</span>
                           </ng-template>
                         </p-column>
@@ -761,6 +764,72 @@
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
       <button type="button" class="btn btn-default" (click)="displayJustificacaoRESPONSAVEL = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+<p-dialog header="Reabrir Ação" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displayJustificacaoREABRIR" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarACAOREABRIR()">
+    <!-- Modal Body -->
+    <div class="" style="width: 80vw;">
+      <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-4 col-lg-4">
+        <label>Data Objetivo Ação:</label>
+        <p-calendar [maxDate]="data_OBJETIVO_DATA" [disabled]="!modoedicao" [style]="{'width':'100%'}"
+          dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+          yearRange="2000:2050" appendTo="body" [(ngModel)]="data_ACCAO_Reabrir" [ngModelOptions]="{standalone: true}"
+          [required]="true">
+        </p-calendar>
+      </div>
+      <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-4 col-lg-4">
+        <label>Hora Ação:</label>
+        <br>
+        <input [disabled]="!modoedicao" style="padding: 5px 4px;width: 100px;" [required]="true"
+          [(ngModel)]="hora_ACCAO_Reabrir" [ngModelOptions]="{standalone: true}" type="time"
+          class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all" placeholder="hh:mm">
+      </div>
+
+      <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-4 col-lg-4">
+        <label>Estado:</label>
+        <p-dropdown [filter]="true" [options]="estados_tarefas" [style]="{'width':'100%'}" [(ngModel)]="estado_Reabrir"
+          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" appendTo="body" [required]="true">
+        </p-dropdown>
+      </div>
+
+      <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-6 col-lg-6">
+        <label>Responsável:</label>
+        <p-dropdown [filter]="true" [options]="drop_utilizadores" [style]="{'width':'100%'}"
+          [(ngModel)]="responsavel_Reabrir" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+          appendTo="body" [required]="true">
+        </p-dropdown>
+      </div>
+
+
+      <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-6 col-lg-6">
+        <label>Ação:</label>
+        <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)" [options]="drop_accoes"
+          [style]="{'width':'100%' }" [(ngModel)]="id_ACCAO_Reabrir" [ngModelOptions]="{standalone: true}"
+          [disabled]="!modoedicao" appendTo="body">
+        </p-dropdown>
+      </div>
+      <div style="padding: 1px 5px 1px 10px; height: 62px; display: inline-table;"
+        class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea [disabled]="!modoedicao" required="true" rows="4" pInputTextarea [(ngModel)]="justificacao_Reabrir"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 100%;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoREABRIR = false">Fechar</button>
       <button type="submit" class="btn btn-success ">Gravar</button>
     </div>
   </form>
