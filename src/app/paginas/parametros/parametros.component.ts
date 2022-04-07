@@ -64,6 +64,7 @@ export class ParametrosComponent implements OnInit {
   objetivo_AUDITORIAS;
   taxa_REJEICAO: number;
   sectores: any[];
+  numero_MANUTENCOES_INICIAR: number;
 
   constructor(private RHSECTORESService: RHSECTORESService, private RH_EXCLUSAO_TIPO_EXTRAService: RH_EXCLUSAO_TIPO_EXTRAService, private GERATUALIZACAOSILVERBITABELASService: GERATUALIZACAOSILVERBITABELASService, private confirmationService: ConfirmationService, private GERPOSTOSService: GERPOSTOSService, private UploadService: UploadService, private renderer: Renderer, private route: ActivatedRoute, private router: Router, private location: Location, private GERPARAMETROSService: GERPARAMETROSService, private globalVar: AppGlobals) { }
 
@@ -171,6 +172,7 @@ export class ParametrosComponent implements OnInit {
           this.tempo_MAX_PLANEADAS = response[x].tempo_MAX_PLANEADAS;
           this.pasta_JASPERREPORT = response[x].pasta_JASPERREPORT;
           this.pasta_DESTINO_ERRO = response[x].pasta_DESTINO_ERRO;
+          this.numero_MANUTENCOES_INICIAR = response[x].numero_MANUTENCOES_INICIAR;
 
           this.logs_SILVER_ATIVO = response[x].logs_SILVER_ATIVO;
           this.caminho_LOGS_SILVER = response[x].caminho_LOGS_SILVER;
@@ -219,7 +221,7 @@ export class ParametrosComponent implements OnInit {
         for (var x in response) {
           this.postos.push({
             id_POSTO: response[x].id_POSTO, descricao: response[x].descricao, ip_POSTO: response[x].ip_POSTO, impressora: response[x].impressora,
-            ip_IMPRESSORA: response[x].ip_IMPRESSORA, nome_IMPRESSORA: response[x].nome_IMPRESSORA,nome_IMPRESSORA_SILVER: response[x].nome_IMPRESSORA_SILVER
+            ip_IMPRESSORA: response[x].ip_IMPRESSORA, nome_IMPRESSORA: response[x].nome_IMPRESSORA, nome_IMPRESSORA_SILVER: response[x].nome_IMPRESSORA_SILVER
           });
         }
         this.postos = this.postos.slice();
@@ -298,6 +300,8 @@ export class ParametrosComponent implements OnInit {
     parametros.tempo_PAUSA_TURNOS_CONTINUOS = (this.tempo_PAUSA_TURNOS_CONTINUOS + ":00").slice(0, 8);
 
     parametros.atualizacao_SILVER_BI_ATIVO = this.atualizacao_SILVER_BI_ATIVO;
+
+    parametros.numero_MANUTENCOES_INICIAR = this.numero_MANUTENCOES_INICIAR;
 
     this.GERPARAMETROSService.update(parametros).then(() => {
       for (var x in this.postos) {

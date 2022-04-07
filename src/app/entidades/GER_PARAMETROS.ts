@@ -27,4 +27,5 @@ export class GER_PARAMETROS {
     taxa_ABSENTISMO: number;
     taxa_REJEICAO: number;
     objetivo_AUDITORIAS: number;
+    numero_MANUTENCOES_INICIAR: number;
 }
