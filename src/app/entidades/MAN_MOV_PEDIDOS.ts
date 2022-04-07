@@ -16,4 +16,5 @@ export class MAN_MOV_PEDIDOS {
     TIPO_RESPONSAVEL: string;
     UTILIZADOR: number;
     ID_EQUIPA: number;
+    STATUS_MAQUINA: string;
 }

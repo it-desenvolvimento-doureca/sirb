@@ -7,4 +7,5 @@ export class MAN_MOV_MANUTENCAO_ACCOES {
     DATA_CRIA: Date;
     UTZ_ULT_MODIF: number;
     DATA_ULT_MODIF: Date;
+    TEMPO_ESTIMADO: string;
 }

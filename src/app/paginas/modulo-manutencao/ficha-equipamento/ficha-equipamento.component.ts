@@ -32,6 +32,8 @@ import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
 import { GERDEPARTAMENTOService } from 'app/servicos/ger-departamento.service';
 import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
+import { ABMOVMANUTENCAOCABService } from 'app/servicos/ab-mov-manutencao-cab.service';
+import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 
 @Component({
   selector: 'app-ficha-equipamento',
@@ -43,6 +45,7 @@ export class FichaEquipamentoComponent implements OnInit {
   ativobt = '1';
   ID_MANUTENCAO: number;
   NOME: string = null;
+  DESCRICAO_MANUTENCAO = null;
   COD_EQUIPAMENTO_PRINCIPAL = null;
   LOCALIZACAO = null;
   GRAU_IMPORTANCIA: number = null;
@@ -132,6 +135,7 @@ export class FichaEquipamentoComponent implements OnInit {
   stocklocalizacoes: any[];
   mensagemtabela: string;
   displaylocalizacaostock: boolean;
+  tabela_historico: any;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -146,6 +150,7 @@ export class FichaEquipamentoComponent implements OnInit {
     private MANMOVMANUTENCAOGRAUSIMPORTANCIAService: MANMOVMANUTENCAOGRAUSIMPORTANCIAService,
     private GERDEPARTAMENTOService: GERDEPARTAMENTOService,
     private GERUTILIZADORESService: GERUTILIZADORESService,
+    private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
 
   ngOnInit() {
@@ -246,6 +251,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
         this.ID_MANUTENCAO = response[0].ID_MANUTENCAO;
         this.NOME = response[0].NOME;
+        this.DESCRICAO_MANUTENCAO = response[0].DESCRICAO_MANUTENCAO
         this.LOCALIZACAO = response[0].TIPO_LOCALIZACAO + response[0].LOCALIZACAO;
         this.COD_EQUIPAMENTO_PRINCIPAL = response[0].COD_EQUIPAMENTO_PRINCIPAL;
         this.EQUIPA = response[0].EQUIPA;
@@ -268,6 +274,7 @@ export class FichaEquipamentoComponent implements OnInit {
         this.carregaTabelaPlanos(id);
         this.carregaTabelaContratosSuporte(id);
         this.carregaTabelaDadosCompra(id);
+        this.carregaHistorico(id);
 
       },
       error => console.log(error));
@@ -284,6 +291,45 @@ export class FichaEquipamentoComponent implements OnInit {
       },
       error => console.log(error));
 
+  }
+  carregaHistorico(id) {
+    this.tabela_historico = [];
+
+    this.MANMOVMANUTENCAOCABService.getHISTORICO(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            this.tabela_historico.push({
+              tipo_manutencao: (response[x][0] == 'C') ? 'Corretiva' : 'Preventiva',
+              estado: this.estadosManutencoes(response[x][1]),
+              data_inicio: (response[x][2] == null) ? null : this.formatDate(response[x][2]) + " " + new Date(response[x][2]).toLocaleTimeString(),
+              data_fim: (response[x][3] == null) ? null : this.formatDate(response[x][3]) + " " + new Date(response[x][3]).toLocaleTimeString(),
+              data_pedido: (response[x][4] == null) ? null : this.formatDate(response[x][4]) + " " + new Date(response[x][4]).toLocaleTimeString(),
+            });
+          }
+        } else {
+
+        }
+        this.tabela_historico = this.tabela_historico.slice();
+      },
+      error => console.log(error));
+
+  }
+
+  estadosManutencoes(valor: any) {
+    if (valor == 'P') {
+      return 'Pendente';
+    } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'C') {
+      return 'Concluído';
+    } else if (valor == 'S') {
+      return 'Em Pausa';
+    } else if (valor == 'R') {
+      return 'Suspenso';
+    }
+    return '';
   }
 
   carregaTabelaListaComponentes(id) {
@@ -328,6 +374,7 @@ export class FichaEquipamentoComponent implements OnInit {
             ultima_REALIZADA: (response[x].DATA_ULTIMA_REALIZADA != null) ? new Date(response[x].DATA_ULTIMA_REALIZADA) : null,
             proxima_REALIZAR: (response[x].DATA_PROXIMA_REALIZADA != null) ? new Date(response[x].DATA_PROXIMA_REALIZADA) : null,
             equipa: response[x].ID_EQUIPA,
+            tempo_ESTIMADO: (response[x].TEMPO_ESTIMADO == null) ? null : (response[x].TEMPO_ESTIMADO).slice(0, 5),
             tipo_responsavel: (response[x].TIPO_RESPONSAVEL == null) ? 'E' : response[x].TIPO_RESPONSAVEL,
             utilizador: response[x].UTILIZADOR,
             tipo_FIM: response[x].TIPO_FIM,
@@ -605,7 +652,7 @@ export class FichaEquipamentoComponent implements OnInit {
       data_ULTIMA_REALIZADA: null,
       data_PROXIMA_REALIZADA: null,
       data_INICIO: null,
-      hora_INICIO: null
+      hora_INICIO: null, tempo_ESTIMADO: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1268,7 +1315,7 @@ export class FichaEquipamentoComponent implements OnInit {
     equipamento.LOCALIZACAO = this.LOCALIZACAO.substring(1);
     equipamento.TIPO_LOCALIZACAO = this.LOCALIZACAO.charAt(0);
     equipamento.NOME = this.NOME;
-
+    equipamento.DESCRICAO_MANUTENCAO = this.DESCRICAO_MANUTENCAO;
 
 
     equipamento.UTZ_ULT_MODIF = this.user;
@@ -1624,6 +1671,7 @@ export class FichaEquipamentoComponent implements OnInit {
       }
       tabela.DATA_ULTIMA_REALIZADA = this.tabelaaccoes[x].ultima_REALIZADA;
       tabela.ID_ACAO = this.tabelaaccoes[x].id_ACCOES;
+      tabela.TEMPO_ESTIMADO = (this.tabelaaccoes[x].tempo_ESTIMADO == null) ? null : (this.tabelaaccoes[x].tempo_ESTIMADO + ':00').slice(0, 7);
       tabela.ID_EQUIPA = this.tabelaaccoes[x].equipa;
       tabela.UTILIZADOR = this.tabelaaccoes[x].utilizador;
       tabela.TIPO_RESPONSAVEL = this.tabelaaccoes[x].tipo_responsavel;
@@ -1743,6 +1791,9 @@ export class FichaEquipamentoComponent implements OnInit {
 
   //formatar a data para yyyy-mm-dd
   formatDate(date) {
+    if (date == null) {
+      return null;
+    }
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),

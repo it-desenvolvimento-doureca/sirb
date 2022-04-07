@@ -113,13 +113,26 @@
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
 
-                    <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                    <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Status Máquina:</label>
+                      <br>
+                      <select class="obrigatorio" [required]="EQUIPAMENTO != null"></select>
+                      <p-radioButton label="Parada" [disabled]="!modoedicao" name="status_maquina" value="P"
+                        [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                      </p-radioButton>
+                      <p-radioButton label="Em funcionamento" [disabled]="!modoedicao" name="status_maquina" value="E"
+                        [style]="{'margin-left':'10px'}" [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                      </p-radioButton>
+                    </div>
+
+                    <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <label>Tipo Utilizador:</label>
+                      <br>
                       <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_equipa" value="E"
                         [(ngModel)]="TIPO_RESPONSAVEL">
                       </p-radioButton>
-                      <br>
-                      <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_equipa" value="U"
-                        [(ngModel)]="TIPO_RESPONSAVEL">
+                      <p-radioButton label="Utilizador" [style]="{'margin-left':'10px'}" [disabled]="!modoedicao"
+                        name="tipo_equipa" value="U" [(ngModel)]="TIPO_RESPONSAVEL">
                       </p-radioButton>
                     </div>
 

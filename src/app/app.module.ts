@@ -401,6 +401,9 @@ import { DashboardComponent } from './paginas/modulo-planos-estrategicos/dashboa
 import { AnalisesdashboardComponent } from './paginas/modulo-analises/analisesdashboard/analisesdashboard.component';
 import { DASHBOARDANALISESService } from './servicos/dashboard-analises.service';
 import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from './servicos/rc-mov-reclamacao-fornecedor-planos-accoes.service';
+import { MANMOVMANUTENCAOCABService } from './servicos/man-mov-manutencao-cab.service';
+import { MANMOVMAQUINASPARADASService } from './servicos/man-mov-maquinas-paradas.service';
+import { QuadroPedidosPendentesComponent } from './paginas/modulo-manutencao/quadro-pedidos-pendentes/quadro-pedidos-pendentes.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -998,6 +1001,7 @@ const routes: Routes = [
   { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
   { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Ficha Manutenção" } },
+  { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
   {
     path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedido de Manutenção" },
     children: [
@@ -1244,7 +1248,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ListaPlanosEstrategicosComponent,
     FormPlanosEstrategicosComponent,
     DashboardComponent,
-    AnalisesdashboardComponent
+    AnalisesdashboardComponent,
+    QuadroPedidosPendentesComponent
   ],
   imports: [
     BrowserModule,
@@ -1492,6 +1497,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PEMOVCABService,
     PEMOVCABHISTORICOService,
     DASHBOARDANALISESService,
+    MANMOVMANUTENCAOCABService,
+    MANMOVMAQUINASPARADASService,
     RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],

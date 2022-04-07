@@ -851,7 +851,7 @@
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
                     <div class="panel-heading" [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
-                    || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/ficha_manutencao',true)
+                    || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true)
                     || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true)  ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
@@ -880,6 +880,14 @@
                                     <td>
                                         <li id="node11591" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/equipamentos_manutencao']">Equipamentos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11592" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/quadro_pedidos_pendentes']">Quadro Pedidos
+                                                Pendentes</a>
                                         </li>
                                     </td>
                                 </tr>

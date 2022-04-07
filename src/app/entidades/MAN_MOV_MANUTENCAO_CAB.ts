@@ -17,4 +17,5 @@ export class MAN_MOV_MANUTENCAO_CAB {
     DATA_CRIA: Date;
     UTZ_ULT_MODIF: number;
     DATA_ULT_MODIF: Date;
+    DATA_REALIZACAO: Date;
 }

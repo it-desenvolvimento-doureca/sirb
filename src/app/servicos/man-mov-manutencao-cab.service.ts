@@ -26,6 +26,14 @@ export class MANMOVMANUTENCAOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getHISTORICO(id): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CAB_HISTORICO/' + id + '';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteMAN_MOV_MANUTENCAO_CAB/' + id + '')

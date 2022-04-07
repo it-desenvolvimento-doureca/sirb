@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
       user: response[0].login,
       nome: response[0].nome_UTILIZADOR, id: response[0].id_UTILIZADOR, pass: response[0].password,
       admin: response[0].admin, user_jasper: response[0].user_JASPER, pass_jasper: response[0].pass_JASPER
+      , cod_UTZ: response[0].cod_UTZ
     }));
     localStorage.setItem('time_sgiid', JSON.stringify({ data: new Date() }));
     if (localStorage.getItem('userapp') || localStorage.getItem('time_sgiid')) {
@@ -177,6 +178,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userapp', JSON.stringify({
               nome: response[0].nome_UTILIZADOR, id: response[0].id_UTILIZADOR, user: response[0].login,
               admin: response[0].admin, user_jasper: response[0].user_JASPER, pass_jasper: response[0].pass_JASPER
+              , cod_UTZ: response[0].cod_UTZ
             }));
             localStorage.setItem('time_sgiid', JSON.stringify({ data: new Date() }));
             if (localStorage.getItem('userapp') || localStorage.getItem('time_sgiid')) {
@@ -260,11 +262,11 @@ export class LoginComponent implements OnInit {
           var username = this.getCookie("app_sgiid_versao");
           if (username != null) {
             if (username != response[0]) {
-              location.reload(true);
+              location.reload();
               this.setCookie("app_sgiid_versao", response[0]);
             }
           } else {
-            location.reload(true);
+            location.reload();
             this.setCookie("app_sgiid_versao", response[0]);
 
           }

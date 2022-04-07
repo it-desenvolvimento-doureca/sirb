@@ -160,6 +160,7 @@ export class DivisoesComponent implements OnInit {
     this.id_depart_selected = event.data.id;
     this.id = event.data.id;
     this.descricao = event.data.descricao;
+    this.id_piso = event.data.id_piso;
     this.novo = false;
     this.dialognovo = true;
   }

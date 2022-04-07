@@ -57,6 +57,13 @@
                     <div class="hidden-xs" style="display: contents;">Dados da Compra</div>
                   </button>
                 </div>
+                <div class="btn-group" role="group" style="border-right: 2px solid white; width: 0.6%;">
+                  <button (click)="ativobt='7';" style="padding: 12px;" [class.ativobt]="ativobt == '7'" type="button"
+                    id="favorites" class="btn" href="#tab7" data-toggle="tab"><span class="glyphicon glyphicon-th"
+                      aria-hidden="true"></span>
+                    <div class="hidden-xs" style="display: contents;">Histórico</div>
+                  </button>
+                </div>
               </div>
 
               <div class="well" style="display: flex; padding: 0;">
@@ -312,11 +319,14 @@
 
                       <p-column [style]="{'width':'85px'}" field="STOCK_TOTAL" header="Stock Total">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          <span style="cursor: pointer; color: #ffa91f;" title="Ver Localização/Stock" (click)="verStock(car['PROREF'])">
+                          <span style="cursor: pointer; color: #ffa91f;" title="Ver Localização/Stock"
+                            (click)="verStock(car['PROREF'])">
                             {{car[col.field] }}</span>
                         </ng-template>
                       </p-column>
 
+                      <!--p-column [style]="{'width':'85px'}" field="STOCK_TOTAL" header="Armazém/Localização">
+                      </p-column-->
 
                       <p-column [editable]="false" field="anexo" header="Anexo" [style]="{ 'width':'90px'}">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
@@ -352,6 +362,13 @@
 
                   <!--  -->
                   <div class="tab-pane fade in" id="tab4">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <label>Descrição da Manutenção:</label>
+                      <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
+                        [(ngModel)]="DESCRICAO_MANUTENCAO" required [ngModelOptions]="{standalone: true}">
+                    </div>
+
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                       styleClass="ExcelTable2007">
 
@@ -372,9 +389,19 @@
                             <span class="glyphicon glyphicon-plus"></span>
                           </button>
                         </ng-template>
-
                       </p-column>
-
+                      <p-column [editable]="true" [style]="{'width':'150px'}" field="tempo_ESTIMADO"
+                        header="Tempo Estimado">
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          {{car[col.field] }}
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="editor">
+                          <input [disabled]="!modoedicao" style="width:80px; padding: 5px 4px;"
+                            [(ngModel)]="car['tempo_ESTIMADO']" [ngModelOptions]="{standalone: true}" type="time"
+                            class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                            ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                        </ng-template>
+                      </p-column>
                       <p-column [editable]="false" [style]="{'width':'100px'}" field="periociodade"
                         header="Periodicidade">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
@@ -625,6 +652,25 @@
                       </p-footer>
                     </p-dataTable>
                   </div>
+
+                  <!-- Historicio -->
+                  <div class="tab-pane fade in" id="tab7">
+                    <p-dataTable [style]="{'width':'100%'}" [value]="tabela_historico" styleClass="ExcelTable2007">
+
+                      <p-column field="tipo_manutencao" header="Tipo Manutenção">
+                      </p-column>
+                      <p-column field="data_pedido" header="Data Pedido">
+                      </p-column>
+                      <p-column field="data_inicio" header="Data Início">
+                      </p-column>
+                      <p-column field="data_fim" header="Data Fim">
+                      </p-column>
+                      <p-column field="estado" header="Estado">
+                      </p-column>
+
+                    </p-dataTable>
+                  </div>
+
                 </div>
               </div>
 

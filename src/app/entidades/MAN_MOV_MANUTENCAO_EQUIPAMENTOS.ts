@@ -15,4 +15,5 @@ export class MAN_MOV_MANUTENCAO_EQUIPAMENTOS {
     TIPO_LOCALIZACAO: string;
     TIPO_EQUIPA: string;
     UTILIZADOR: number;
+    DESCRICAO_MANUTENCAO: string;
 }

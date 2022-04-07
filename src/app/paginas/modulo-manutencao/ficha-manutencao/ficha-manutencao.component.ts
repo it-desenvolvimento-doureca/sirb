@@ -16,6 +16,8 @@ import { MANMOVMANUTENCAOEQUIPAMENTOSService } from 'app/servicos/man-mov-manute
 import { MANMOVMANUTENCAOCOMPONENTESService } from 'app/servicos/man-mov-manutencao-componentes.service';
 import { MANDICEQUIPASService } from 'app/servicos/man-dic-equipas.service';
 import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
+import { MANMOVMAQUINASPARADASService } from 'app/servicos/man-mov-maquinas-paradas.service';
+import { MAN_MOV_MAQUINAS_PARADAS } from 'app/entidades/MAN_MOV_MAQUINAS_PARADAS';
 
 @Component({
   selector: 'app-ficha-manutencao',
@@ -85,6 +87,7 @@ export class FichaManutencaoComponent implements OnInit {
   ID_PEDIDO: number;
   DATA_HORA_PEDIDO: any;
   TIPO_RESPONSAVEL: string;
+  STATUS_MAQUINA: string;
   UTILIZADOR: number;
   ID_EQUIPA: number;
   drop_equipas: any[];
@@ -98,6 +101,7 @@ export class FichaManutencaoComponent implements OnInit {
     private MANMOVMANUTENCAOCOMPONENTESService: MANMOVMANUTENCAOCOMPONENTESService,
     private MANDICEQUIPASService: MANDICEQUIPASService,
     private MANDICPISOSService: MANDICPISOSService,
+    private MANMOVMAQUINASPARADASService: MANMOVMAQUINASPARADASService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -336,6 +340,7 @@ export class FichaManutencaoComponent implements OnInit {
             this.DATA_HORA_PEDIDO = response[x].DATA_HORA_PEDIDO;
 
             this.TIPO_RESPONSAVEL = response[x].TIPO_RESPONSAVEL;
+            this.STATUS_MAQUINA = response[x].STATUS_MAQUINA;
             this.UTILIZADOR = response[x].UTILIZADOR;
             this.ID_EQUIPA = response[x].ID_EQUIPA;
 
@@ -545,6 +550,7 @@ export class FichaManutencaoComponent implements OnInit {
     ficha_manutencao.EQUIPAMENTO = this.EQUIPAMENTO;
     ficha_manutencao.DATA_HORA_PEDIDO = this.DATA_HORA_PEDIDO;
     ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
+    ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
     ficha_manutencao.UTILIZADOR = this.UTILIZADOR;
     ficha_manutencao.ID_EQUIPA = this.ID_EQUIPA;
 
@@ -567,7 +573,7 @@ export class FichaManutencaoComponent implements OnInit {
 
       this.MANMOVPEDIDOSService.create(ficha_manutencao).subscribe(
         res => {
-          if (ficha_manutencao.ESTADO == "V") this.cria_MANUTENCAO(res.ID_PEDIDO);
+          if (ficha_manutencao.ESTADO == "V") this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(res.ID_PEDIDO);
 
           var EQUIPAMENTO = "";
@@ -593,6 +599,7 @@ export class FichaManutencaoComponent implements OnInit {
             }
 
           }
+
           this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
             EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA)
         },
@@ -610,9 +617,10 @@ export class FichaManutencaoComponent implements OnInit {
       //console.log(ficha_manutencao)
       this.MANMOVPEDIDOSService.update(ficha_manutencao).subscribe(
         res => {
-          if (res.ESTADO == "V" && validar) this.cria_MANUTENCAO(res.ID_PEDIDO);
+          if (res.ESTADO == "V" && validar) this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(id);
           //this.gravarTabelaStocks(id);
+
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -620,9 +628,31 @@ export class FichaManutencaoComponent implements OnInit {
 
   }
 
-  cria_MANUTENCAO(id) {
+  criaSTATUS_MAQUINA(ID_PEDIDO, ID_EQUIPAMENTO) {
+    var status = new MAN_MOV_MAQUINAS_PARADAS;
+    status.DATA_INICIO = new Date();
+    status.ESTADO = 'P';
+    status.ID_PEDIDO = ID_PEDIDO;
+    status.ID_EQUIPAMENTO = ID_EQUIPAMENTO;
+    status.UTZ_ULT_MODIF = this.user;
+    status.DATA_ULT_MODIF = new Date();
+
+    status.UTZ_CRIA = this.user;
+    status.DATA_CRIA = new Date();
+
+
+    this.MANMOVMAQUINASPARADASService.create(status).subscribe(res => {
+
+    },
+      error => { console.log(error); });
+  }
+
+  cria_MANUTENCAO(id, id_equipamento) {
     this.MANMOVPEDIDOSService.MAN_CRIAR_MANUTENCOES_CORRETIVAS([{ ID_PEDIDO: id }]).subscribe(
       res => {
+        if (this.STATUS_MAQUINA == 'P') {
+          this.criaSTATUS_MAQUINA(id, id_equipamento);
+        }
         this.inicia(id);
       },
       error => { console.log(error); this.simular(this.inputerro); });
@@ -994,7 +1024,7 @@ export class FichaManutencaoComponent implements OnInit {
     } else {
       this.location.back();
     }
-    
+
   }
 
 
@@ -1035,7 +1065,7 @@ export class FichaManutencaoComponent implements OnInit {
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
       "\n/link::" + webUrl.host + '/#/lista_pedidos/view?id=' + N_PEDIDO +
-      "\n/DESCRICAO_PEDIDO::" + ((DESCRICAO_PEDIDO == null)? '': DESCRICAO_PEDIDO) +
+      "\n/DESCRICAO_PEDIDO::" + ((DESCRICAO_PEDIDO == null) ? '' : DESCRICAO_PEDIDO) +
       "\n/DATA_HORA_PEDIDO::" + DATA_HORA_PEDIDO +
       "\n/EQUIPAMENTO::" + EQUIPAMENTO +
       "\n/LOCALIZACAO::" + LOCALIZACAO +

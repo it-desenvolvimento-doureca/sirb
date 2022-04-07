@@ -813,9 +813,8 @@
 
       <div style="padding: 1px 5px 1px 10px; height: 62px;" class="form-group col-md-6 col-lg-6">
         <label>Ação:</label>
-        <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)" [options]="drop_accoes"
-          [style]="{'width':'100%' }" [(ngModel)]="id_ACCAO_Reabrir" [ngModelOptions]="{standalone: true}"
-          [disabled]="!modoedicao" appendTo="body">
+        <p-dropdown [filter]="true" [options]="drop_accoes" [style]="{'width':'100%' }" [(ngModel)]="id_ACCAO_Reabrir"
+          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" appendTo="body">
         </p-dropdown>
       </div>
       <div style="padding: 1px 5px 1px 10px; height: 62px; display: inline-table;"

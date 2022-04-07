@@ -87,10 +87,10 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
       this.tipo = "Q";
     }
 
-    if (this.tipo != "T") {
-      this.estado_filtro = ["Em Elaboração", "Em Execução", "Em Alteração", "Planeado", "Desenvolvido/ Realizado", "Controlado/ Verificado",];
-      this.filtrar(this.estado_filtro, "estado", true, "in");
-    }
+    //if (this.tipo != "T") {
+    this.estado_filtro = ["Em Elaboração", "Em Execução", "Em Alteração", "Planeado", "Desenvolvido/ Realizado", "Controlado/ Verificado"];
+    this.filtrar(this.estado_filtro, "estado", true, "in");
+    //}
 
     if (this.tipo == 'T') {
       this.globalVar.setcriar(false);
@@ -300,7 +300,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   }
 
   verTarefa(id_TAREFA) {
-    
+
     if (id_TAREFA != null) {
       this.id_tarefa_input = id_TAREFA;
       this.displayTarefa = true;

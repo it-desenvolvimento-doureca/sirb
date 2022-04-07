@@ -160,6 +160,7 @@ export class PisosComponent implements OnInit {
     this.id_depart_selected = event.data.id;
     this.id = event.data.id;
     this.descricao = event.data.descricao;
+    this.id_edificio = event.data.id_edificio;
     this.novo = false;
     this.dialognovo = true;
   }
