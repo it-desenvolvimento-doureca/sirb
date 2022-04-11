@@ -562,7 +562,7 @@ export class PaginatarefaComponent implements OnInit {
     var count = 0;
     var total = this.listasubtarefas.length;
     for (var x in this.listasubtarefas) {
-      if (this.listasubtarefas[x].campo_estado != 'P' && this.listasubtarefas[x].campo_estado != 'L' && this.listasubtarefas[x].campo_estado != 'E') count++;
+      if (this.listasubtarefas[x].campo_estado != 'A' && this.listasubtarefas[x].campo_estado != 'P' && this.listasubtarefas[x].campo_estado != 'L' && this.listasubtarefas[x].campo_estado != 'E') count++;
     }
 
     this.progresso = (this.listasubtarefas.length == 0) ? '0' : ((((count) / total) * 100).toFixed(0));
