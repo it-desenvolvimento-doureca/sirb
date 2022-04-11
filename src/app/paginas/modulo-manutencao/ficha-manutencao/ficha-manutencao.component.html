@@ -133,7 +133,7 @@
                         class="form-group col-md-6 col-lg-3">
                         <label>Status Máquina:</label>
                         <br>
-                        <select class="obrigatorio" [required]="REFERENTE_EQUIPAMENTO == 'S'"></select>
+                        <select class="obrigatorio" [required]="STATUS_MAQUINA == null && REFERENTE_EQUIPAMENTO == 'S'"></select>
                         <p-radioButton label="Parada" [disabled]="!modoedicao" name="status_maquina" value="P"
                           [required]="true" [(ngModel)]="STATUS_MAQUINA">
                         </p-radioButton>
