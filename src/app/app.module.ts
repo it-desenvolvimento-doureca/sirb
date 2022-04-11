@@ -404,6 +404,8 @@ import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from './servicos/rc-mov-
 import { MANMOVMANUTENCAOCABService } from './servicos/man-mov-manutencao-cab.service';
 import { MANMOVMAQUINASPARADASService } from './servicos/man-mov-maquinas-paradas.service';
 import { QuadroPedidosPendentesComponent } from './paginas/modulo-manutencao/quadro-pedidos-pendentes/quadro-pedidos-pendentes.component';
+import { PedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/pedidos-melhoria-manutencao/pedidos-melhoria-manutencao.component';
+import { ListaPedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/lista-pedidos-melhoria-manutencao/lista-pedidos-melhoria-manutencao.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1000,7 +1002,8 @@ const routes: Routes = [
   { path: 'pisos', component: PisosComponent, canActivate: [LoginService], data: { breadcrumb: "Pisos" } },
   { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
   { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
-  { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Ficha Manutenção" } },
+  { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
+  { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
   {
     path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedido de Manutenção" },
@@ -1009,6 +1012,15 @@ const routes: Routes = [
       { path: 'view', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'editar', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }
+    ]
+  },
+  {
+    path: 'lista_pedidos_melhoria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedidos de Melhoria / Investimento" },
+    children: [
+      { path: '', component: ListaPedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }
     ]
   },
 
@@ -1249,7 +1261,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     FormPlanosEstrategicosComponent,
     DashboardComponent,
     AnalisesdashboardComponent,
-    QuadroPedidosPendentesComponent
+    QuadroPedidosPendentesComponent,
+    PedidosMelhoriaManutencaoComponent,
+    ListaPedidosMelhoriaManutencaoComponent
   ],
   imports: [
     BrowserModule,

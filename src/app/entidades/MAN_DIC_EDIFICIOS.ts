@@ -6,4 +6,5 @@ export class MAN_DIC_EDIFICIOS {
     UTZ_ULT_MODIF: number;
     DATA_ULT_MODIF: Date;
     ATIVO: boolean;
+    UNIDADE: number;
 }

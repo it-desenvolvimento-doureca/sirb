@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { MAN_DIC_EDIFICIOS } from 'app/entidades/MAN_DIC_EDIFICIOS';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { GERLOCAISService } from 'app/servicos/ger-locais.service';
 import { MANDICEDIFICIOSService } from 'app/servicos/man-dic-edificios.service';
 import { ConfirmationService } from 'primeng/primeng';
 
@@ -29,8 +30,11 @@ export class EdificiosComponent implements OnInit {
   dados: any;
   descricao: any;
   id: any;
+  unidade: number;
+  locais: any[];
   constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
     private renderer: Renderer,
+    private GERLOCAISService: GERLOCAISService,
     private MANDICEDIFICIOSService: MANDICEDIFICIOSService) { }
 
   ngOnInit() {
@@ -55,9 +59,25 @@ export class EdificiosComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
-    this.listar_departs();
+    this.listalocais();
+
     //preenche combobox linhas
 
+  }
+
+  //listar Locais
+  listalocais() {
+    this.locais = [];
+    this.GERLOCAISService.getAll().subscribe(
+      response => {
+        this.locais.push({ value: "", label: "Selecionar Local" });
+        for (var x in response) {
+          this.locais.push({ value: response[x].id, label: response[x].descricao });
+        }
+        this.locais = this.locais.slice();
+        this.listar_departs();
+      },
+      error => { this.listar_departs(); console.log(error); });
   }
 
   //abre popup para adicionar depart
@@ -76,6 +96,7 @@ export class EdificiosComponent implements OnInit {
     if (!this.novo) depart = this.dados;
     depart.ID = this.id;
     depart.DESCRICAO = this.descricao;
+    depart.UNIDADE = this.unidade;
 
 
     depart.UTZ_ULT_MODIF = this.user;
@@ -107,8 +128,13 @@ export class EdificiosComponent implements OnInit {
     this.MANDICEDIFICIOSService.getAll().subscribe(
       response => {
         for (var x in response) {
+          var unidade = "";
+          if (this.locais.find(item => item.value == response[x].UNIDADE)) {
+            unidade = this.locais.find(item => item.value == response[x].UNIDADE).label;
+          }
           this.departs.push({
             id: response[x].ID, dados: response[x], descricao: response[x].DESCRICAO,
+            unidade: unidade
           });
         }
         this.departs = this.departs.slice();

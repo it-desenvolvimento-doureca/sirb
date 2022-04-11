@@ -850,9 +850,10 @@
 
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
-                    <div class="panel-heading" [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
                     || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true)
-                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true)  ">
+                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
                                 <span class="fa fa-wrench" style="margin-right: 12px;">
@@ -871,8 +872,23 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <li id="node11583" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/pedidos_melhoria']">Pedido de Melhoria / Inv.</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <li id="node11582" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/lista_pedidos']">Lista de Pedido de Manutenção</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11584" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/lista_pedidos_melhoria']">Lista de Pedido de
+                                                Melhoria</a>
                                         </li>
                                     </td>
                                 </tr>

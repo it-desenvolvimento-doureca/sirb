@@ -2,34 +2,27 @@ import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/cor
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
+import { MANDICEQUIPASService } from 'app/servicos/man-dic-equipas.service';
+import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { UploadService } from 'app/servicos/upload.service';
-import { ConfirmationService, FileUpload } from 'primeng/primeng';
 import { Location } from '@angular/common';
 import { webUrl } from 'assets/config/webUrl';
 import * as FileSaver from 'file-saver';
-import { MANMOVPEDIDOSService } from 'app/servicos/man-mov-pedidos.service';
-import { MAN_MOV_PEDIDOS } from 'app/entidades/MAN_MOV_PEDIDOS';
-import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
-import { MANMOVPEDIDOSDOCUMENTOSService } from 'app/servicos/man-mov-pedidos-documentos.service';
-import { MAN_MOV_PEDIDOS_DOCUMENTOS } from 'app/entidades/MAN_MOV_PEDIDOS_DOCUMENTOS';
+import { ConfirmationService, FileUpload } from 'primeng/primeng';
 import { MANMOVMANUTENCAOEQUIPAMENTOSService } from 'app/servicos/man-mov-manutencao-equipamentos.service';
 import { MANMOVMANUTENCAOCOMPONENTESService } from 'app/servicos/man-mov-manutencao-componentes.service';
-import { MANDICEQUIPASService } from 'app/servicos/man-dic-equipas.service';
-import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
-import { MANMOVMAQUINASPARADASService } from 'app/servicos/man-mov-maquinas-paradas.service';
-import { MAN_MOV_MAQUINAS_PARADAS } from 'app/entidades/MAN_MOV_MAQUINAS_PARADAS';
 
 @Component({
-  selector: 'app-ficha-manutencao',
-  templateUrl: './ficha-manutencao.component.html',
-  styleUrls: ['./ficha-manutencao.component.css']
+  selector: 'app-pedidos-melhoria-manutencao',
+  templateUrl: './pedidos-melhoria-manutencao.component.html',
+  styleUrls: ['./pedidos-melhoria-manutencao.component.css']
 })
-export class FichaManutencaoComponent implements OnInit {
+export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
   //drop_moradas = [];
   filedescricao = [];
   fileselectinput = [];
-
 
   user: any;
   user_nome: any;
@@ -41,8 +34,6 @@ export class FichaManutencaoComponent implements OnInit {
   data_CRIA;
   hora_CRIA;
   utz_CRIA;
-
-
 
   estado: string = 'P';
 
@@ -61,7 +52,6 @@ export class FichaManutencaoComponent implements OnInit {
   disValidar;
   btvalidar;
 
-  REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
   @ViewChild('inputgravou') inputgravou: ElementRef;
   @ViewChild('inputnotifi') inputnotifi: ElementRef;
@@ -74,10 +64,9 @@ export class FichaManutencaoComponent implements OnInit {
   nomeficheiro: any;
   type: string;
   display: boolean;
-  ficha_manutencao_dados: MAN_MOV_PEDIDOS;
+  //ficha_manutencao_dados: MAN_MOV_PEDIDOS;
   COMPONENTE: number;
   DESCRICAO_PEDIDO: string = null;
-  NOTAS_PLANEAMENTO: string = null;
   ID_RESPONSAVEL: number;
   LOCALIZACAO;
   EQUIPAMENTO: number;
@@ -92,19 +81,18 @@ export class FichaManutencaoComponent implements OnInit {
   UTILIZADOR: number;
   ID_EQUIPA: number;
   drop_equipas: any[];
-  displayverificar: boolean;
-  mensagem_verifica: string;
 
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
-    private MANMOVPEDIDOSService: MANMOVPEDIDOSService, private GERUTILIZADORESService: GERUTILIZADORESService,
+    //private MANMOVPEDIDOSService: MANMOVPEDIDOSService,
+    private GERUTILIZADORESService: GERUTILIZADORESService,
     private MANMOVMANUTENCAOEQUIPAMENTOSService: MANMOVMANUTENCAOEQUIPAMENTOSService,
-    private MANMOVPEDIDOSDOCUMENTOSService: MANMOVPEDIDOSDOCUMENTOSService,
+    //private MANMOVPEDIDOSDOCUMENTOSService: MANMOVPEDIDOSDOCUMENTOSService,
     private MANMOVMANUTENCAOCOMPONENTESService: MANMOVMANUTENCAOCOMPONENTESService,
     private MANDICEQUIPASService: MANDICEQUIPASService,
     private MANDICPISOSService: MANDICPISOSService,
-    private MANMOVMAQUINASPARADASService: MANMOVMAQUINASPARADASService,
+    //private MANMOVMAQUINASPARADASService: MANMOVMAQUINASPARADASService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -153,9 +141,9 @@ export class FichaManutencaoComponent implements OnInit {
             id = params['id'] || 0;
           });
 
-        this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582editar");
-        this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582criar");
-        this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582apagar");
+        this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11583editar");
+        this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11583criar");
+        this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11583apagar");
         //this.disValidar
       }
     }
@@ -271,12 +259,7 @@ export class FichaManutencaoComponent implements OnInit {
         for (var x in response) {
           this.drop_equipamentos.push({
             value: response[x].ID_MANUTENCAO,
-            label: response[x].NOME,
-            TIPO_EQUIPA: response[x].TIPO_EQUIPA,
-            EQUIPA: response[x].EQUIPA,
-            UTILIZADOR: response[x].UTILIZADOR,
-            TIPO_LOCALIZACAO: response[x].TIPO_LOCALIZACAO,
-            LOCALIZACAO: response[x].LOCALIZACAO,
+            label: response[x].NOME
           });
         }
 
@@ -285,38 +268,6 @@ export class FichaManutencaoComponent implements OnInit {
       error => console.log(error));
   }
 
-  getEquipamentos(event) {
-    this.EQUIPAMENTO = null;
-    this.COMPONENTE = null;
-    this.drop_equipamentos = [];
-    this.drop_componentes = [];
-    this.drop_equipamentos.push({ label: 'Sel. Equipamento', value: "" });
-    if (event.value != null && event.value != "") {
-
-      var LOCALIZACAO = event.value.substring(1);
-      var TIPO_LOCALIZACAO = event.value.charAt(0);
-      this.MANMOVMANUTENCAOEQUIPAMENTOSService.getAllLocalizacao(TIPO_LOCALIZACAO, LOCALIZACAO).subscribe(
-        response => {
-          var count = Object.keys(response).length;
-          for (var x in response) {
-            this.drop_equipamentos.push({
-              value: response[x].ID_MANUTENCAO,
-              label: response[x].NOME,
-              TIPO_EQUIPA: response[x].TIPO_EQUIPA,
-              EQUIPA: response[x].EQUIPA,
-              UTILIZADOR: response[x].UTILIZADOR,
-              TIPO_LOCALIZACAO: response[x].TIPO_LOCALIZACAO,
-              LOCALIZACAO: response[x].LOCALIZACAO,
-            });
-          }
-
-          this.drop_equipamentos = this.drop_equipamentos.slice();
-        },
-        error => console.log(error));
-    } else {
-      this.equipamentos();
-    }
-  }
 
   listar_equipas() {
     this.drop_equipas = [];
@@ -337,24 +288,7 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
 
-  componentes(event, valor = null, inicia = false) {
-
-    if (!inicia) {
-      var equipamento = this.drop_equipamentos.find(item => item.value == event.value);
-
-      if (equipamento && event.value != null && event.value != "") {
-        this.TIPO_RESPONSAVEL = equipamento.TIPO_EQUIPA;
-        this.ID_EQUIPA = equipamento.EQUIPA;
-        this.UTILIZADOR = equipamento.UTILIZADOR;
-        this.LOCALIZACAO = equipamento.TIPO_LOCALIZACAO + equipamento.LOCALIZACAO;
-      } else {
-        this.TIPO_RESPONSAVEL = null;
-        this.ID_EQUIPA = null;
-        this.UTILIZADOR = null;
-        this.LOCALIZACAO = null;
-      }
-    }
-
+  componentes(event, valor = null) {
     this.drop_componentes = [];
     this.COMPONENTE = null
     this.drop_componentes.push({ label: 'Sel. Componente', value: "" });
@@ -375,49 +309,48 @@ export class FichaManutencaoComponent implements OnInit {
 
 
   inicia(id) {
-
-    this.MANMOVPEDIDOSService.getbyID(id).subscribe(
-      response => {
-        var count = Object.keys(response).length;
-        //se existir banhos com o id
-        if (count > 0) {
-
-          for (var x in response) {
-            this.data_CRIA = new Date(response[x].DATA_CRIA);
-            this.hora_CRIA = new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5);
-            this.utz_CRIA = response[x].UTZ_CRIA;
-            this.ficha_manutencao_dados = response[x];
-
-            this.ID_PEDIDO = response[x].ID_PEDIDO;
-            this.COMPONENTE = response[x].COMPONENTE;
-            this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
-            this.NOTAS_PLANEAMENTO = response[x].NOTAS_PLANEAMENTO;
-            this.ID_RESPONSAVEL = response[x].ID_RESPONSAVEL;
-            this.LOCALIZACAO = ((response[x].TIPO_LOCALIZACAO == null) ? 'E' : response[x].TIPO_LOCALIZACAO) + response[x].LOCALIZACAO;
-            this.EQUIPAMENTO = response[x].EQUIPAMENTO;
-            this.DATA_HORA_PEDIDO = response[x].DATA_HORA_PEDIDO;
-
-            this.TIPO_RESPONSAVEL = response[x].TIPO_RESPONSAVEL;
-            this.STATUS_MAQUINA = response[x].STATUS_MAQUINA;
-            this.UTILIZADOR = response[x].UTILIZADOR;
-            this.ID_EQUIPA = response[x].ID_EQUIPA;
-
-            this.estado = response[x].ESTADO;
-            if (response[x].ESTADO == 'V') { this.bteditar = false; this.modoedicao = false; this.btvalidar = false; } else {
-              this.btvalidar = true;
+    /*
+        this.MANMOVPEDIDOSService.getbyID(id).subscribe(
+          response => {
+            var count = Object.keys(response).length;
+            //se existir banhos com o id
+            if (count > 0) {
+    
+              for (var x in response) {
+                this.data_CRIA = new Date(response[x].DATA_CRIA);
+                this.hora_CRIA = new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5);
+                this.utz_CRIA = response[x].UTZ_CRIA;
+                this.ficha_manutencao_dados = response[x];
+    
+                this.ID_PEDIDO = response[x].ID_PEDIDO;
+                this.COMPONENTE = response[x].COMPONENTE;
+                this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
+                this.ID_RESPONSAVEL = response[x].ID_RESPONSAVEL;
+                this.LOCALIZACAO = ((response[x].TIPO_LOCALIZACAO == null) ? 'E' : response[x].TIPO_LOCALIZACAO) + response[x].LOCALIZACAO;
+                this.EQUIPAMENTO = response[x].EQUIPAMENTO;
+                this.DATA_HORA_PEDIDO = response[x].DATA_HORA_PEDIDO;
+    
+                this.TIPO_RESPONSAVEL = response[x].TIPO_RESPONSAVEL;
+                this.STATUS_MAQUINA = response[x].STATUS_MAQUINA;
+                this.UTILIZADOR = response[x].UTILIZADOR;
+                this.ID_EQUIPA = response[x].ID_EQUIPA;
+    
+                this.estado = response[x].ESTADO;
+                if (response[x].ESTADO == 'V') { this.bteditar = false; this.modoedicao = false; this.btvalidar = false; } else {
+                  this.btvalidar = true;
+                }
+    
+              }
+              this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE);
+              this.carregatabelaFiles(id);
             }
-
-          }
-          this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
-          this.carregatabelaFiles(id);
-        }
-
-      }, error => { console.log(error); });
-
+    
+          }, error => { console.log(error); });
+    */
   }
 
   carregatabelaFiles(id) {
-    this.uploadedFiles = [];
+    /*this.uploadedFiles = [];
 
     this.MANMOVPEDIDOSDOCUMENTOSService.getbyID(id).subscribe(
       response => {
@@ -447,7 +380,7 @@ export class FichaManutencaoComponent implements OnInit {
         }
 
       }, error => { console.log(error); });
-
+*/
   }
 
   onUpload(event) {
@@ -505,21 +438,21 @@ export class FichaManutencaoComponent implements OnInit {
     var data = new Date();
 
     if (!this.novo) {
-      var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
-      ficheiros.DATA_CRIA = data;
-      ficheiros.UTZ_CRIA = this.user;
-      ficheiros.ID_PEDIDO = this.ID_PEDIDO;
-      ficheiros.CAMINHO = nome + '.' + tipo[1];
-      ficheiros.NOME = file.name;
-      ficheiros.TIPO = type;
-      ficheiros.DATATYPE = file.type;
-      ficheiros.TAMANHO = file.size;
-      ficheiros.DESCRICAO = this.filedescricao[x];
-      ficheiros.FICHEIRO_1 = ficheiro.substr(ficheiro, ficheiro.length / 2);
-      ficheiros.FICHEIRO_2 = ficheiro.substr(ficheiro.length / 2, ficheiro.length);
-      ficheiros.DATA_ULT_MODIF = new Date();
-      ficheiros.UTZ_ULT_MODIF = this.user;
-      this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);
+      /* var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
+       ficheiros.DATA_CRIA = data;
+       ficheiros.UTZ_CRIA = this.user;
+       ficheiros.ID_PEDIDO = this.ID_PEDIDO;
+       ficheiros.CAMINHO = nome + '.' + tipo[1];
+       ficheiros.NOME = file.name;
+       ficheiros.TIPO = type;
+       ficheiros.DATATYPE = file.type;
+       ficheiros.TAMANHO = file.size;
+       ficheiros.DESCRICAO = this.filedescricao[x];
+       ficheiros.FICHEIRO_1 = ficheiro.substr(ficheiro, ficheiro.length / 2);
+       ficheiros.FICHEIRO_2 = ficheiro.substr(ficheiro.length / 2, ficheiro.length);
+       ficheiros.DATA_ULT_MODIF = new Date();
+       ficheiros.UTZ_ULT_MODIF = this.user;
+       this.gravarTabelaFicheiros2(ficheiros, 0, 0, 0);*/
 
     } else {
       this.uploadedFiles.push({
@@ -582,13 +515,7 @@ export class FichaManutencaoComponent implements OnInit {
       header: 'Validação Confirmação',
       icon: 'fa fa-check',
       accept: () => {
-        if ((this.UTILIZADOR != null || this.ID_EQUIPA != null)) {
-          this.gravar(true);
-        } else {
-          this.displayverificar = true;
-          this.mensagem_verifica = "É necessário selecionar um Utilizador/Equipa.";
-        }
-
+        this.gravar(true);
       }
 
     });
@@ -596,138 +523,112 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
   gravar(validar = false) {
-
-    var ficha_manutencao = new MAN_MOV_PEDIDOS;
-
-    if (!this.novo) ficha_manutencao = this.ficha_manutencao_dados;
-
-    if (this.novo) ficha_manutencao.DATA_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
-    if (this.novo) ficha_manutencao.UTZ_CRIA = this.utz_CRIA;
-
-    if (this.REFERENTE_EQUIPAMENTO = 'N') {
-      this.EQUIPAMENTO == null
-      this.COMPONENTE == null
-    }
-
-
-    ficha_manutencao.ATIVO = true;
-    ficha_manutencao.COMPONENTE = this.COMPONENTE;
-    ficha_manutencao.DESCRICAO_PEDIDO = this.DESCRICAO_PEDIDO;
-    ficha_manutencao.NOTAS_PLANEAMENTO = this.NOTAS_PLANEAMENTO;
-    ficha_manutencao.ID_RESPONSAVEL = this.ID_RESPONSAVEL;
-    ficha_manutencao.LOCALIZACAO = this.LOCALIZACAO.substring(1);
-    ficha_manutencao.TIPO_LOCALIZACAO = this.LOCALIZACAO.charAt(0);
-    ficha_manutencao.EQUIPAMENTO = this.EQUIPAMENTO;
-    ficha_manutencao.DATA_HORA_PEDIDO = this.DATA_HORA_PEDIDO;
-    ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
-    ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
-    ficha_manutencao.UTILIZADOR = this.UTILIZADOR;
-    ficha_manutencao.ID_EQUIPA = this.ID_EQUIPA;
-
-    ficha_manutencao.UTZ_ULT_MODIF = this.user;
-    ficha_manutencao.DATA_ULT_MODIF = new Date();
-
-
-
-    if (validar == true) {
-      ficha_manutencao.ESTADO = "V";
-    } else if ((this.UTILIZADOR == null && this.ID_EQUIPA == null) && this.novo) {
-      ficha_manutencao.ESTADO = "P";
-    } else if ((this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.novo) {
-      ficha_manutencao.ESTADO = "V";
-    }
-
+    /*
+        var ficha_manutencao = new MAN_MOV_PEDIDOS;
+    
+        if (!this.novo) ficha_manutencao = this.ficha_manutencao_dados;
+    
+        if (this.novo) ficha_manutencao.DATA_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
+        if (this.novo) ficha_manutencao.UTZ_CRIA = this.utz_CRIA;
+    
+    
+        ficha_manutencao.ATIVO = true;
+        ficha_manutencao.COMPONENTE = this.COMPONENTE;
+        ficha_manutencao.DESCRICAO_PEDIDO = this.DESCRICAO_PEDIDO;
+        ficha_manutencao.ID_RESPONSAVEL = this.ID_RESPONSAVEL;
+        ficha_manutencao.LOCALIZACAO = this.LOCALIZACAO.substring(1);
+        ficha_manutencao.TIPO_LOCALIZACAO = this.LOCALIZACAO.charAt(0);
+        ficha_manutencao.EQUIPAMENTO = this.EQUIPAMENTO;
+        ficha_manutencao.DATA_HORA_PEDIDO = this.DATA_HORA_PEDIDO;
+        ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
+        ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
+        ficha_manutencao.UTILIZADOR = this.UTILIZADOR;
+        ficha_manutencao.ID_EQUIPA = this.ID_EQUIPA;
+    
+        ficha_manutencao.UTZ_ULT_MODIF = this.user;
+        ficha_manutencao.DATA_ULT_MODIF = new Date();
+    
+    
+        if (validar == true) {
+          ficha_manutencao.ESTADO = "V";
+        } else if (this.COMPONENTE == null && this.novo) {
+          ficha_manutencao.ESTADO = "P";
+        } else if (this.COMPONENTE != null && this.novo) {
+          ficha_manutencao.ESTADO = "V";
+        }
+    */
 
     if (this.novo) {
 
       //console.log(ficha_manutencao)
 
-      this.MANMOVPEDIDOSService.create(ficha_manutencao).subscribe(
-        res => {
-          if (ficha_manutencao.ESTADO == "V") this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
-          this.gravarTabelaFicheiros(res.ID_PEDIDO);
-
-          var EQUIPAMENTO = "";
-          var LOCALIZACAO = "";
-          var EQUIPA_UTILIZADOR = "";
-          var EMAIL_PARA = "";
-          if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
-            EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
-          }
-          if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
-            LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
-          }
-
-          if (this.TIPO_RESPONSAVEL == 'U') {
-            if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
-              EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
-              EMAIL_PARA = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).email;
-
-            }
-          } else if (this.TIPO_RESPONSAVEL == 'E') {
-            if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
-              EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
-            }
-
-          }
-
-          this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA)
-        },
-        error => { console.log(error); this.simular(this.inputerro); });
-
+      /* this.MANMOVPEDIDOSService.create(ficha_manutencao).subscribe(
+         res => {
+           if (ficha_manutencao.ESTADO == "V") this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
+           this.gravarTabelaFicheiros(res.ID_PEDIDO);
+ 
+           var EQUIPAMENTO = "";
+           var LOCALIZACAO = "";
+           var EQUIPA_UTILIZADOR = "";
+           var EMAIL_PARA = "";
+           if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+             EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+           }
+           if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+             LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+           }
+ 
+           if (this.TIPO_RESPONSAVEL == 'U') {
+             if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+               EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+               EMAIL_PARA = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).email;
+ 
+             }
+           } else if (this.TIPO_RESPONSAVEL == 'E') {
+             if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+               EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+             }
+ 
+           }
+ 
+           this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
+             EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA)
+         },
+         error => { console.log(error); this.simular(this.inputerro); });
+ */
     } else {
-      var id;
-      var sub = this.route
-        .queryParams
-        .subscribe(params => {
-          id = params['id'] || 0;
-        });
-
-      ficha_manutencao.ID_PEDIDO = id;
-      //console.log(ficha_manutencao)
-      this.MANMOVPEDIDOSService.update(ficha_manutencao).subscribe(
-        res => {
-          if (res.ESTADO == "V" && validar) this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
-          this.gravarTabelaFicheiros(id);
-          //this.gravarTabelaStocks(id);
-
-        },
-        error => { console.log(error); this.simular(this.inputerro); });
-
+      /*  var id;
+        var sub = this.route
+          .queryParams
+          .subscribe(params => {
+            id = params['id'] || 0;
+          });
+  
+        ficha_manutencao.ID_PEDIDO = id;
+        //console.log(ficha_manutencao)
+        this.MANMOVPEDIDOSService.update(ficha_manutencao).subscribe(
+          res => {
+            if (res.ESTADO == "V" && validar) this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
+            this.gravarTabelaFicheiros(id);
+            //this.gravarTabelaStocks(id);
+  
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+  */
     }
 
   }
 
-  criaSTATUS_MAQUINA(ID_PEDIDO, ID_EQUIPAMENTO) {
-    var status = new MAN_MOV_MAQUINAS_PARADAS;
-    status.DATA_INICIO = new Date();
-    status.ESTADO = 'P';
-    status.ID_PEDIDO = ID_PEDIDO;
-    status.ID_EQUIPAMENTO = ID_EQUIPAMENTO;
-    status.UTZ_ULT_MODIF = this.user;
-    status.DATA_ULT_MODIF = new Date();
 
-    status.UTZ_CRIA = this.user;
-    status.DATA_CRIA = new Date();
-
-
-    this.MANMOVMAQUINASPARADASService.create(status).subscribe(res => {
-
-    },
-      error => { console.log(error); });
-  }
-
-  cria_MANUTENCAO(id, id_equipamento) {
-    this.MANMOVPEDIDOSService.MAN_CRIAR_MANUTENCOES_CORRETIVAS([{ ID_PEDIDO: id, POSICAO: null }]).subscribe(
-      res => {
-        if (this.STATUS_MAQUINA == 'P') {
-          this.criaSTATUS_MAQUINA(id, id_equipamento);
-        }
-        this.inicia(id);
-      },
-      error => { console.log(error); this.simular(this.inputerro); });
-  }
+  /*
+    cria_MANUTENCAO(id, id_equipamento) {
+      this.MANMOVPEDIDOSService.MAN_CRIAR_MANUTENCOES_CORRETIVAS([{ ID_PEDIDO: id, POSICAO: null  }]).subscribe(
+        res => {
+         
+          this.inicia(id);
+        },
+        error => { console.log(error); this.simular(this.inputerro); });
+    }*/
 
 
 
@@ -735,7 +636,7 @@ export class FichaManutencaoComponent implements OnInit {
     if (this.novo && this.uploadedFiles && this.uploadedFiles.length > 0) {
       var count = 0;
       for (var x in this.uploadedFiles) {
-        var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
+        /*var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
         var novo = false;
         if (this.uploadedFiles[x].id != null) {
           ficheiros = this.uploadedFiles[x].data;
@@ -797,12 +698,12 @@ export class FichaManutencaoComponent implements OnInit {
             }
             this.simular(this.inputgravou);
           }
-        }
+        }*/
 
       }
     } else {
 
-      for (var x in this.uploadedFiles) {
+      /*for (var x in this.uploadedFiles) {
         var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
         if (this.uploadedFiles[x].id != null) {
           ficheiros = this.uploadedFiles[x].data;
@@ -856,7 +757,7 @@ export class FichaManutencaoComponent implements OnInit {
           this.router.navigate(['lista_pedidos/view'], { queryParams: { id: id } });
         }
         this.simular(this.inputgravou);
-      }
+      }*/
     }
 
   }
@@ -867,31 +768,31 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
   apagar() {
-
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende apagar?',
-      header: 'Apagar Confirmação',
-      icon: 'fa fa-trash',
-      accept: () => {
-        var ficha_manutencao = new MAN_MOV_PEDIDOS;
-
-        ficha_manutencao = this.ficha_manutencao_dados;
-
-        ficha_manutencao.UTZ_ULT_MODIF = this.user;
-        ficha_manutencao.DATA_ULT_MODIF = new Date();
-        ficha_manutencao.ATIVO = false;
-        ficha_manutencao.ESTADO = "R";
-
-        this.MANMOVPEDIDOSService.update(ficha_manutencao).subscribe(
-          res => {
-            this.router.navigate(['lista_pedidos']);
-            this.simular(this.inputapagar);
-          },
-          error => { console.log(error); this.simular(this.inputerro); });
-
-      }
-
-    });
+    /*
+        this.confirmationService.confirm({
+          message: 'Tem a certeza que pretende apagar?',
+          header: 'Apagar Confirmação',
+          icon: 'fa fa-trash',
+          accept: () => {
+            var ficha_manutencao = new MAN_MOV_PEDIDOS;
+    
+            ficha_manutencao = this.ficha_manutencao_dados;
+    
+            ficha_manutencao.UTZ_ULT_MODIF = this.user;
+            ficha_manutencao.DATA_ULT_MODIF = new Date();
+            ficha_manutencao.ATIVO = false;
+            ficha_manutencao.ESTADO = "R";
+    
+            this.MANMOVPEDIDOSService.update(ficha_manutencao).subscribe(
+              res => {
+                this.router.navigate(['lista_pedidos']);
+                this.simular(this.inputapagar);
+              },
+              error => { console.log(error); this.simular(this.inputerro); });
+    
+          }
+    
+        });*/
   }
 
   imprimir(relatorio, id) {
@@ -932,7 +833,7 @@ export class FichaManutencaoComponent implements OnInit {
     this.simular(this.buttongravar);
   }
 
-  gravarTabelaFicheiros2(ficheiros: MAN_MOV_PEDIDOS_DOCUMENTOS, count, total, id) {
+  /*gravarTabelaFicheiros2(ficheiros: MAN_MOV_PEDIDOS_DOCUMENTOS, count, total, id) {
 
     this.MANMOVPEDIDOSDOCUMENTOSService.update(ficheiros).then(
       res => {
@@ -950,7 +851,7 @@ export class FichaManutencaoComponent implements OnInit {
       },
       error => { console.log(error); });
 
-  }
+  }*/
 
 
 
@@ -1061,7 +962,7 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
   removerficheiro(index) {
-    var tab = this.uploadedFiles[index];
+    /*var tab = this.uploadedFiles[index];
     if (tab.id == null) {
       this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
     } else {
@@ -1070,7 +971,7 @@ export class FichaManutencaoComponent implements OnInit {
           this.uploadedFiles = this.uploadedFiles.slice(0, index).concat(this.uploadedFiles.slice(index + 1));
         },
         error => { console.log(error); this.simular(this.inputerro); });
-    }
+    }*/
 
   }
 

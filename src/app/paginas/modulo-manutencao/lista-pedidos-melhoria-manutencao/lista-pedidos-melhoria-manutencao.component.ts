@@ -1,15 +1,14 @@
-import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
-import { MANMOVPEDIDOSService } from 'app/servicos/man-mov-pedidos.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 @Component({
-  selector: 'app-lista-pedidos',
-  templateUrl: './lista-pedidos.component.html',
-  styleUrls: ['./lista-pedidos.component.css']
+  selector: 'app-lista-pedidos-melhoria-manutencao',
+  templateUrl: './lista-pedidos-melhoria-manutencao.component.html',
+  styleUrls: ['./lista-pedidos-melhoria-manutencao.component.css']
 })
-export class ListaPedidosComponent implements OnInit {
+export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
   mensagemtabela: string;
   acessoplaneamento = true;
   filtro2: any;
@@ -31,12 +30,12 @@ export class ListaPedidosComponent implements OnInit {
   COMPONENTE;
   ESTADO;
   RESPONSAVEL;
-  estados = [{ value: 'Pendente', label: 'Pendente' }, { value: 'Validado', label: 'Validado' }];
+  estados = [];
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
-  constructor(private MANMOVPEDIDOSService: MANMOVPEDIDOSService
-    , private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+  constructor(//private MANMOVPEDIDOSService: MANMOVPEDIDOSService,
+    private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
     this.filtroval = true;
@@ -44,7 +43,7 @@ export class ListaPedidosComponent implements OnInit {
     if (array) {
 
 
-      this.filtro2 = (array[''] != undefined) ? array['ESTADO'].value : null;
+      this.filtro2 = (array['ESTADO'] != undefined) ? array['ESTADO'].value : null;
 
       this.dataTableComponent.filters = array;
 
@@ -62,14 +61,7 @@ export class ListaPedidosComponent implements OnInit {
         }
         this.filtroval = false;
       }
-
-    } else {
-      this.filtro = ["Pendente"];
-      this.filtrar(this.filtro, "ESTADO", true, "in");
-
     }
-
-
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.cols = [];
@@ -85,9 +77,9 @@ export class ListaPedidosComponent implements OnInit {
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
     this.globalVar.setdisCriarmanutencao(true);
-    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582editar"));
-    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582criar"));
-    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582apagar"));
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584apagar"));
 
 
 
@@ -101,7 +93,7 @@ export class ListaPedidosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVPEDIDOSService.getAll2().subscribe(
+    /*this.MANMOVPEDIDOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -122,7 +114,7 @@ export class ListaPedidosComponent implements OnInit {
         this.cols = this.cols.slice();
 
       },
-      error => console.log(error));
+      error => console.log(error));*/
 
   }
 
