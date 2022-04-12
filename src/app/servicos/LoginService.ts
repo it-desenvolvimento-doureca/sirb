@@ -49,7 +49,7 @@ export class LoginService implements CanActivate {
         node028: "tipologia_dosificadores", node029: "dosificacao", node0261: 'dosificadores', node170: 'planosestrategicos',
         node1611: 'planosestrategicosengenaria', node1631: 'planosestrategicosproducao', node1641: 'planosestrategicoslogistica', node1651: 'planosestrategicosmanutencao', node1671: 'planosestrategicosComercial', node1681: 'planosestrategicosProjetos',
         node1691: 'planosestrategicosFinanceira', node1661: 'planosestrategicosinjecao', node1621: 'planosestrategicosqualidade', node17012: 'analise_planosestrategicos'
-        , node22: 'analisesdashboard', node11592: 'quadro_pedidos_pendentes', node11593: 'pedidos_melhoria', node11594: 'lista_pedidos_melhoria'
+        , node22: 'analisesdashboard', node11592: 'quadro_pedidos_pendentes', node11583: 'pedidos_melhoria', node11584: 'lista_pedidos_melhoria'
     };
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

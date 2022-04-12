@@ -53,7 +53,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
-            <h4 style="position: absolute;" class="title">Pedidos de Melhoria / Investimento </h4>
+            <h4 style="position: absolute;" class="title">Pedidos de Melhoria / Investimento</h4>
 
           </div>
           <div class="card-content">
@@ -88,42 +88,61 @@
                     </div>
 
 
-
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
-                      <label>Equipamento:</label>
-                      <br>
-                      <p-dropdown [filter]="true" [options]="drop_equipamentos" (onChange)="componentes($event)"
-                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="EQUIPAMENTO"
-                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
-                    </div>
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
-                      <label>Componente:</label>
-                      <br>
-                      <p-dropdown [filter]="true" [options]="drop_componentes"
-                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="COMPONENTE"
-                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
-                    </div>
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-3">
                       <label>Localização:</label>
                       <br>
-                      <p-dropdown [filter]="true" [options]="drop_localizacoes"
+                      <p-dropdown [filter]="true" [options]="drop_localizacoes" (onChange)="getEquipamentos($event)"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="LOCALIZACAO"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
 
+
                     <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
-                      <label>Status Máquina:</label>
+                      <label>Referente a um Equipamento?</label>
                       <br>
-                      <select class="obrigatorio" [required]="EQUIPAMENTO != null"></select>
-                      <p-radioButton label="Parada" [disabled]="!modoedicao" name="status_maquina" value="P"
-                        [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                      <p-radioButton label="Sim" [disabled]="!modoedicao" name="REFERENTE_EQUIPAMENTO" value="S"
+                        [required]="true" [(ngModel)]="REFERENTE_EQUIPAMENTO">
                       </p-radioButton>
-                      <p-radioButton label="Em funcionamento" [disabled]="!modoedicao" name="status_maquina" value="E"
-                        [style]="{'margin-left':'10px'}" [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                      <p-radioButton label="Não" [disabled]="!modoedicao" name="REFERENTE_EQUIPAMENTO" value="N"
+                        [style]="{'margin-left':'10px'}" [required]="true" [(ngModel)]="REFERENTE_EQUIPAMENTO">
                       </p-radioButton>
                     </div>
+
+                    <div class="col-md-12" style="padding: 0;">
+
+                      <div *ngIf="REFERENTE_EQUIPAMENTO == 'S'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-3 col-lg-3">
+                        <label>Equipamento:</label>
+                        <br>
+                        <p-dropdown [filter]="true" [options]="drop_equipamentos" (onChange)="componentes($event)"
+                          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="EQUIPAMENTO"
+                          [required]="REFERENTE_EQUIPAMENTO == 'S'" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao"></p-dropdown>
+                      </div>
+                      <div *ngIf="REFERENTE_EQUIPAMENTO == 'S'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-4 col-lg-4">
+                        <label>Componente:</label>
+                        <br>
+                        <p-dropdown [filter]="true" [options]="drop_componentes"
+                          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="COMPONENTE"
+                          [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
+                      </div>
+
+
+                      <!--div *ngIf="REFERENTE_EQUIPAMENTO == 'S'" style="padding: 6px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
+                        <label>Status Máquina:</label>
+                        <br>
+                        <select class="obrigatorio" [required]="STATUS_MAQUINA == null && REFERENTE_EQUIPAMENTO == 'S'"></select>
+                        <p-radioButton label="Parada" [disabled]="!modoedicao" name="status_maquina" value="P"
+                          [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                        </p-radioButton>
+                        <p-radioButton label="Em funcionamento" [disabled]="!modoedicao" name="status_maquina" value="E"
+                          [style]="{'margin-left':'10px'}" [required]="true" [(ngModel)]="STATUS_MAQUINA">
+                        </p-radioButton>
+                      </div-->
+                    </div>
+
 
                     <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
                       <label>Tipo Utilizador:</label>
@@ -156,6 +175,14 @@
                       <label>Descrição do Pedido:</label>
                       <br>
                       <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="DESCRICAO_PEDIDO"
+                        class="form-control2" [ngModelOptions]="{standalone: true}"
+                        style="height: 71px; width: 100%;"></textarea>
+                    </div>
+
+                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <label>Notas de Planeamento:</label>
+                      <br>
+                      <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="NOTAS_PLANEAMENTO"
                         class="form-control2" [ngModelOptions]="{standalone: true}"
                         style="height: 71px; width: 100%;"></textarea>
                     </div>
@@ -303,4 +330,21 @@
       autoplay="" controls="">Video
       format or MIME type is not supported</video>
   </div>
+</p-dialog>
+
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="500"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar"
+  [modal]="true" styleClass="dialog_index2">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
 </p-dialog>

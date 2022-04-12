@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { MANMOVPEDIDOSMELHORIAService } from 'app/servicos/man-mov-pedidos-melhoria.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 @Component({
@@ -34,12 +35,12 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
-  constructor(//private MANMOVPEDIDOSService: MANMOVPEDIDOSService,
+  constructor(private MANMOVPEDIDOSMELHORIAService: MANMOVPEDIDOSMELHORIAService,
     private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
     this.filtroval = true;
-    var array = this.globalVar.getfiltros("lista_pedidos");
+    var array = this.globalVar.getfiltros("lista_pedidos_melhoria");
     if (array) {
 
 
@@ -93,7 +94,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    /*this.MANMOVPEDIDOSService.getAll2().subscribe(
+    this.MANMOVPEDIDOSMELHORIAService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -114,7 +115,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
         this.cols = this.cols.slice();
 
       },
-      error => console.log(error));*/
+      error => console.log(error));
 
   }
 
@@ -161,7 +162,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("lista_pedidos", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("lista_pedidos_melhoria", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
@@ -173,7 +174,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("lista_pedidos_id", ids);
+      this.globalVar.setfiltros("lista_pedidos_melhoria_id", ids);
     }, 250);
   }
 
@@ -186,12 +187,12 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
       ids.push(array[x].ID_PEDIDO);
     }
 
-    this.globalVar.setfiltros("lista_pedidos_id", ids);
+    this.globalVar.setfiltros("lista_pedidos_melhoria_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['lista_pedidos/view'], { queryParams: { id: event.data.ID_PEDIDO } });
+    this.router.navigate(['lista_pedidos_melhoria/view'], { queryParams: { id: event.data.ID_PEDIDO } });
   }
 
   //simular click para mostrar mensagem

@@ -406,6 +406,8 @@ import { MANMOVMAQUINASPARADASService } from './servicos/man-mov-maquinas-parada
 import { QuadroPedidosPendentesComponent } from './paginas/modulo-manutencao/quadro-pedidos-pendentes/quadro-pedidos-pendentes.component';
 import { PedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/pedidos-melhoria-manutencao/pedidos-melhoria-manutencao.component';
 import { ListaPedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/lista-pedidos-melhoria-manutencao/lista-pedidos-melhoria-manutencao.component';
+import { MANMOVPEDIDOSMELHORIAService } from './servicos/man-mov-pedidos-melhoria.service';
+import { MANMOVPEDIDOSMELHORIADOCUMENTOSService } from './servicos/man-mov-pedidos-melhoria-documentos.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1514,6 +1516,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANMOVMANUTENCAOCABService,
     MANMOVMAQUINASPARADASService,
     RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
+    MANMOVPEDIDOSMELHORIAService,
+    MANMOVPEDIDOSMELHORIADOCUMENTOSService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 
