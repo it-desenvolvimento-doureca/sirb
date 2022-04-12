@@ -461,7 +461,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.drop_utilizadores = [];
     this.GERUTILIZADORESService.getAll().subscribe(
       response => {
-        this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: null });
+        this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: '' });
         var grupo = [];
         for (var x in response) {
           this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, email: response[x].email, value: response[x].id_UTILIZADOR });

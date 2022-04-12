@@ -88,6 +88,11 @@
                           [disabled]="!modoedicao"></p-dropdown>
                       </div>
 
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <label>Descrição da Manutenção:</label>
+                        <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
+                          [(ngModel)]="DESCRICAO_MANUTENCAO" required [ngModelOptions]="{standalone: true}">
+                      </div>
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
                         <label>Localização:</label>
@@ -362,12 +367,6 @@
 
                   <!--  -->
                   <div class="tab-pane fade in" id="tab4">
-
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
-                      <label>Descrição da Manutenção:</label>
-                      <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
-                        [(ngModel)]="DESCRICAO_MANUTENCAO" required [ngModelOptions]="{standalone: true}">
-                    </div>
 
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                       styleClass="ExcelTable2007">

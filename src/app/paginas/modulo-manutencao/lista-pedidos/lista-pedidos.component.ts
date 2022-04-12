@@ -31,7 +31,7 @@ export class ListaPedidosComponent implements OnInit {
   COMPONENTE;
   ESTADO;
   RESPONSAVEL;
-  estados = [{ value: 'Pendente', label: 'Pendente' }, { value: 'Validado', label: 'Validado' }];
+  estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' }, { value: 'Pendente', label: 'Pendente' }, { value: 'Validado', label: 'Validado' }, { value: 'Anulado', label: 'Anulado' }];
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
@@ -64,7 +64,7 @@ export class ListaPedidosComponent implements OnInit {
       }
 
     } else {
-      this.filtro = ["Pendente"];
+      this.filtro = ["Em Elaboração", "Pendente"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }
@@ -131,7 +131,12 @@ export class ListaPedidosComponent implements OnInit {
       return 'Pendente';
     } else if (valor == 'V') {
       return 'Validado';
+    } else if (valor == 'A') {
+      return 'Anulado';
+    } else if (valor == 'E') {
+      return 'Em Elaboração';
     }
+
 
     return 'Pendente';
   }

@@ -266,7 +266,7 @@ export class ReunioesFormComponent implements OnInit {
     reuniao.responsavel = this.responsavel;
 
 
-    reuniao.hora_REUNIAO = this.data_REUNIAO;
+    reuniao.hora_REUNIAO = this.hora_REUNIAO;
     reuniao.data_REUNIAO = this.data_REUNIAO;
 
     reuniao.utz_MODIF = this.user;

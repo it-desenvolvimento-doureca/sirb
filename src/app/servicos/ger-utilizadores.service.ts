@@ -68,6 +68,14 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAcessoResponsavel(user): Observable<GER_UTILIZADORES[]> {
+    const url = webUrl.host + '/rest/sirb/getAcessoResponsavel/' + user + '';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getGER_UTILIZADORESLDAP() {
     const url = webUrl.host + '/rest/sirb/getGER_UTILIZADORESLDAP';
     return this.http

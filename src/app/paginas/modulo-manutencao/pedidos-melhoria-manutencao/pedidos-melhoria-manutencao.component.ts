@@ -59,6 +59,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   disValidar;
   btvalidar;
 
+  disSubmeter;
+  btsubmeter;
+
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
   @ViewChild('inputgravou') inputgravou: ElementRef;
@@ -92,6 +95,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   drop_equipas: any[];
   displayverificar: boolean;
   mensagem_verifica: string;
+  acesso_responsavel = false;
 
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
@@ -127,6 +131,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.user_nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
     this.adminuser = JSON.parse(localStorage.getItem('userapp'))["admin"];
+
 
     var url = this.router.routerState.snapshot.url;
     url = url.slice(1);
@@ -171,6 +176,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         this.novo = true;
         this.bteditar = false;
         this.btvalidar = false;
+        this.btsubmeter = false;
         this.modoedicao = true;
         this.btfechar = false;
         var dirtyFormID = 'formReclama';
@@ -198,6 +204,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       this.novo = true;
       this.bteditar = false;
       this.btvalidar = false;
+      this.btsubmeter = false;
       this.modoedicao = true;
       this.btfechar = false;
       var dirtyFormID = 'formReclama';
@@ -210,6 +217,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       this.DATA_HORA_PEDIDO = this.data_CRIA;
     }
 
+    this.getacessoresponsavel();
     this.carregaDados(false, null);
     if (!this.novo) {
       this.inicia(id);
@@ -217,7 +225,15 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   }
 
 
-
+  getacessoresponsavel() {
+    this.GERUTILIZADORESService.getAcessoResponsavel(this.user).subscribe(
+      response => {
+        var acesso_responsavel = response;
+        this.acesso_responsavel = acesso_responsavel || this.adminuser;
+      },
+      error => {
+      });
+  }
 
   carregaDados(inicia, id) {
 
@@ -400,8 +416,17 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             this.ID_EQUIPA = response[x].ID_EQUIPA;
 
             this.estado = response[x].ESTADO;
-            if (response[x].ESTADO == 'V') { this.bteditar = false; this.modoedicao = false; this.btvalidar = false; } else {
+            if (response[x].ESTADO == 'V') {
+              this.bteditar = false;
+              this.modoedicao = false;
+              this.btvalidar = false;
+              this.btsubmeter = false;
+            } else if (response[x].ESTADO == 'E') {
+              this.btsubmeter = true;
+              this.btvalidar = false;
+            } else {
               this.btvalidar = true;
+              this.btsubmeter = false;
             }
 
           }
@@ -592,7 +617,23 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
   }
 
-  gravar(validar = false) {
+  submeter() {
+
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende Submeter?',
+      header: 'Validação Confirmação',
+      icon: 'fa fa-check',
+      accept: () => {
+
+        this.gravar(false, true);
+
+      }
+
+    });
+
+  }
+
+  gravar(validar = false, submeter = false) {
 
     var ficha_manutencao = new MAN_MOV_PEDIDOS_MELHORIA;
 
@@ -625,15 +666,41 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     ficha_manutencao.DATA_ULT_MODIF = new Date();
 
 
-
-    if (validar == true) {
+    if (submeter == true) {
+      ficha_manutencao.ESTADO = "P";
+    } else if (validar == true) {
       ficha_manutencao.ESTADO = "V";
     } else if ((this.UTILIZADOR == null && this.ID_EQUIPA == null) && this.novo) {
-      ficha_manutencao.ESTADO = "P";
+      ficha_manutencao.ESTADO = "E";
+      //ficha_manutencao.ESTADO = "P";
     } else if ((this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.novo) {
-      ficha_manutencao.ESTADO = "V";
+      //ficha_manutencao.ESTADO = "V";
+      ficha_manutencao.ESTADO = "E";
     }
 
+    var EQUIPAMENTO = "";
+    var LOCALIZACAO = "";
+    var EQUIPA_UTILIZADOR = "";
+    var EMAIL_PARA = "";
+    if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+      EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+    }
+    if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+      LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+    }
+
+    if (this.TIPO_RESPONSAVEL == 'U') {
+      if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+        EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+        EMAIL_PARA = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).email;
+
+      }
+    } else if (this.TIPO_RESPONSAVEL == 'E') {
+      if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+        EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+      }
+
+    }
 
     if (this.novo) {
 
@@ -644,32 +711,10 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           if (ficha_manutencao.ESTADO == "V") this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(res.ID_PEDIDO);
 
-          var EQUIPAMENTO = "";
-          var LOCALIZACAO = "";
-          var EQUIPA_UTILIZADOR = "";
-          var EMAIL_PARA = "";
-          if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
-            EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
-          }
-          if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
-            LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
-          }
 
-          if (this.TIPO_RESPONSAVEL == 'U') {
-            if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
-              EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
-              EMAIL_PARA = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).email;
 
-            }
-          } else if (this.TIPO_RESPONSAVEL == 'E') {
-            if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
-              EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
-            }
-
-          }
-
-          this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA)
+          if (submeter) this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -687,6 +732,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         res => {
           if (res.ESTADO == "V" && validar) this.cria_MANUTENCAO(res.ID_PEDIDO, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(id);
+
+          if (submeter) this.sendemail(res.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + new Date(this.DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
           //this.gravarTabelaStocks(id);
 
         },
@@ -877,7 +925,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         ficha_manutencao.UTZ_ULT_MODIF = this.user;
         ficha_manutencao.DATA_ULT_MODIF = new Date();
         ficha_manutencao.ATIVO = false;
-        ficha_manutencao.ESTADO = "R";
+        ficha_manutencao.ESTADO = "A";
 
         this.MANMOVPEDIDOSMELHORIAService.update(ficha_manutencao).subscribe(
           res => {
