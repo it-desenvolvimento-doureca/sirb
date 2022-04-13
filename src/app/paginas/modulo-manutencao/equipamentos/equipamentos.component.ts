@@ -22,7 +22,7 @@ export class EquipamentosComponent implements OnInit {
   disduplicar: boolean = true;
   id: any;
   user: any;
- 
+
   data_actual: Date;
   cols: any[];
   filtro = [];
@@ -40,11 +40,11 @@ export class EquipamentosComponent implements OnInit {
   ngOnInit() {
     this.estados = [{ label: "Ativo", value: true }, { label: "Inativo", value: false }];
 
-    this.filtroval = true;
+    this.filtroval = false;
     var array = this.globalVar.getfiltros("equipamentos_manutencao");
-    this.filtro.push(true)
+    //this.filtro.push(true)
     if (array) {
-     
+
       this.filtro2 = (array['ativo'] != undefined) ? array['ativo'].value : null;
 
       this.dataTableComponent.filters = array;
@@ -141,7 +141,7 @@ export class EquipamentosComponent implements OnInit {
       this.dataTableComponent.filters[x].value = "";
     }
     this.filtro = [];
-    this.id_MANUTENCAO = ""; 
+    this.id_MANUTENCAO = "";
     this.localizacao = "";
     this.nome = "";
     this.referencia = "";

@@ -50,7 +50,7 @@ export class BusinessanalyticsComponent implements OnInit {
         filterPaneEnabled: true,
         navContentPaneEnabled: true,
         localeSettings: {
-          language: "en-GB",
+          language: "pt-PT",
           formatLocale: "pt-PT"
         }
 

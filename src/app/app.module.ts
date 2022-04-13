@@ -408,6 +408,8 @@ import { PedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/
 import { ListaPedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/lista-pedidos-melhoria-manutencao/lista-pedidos-melhoria-manutencao.component';
 import { MANMOVPEDIDOSMELHORIAService } from './servicos/man-mov-pedidos-melhoria.service';
 import { MANMOVPEDIDOSMELHORIADOCUMENTOSService } from './servicos/man-mov-pedidos-melhoria-documentos.service';
+import { NiveisCriticidadeComponent } from './paginas/modulo-manutencao/parametros/niveis-criticidade/niveis-criticidade.component';
+import { MANDICNIVEISCRITICIDADEService } from './servicos/man-dic-niveis-criticidade.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1003,7 +1005,8 @@ const routes: Routes = [
   { path: 'edificios', component: EdificiosComponent, canActivate: [LoginService], data: { breadcrumb: "Edifícios" } },
   { path: 'pisos', component: PisosComponent, canActivate: [LoginService], data: { breadcrumb: "Pisos" } },
   { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
-  { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
+  { path: 'niveis_criticidade', component: NiveisCriticidadeComponent, canActivate: [LoginService], data: { breadcrumb: "Níveis de Criticidade" } },
+  { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Equipas Manutenção" } },
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
@@ -1265,7 +1268,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     AnalisesdashboardComponent,
     QuadroPedidosPendentesComponent,
     PedidosMelhoriaManutencaoComponent,
-    ListaPedidosMelhoriaManutencaoComponent
+    ListaPedidosMelhoriaManutencaoComponent,
+    NiveisCriticidadeComponent
   ],
   imports: [
     BrowserModule,
@@ -1518,6 +1522,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
     MANMOVPEDIDOSMELHORIAService,
     MANMOVPEDIDOSMELHORIADOCUMENTOSService,
+    MANDICNIVEISCRITICIDADEService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

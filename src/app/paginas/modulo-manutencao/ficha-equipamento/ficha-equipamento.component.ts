@@ -34,6 +34,7 @@ import { GERDEPARTAMENTOService } from 'app/servicos/ger-departamento.service';
 import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 import { ABMOVMANUTENCAOCABService } from 'app/servicos/ab-mov-manutencao-cab.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
+import { MANDICNIVEISCRITICIDADEService } from 'app/servicos/man-dic-niveis-criticidade.service';
 
 @Component({
   selector: 'app-ficha-equipamento',
@@ -47,6 +48,7 @@ export class FichaEquipamentoComponent implements OnInit {
   NOME: string = null;
   DESCRICAO_MANUTENCAO = null;
   COD_EQUIPAMENTO_PRINCIPAL = null;
+  NIVEL_CRITICIDADE = null;
   LOCALIZACAO = null;
   GRAU_IMPORTANCIA: number = null;
   EQUIPA: number = null;
@@ -136,6 +138,7 @@ export class FichaEquipamentoComponent implements OnInit {
   mensagemtabela: string;
   displaylocalizacaostock: boolean;
   tabela_historico: any;
+  drop_niveis: any[];
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -151,6 +154,7 @@ export class FichaEquipamentoComponent implements OnInit {
     private GERDEPARTAMENTOService: GERDEPARTAMENTOService,
     private GERUTILIZADORESService: GERUTILIZADORESService,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
+    private MANDICNIVEISCRITICIDADEService: MANDICNIVEISCRITICIDADEService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
 
   ngOnInit() {
@@ -254,6 +258,7 @@ export class FichaEquipamentoComponent implements OnInit {
         this.DESCRICAO_MANUTENCAO = response[0].DESCRICAO_MANUTENCAO
         this.LOCALIZACAO = response[0].TIPO_LOCALIZACAO + response[0].LOCALIZACAO;
         this.COD_EQUIPAMENTO_PRINCIPAL = response[0].COD_EQUIPAMENTO_PRINCIPAL;
+        this.NIVEL_CRITICIDADE = response[0].NIVEL_CRITICIDADE;
         this.EQUIPA = response[0].EQUIPA;
         this.GARANTIA = response[0].GARANTIA;
         this.TIPO_EQUIPA = (response[0].TIPO_EQUIPA == null) ? 'E' : response[0].TIPO_EQUIPA;
@@ -300,12 +305,18 @@ export class FichaEquipamentoComponent implements OnInit {
         var count = Object.keys(response).length;
         if (count > 0) {
           for (var x in response) {
+            var data = (response[x][4] == null) ? null : this.formatDate(response[x][4]) + " " + new Date(response[x][4]).toLocaleTimeString();
+
+            if (response[x][0] == 'P') {
+              data = (response[x][5] == null) ? null : this.formatDate(response[x][5]) + " " + new Date(response[x][5]).toLocaleTimeString();
+            }
+
             this.tabela_historico.push({
               tipo_manutencao: (response[x][0] == 'C') ? 'Corretiva' : 'Preventiva',
               estado: this.estadosManutencoes(response[x][1]),
               data_inicio: (response[x][2] == null) ? null : this.formatDate(response[x][2]) + " " + new Date(response[x][2]).toLocaleTimeString(),
               data_fim: (response[x][3] == null) ? null : this.formatDate(response[x][3]) + " " + new Date(response[x][3]).toLocaleTimeString(),
-              data_pedido: (response[x][4] == null) ? null : this.formatDate(response[x][4]) + " " + new Date(response[x][4]).toLocaleTimeString(),
+              data_pedido: data
             });
           }
         } else {
@@ -435,6 +446,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.listar_utilizadores();
     this.listar_localizacao();
     this.listar_equipamentos(id);
+    this.listar_niveis();
     this.carregarDepartamentos();
     this.fornecedores();
   }
@@ -523,6 +535,28 @@ export class FichaEquipamentoComponent implements OnInit {
         }
 
         this.drop_equipamentos = this.drop_equipamentos.slice();
+      },
+      error => console.log(error));
+  }
+
+
+  listar_niveis() {
+
+    this.drop_niveis = [];
+    this.drop_niveis.push({ label: 'Sel. Nível de Criticidade', value: "" });
+    this.MANDICNIVEISCRITICIDADEService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        for (var x in response) {
+
+          this.drop_niveis.push({
+            value: response[x].ID,
+            label: response[x].DESCRICAO + ' ( ' + response[x].NIVEL + ' )'
+          });
+
+        }
+
+        this.drop_niveis = this.drop_niveis.slice();
       },
       error => console.log(error));
   }
@@ -1307,6 +1341,7 @@ export class FichaEquipamentoComponent implements OnInit {
     if (!this.novo) equipamento = this.equipamento_dados;
 
     equipamento.COD_EQUIPAMENTO_PRINCIPAL = this.COD_EQUIPAMENTO_PRINCIPAL;
+    equipamento.NIVEL_CRITICIDADE = this.NIVEL_CRITICIDADE;
     equipamento.EQUIPA = this.EQUIPA;
     equipamento.TIPO_EQUIPA = this.TIPO_EQUIPA;
     equipamento.UTILIZADOR = this.UTILIZADOR;

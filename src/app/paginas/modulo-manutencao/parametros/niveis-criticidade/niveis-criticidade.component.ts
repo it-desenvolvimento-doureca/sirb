@@ -1,17 +1,15 @@
 import { Component, OnInit, Renderer } from '@angular/core';
-import { MAN_DIC_EDIFICIOS } from 'app/entidades/MAN_DIC_EDIFICIOS';
+import { MAN_DIC_NIVEIS_CRITICIDADE } from 'app/entidades/MAN_DIC_NIVEIS_CRITICIDADE';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
-import { GERLOCAISService } from 'app/servicos/ger-locais.service';
-import { MANDICEDIFICIOSService } from 'app/servicos/man-dic-edificios.service';
+import { MANDICNIVEISCRITICIDADEService } from 'app/servicos/man-dic-niveis-criticidade.service';
 import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
-  selector: 'app-edificios',
-  templateUrl: './edificios.component.html',
-  styleUrls: ['./edificios.component.css']
+  selector: 'app-niveis-criticidade',
+  templateUrl: './niveis-criticidade.component.html',
+  styleUrls: ['./niveis-criticidade.component.css']
 })
-export class EdificiosComponent implements OnInit {
-
+export class NiveisCriticidadeComponent implements OnInit {
   user: any;
   utilizadores: any[];
   novo: boolean;
@@ -30,12 +28,12 @@ export class EdificiosComponent implements OnInit {
   dados: any;
   descricao: any;
   id: any;
-  unidade: number;
-  locais: any[];
+  nivel: number;
+  num_existe: boolean;
+  class_numexiste: string;
   constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
     private renderer: Renderer,
-    private GERLOCAISService: GERLOCAISService,
-    private MANDICEDIFICIOSService: MANDICEDIFICIOSService) { }
+    private MANDICNIVEISCRITICIDADEService: MANDICNIVEISCRITICIDADEService) { }
 
   ngOnInit() {
 
@@ -59,26 +57,11 @@ export class EdificiosComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
-    this.listalocais();
-
-    //preenche combobox linhas
+    this.listar_departs();
 
   }
 
-  //listar Locais
-  listalocais() {
-    this.locais = [];
-    this.GERLOCAISService.getAll().subscribe(
-      response => {
-        this.locais.push({ value: "", label: "Selecionar Local" });
-        for (var x in response) {
-          this.locais.push({ value: response[x].id, label: response[x].descricao });
-        }
-        this.locais = this.locais.slice();
-        this.listar_departs();
-      },
-      error => { this.listar_departs(); console.log(error); });
-  }
+
 
   //abre popup para adicionar depart
   showDialogToAdd() {
@@ -86,34 +69,61 @@ export class EdificiosComponent implements OnInit {
     this.id_depart_selected = 0;
     this.id = null;
     this.descricao = null;
+    this.num_existe = false;
+    this.class_numexiste = "";
     this.dialognovo = true;
   }
 
 
-  //gravar unidade de depart
+  //gravar nivel de depart
   gravar() {
-    var depart = new MAN_DIC_EDIFICIOS;
+    this.MANDICNIVEISCRITICIDADEService.getbyNIVEL(this.nivel).subscribe(
+      response => {
+        var encontrou = false;
+        for (var x in response) {
+
+          if (this.novo) {
+            encontrou = true;
+          } else if (this.id != response[x].ID) {
+            encontrou = true;
+          }
+
+        }
+
+        if (encontrou) {
+          this.num_existe = true;
+          this.class_numexiste = "num_existe";
+        } else {
+          this.gravar2();
+        }
+      },
+      error => console.log(error));
+
+  }
+
+
+  gravar2() {
+    var depart = new MAN_DIC_NIVEIS_CRITICIDADE;
     if (!this.novo) depart = this.dados;
     depart.ID = this.id;
     depart.DESCRICAO = this.descricao;
-    depart.UNIDADE = this.unidade;
+    depart.NIVEL = this.nivel;
 
 
     depart.UTZ_ULT_MODIF = this.user;
     depart.DATA_ULT_MODIF = new Date();
-
     if (this.novo) {
       depart.UTZ_CRIA = this.user;
       depart.DATA_CRIA = new Date();
       depart.ATIVO = true;
-      this.MANDICEDIFICIOSService.create(depart).subscribe(response => {
+      this.MANDICNIVEISCRITICIDADEService.create(depart).subscribe(response => {
         this.listar_departs();
         this.dialognovo = false;
       },
         error => console.log(error));
     } else {
       depart.ID = this.id_depart_selected;
-      this.MANDICEDIFICIOSService.update(depart).then(() => {
+      this.MANDICNIVEISCRITICIDADEService.update(depart).then(() => {
         this.listar_departs();
         this.dialognovo = false;
       });
@@ -125,16 +135,13 @@ export class EdificiosComponent implements OnInit {
   //listar os dados na tabela
   listar_departs() {
     this.departs = [];
-    this.MANDICEDIFICIOSService.getAll().subscribe(
+    this.MANDICNIVEISCRITICIDADEService.getAll().subscribe(
       response => {
         for (var x in response) {
-          var unidade = "";
-          if (this.locais.find(item => item.value == response[x].UNIDADE)) {
-            unidade = this.locais.find(item => item.value == response[x].UNIDADE).label;
-          }
+
           this.departs.push({
             id: response[x].ID, dados: response[x], descricao: response[x].DESCRICAO,
-            unidade: unidade
+            nivel: response[x].NIVEL
           });
         }
         this.departs = this.departs.slice();
@@ -156,13 +163,13 @@ export class EdificiosComponent implements OnInit {
       icon: 'fa fa-trash',
       key: 'conf001',
       accept: () => {
-        var depart = new MAN_DIC_EDIFICIOS;
+        var depart = new MAN_DIC_NIVEIS_CRITICIDADE;
         depart = this.dados;
         depart.ATIVO = false;
         depart.DATA_ULT_MODIF = new Date();
         depart.UTZ_ULT_MODIF = this.user;
 
-        this.MANDICEDIFICIOSService.update(depart).then(() => {
+        this.MANDICNIVEISCRITICIDADEService.update(depart).then(() => {
           this.listar_departs();
           this.dialognovo = false;
         });
@@ -181,9 +188,11 @@ export class EdificiosComponent implements OnInit {
     this.dados = event.data.dados;
     this.id_depart_selected = event.data.id;
     this.id = event.data.id;
-    this.unidade = event.data.unidade;
     this.descricao = event.data.descricao;
-    this.novo = false;
+    this.nivel = event.data.nivel;
+    this.novo = false;    
+    this.num_existe = false;
+    this.class_numexiste = "";
     this.dialognovo = true;
   }
 

@@ -43,7 +43,7 @@ export class LoginService implements CanActivate {
         node9211: 'dias_producao', node9212: 'capacidade_acabamento', node9213: 'capacidade_racks', node9214: 'semanas_analise', node99: 'planeamento_producao',
         node23103: 'causas_acidente', node23102: 'epis', node55: 'auditorias', node561: 'derrogacoes', node23104: 'tipo_auditoria',
         node1612_10: 'sectores_absentismo', node1612: 'sectores_absentismo_financeira', node1584: 'analise_clientes', node16211: 'runioes', node162101: 'ambitos_reunioes',
-        node11111: 'analiseenvios', node1162101: 'equipasmanutencao', node1163101: 'edificios', node1164101: 'pisos', node1165101: 'divisoes',
+        node11111: 'analiseenvios', node1162101: 'equipasmanutencao', node1163101: 'edificios', node1164101: 'pisos', node1165101: 'divisoes', node1166101: 'niveis_criticidade',
         node11581: 'ficha_manutencao', node11591: 'equipamentos_manutencao', node11582: 'lista_pedidos', node1604: 'evolucao_dividas',
         node15850: 'comercial_contratos', node15851: 'comercial_referencias', node15852: 'comercial_acordos', node1586: 'analise_acordos', node09: 'business_analytics',
         node028: "tipologia_dosificadores", node029: "dosificacao", node0261: 'dosificadores', node170: 'planosestrategicos',
