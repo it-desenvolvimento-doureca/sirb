@@ -18,4 +18,9 @@ export class MAN_MOV_PEDIDOS {
     ID_EQUIPA: number;
     STATUS_MAQUINA: string;
     NOTAS_PLANEAMENTO: string;
+    CLASSIFICACAO: string;
+    COD_FORNECEDOR: string;
+    NOME_FORNECEDOR: string;
+    EMAIL_FORNECEDOR: string;
+    AMBITO_MANUTENCAO: number;
 }

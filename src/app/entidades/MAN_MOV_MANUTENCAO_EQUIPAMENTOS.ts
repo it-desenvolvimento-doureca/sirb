@@ -17,4 +17,8 @@ export class MAN_MOV_MANUTENCAO_EQUIPAMENTOS {
     UTILIZADOR: number;
     DESCRICAO_MANUTENCAO: string;
     NIVEL_CRITICIDADE: number;
+    AMBITO_MANUTENCAO: number;
+    COD_FORNECEDOR: string;
+    NOME_FORNECEDOR: string;
+    EMAIL_FORNECEDOR: string;
 }

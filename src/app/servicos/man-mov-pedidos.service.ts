@@ -27,8 +27,8 @@ export class MANMOVPEDIDOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getAll2(): Observable<MAN_MOV_PEDIDOS[]> {
-    const url = webUrl.host + '/rest/sirb/getMAN_MOV_PEDIDOS2';
+  getAll2(CLASSIFICACAO): Observable<MAN_MOV_PEDIDOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_PEDIDOS2/'+CLASSIFICACAO;
     return this.http
       .get(url)
       .map(this.extractData)

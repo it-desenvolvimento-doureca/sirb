@@ -35,6 +35,7 @@ import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 import { ABMOVMANUTENCAOCABService } from 'app/servicos/ab-mov-manutencao-cab.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 import { MANDICNIVEISCRITICIDADEService } from 'app/servicos/man-dic-niveis-criticidade.service';
+import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
 
 @Component({
   selector: 'app-ficha-equipamento',
@@ -49,6 +50,7 @@ export class FichaEquipamentoComponent implements OnInit {
   DESCRICAO_MANUTENCAO = null;
   COD_EQUIPAMENTO_PRINCIPAL = null;
   NIVEL_CRITICIDADE = null;
+  AMBITO_MANUTENCAO = null;
   LOCALIZACAO = null;
   GRAU_IMPORTANCIA: number = null;
   EQUIPA: number = null;
@@ -139,6 +141,10 @@ export class FichaEquipamentoComponent implements OnInit {
   displaylocalizacaostock: boolean;
   tabela_historico: any;
   drop_niveis: any[];
+  drop_ambitos_manutencao: any[];
+  COD_FORNECEDOR: string;
+  NOME_FORNECEDOR: string;
+  EMAIL_FORNECEDOR: string;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -155,6 +161,7 @@ export class FichaEquipamentoComponent implements OnInit {
     private GERUTILIZADORESService: GERUTILIZADORESService,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
     private MANDICNIVEISCRITICIDADEService: MANDICNIVEISCRITICIDADEService,
+    private MANDICAMBITOSService: MANDICAMBITOSService,
     private globalVar: AppGlobals, private router: Router, private UploadService: UploadService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService) { }
 
   ngOnInit() {
@@ -259,10 +266,14 @@ export class FichaEquipamentoComponent implements OnInit {
         this.LOCALIZACAO = response[0].TIPO_LOCALIZACAO + response[0].LOCALIZACAO;
         this.COD_EQUIPAMENTO_PRINCIPAL = response[0].COD_EQUIPAMENTO_PRINCIPAL;
         this.NIVEL_CRITICIDADE = response[0].NIVEL_CRITICIDADE;
+        this.AMBITO_MANUTENCAO = response[0].AMBITO_MANUTENCAO;
         this.EQUIPA = response[0].EQUIPA;
         this.GARANTIA = response[0].GARANTIA;
         this.TIPO_EQUIPA = (response[0].TIPO_EQUIPA == null) ? 'E' : response[0].TIPO_EQUIPA;
         this.UTILIZADOR = response[0].UTILIZADOR;
+        this.COD_FORNECEDOR = response[0].COD_FORNECEDOR;
+        this.NOME_FORNECEDOR = response[0].NOME_FORNECEDOR;
+        this.EMAIL_FORNECEDOR = response[0].EMAIL_FORNECEDOR;
 
         this.DATA_VALIDADE = (response[0].DATA_VALIDADE != null) ? new Date(response[0].DATA_VALIDADE) : null;
         this.equipamento_dados = response[0];
@@ -447,9 +458,11 @@ export class FichaEquipamentoComponent implements OnInit {
     this.listar_localizacao();
     this.listar_equipamentos(id);
     this.listar_niveis();
+    this.listar_ambitos_manutencao();
     this.carregarDepartamentos();
     this.fornecedores();
   }
+
 
   listar_equipas() {
     this.drop_equipas = [];
@@ -539,6 +552,26 @@ export class FichaEquipamentoComponent implements OnInit {
       error => console.log(error));
   }
 
+  listar_ambitos_manutencao() {
+
+    this.drop_ambitos_manutencao = [];
+    this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
+    this.MANDICAMBITOSService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        for (var x in response) {
+
+          this.drop_ambitos_manutencao.push({
+            value: response[x].ID,
+            label: response[x].NOME
+          });
+
+        }
+
+        this.drop_ambitos_manutencao = this.drop_ambitos_manutencao.slice();
+      },
+      error => console.log(error));
+  }
 
   listar_niveis() {
 
@@ -568,7 +601,7 @@ export class FichaEquipamentoComponent implements OnInit {
         this.drop_fornecedor = [];
         this.drop_fornecedor.push({ label: 'Sel. Fornecedor.', value: "" });
         for (var x in response) {
-          this.drop_fornecedor.push({ label: response[x].FOUCOD + " - " + response[x].ADRNOM, value: response[x].FOUCOD });
+          this.drop_fornecedor.push({ label: response[x].FOUCOD + " - " + response[x].ADRNOM, nome: response[x].ADRNOM, email: response[x].ADRNUMINT, value: response[x].FOUCOD });
         }
         this.drop_fornecedor = this.drop_fornecedor.slice();
 
@@ -686,7 +719,7 @@ export class FichaEquipamentoComponent implements OnInit {
       data_ULTIMA_REALIZADA: null,
       data_PROXIMA_REALIZADA: null,
       data_INICIO: null,
-      hora_INICIO: null, tempo_ESTIMADO: null
+      hora_INICIO: null, tempo_ESTIMADO: '00:00'
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1342,6 +1375,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
     equipamento.COD_EQUIPAMENTO_PRINCIPAL = this.COD_EQUIPAMENTO_PRINCIPAL;
     equipamento.NIVEL_CRITICIDADE = this.NIVEL_CRITICIDADE;
+    equipamento.AMBITO_MANUTENCAO = this.AMBITO_MANUTENCAO;
     equipamento.EQUIPA = this.EQUIPA;
     equipamento.TIPO_EQUIPA = this.TIPO_EQUIPA;
     equipamento.UTILIZADOR = this.UTILIZADOR;
@@ -1351,7 +1385,9 @@ export class FichaEquipamentoComponent implements OnInit {
     equipamento.TIPO_LOCALIZACAO = this.LOCALIZACAO.charAt(0);
     equipamento.NOME = this.NOME;
     equipamento.DESCRICAO_MANUTENCAO = this.DESCRICAO_MANUTENCAO;
-
+    equipamento.COD_FORNECEDOR = this.COD_FORNECEDOR;
+    equipamento.NOME_FORNECEDOR = this.NOME_FORNECEDOR;
+    equipamento.EMAIL_FORNECEDOR = this.EMAIL_FORNECEDOR;
 
     equipamento.UTZ_ULT_MODIF = this.user;
     equipamento.DATA_ULT_MODIF = new Date();
@@ -1983,6 +2019,15 @@ export class FichaEquipamentoComponent implements OnInit {
 
         },
         error => { console.log(error); });
+    }
+  }
+
+  fornecedor(event) {
+    this.NOME_FORNECEDOR = null;
+    this.EMAIL_FORNECEDOR = null;
+    if (event.value != null && event.value != "") {
+      this.NOME_FORNECEDOR = this.drop_fornecedor.find(item => item.value == event.value).nome;
+      this.EMAIL_FORNECEDOR = this.drop_fornecedor.find(item => item.value == event.value).email;
     }
   }
 }

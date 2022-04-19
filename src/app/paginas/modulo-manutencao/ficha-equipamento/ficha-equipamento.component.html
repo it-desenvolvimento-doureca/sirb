@@ -95,10 +95,13 @@
                           [(ngModel)]="NIVEL_CRITICIDADE" [ngModelOptions]="{standalone: true}"
                           [disabled]="!modoedicao"></p-dropdown>
                       </div>
-                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-9 col-lg-9">
-                        <label>Descrição da Manutenção:</label>
-                        <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
-                          [(ngModel)]="DESCRICAO_MANUTENCAO" required [ngModelOptions]="{standalone: true}">
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                        <label>Âmbito Manutenção</label>
+                        <p-dropdown [options]="drop_ambitos_manutencao" [required]="true"
+                          [style]="{'width':'100%','height':'25px','background':'white'}"
+                          [(ngModel)]="AMBITO_MANUTENCAO" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao"></p-dropdown>
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
@@ -116,13 +119,17 @@
                           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="GRAU_IMPORTANCIA"
                           [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
                       </div-->
-                      <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
+                      <div style="padding: 6px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
                         <p-radioButton label="Equipa" [disabled]="!modoedicao" name="tipo_equipa" value="E"
                           [(ngModel)]="TIPO_EQUIPA">
                         </p-radioButton>
                         <br>
                         <p-radioButton label="Utilizador" [disabled]="!modoedicao" name="tipo_equipa" value="U"
                           [(ngModel)]="TIPO_EQUIPA">
+                        </p-radioButton>
+
+                        <p-radioButton label="Externo" [disabled]="!modoedicao" name="tipo_equipa" value="EX"
+                          [style]="{'margin-left':'10px'}" [(ngModel)]="TIPO_EQUIPA">
                         </p-radioButton>
                       </div>
 
@@ -139,6 +146,28 @@
                         <p-dropdown [filter]="true" [options]="drop_utilizadores" [disabled]="!modoedicao"
                           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="UTILIZADOR"
                           [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+                      </div>
+                      <div *ngIf="TIPO_EQUIPA == 'EX'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
+                        <label>Utilizador Externo:</label>
+                        <p-dropdown [filter]="true" [options]="drop_fornecedor" [disabled]="!modoedicao"
+                          (onChange)="fornecedor($event)"
+                          [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="COD_FORNECEDOR"
+                          [ngModelOptions]="{standalone: true}" [required]="true"></p-dropdown>
+                      </div>
+
+                      <div *ngIf="TIPO_EQUIPA == 'EX'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
+                        <label>Nome:</label>
+                        <input [disabled]="true" style="width: 100%;" type="text" class="form-control2"
+                          [(ngModel)]="NOME_FORNECEDOR" [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div *ngIf="TIPO_EQUIPA == 'EX'" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-6 col-lg-3">
+                        <label>Email:</label>
+                        <input [disabled]="true" style="width: 100%;" type="text" class="form-control2"
+                          [(ngModel)]="EMAIL_FORNECEDOR" [ngModelOptions]="{standalone: true}">
                       </div>
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-1">
@@ -263,12 +292,10 @@
                         </ng-template>
                       </p-column>
 
-                      <p-column [editable]="true" field="nivel" header="Nível">
-                        <ng-template let-col let-car="rowData" pTemplate="editor">
-                          <input [disabled]="!modoedicao" [(ngModel)]="car['nivel']"
-                            [ngModelOptions]="{standalone: true}"
-                            class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
-                            type="text">
+                      <p-column [editable]="false" field="nivel" header="Nível">
+                        <ng-template let-col let-car="rowData" pTemplate="body" let-index="rowIndex">
+                          <p-dropdown [options]="drop_niveis" [style]="{'width':'100%'}" [(ngModel)]="car['nivel']"
+                            appendTo="body" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
                         </ng-template>
                       </p-column>
 
@@ -374,7 +401,11 @@
 
                   <!--  -->
                   <div class="tab-pane fade in" id="tab4">
-
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <label>Descrição da Manutenção:</label>
+                      <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
+                        [(ngModel)]="DESCRICAO_MANUTENCAO" [ngModelOptions]="{standalone: true}">
+                    </div>
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                       styleClass="ExcelTable2007">
 

@@ -406,10 +406,11 @@ import { MANMOVMAQUINASPARADASService } from './servicos/man-mov-maquinas-parada
 import { QuadroPedidosPendentesComponent } from './paginas/modulo-manutencao/quadro-pedidos-pendentes/quadro-pedidos-pendentes.component';
 import { PedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/pedidos-melhoria-manutencao/pedidos-melhoria-manutencao.component';
 import { ListaPedidosMelhoriaManutencaoComponent } from './paginas/modulo-manutencao/lista-pedidos-melhoria-manutencao/lista-pedidos-melhoria-manutencao.component';
-import { MANMOVPEDIDOSMELHORIAService } from './servicos/man-mov-pedidos-melhoria.service';
-import { MANMOVPEDIDOSMELHORIADOCUMENTOSService } from './servicos/man-mov-pedidos-melhoria-documentos.service';
 import { NiveisCriticidadeComponent } from './paginas/modulo-manutencao/parametros/niveis-criticidade/niveis-criticidade.component';
 import { MANDICNIVEISCRITICIDADEService } from './servicos/man-dic-niveis-criticidade.service';
+import { AmbitosManutencaoComponent } from './paginas/modulo-manutencao/parametros/ambitos-manutencao/ambitos-manutencao.component';
+import { MANDICAMBITOSService } from './servicos/man-dic-ambitos.service';
+import { MANDICAMBITOUTILIZADORESService } from './servicos/man-dic-ambito-utilizadores.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1007,11 +1008,12 @@ const routes: Routes = [
   { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
   { path: 'niveis_criticidade', component: NiveisCriticidadeComponent, canActivate: [LoginService], data: { breadcrumb: "Níveis de Criticidade" } },
   { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Equipas Manutenção" } },
+  { path: 'ambitosmanutencao', component: AmbitosManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Âmbitos Manutenção" } },
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
   {
-    path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedido de Manutenção" },
+    path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido de Manutenção" },
     children: [
       { path: '', component: ListaPedidosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -1020,7 +1022,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'lista_pedidos_melhoria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Pedidos de Melhoria / Investimento" },
+    path: 'lista_pedidos_melhoria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" },
     children: [
       { path: '', component: ListaPedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'view', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -1269,7 +1271,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     QuadroPedidosPendentesComponent,
     PedidosMelhoriaManutencaoComponent,
     ListaPedidosMelhoriaManutencaoComponent,
-    NiveisCriticidadeComponent
+    NiveisCriticidadeComponent,
+    AmbitosManutencaoComponent
   ],
   imports: [
     BrowserModule,
@@ -1520,9 +1523,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANMOVMANUTENCAOCABService,
     MANMOVMAQUINASPARADASService,
     RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
-    MANMOVPEDIDOSMELHORIAService,
-    MANMOVPEDIDOSMELHORIADOCUMENTOSService,
     MANDICNIVEISCRITICIDADEService,
+    MANDICAMBITOSService,
+    MANDICAMBITOUTILIZADORESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

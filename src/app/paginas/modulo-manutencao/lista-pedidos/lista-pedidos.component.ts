@@ -101,7 +101,7 @@ export class ListaPedidosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVPEDIDOSService.getAll2().subscribe(
+    this.MANMOVPEDIDOSService.getAll2('P').subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {

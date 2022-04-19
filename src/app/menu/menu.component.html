@@ -851,7 +851,7 @@
                 <!-- MENU Manutencao -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                        [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
                     || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true)
                     || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
                         <h4 class="panel-title">
@@ -865,19 +865,19 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <li id="node11581" data-toggle="collapse" [routerLinkActive]="['active']">
-                                            <a [routerLink]="['/ficha_manutencao']">Pedido de Manutenção</a>
+                                        <li id="node11582" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/lista_pedidos']">Pedidos de Manutenção</a>
                                         </li>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <li id="node11583" data-toggle="collapse" [routerLinkActive]="['active']">
-                                            <a [routerLink]="['/pedidos_melhoria']">Pedido de Melhoria / Inv.</a>
+                                        <li id="node11584" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/lista_pedidos_melhoria']">Pedidos de Melhoria / Inv.</a>
                                         </li>
                                     </td>
                                 </tr>
-                                <tr>
+                                <!--tr>
                                     <td>
                                         <li id="node11582" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/lista_pedidos']">Lista de Pedido de Manutenção</a>
@@ -891,7 +891,7 @@
                                                 Melhoria</a>
                                         </li>
                                     </td>
-                                </tr>
+                                </tr-->
                                 <tr>
                                     <td>
                                         <li id="node11591" data-toggle="collapse" [routerLinkActive]="['active']">
@@ -925,7 +925,7 @@
                                     <td>
                                         <li id="node116210" data-toggle="collapse" data-target="#parametrosmanutencao"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
+                                            [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/edificios',true)
                                             || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) }">
 
                                             <a>Parâmetros
@@ -953,6 +953,10 @@
                                             <li id="node1166101" [routerLinkActive]="['active']"
                                                 [routerLink]="['/niveis_criticidade']">
                                                 <a>Níveis de Criticidade</a>
+                                            </li>
+                                            <li id="node1167101" [routerLinkActive]="['active']"
+                                                [routerLink]="['/ambitosmanutencao']">
+                                                <a>Âmbitos Manutenção</a>
                                             </li>
 
                                         </ul>

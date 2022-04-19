@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
-import { MANMOVPEDIDOSMELHORIAService } from 'app/servicos/man-mov-pedidos-melhoria.service';
+import { MANMOVPEDIDOSService } from 'app/servicos/man-mov-pedidos.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 @Component({
@@ -35,7 +35,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
-  constructor(private MANMOVPEDIDOSMELHORIAService: MANMOVPEDIDOSMELHORIAService,
+  constructor(private MANMOVPEDIDOSService: MANMOVPEDIDOSService,
     private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -98,7 +98,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVPEDIDOSMELHORIAService.getAll2().subscribe(
+    this.MANMOVPEDIDOSService.getAll2('M').subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {

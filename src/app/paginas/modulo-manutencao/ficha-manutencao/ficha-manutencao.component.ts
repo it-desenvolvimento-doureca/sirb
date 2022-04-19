@@ -18,6 +18,8 @@ import { MANDICEQUIPASService } from 'app/servicos/man-dic-equipas.service';
 import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { MANMOVMAQUINASPARADASService } from 'app/servicos/man-mov-maquinas-paradas.service';
 import { MAN_MOV_MAQUINAS_PARADAS } from 'app/entidades/MAN_MOV_MAQUINAS_PARADAS';
+import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
+import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
 
 @Component({
   selector: 'app-ficha-manutencao',
@@ -91,6 +93,7 @@ export class FichaManutencaoComponent implements OnInit {
   ID_PEDIDO: number;
   DATA_HORA_PEDIDO: any;
   TIPO_RESPONSAVEL: string;
+  AMBITO_MANUTENCAO: number;
   STATUS_MAQUINA: string;
   UTILIZADOR: number;
   ID_EQUIPA: number;
@@ -98,6 +101,11 @@ export class FichaManutencaoComponent implements OnInit {
   displayverificar: boolean;
   mensagem_verifica: string;
   acesso_responsavel = false;
+  fornecedores_silver: any[];
+  drop_ambitos_manutencao: any[];
+  COD_FORNECEDOR: string;
+  NOME_FORNECEDOR: string;
+  EMAIL_FORNECEDOR: string;
 
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
@@ -109,6 +117,8 @@ export class FichaManutencaoComponent implements OnInit {
     private MANDICEQUIPASService: MANDICEQUIPASService,
     private MANDICPISOSService: MANDICPISOSService,
     private MANMOVMAQUINASPARADASService: MANMOVMAQUINASPARADASService,
+    private GERFORNECEDORService: GERFORNECEDORService,
+    private MANDICAMBITOSService: MANDICAMBITOSService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -255,8 +265,43 @@ export class FichaManutencaoComponent implements OnInit {
     this.localizacoes();
     this.equipamentos();
     this.listar_equipas();
+    this.fornecedores();
+    this.listar_ambitos_manutencao();
   }
 
+  listar_ambitos_manutencao() {
+
+    this.drop_ambitos_manutencao = [];
+    this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
+    this.MANDICAMBITOSService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        for (var x in response) {
+
+          this.drop_ambitos_manutencao.push({
+            value: response[x].ID,
+            label: response[x].NOME
+          });
+
+        }
+
+        this.drop_ambitos_manutencao = this.drop_ambitos_manutencao.slice();
+      },
+      error => console.log(error));
+  }
+
+  fornecedores() {
+    this.fornecedores_silver = [];
+    this.fornecedores_silver.push({ label: 'Seleccione Fornecedor', value: "" });
+    this.GERFORNECEDORService.getAll_silver().subscribe(
+      response => {
+        for (var x in response) {
+          this.fornecedores_silver.push({ label: response[x].FOUCOD + ' - ' + response[x].ADRNOM, email: response[x].ADRNUMINT, value: response[x].FOUCOD, nome: response[x].ADRNOM });
+        }
+        this.fornecedores_silver = this.fornecedores_silver.slice();
+      },
+      error => console.log(error));
+  }
 
   localizacoes() {
     this.drop_localizacoes = [];
@@ -413,9 +458,13 @@ export class FichaManutencaoComponent implements OnInit {
             this.DATA_HORA_PEDIDO = response[x].DATA_HORA_PEDIDO;
 
             this.TIPO_RESPONSAVEL = response[x].TIPO_RESPONSAVEL;
+            this.AMBITO_MANUTENCAO = response[x].AMBITO_MANUTENCAO;
             this.STATUS_MAQUINA = response[x].STATUS_MAQUINA;
             this.UTILIZADOR = response[x].UTILIZADOR;
             this.ID_EQUIPA = response[x].ID_EQUIPA;
+            this.COD_FORNECEDOR = response[x].COD_FORNECEDOR;
+            this.NOME_FORNECEDOR = response[x].NOME_FORNECEDOR;
+            this.EMAIL_FORNECEDOR = response[x].EMAIL_FORNECEDOR;
 
             this.estado = response[x].ESTADO;
             if (response[x].ESTADO == 'V') {
@@ -643,6 +692,7 @@ export class FichaManutencaoComponent implements OnInit {
 
     if (this.novo) ficha_manutencao.DATA_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
     if (this.novo) ficha_manutencao.UTZ_CRIA = this.utz_CRIA;
+    if (this.novo) ficha_manutencao.CLASSIFICACAO = 'P';
 
     if (this.REFERENTE_EQUIPAMENTO = 'N') {
       this.EQUIPAMENTO == null
@@ -660,9 +710,14 @@ export class FichaManutencaoComponent implements OnInit {
     ficha_manutencao.EQUIPAMENTO = this.EQUIPAMENTO;
     ficha_manutencao.DATA_HORA_PEDIDO = this.DATA_HORA_PEDIDO;
     ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
+    ficha_manutencao.AMBITO_MANUTENCAO = this.AMBITO_MANUTENCAO;
     ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
     ficha_manutencao.UTILIZADOR = this.UTILIZADOR;
     ficha_manutencao.ID_EQUIPA = this.ID_EQUIPA;
+
+    ficha_manutencao.COD_FORNECEDOR = this.COD_FORNECEDOR;
+    ficha_manutencao.NOME_FORNECEDOR = this.NOME_FORNECEDOR;
+    ficha_manutencao.EMAIL_FORNECEDOR = this.EMAIL_FORNECEDOR;
 
     ficha_manutencao.UTZ_ULT_MODIF = this.user;
     ficha_manutencao.DATA_ULT_MODIF = new Date();
@@ -836,6 +891,7 @@ export class FichaManutencaoComponent implements OnInit {
                 // Defaults to 0 if no query param provided.
                 back = params['redirect'] || 0;
               });
+            if (!this.modoedicao) { this.inicia(id); }
 
             if (back != 0) {
               this.router.navigate(['lista_pedidos/view'], { queryParams: { id: id, redirect: back } });
@@ -896,6 +952,8 @@ export class FichaManutencaoComponent implements OnInit {
             // Defaults to 0 if no query param provided.
             back = params['redirect'] || 0;
           });
+
+        if (!this.modoedicao) { this.inicia(id); }
 
         if (back != 0) {
           this.router.navigate(['lista_pedidos/view'], { queryParams: { id: id, redirect: back } });
@@ -1203,6 +1261,15 @@ export class FichaManutencaoComponent implements OnInit {
       console.log(error);
 
     });
+  }
+
+  fornecedor(event) {
+    this.NOME_FORNECEDOR = null;
+    this.EMAIL_FORNECEDOR = null;
+    if (event.value != null && event.value != "") {
+      this.NOME_FORNECEDOR = this.fornecedores_silver.find(item => item.value == event.value).nome;
+      this.EMAIL_FORNECEDOR = this.fornecedores_silver.find(item => item.value == event.value).email;
+    }
   }
 
 
