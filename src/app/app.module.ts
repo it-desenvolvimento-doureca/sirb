@@ -411,6 +411,7 @@ import { MANDICNIVEISCRITICIDADEService } from './servicos/man-dic-niveis-critic
 import { AmbitosManutencaoComponent } from './paginas/modulo-manutencao/parametros/ambitos-manutencao/ambitos-manutencao.component';
 import { MANDICAMBITOSService } from './servicos/man-dic-ambitos.service';
 import { MANDICAMBITOUTILIZADORESService } from './servicos/man-dic-ambito-utilizadores.service';
+import { MANMOVMANUTENCAONOTASService } from './servicos/man-mov-manutencao-notas.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1526,6 +1527,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANDICNIVEISCRITICIDADEService,
     MANDICAMBITOSService,
     MANDICAMBITOUTILIZADORESService,
+    MANMOVMANUTENCAONOTASService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

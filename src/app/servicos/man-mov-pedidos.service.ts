@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from "rxjs/Observable";
 import { webUrl } from 'assets/config/webUrl';
-import { MAN_MOV_PEDIDOS } from 'app/entidades/MAN_MOV_PEDIDOS';
+//import { MAN_MOV_PEDIDOS } from 'app/entidades/MAN_MOV_PEDIDOS';
 
 @Injectable()
 export class MANMOVPEDIDOSService {
@@ -11,7 +11,7 @@ export class MANMOVPEDIDOSService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
-
+/*
   create(data: MAN_MOV_PEDIDOS) {
     return this.http
       .post(webUrl.host + '/rest/sirb/createMAN_MOV_PEDIDOS', JSON.stringify(data), { headers: this.headers })
@@ -70,5 +70,5 @@ export class MANMOVPEDIDOSService {
   private extractData(res: Response) {
     let body = res.json();
     return body;
-  }
+  }*/
 }

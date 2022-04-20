@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.class_required .ui-dropdown {
+    border: 1px solid red !important;
+}
+
+.class_required .ui-radiobutton-box {
+    border: 1px solid red !important;
+}

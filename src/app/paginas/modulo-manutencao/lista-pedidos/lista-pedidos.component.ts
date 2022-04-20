@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
-import { MANMOVPEDIDOSService } from 'app/servicos/man-mov-pedidos.service';
+import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 @Component({
@@ -31,11 +31,18 @@ export class ListaPedidosComponent implements OnInit {
   COMPONENTE;
   ESTADO;
   RESPONSAVEL;
-  estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' }, { value: 'Pendente', label: 'Pendente' }, { value: 'Validado', label: 'Validado' }, { value: 'Anulado', label: 'Anulado' }];
+  estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' },
+  { value: 'Submetida', label: 'Submetida' },
+  { value: 'Planeada', label: 'Planeada' },
+  { value: 'Concluído', label: 'Concluído' },
+  { value: 'Validada', label: 'Validada' },
+  { value: 'Rejeitada', label: 'Rejeitada' },
+  { value: 'Cancelada', label: 'Cancelada' },
+  { value: 'Anulada', label: 'Anulada' }];
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
-  constructor(private MANMOVPEDIDOSService: MANMOVPEDIDOSService
+  constructor(private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService
     , private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -60,11 +67,15 @@ export class ListaPedidosComponent implements OnInit {
         for (var x in f) {
           this.filtro.push(f[x])
         }
+        this.filtro = this.filtro.slice();
         this.filtroval = false;
+
+        this.filtrar(this.filtro, "ESTADO", true, "in");
       }
 
+
     } else {
-      this.filtro = ["Em Elaboração", "Pendente"];
+      this.filtro = ["Em Elaboração", "Submetida"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }
@@ -101,7 +112,7 @@ export class ListaPedidosComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVPEDIDOSService.getAll2('P').subscribe(
+    this.MANMOVMANUTENCAOCABService.getAll2('C', this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -122,23 +133,32 @@ export class ListaPedidosComponent implements OnInit {
         this.cols = this.cols.slice();
 
       },
-      error => console.log(error));
+      error => { this.mensagemtabela = "Nenhum Registo foi encontrado..."; console.log(error) });
 
   }
 
   getestado(valor) {
-    if (valor == 'P') {
-      return 'Pendente';
+    if (valor == 'PE') {
+      return 'Submetida';
+    } if (valor == 'P') {
+      return 'Planeada';
     } else if (valor == 'V') {
-      return 'Validado';
+      return 'Validada';
     } else if (valor == 'A') {
-      return 'Anulado';
+      return 'Anulada';
     } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'EM') {
       return 'Em Elaboração';
+    } else if (valor == 'CA') {
+      return 'Cancelada';
+    } else if (valor == 'C') {
+      return 'Concluído';
+    } else if (valor == 'RJ') {
+      return 'Rejeitada';
     }
 
-
-    return 'Pendente';
+    return 'Submetida';
   }
   //limpar filtro
   reset() {

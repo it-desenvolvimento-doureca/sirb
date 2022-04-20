@@ -166,7 +166,7 @@
                       <div *ngIf="TIPO_EQUIPA == 'EX'" style="padding: 1px 5px 1px 10px;"
                         class="form-group col-md-6 col-lg-3">
                         <label>Email:</label>
-                        <input [disabled]="true" style="width: 100%;" type="text" class="form-control2"
+                        <input [disabled]="!modoedicao" style="width: 100%;" type="text" class="form-control2"
                           [(ngModel)]="EMAIL_FORNECEDOR" [ngModelOptions]="{standalone: true}">
                       </div>
 

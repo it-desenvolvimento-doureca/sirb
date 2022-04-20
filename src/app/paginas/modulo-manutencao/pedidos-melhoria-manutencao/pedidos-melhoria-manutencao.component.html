@@ -21,9 +21,9 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disValidar" [hidden]="!btvalidar">
-            <a (click)="validar()">
-              <i class="material-icons">check</i>Validar
+          <li [class.disabled]="disPlanear" [hidden]="!btplanear">
+            <a (click)="planear()">
+              <i class="material-icons">check</i>Planear
               <div class="ripple-container"></div>
             </a>
           </li>
@@ -33,12 +33,12 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <!--<li [class.disabled]="disFechar" [hidden]="!btfechar">
-            <a (click)="fechar()">
-              <i class="material-icons">close</i>Fechar
+          <li [class.disabled]="disCancelar" [hidden]="!btcancelar">
+            <a (click)="cancelar()">
+              <i class="material-icons">close</i>Cancelar
               <div class="ripple-container"></div>
             </a>
-          </li>-->
+          </li>
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
@@ -99,7 +99,8 @@
                       <br>
                       <p-dropdown [filter]="true" [options]="drop_localizacoes" (onChange)="getEquipamentos($event)"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="LOCALIZACAO"
-                        [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao" [required]="true"></p-dropdown>
+                        [ngClass]="(LOCALIZACAO == null)? 'class_required' :''" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao" [required]="true"></p-dropdown>
                     </div>
 
 
@@ -107,9 +108,11 @@
                       <label>Referente a um Equipamento?</label>
                       <br>
                       <p-radioButton label="Sim" [disabled]="!modoedicao" name="REFERENTE_EQUIPAMENTO" value="S"
-                        [required]="true" [(ngModel)]="REFERENTE_EQUIPAMENTO">
+                        [ngClass]="(REFERENTE_EQUIPAMENTO == null)? 'class_required' :''" [required]="true"
+                        [(ngModel)]="REFERENTE_EQUIPAMENTO">
                       </p-radioButton>
                       <p-radioButton label="Não" [disabled]="!modoedicao" name="REFERENTE_EQUIPAMENTO" value="N"
+                        [ngClass]="(REFERENTE_EQUIPAMENTO == null)? 'class_required' :''"
                         [style]="{'margin-left':'10px'}" [required]="true" [(ngModel)]="REFERENTE_EQUIPAMENTO">
                       </p-radioButton>
                     </div>
@@ -123,7 +126,7 @@
                         <p-dropdown [filter]="true" [options]="drop_equipamentos" (onChange)="componentes($event)"
                           [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="EQUIPAMENTO"
                           [required]="REFERENTE_EQUIPAMENTO == 'S'" [ngModelOptions]="{standalone: true}"
-                          [disabled]="!modoedicao"></p-dropdown>
+                          [ngClass]="(EQUIPAMENTO == null)? 'class_required' :''" [disabled]="!modoedicao"></p-dropdown>
                       </div>
                       <div *ngIf="REFERENTE_EQUIPAMENTO == 'S'" style="padding: 1px 5px 1px 10px;"
                         class="form-group col-md-4 col-lg-4">
@@ -152,6 +155,7 @@
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
                       <label>Âmbito Manutenção</label>
                       <p-dropdown [options]="drop_ambitos_manutencao" [required]="true"
+                        [ngClass]="(AMBITO_MANUTENCAO == null)? 'class_required' :''"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="AMBITO_MANUTENCAO"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"></p-dropdown>
                     </div>
@@ -177,6 +181,7 @@
                       <label>Equipa:</label>
                       <p-dropdown [filter]="true" [options]="drop_equipas" [disabled]="!modoedicao"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="ID_EQUIPA"
+                        [ngClass]="(ID_EQUIPA == null && !novo)? 'class_required' :''"
                         [ngModelOptions]="{standalone: true}" [required]="!novo"></p-dropdown>
                     </div>
                     <div *ngIf="TIPO_RESPONSAVEL == 'U' && acesso_responsavel" style="padding: 1px 5px 1px 10px;"
@@ -184,6 +189,7 @@
                       <label>Utilizador:</label>
                       <p-dropdown [filter]="true" [options]="drop_utilizadores" [disabled]="!modoedicao"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="UTILIZADOR"
+                        [ngClass]="(UTILIZADOR == null && !novo)? 'class_required' :''"
                         [ngModelOptions]="{standalone: true}" [required]="!novo"></p-dropdown>
                     </div>
 
@@ -192,7 +198,8 @@
                       <label>Utilizador Externo:</label>
                       <p-dropdown [filter]="true" [options]="fornecedores_silver" [disabled]="!modoedicao"
                         (onChange)="fornecedor($event)" [style]="{'width':'100%','height':'25px','background':'white'}"
-                        [(ngModel)]="COD_FORNECEDOR" [ngModelOptions]="{standalone: true}" [required]="true">
+                        [ngClass]="(COD_FORNECEDOR == null)? 'class_required' :''" [(ngModel)]="COD_FORNECEDOR"
+                        [ngModelOptions]="{standalone: true}" [required]="true">
                       </p-dropdown>
                     </div>
 
@@ -206,7 +213,7 @@
                     <div *ngIf="TIPO_RESPONSAVEL == 'EX'" style="padding: 1px 5px 1px 10px;"
                       class="form-group col-md-6 col-lg-3">
                       <label>Email:</label>
-                      <input [disabled]="true" style="width: 100%;" type="text" class="form-control2"
+                      <input [disabled]="!modoedicao" style="width: 100%;" type="text" class="form-control2"
                         [(ngModel)]="EMAIL_FORNECEDOR" [ngModelOptions]="{standalone: true}">
                     </div>
 
@@ -218,7 +225,8 @@
                         style="height: 71px; width: 100%;"></textarea>
                     </div>
 
-                    <div *ngIf="!novo" style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                    <div *ngIf="!novo && estado != 'EM'" style="padding: 1px 5px 1px 10px;"
+                      class="form-group col-md-12 col-lg-12">
                       <label>Notas de Planeamento:</label>
                       <br>
                       <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="NOTAS_PLANEAMENTO"
@@ -326,6 +334,8 @@
               <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
               <button type="button" (click)="btgravar()" class="btn btn-success pull-right"
                 [hidden]="!modoedicao">Gravar</button>
+              <button type="button" (click)="btgravar2()" class="btn btn-success pull-right"
+                [hidden]="!novo">Gravar e Submeter</button>
               <div class="clearfix"></div>
             </form>
           </div>

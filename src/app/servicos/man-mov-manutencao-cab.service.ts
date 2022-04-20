@@ -45,7 +45,7 @@ export class MANMOVMANUTENCAOCABService {
 
 
   getbyID(id): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
-    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CABbyid/' + id + '/0';
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CABbyid/' + id;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -55,12 +55,19 @@ export class MANMOVMANUTENCAOCABService {
   update(data: MAN_MOV_MANUTENCAO_CAB) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateMAN_MOV_MANUTENCAO_CAB', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
-      .catch(this.handleError);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
   }
 
 
+
+  getAll2(CLASSIFICACAO, USER): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CAB2/' + CLASSIFICACAO + '/' + USER;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();
