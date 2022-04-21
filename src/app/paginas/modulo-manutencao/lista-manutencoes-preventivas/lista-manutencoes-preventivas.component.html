@@ -5,7 +5,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="red">
-            <h4 class="title">Lista de Pedidos de Melhoria / Investimento </h4>
+            <h4 class="title">Lista de Manutenções Preventivas</h4>
             <p class="category"></p>
           </div>
           <div class="card-content table-responsive">
@@ -28,14 +28,14 @@
                 </ng-template>
               </p-column>
 
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="RESPONSAVEL"
+              <!--p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="RESPONSAVEL"
                 header="Responsável Pedido">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="RESPONSAVEL" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
                     type="text">
                 </ng-template>
-              </p-column>
+              </p-column-->
 
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="LOCALIZACAO"
                 header="Localização">
@@ -98,8 +98,8 @@
                   </a>
                 </ng-template>
                 <ng-template let-car="rowData" pTemplate="body">
-                  <a style="color: black; cursor:pointer;" title="Ver mais"
-                    [routerLink]="['/lista_pedidos_melhoria/view']" [queryParams]="{ id: car.ID_PEDIDO }">
+                  <a style="color: black; cursor:pointer;" title="Ver mais" [routerLink]="['/lista_preventivas/view']"
+                    [queryParams]="{ id: car.ID_PEDIDO }">
                     <i class="material-icons">search</i>
                   </a>
                 </ng-template>

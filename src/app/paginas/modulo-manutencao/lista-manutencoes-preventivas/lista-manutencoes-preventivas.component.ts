@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, Renderer } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 @Component({
-  selector: 'app-lista-pedidos-melhoria-manutencao',
-  templateUrl: './lista-pedidos-melhoria-manutencao.component.html',
-  styleUrls: ['./lista-pedidos-melhoria-manutencao.component.css']
+  selector: 'app-lista-manutencoes-preventivas',
+  templateUrl: './lista-manutencoes-preventivas.component.html',
+  styleUrls: ['./lista-manutencoes-preventivas.component.css']
 })
-export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
+export class ListaManutencoesPreventivasComponent implements OnInit {
   mensagemtabela: string;
   acessoplaneamento = true;
   filtro2: any;
@@ -42,7 +42,6 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
   { value: 'Concluída', label: 'Concluída' },
   { value: 'Validada', label: 'Validada' },
   { value: 'Rejeitada', label: 'Rejeitada' },
-  { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
   { value: 'Anulada', label: 'Anulada' }];
 
@@ -53,7 +52,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
   ngOnInit() {
     this.filtroval = true;
-    var array = this.globalVar.getfiltros("lista_pedidos");
+    var array = this.globalVar.getfiltros("lista_preventivas");
     if (array) {
 
 
@@ -97,15 +96,15 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
     this.globalVar.setapagar(false);
     this.globalVar.setseguinte(false);
     this.globalVar.setanterior(false);
-    this.globalVar.setcriar(true);
+    this.globalVar.setcriar(false);
     this.globalVar.setatualizar(true);
     this.globalVar.setduplicar(false);
     this.globalVar.sethistorico(false);
     this.globalVar.setcriarmanutencao(false);
-    this.globalVar.setdisCriarmanutencao(true);
-    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584editar"));
-    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584criar"));
-    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584apagar"));
+    this.globalVar.setdisCriarmanutencao(false);
+    this.globalVar.setdisEditar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585editar"));
+    this.globalVar.setdisCriar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585criar"));
+    this.globalVar.setdisApagar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585apagar"));
 
 
 
@@ -119,7 +118,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVMANUTENCAOCABService.getAll2('M', this.user).subscribe(
+    this.MANMOVMANUTENCAOCABService.getAll2('P', this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -129,7 +128,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
           this.cols.push({
             ID_PEDIDO: response[x][0],
-            DATA_HORA_PEDIDO: this.formatDate(response[x][1]) + " " + new Date(response[x][1]).toLocaleTimeString().slice(0, 5),
+            DATA_HORA_PEDIDO: this.formatDate(response[x][12]) + " " + new Date(response[x][12]).toLocaleTimeString().slice(0, 5),
             EQUIPAMENTO: response[x][3],
             COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
             ESTADO: this.getestado(response[x][6]),
@@ -167,8 +166,6 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
       return 'Concluída';
     } else if (valor == 'RJ') {
       return 'Rejeitada';
-    } else if (valor == 'RE') {
-      return 'Reaberta';
     }
 
     return 'Submetida';
@@ -211,7 +208,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("lista_pedidos", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("lista_preventivas", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
@@ -223,7 +220,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("lista_pedidos_id", ids);
+      this.globalVar.setfiltros("lista_preventivas_id", ids);
     }, 250);
   }
 
@@ -236,12 +233,12 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
       ids.push(array[x].ID_PEDIDO);
     }
 
-    this.globalVar.setfiltros("lista_pedidos_id", ids);
+    this.globalVar.setfiltros("lista_preventivas_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['lista_pedidos/view'], { queryParams: { id: event.data.ID_PEDIDO } });
+    this.router.navigate(['lista_preventivas/view'], { queryParams: { id: event.data.ID_PEDIDO } });
   }
 
   //simular click para mostrar mensagem

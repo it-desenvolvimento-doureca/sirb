@@ -28,14 +28,39 @@
                 </ng-template>
               </p-column>
 
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="RESPONSAVEL" header="Responsável Pedido">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="RESPONSAVEL"
+                header="Responsável Pedido">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
-                    [(ngModel)]="RESPONSAVEL" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                    [(ngModel)]="RESPONSAVEL" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
                 </ng-template>
               </p-column>
 
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="LOCALIZACAO"
+                header="Localização">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="LOCALIZACAO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
 
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="AMBITO" header="Âmbito">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="AMBITO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
+                </ng-template>
+              </p-column>
+
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="UTILIZADOR"
+                header="Utilizador/Equipa /Fornec.">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="UTILIZADOR" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
 
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="EQUIPAMENTO"
                 header="Equipamento">
@@ -55,13 +80,24 @@
                 </ng-template>
               </p-column>
 
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="STATUS_MAQUINA"
+                header="Status Máquina">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="STATUS_MAQUINA" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
+
               <p-column [sortable]="true" [filter]="true" filterMatchMode="in" styleclass="text-danger" field="ESTADO"
-              header="Estado">
-              <ng-template pTemplate="filter" let-col>
-                <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados" [style]="{'width':'100%'}"
-                  (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)" styleClass="ui-column-filter"></p-multiSelect>
-              </ng-template>
-            </p-column>
+                header="Estado">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [(ngModel)]="filtro" [ngModelOptions]="{standalone: true}" [options]="estados"
+                    [style]="{'width':'100%'}" appendTo="body"
+                    (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
+                    styleClass="ui-column-filter"></p-multiSelect>
+                </ng-template>
+              </p-column>
 
               <p-column styleClass="col-button" [style]="{'width':'60px'}">
                 <ng-template pTemplate="header">

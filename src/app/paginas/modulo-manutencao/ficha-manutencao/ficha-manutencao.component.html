@@ -21,8 +21,8 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disValidar" [hidden]="!btplanear">
-            <a (click)="validar()">
+          <li [class.disabled]="disPlanear" [hidden]="!btplanear">
+            <a (click)="planear()">
               <i class="material-icons">check</i>Planear
               <div class="ripple-container"></div>
             </a>
@@ -33,18 +33,38 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <<li [class.disabled]="disCancelar" [hidden]="!btcancelar">
+          <li [class.disabled]="disCancelar" [hidden]="!btcancelar">
             <a (click)="cancelar()">
               <i class="material-icons">close</i>Cancelar
               <div class="ripple-container"></div>
             </a>
-            </li>
-            <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
-              <a (click)="apagar()">
-                <i class="material-icons">delete</i>Apagar
-                <div class="ripple-container"></div>
-              </a>
-            </li>
+          </li>
+          <li>
+            <a (click)="vernotas()">
+              <i class="material-icons">playlist_add</i>Adicionar Nota
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disValidar" [hidden]="!btValidar">
+            <a (click)="Validar()">
+              <i class="material-icons">close</i>Validar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [class.disabled]="disRejeitar" [hidden]="!btRejeitar">
+            <a (click)="Rejeitar()">
+              <i class="material-icons">close</i>Rejeitar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
+            <a (click)="apagar()">
+              <i class="material-icons">delete</i>Apagar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
 
 
 
@@ -399,4 +419,83 @@
 
     </div>
   </form>
+</p-dialog>
+
+
+<p-dialog header="Notas" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="900"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display_notas"
+  [modal]="true" styleClass="dialog_index2">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 20px 0px 20px;">
+      <div class="row" style="display: block;  max-height: 41vh; overflow: auto;">
+        <div class="tab-content">
+          <div class="tab-pane active" id="comments-logout">
+            <ul *ngIf="notas.length" class="media-list">
+              <li *ngFor="let nota of notas" class="media" style="display: block;">
+                <a [ngClass]="{'pull-right': nota.id == this.user, 'pull-left': nota.id != this.user}">
+                  <div class="circle">{{nota.letra}}</div>
+                </a>
+                <div class="media-body">
+                  <div class="well well-lg"
+                    style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 1px; width: 100%;">
+                    <h5 class="media-heading text-uppercase reviews" style="font-weight: bold;">
+                      {{nota.utilizador}}</h5>
+                    <h6 class="media-date text-uppercase reviews">{{nota.data}}</h6>
+                    <p class="media-comment" style="word-wrap: break-word;">
+                      {{nota.mensagem}}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <form class="form-horizontal" (ngSubmit)="adicionarnotas()" ngNativeValidate style="margin-top: 10px;">
+        <div class="form-group" style="display: flex;">
+          <div class="col-sm-9">
+            <textarea style="overflow:hidden; width: 100%; padding: 10px;" [(ngModel)]="nota"
+              [ngModelOptions]="{standalone: true}" class="form-control1" name="addNota" id="addNota" rows="5"
+              required></textarea>
+          </div>
+          <div class="col-sm-3">
+            <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitNota">
+              <span class="glyphicon glyphicon-send"></span> Adicionar Nota</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="display_notas = false">Fechar</button>
+
+    </div>
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Motivo Rejeição" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displayMotivoRejeicao" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="gravarRejeitar( )">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Motivo:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="mototivoRejeicao" class="form-control2 enabled"
+          [ngModelOptions]="{standalone: true}" style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayMotivoRejeicao = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>

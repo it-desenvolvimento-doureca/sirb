@@ -20,6 +20,8 @@ import { GERFORNECEDORService } from 'app/servicos/ger-fornecedor.service';
 import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 import { MAN_MOV_MANUTENCAO_CAB } from 'app/entidades/MAN_MOV_MANUTENCAO_CAB';
+import { MAN_MOV_MANUTENCAO_NOTAS } from 'app/entidades/MAN_MOV_MANUTENCAO_NOTAS';
+import { MANMOVMANUTENCAONOTASService } from 'app/servicos/man-mov-manutencao-notas.service';
 
 @Component({
   selector: 'app-ficha-manutencao',
@@ -65,6 +67,12 @@ export class FichaManutencaoComponent implements OnInit {
 
   disSubmeter;
   btsubmeter;
+  disCancelar;
+  disValidar: boolean;
+  disRejeitar: boolean;
+  btValidar: boolean;
+  btRejeitar: boolean;
+
 
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -108,6 +116,11 @@ export class FichaManutencaoComponent implements OnInit {
   EMAIL_FORNECEDOR: string;
   submetergravar: boolean;
 
+  notas: any[] = [];
+  display_notas: boolean = false;
+  nota: any = null;
+  mototivoRejeicao: string;
+  displayMotivoRejeicao: boolean;
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
@@ -120,6 +133,7 @@ export class FichaManutencaoComponent implements OnInit {
     private MANMOVMAQUINASPARADASService: MANMOVMAQUINASPARADASService,
     private GERFORNECEDORService: GERFORNECEDORService,
     private MANDICAMBITOSService: MANDICAMBITOSService,
+    private MANMOVMANUTENCAONOTASService: MANMOVMANUTENCAONOTASService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -135,6 +149,8 @@ export class FichaManutencaoComponent implements OnInit {
     this.btapagar = true;
     this.btvoltar = true;
     this.btcancelar = true;
+    this.btValidar = false;
+    this.btRejeitar = false;
     this.bteditar = true;
     this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
@@ -192,7 +208,8 @@ export class FichaManutencaoComponent implements OnInit {
         this.btplanear = false;
         this.btsubmeter = false;
         this.modoedicao = true;
-        this.btcancelar = false;
+        this.btValidar = false;
+        this.btRejeitar = false;
         var dirtyFormID = 'formReclama';
         var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
         resetForm.reset();
@@ -220,7 +237,8 @@ export class FichaManutencaoComponent implements OnInit {
       this.btplanear = false;
       this.btsubmeter = false;
       this.modoedicao = true;
-      this.btcancelar = false;
+      this.btValidar = false;
+      this.btRejeitar = false;
       var dirtyFormID = 'formReclama';
       var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
       resetForm.reset();
@@ -231,10 +249,10 @@ export class FichaManutencaoComponent implements OnInit {
       this.DATA_HORA_PEDIDO = this.data_CRIA;
     }
     this.getacessoresponsavel();
-    this.carregaDados(false, null);
-    if (!this.novo) {
-      this.inicia(id);
-    }
+    this.carregaDados(false, id);
+    /* if (!this.novo) {
+       this.inicia(id);
+     }*/
   }
 
 
@@ -263,14 +281,12 @@ export class FichaManutencaoComponent implements OnInit {
 
       },
       error => { console.log(error); });
-    this.localizacoes();
-    this.equipamentos();
-    this.listar_equipas();
-    this.fornecedores();
-    this.listar_ambitos_manutencao();
+    this.localizacoes(id);
+    if (this.novo) this.equipamentos();
+
   }
 
-  listar_ambitos_manutencao() {
+  listar_ambitos_manutencao(id) {
 
     this.drop_ambitos_manutencao = [];
     this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
@@ -287,11 +303,19 @@ export class FichaManutencaoComponent implements OnInit {
         }
 
         this.drop_ambitos_manutencao = this.drop_ambitos_manutencao.slice();
+        if (!this.novo) {
+          this.inicia(id);
+        }
       },
-      error => console.log(error));
+      error => {
+        console.log(error);
+        if (!this.novo) {
+          this.inicia(id);
+        }
+      });
   }
 
-  fornecedores() {
+  fornecedores(id) {
     this.fornecedores_silver = [];
     this.fornecedores_silver.push({ label: 'Seleccione Fornecedor', value: "" });
     this.GERFORNECEDORService.getAll_silver().subscribe(
@@ -300,11 +324,17 @@ export class FichaManutencaoComponent implements OnInit {
           this.fornecedores_silver.push({ label: response[x].FOUCOD + ' - ' + response[x].ADRNOM, email: response[x].ADRNUMINT, value: response[x].FOUCOD, nome: response[x].ADRNOM });
         }
         this.fornecedores_silver = this.fornecedores_silver.slice();
+
+        this.listar_ambitos_manutencao(id);
       },
-      error => console.log(error));
+      error => {
+        console.log(error);
+
+        this.listar_ambitos_manutencao(id);
+      });
   }
 
-  localizacoes() {
+  localizacoes(id) {
     this.drop_localizacoes = [];
     this.drop_localizacoes.push({
       value: '', label: 'Selecionar Localização'
@@ -317,9 +347,10 @@ export class FichaManutencaoComponent implements OnInit {
           });
         }
         this.drop_localizacoes = this.drop_localizacoes.slice();
+        this.listar_equipas(id);
 
       },
-      error => { console.log(error); });
+      error => { console.log(error); this.listar_equipas(id); });
   }
 
   equipamentos() {
@@ -338,6 +369,7 @@ export class FichaManutencaoComponent implements OnInit {
             UTILIZADOR: response[x].UTILIZADOR,
             TIPO_LOCALIZACAO: response[x].TIPO_LOCALIZACAO,
             LOCALIZACAO: response[x].LOCALIZACAO,
+            AMBITO_MANUTENCAO: response[x].AMBITO_MANUTENCAO,
           });
         }
 
@@ -368,10 +400,11 @@ export class FichaManutencaoComponent implements OnInit {
               UTILIZADOR: response[x].UTILIZADOR,
               TIPO_LOCALIZACAO: response[x].TIPO_LOCALIZACAO,
               LOCALIZACAO: response[x].LOCALIZACAO,
+              AMBITO_MANUTENCAO: response[x].AMBITO_MANUTENCAO,
             });
           }
-          if (valor != null) this.EQUIPAMENTO = valor;
           this.drop_equipamentos = this.drop_equipamentos.slice();
+          if (valor != null) this.EQUIPAMENTO = valor;
         },
         error => console.log(error));
     } else {
@@ -379,7 +412,7 @@ export class FichaManutencaoComponent implements OnInit {
     }
   }
 
-  listar_equipas() {
+  listar_equipas(id) {
     this.drop_equipas = [];
     this.drop_equipas.push({
       value: '', label: 'Selecionar Equipa'
@@ -392,9 +425,9 @@ export class FichaManutencaoComponent implements OnInit {
           });
         }
         this.drop_equipas = this.drop_equipas.slice();
-
+        this.fornecedores(id);
       },
-      error => { console.log(error); });
+      error => { console.log(error); this.fornecedores(id); });
   }
 
 
@@ -408,11 +441,13 @@ export class FichaManutencaoComponent implements OnInit {
         this.ID_EQUIPA = equipamento.EQUIPA;
         this.UTILIZADOR = equipamento.UTILIZADOR;
         this.LOCALIZACAO = equipamento.TIPO_LOCALIZACAO + equipamento.LOCALIZACAO;
+        this.AMBITO_MANUTENCAO = equipamento.AMBITO_MANUTENCAO;
       } else {
         this.TIPO_RESPONSAVEL = null;
         this.ID_EQUIPA = null;
         this.UTILIZADOR = null;
         this.LOCALIZACAO = null;
+        this.AMBITO_MANUTENCAO = null;
       }
     }
 
@@ -483,6 +518,14 @@ export class FichaManutencaoComponent implements OnInit {
               this.btsubmeter = true;
               this.btplanear = false;
             } else if (response[x].ESTADO == 'CA') {
+              this.bteditar = false;
+              this.modoedicao = false;
+              this.btplanear = false;
+              this.btsubmeter = false;
+              this.btcancelar = false;
+            } if (response[x].ESTADO == 'C') {
+              this.btValidar = true;
+              this.btRejeitar = true;
               this.bteditar = false;
               this.modoedicao = false;
               this.btplanear = false;
@@ -701,8 +744,6 @@ export class FichaManutencaoComponent implements OnInit {
   gravar(planear = false, submeter = false) {
 
     if (this.submetergravar) { submeter = this.submetergravar }
-
-
     var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
 
     if (!this.novo) ficha_manutencao = this.ficha_manutencao_dados;
@@ -742,8 +783,9 @@ export class FichaManutencaoComponent implements OnInit {
     ficha_manutencao.UTZ_ULT_MODIF = this.user;
     ficha_manutencao.DATA_ULT_MODIF = new Date();
 
-
-    if (submeter == true) {
+    if (this.submetergravar && (this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.TIPO_RESPONSAVEL != 'EX') {
+      ficha_manutencao.ESTADO = "P";
+    } else if (submeter == true) {
       ficha_manutencao.ESTADO = "PE";
     } else if (planear == true) {
       ficha_manutencao.ESTADO = "P";
@@ -1025,6 +1067,64 @@ export class FichaManutencaoComponent implements OnInit {
       }
 
     });
+  }
+
+  Validar() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende validar?',
+      header: 'Validar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+        var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
+
+        ficha_manutencao = this.ficha_manutencao_dados;
+
+        ficha_manutencao.UTZ_ULT_MODIF = this.user;
+        ficha_manutencao.DATA_ULT_MODIF = new Date();
+        ficha_manutencao.ESTADO = "V";
+
+        this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
+          res => {
+            this.router.navigate(['lista_pedidos']);
+            this.simular(this.inputapagar);
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+
+      }
+
+    });
+  }
+
+
+  Rejeitar() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende rejeitar?',
+      header: 'Rejeitar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.mototivoRejeicao = "";
+        this.displayMotivoRejeicao = true;
+      }
+
+    });
+  }
+
+  gravarRejeitar() {
+    var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
+
+    ficha_manutencao = this.ficha_manutencao_dados;
+
+    ficha_manutencao.UTZ_ULT_MODIF = this.user;
+    ficha_manutencao.DATA_ULT_MODIF = new Date();
+    ficha_manutencao.ESTADO = "RE";
+
+    this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
+      res => {
+        this.insertNOTAS('', this.mototivoRejeicao, null);
+        this.router.navigate(['lista_pedidos']);
+        this.simular(this.inputapagar);
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
   }
 
   apagar() {
@@ -1334,4 +1434,61 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
 
+  vernotas() {
+    this.notas = [];
+    this.MANMOVMANUTENCAONOTASService.getbyID(this.ID_PEDIDO).subscribe(
+      res => {
+
+        for (var x in res) {
+          var letra = res[x][1].toString().slice(0, 1);
+          this.notas.push({ id: res[x][0].UTZ_CRIA, utilizador: res[x][1], letra: letra, mensagem: res[x][0].DESCRICAO, data: this.formatDateTime(res[x][0].DATA_CRIA) });
+        }
+
+        this.display_notas = true;
+      },
+      error => {
+        console.log(error);
+      });
+
+
+  }
+
+  adicionarnotas() {
+    var letra = this.user_nome.slice(0, 1);
+    var data = new Date();
+    this.insertNOTAS(letra, this.nota, data);
+
+  }
+
+  insertNOTAS(letra, notatxt, data) {
+    var nota = new MAN_MOV_MANUTENCAO_NOTAS;
+
+    nota.DATA_CRIA = new Date();
+    nota.DESCRICAO = notatxt;
+    nota.ESTADO = this.estado;
+    nota.ID_MANUTENCAO_CAB = this.ID_PEDIDO;
+    nota.UTZ_CRIA = this.user;
+
+    this.MANMOVMANUTENCAONOTASService.create(nota).subscribe(
+      res => {
+        this.notas.push({ id: this.user, utilizador: this.user_nome, letra: letra, mensagem: notatxt, data: this.formatDateTime(data) });
+        this.nota = "";
+      },
+      error => {
+        console.log(error);
+        this.simular(this.inputerro);
+      });
+  }
+
+  formatDateTime(date: any) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-') + " " + new Date(date).toLocaleTimeString().slice(0, 8);
+  }
 }

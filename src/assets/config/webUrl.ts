@@ -15,7 +15,7 @@ export var webUrl = {
   host_app: 'http://192.168.40.126:8080/app',
   host: 'http://192.168.40.126:8080/sgiid',
   link: location.protocol + '//' + location.host.replace('4200', '5050').replace('8080', '5050') + '/dev/sgiid/',
-    host_dashboard: 'http://192.168.40.101:8080/fr_formariz/rest/rest',
+  host_dashboard: 'http://192.168.40.101:8080/fr_formariz/rest/rest',
   host_manutencao: 'http://192.168.40.126:8080/app_manutencao/#/painel_pendentes',
   /*  */
   mod_pro: true,

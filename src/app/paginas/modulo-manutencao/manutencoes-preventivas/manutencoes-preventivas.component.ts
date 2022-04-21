@@ -22,12 +22,14 @@ import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.
 import { MAN_MOV_MANUTENCAO_NOTAS } from 'app/entidades/MAN_MOV_MANUTENCAO_NOTAS';
 import { MANMOVMANUTENCAONOTASService } from 'app/servicos/man-mov-manutencao-notas.service';
 
+
 @Component({
-  selector: 'app-pedidos-melhoria-manutencao',
-  templateUrl: './pedidos-melhoria-manutencao.component.html',
-  styleUrls: ['./pedidos-melhoria-manutencao.component.css']
+  selector: 'app-manutencoes-preventivas',
+  templateUrl: './manutencoes-preventivas.component.html',
+  styleUrls: ['./manutencoes-preventivas.component.css']
 })
-export class PedidosMelhoriaManutencaoComponent implements OnInit {
+export class ManutencoesPreventivasComponent implements OnInit {
+
 
   //drop_moradas = [];
   filedescricao = [];
@@ -61,10 +63,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btcancelar: boolean;
   bteditar: boolean;
   disCancelar: boolean;
-  disValidar: boolean;
-  disRejeitar: boolean;
-  btValidar: boolean;
-  btRejeitar: boolean;
   disPlanear;
   btplanear;
 
@@ -116,8 +114,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   notas: any[] = [];
   display_notas: boolean = false;
   nota: any = null;
-  displayMotivoRejeicao: boolean;
-  mototivoRejeicao: string;
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -144,8 +140,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     this.btapagar = true;
     this.btvoltar = true;
     this.btcancelar = true;
-    this.btValidar = false;
-    this.btRejeitar = false;
     this.bteditar = true;
     this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
@@ -180,9 +174,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             id = params['id'] || 0;
           });
 
-        this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584editar");
-        this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584criar");
-        this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584apagar");
+        this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585editar");
+        this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585criar");
+        this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585apagar");
         //this.disPlanear
       }
     }
@@ -191,7 +185,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       if (urlarray[1].match("editar")) {
         this.btapagar = true;
         this.btcriar = true;
-        this.modoedicao = true;
+        this.modoedicao = false;
 
       } else if (urlarray[1].match("novo")) {
         this.btapagar = false;
@@ -203,8 +197,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         this.btplanear = false;
         this.btsubmeter = false;
         this.modoedicao = true;
-        this.btValidar = false;
-        this.btRejeitar = false;
+        this.btcancelar = false;
         var dirtyFormID = 'formReclama';
         var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
         resetForm.reset();
@@ -232,8 +225,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       this.btplanear = false;
       this.btsubmeter = false;
       this.modoedicao = true;
-      this.btValidar = false;
-      this.btRejeitar = false;
+      this.btcancelar = false;
       var dirtyFormID = 'formReclama';
       var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
       resetForm.reset();
@@ -246,7 +238,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
     this.getacessoresponsavel();
     this.carregaDados(false, id);
-
+    /*if (!this.novo) {
+      this.inicia(id);
+    }*/
   }
 
 
@@ -308,7 +302,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         }
       });
   }
-
   fornecedores(id) {
     this.fornecedores_silver = [];
     this.fornecedores_silver.push({ label: 'Seleccione Fornecedor', value: "" });
@@ -341,11 +334,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         }
         this.drop_localizacoes = this.drop_localizacoes.slice();
         this.listar_equipas(id);
+        ;
       },
-      error => {
-        console.log(error);
-        this.listar_equipas(id);
-      });
+      error => { console.log(error); this.listar_equipas(id); });
   }
 
   equipamentos() {
@@ -430,10 +421,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           });
         }
         this.drop_equipas = this.drop_equipas.slice();
-
         this.fornecedores(id);
       },
-      error => { console.log(error); this.fornecedores(id) });
+      error => { console.log(error); this.fornecedores(id); });
   }
 
 
@@ -529,14 +519,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
               this.btplanear = false;
               this.btsubmeter = false;
               this.btcancelar = false;
-            } if (response[x].ESTADO == 'C') {
-              this.btValidar = true;
-              this.btRejeitar = true;
-              this.bteditar = false;
-              this.modoedicao = false;
-              this.btplanear = false;
-              this.btsubmeter = false;
-              this.btcancelar = false;
             } else {
               this.btplanear = true;
               this.btsubmeter = false;
@@ -545,7 +527,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           }
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
           this.getEquipamentos({ value: this.LOCALIZACAO }, this.EQUIPAMENTO);
-          this.carregatabelaFiles(id);
+          //this.carregatabelaFiles(id);
         }
 
       }, error => { console.log(error); });
@@ -1073,63 +1055,6 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     });
   }
 
-  Validar() {
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende validar?',
-      header: 'Validar Confirmação',
-      icon: 'fa fa-trash',
-      accept: () => {
-        var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
-
-        ficha_manutencao = this.ficha_manutencao_dados;
-
-        ficha_manutencao.UTZ_ULT_MODIF = this.user;
-        ficha_manutencao.DATA_ULT_MODIF = new Date();
-        ficha_manutencao.ESTADO = "V";
-
-        this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
-          res => {
-            this.router.navigate(['lista_pedidos_melhoria']);
-            this.simular(this.inputapagar);
-          },
-          error => { console.log(error); this.simular(this.inputerro); });
-
-      }
-
-    });
-  }
-
-  Rejeitar() {
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende rejeitar?',
-      header: 'Rejeitar Confirmação',
-      icon: 'fa fa-trash',
-      accept: () => {
-
-        this.mototivoRejeicao = "";
-        this.displayMotivoRejeicao = true;
-      }
-
-    });
-  }
-
-  gravarRejeitar() {
-    var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
-
-    ficha_manutencao = this.ficha_manutencao_dados;
-
-    ficha_manutencao.UTZ_ULT_MODIF = this.user;
-    ficha_manutencao.DATA_ULT_MODIF = new Date();
-    ficha_manutencao.ESTADO = "RE";
-
-    this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
-      res => {
-        this.insertNOTAS('', this.mototivoRejeicao, null);
-        this.router.navigate(['lista_pedidos_melhoria']);
-        this.simular(this.inputapagar);
-      },
-      error => { console.log(error); this.simular(this.inputerro); });
-  }
 
   apagar() {
 

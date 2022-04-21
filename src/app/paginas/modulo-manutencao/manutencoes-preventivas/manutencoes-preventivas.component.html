@@ -9,7 +9,7 @@
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disCriar" [hidden]="!btcriar">
+          <!--li [class.disabled]="disCriar" [hidden]="!btcriar">
             <a (click)="novaficha()" [ngClass]="novo ? 'cor_modo' : null">
               <i class="material-icons">create_new_folder</i>Novo
               <div class="ripple-container"></div>
@@ -38,31 +38,19 @@
               <i class="material-icons">close</i>Cancelar
               <div class="ripple-container"></div>
             </a>
-          </li>
+          </li-->
           <li>
             <a (click)="vernotas()">
               <i class="material-icons">playlist_add</i>Adicionar Notas
               <div class="ripple-container"></div>
             </a>
           </li>
-          <li [class.disabled]="disValidar" [hidden]="!btValidar">
-            <a (click)="Validar()">
-              <i class="material-icons">close</i>Validar
-              <div class="ripple-container"></div>
-            </a>
-          </li>
-          <li [class.disabled]="disRejeitar" [hidden]="!btRejeitar">
-            <a (click)="Rejeitar()">
-              <i class="material-icons">close</i>Rejeitar
-              <div class="ripple-container"></div>
-            </a>
-          </li>
-          <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
+          <!--li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
               <div class="ripple-container"></div>
             </a>
-          </li>
+          </li-->
         </ul>
       </div>
     </div>
@@ -74,7 +62,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
-            <h4 style="position: absolute;" class="title">Pedidos de Melhoria / Investimento</h4>
+            <h4 style="position: absolute;" class="title">Manutenções Preventivas</h4>
 
           </div>
           <div class="card-content">
@@ -253,7 +241,7 @@
                 </p-panel>
 
 
-                <p-panel header="DOCUMENTOS " [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                <!--p-panel header="DOCUMENTOS " [toggleable]="false" [style]="{'margin-bottom':'0px'}">
                   <div style="display: inline-block; width: 100%;">
                     <div class="form-group col-md-4 col-lg-4">
                       <p-fileUpload [disabled]="!modoedicao" #fileInput name="myfile[]" customUpload="true"
@@ -338,7 +326,7 @@
                       </p-dataTable>
                     </div>
                   </div>
-                </p-panel>
+                </p-panel-->
 
 
               </div>
@@ -464,30 +452,4 @@
 
     </div>
   </form>
-</p-dialog>
-
-
-<p-dialog header="Motivo Rejeição" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
-  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
-  [(visible)]="displayMotivoRejeicao" [modal]="true">
-
-  <!-- Modal Header -->
-
-  <form role="form" ngNativeValidate (ngSubmit)="gravarRejeitar( )">
-    <!-- Modal Body -->
-    <div class="">
-      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
-        <label>Motivo:</label>
-        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="mototivoRejeicao" class="form-control2 enabled"
-          [ngModelOptions]="{standalone: true}" style="height: auto; width: 500px;"></textarea>
-      </div>
-
-    </div>
-    <!-- Modal Footer -->
-    <div class="" style="text-align: -webkit-center;">
-      <button type="button" class="btn btn-default" (click)="displayMotivoRejeicao = false">Fechar</button>
-      <button type="submit" class="btn btn-success ">Gravar</button>
-    </div>
-  </form>
-
 </p-dialog>

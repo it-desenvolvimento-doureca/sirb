@@ -31,12 +31,18 @@ export class ListaPedidosComponent implements OnInit {
   COMPONENTE;
   ESTADO;
   RESPONSAVEL;
+  STATUS_MAQUINA;
+  LOCALIZACAO;
+  UTILIZADOR;
+  AMBITO;
+
   estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' },
   { value: 'Submetida', label: 'Submetida' },
   { value: 'Planeada', label: 'Planeada' },
-  { value: 'Concluído', label: 'Concluído' },
+  { value: 'Concluída', label: 'Concluída' },
   { value: 'Validada', label: 'Validada' },
   { value: 'Rejeitada', label: 'Rejeitada' },
+  { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
   { value: 'Anulada', label: 'Anulada' }];
 
@@ -51,7 +57,7 @@ export class ListaPedidosComponent implements OnInit {
     if (array) {
 
 
-      this.filtro2 = (array[''] != undefined) ? array['ESTADO'].value : null;
+      this.filtro2 = (array['ESTADO'] != undefined) ? array['ESTADO'].value : null;
 
       this.dataTableComponent.filters = array;
 
@@ -61,6 +67,10 @@ export class ListaPedidosComponent implements OnInit {
       this.EQUIPAMENTO = (array['EQUIPAMENTO'] != undefined) ? array['EQUIPAMENTO'].value : "";
       this.COMPONENTE = (array['COMPONENTE'] != undefined) ? array['COMPONENTE'].value : "";
       this.RESPONSAVEL = (array['RESPONSAVEL'] != undefined) ? array['RESPONSAVEL'].value : "";
+      this.STATUS_MAQUINA = (array['STATUS_MAQUINA'] != undefined) ? array['STATUS_MAQUINA'].value : "";
+      this.LOCALIZACAO = (array['LOCALIZACAO'] != undefined) ? array['LOCALIZACAO'].value : "";
+      this.UTILIZADOR = (array['UTILIZADOR'] != undefined) ? array['UTILIZADOR'].value : "";
+      this.AMBITO = (array['AMBITO'] != undefined) ? array['AMBITO'].value : "";
 
       if (this.filtro2 != null && this.filtro2 != "") {
         var f = this.filtro2.split(',');
@@ -75,7 +85,7 @@ export class ListaPedidosComponent implements OnInit {
 
 
     } else {
-      this.filtro = ["Em Elaboração", "Submetida"];
+      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }
@@ -126,7 +136,11 @@ export class ListaPedidosComponent implements OnInit {
             EQUIPAMENTO: response[x][3],
             COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
             ESTADO: this.getestado(response[x][6]),
-            RESPONSAVEL: response[x][2]
+            RESPONSAVEL: response[x][2],
+            STATUS_MAQUINA: (response[x][10] == null) ? '' : ((response[x][10] == 'P') ? 'Parada' : 'Em Funcionamento'),
+            LOCALIZACAO: response[x][7],
+            UTILIZADOR: response[x][9],
+            AMBITO: response[x][11]
           });
 
         }
@@ -153,9 +167,11 @@ export class ListaPedidosComponent implements OnInit {
     } else if (valor == 'CA') {
       return 'Cancelada';
     } else if (valor == 'C') {
-      return 'Concluído';
+      return 'Concluída';
     } else if (valor == 'RJ') {
       return 'Rejeitada';
+    } else if (valor == 'RE') {
+      return 'Reaberta';
     }
 
     return 'Submetida';
@@ -172,6 +188,10 @@ export class ListaPedidosComponent implements OnInit {
     this.COMPONENTE = "";
     this.ESTADO = "";
     this.RESPONSAVEL = "";
+    this.STATUS_MAQUINA = "";
+    this.LOCALIZACAO = "";
+    this.UTILIZADOR = "";
+    this.AMBITO = "";
 
     this.dataTableComponent.filter("", "", "");
 

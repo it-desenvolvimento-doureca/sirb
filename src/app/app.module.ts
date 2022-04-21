@@ -412,6 +412,8 @@ import { AmbitosManutencaoComponent } from './paginas/modulo-manutencao/parametr
 import { MANDICAMBITOSService } from './servicos/man-dic-ambitos.service';
 import { MANDICAMBITOUTILIZADORESService } from './servicos/man-dic-ambito-utilizadores.service';
 import { MANMOVMANUTENCAONOTASService } from './servicos/man-mov-manutencao-notas.service';
+import { ListaManutencoesPreventivasComponent } from './paginas/modulo-manutencao/lista-manutencoes-preventivas/lista-manutencoes-preventivas.component';
+import { ManutencoesPreventivasComponent } from './paginas/modulo-manutencao/manutencoes-preventivas/manutencoes-preventivas.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1023,6 +1025,15 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'lista_preventivas', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Manutenção Preventiva" },
+    children: [
+      { path: '', component: ListaManutencoesPreventivasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: ManutencoesPreventivasComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: ManutencoesPreventivasComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: ManutencoesPreventivasComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }
+    ]
+  },
+  {
     path: 'lista_pedidos_melhoria', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" },
     children: [
       { path: '', component: ListaPedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
@@ -1273,7 +1284,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PedidosMelhoriaManutencaoComponent,
     ListaPedidosMelhoriaManutencaoComponent,
     NiveisCriticidadeComponent,
-    AmbitosManutencaoComponent
+    AmbitosManutencaoComponent,
+    ListaManutencoesPreventivasComponent,
+    ManutencoesPreventivasComponent
   ],
   imports: [
     BrowserModule,
