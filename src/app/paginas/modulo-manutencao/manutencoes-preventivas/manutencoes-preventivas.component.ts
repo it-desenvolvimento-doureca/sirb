@@ -236,7 +236,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
       this.DATA_HORA_PEDIDO = this.data_CRIA;
     }
 
-    this.getacessoresponsavel();
+    this.getacessoresponsavel(id);
     this.carregaDados(false, id);
     /*if (!this.novo) {
       this.inicia(id);
@@ -244,8 +244,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
   }
 
 
-  getacessoresponsavel() {
-    this.GERUTILIZADORESService.getAcessoResponsavel(this.user).subscribe(
+  getacessoresponsavel(id) {
+    this.GERUTILIZADORESService.getAcessoResponsavel(this.user, id).subscribe(
       response => {
         var acesso_responsavel = response;
         this.acesso_responsavel = acesso_responsavel || this.adminuser;

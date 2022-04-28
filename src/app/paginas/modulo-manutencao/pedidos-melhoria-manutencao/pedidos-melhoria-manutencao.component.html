@@ -235,9 +235,9 @@
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <label>Descrição do Pedido:</label>
                       <br>
-                      <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="DESCRICAO_PEDIDO"
-                        class="form-control2" [ngModelOptions]="{standalone: true}"
-                        style="height: 71px; width: 100%;"></textarea>
+                      <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="DESCRICAO_PEDIDO" [required]="true"
+                        [ngClass]="(DESCRICAO_PEDIDO == null)? 'class_required' :''" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
                     </div>
 
                     <div *ngIf="!novo && estado != 'EM'" style="padding: 1px 5px 1px 10px;"

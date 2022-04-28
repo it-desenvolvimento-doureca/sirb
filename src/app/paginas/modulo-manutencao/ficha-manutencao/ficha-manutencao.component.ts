@@ -248,21 +248,23 @@ export class FichaManutencaoComponent implements OnInit {
       this.ID_RESPONSAVEL = this.user;
       this.DATA_HORA_PEDIDO = this.data_CRIA;
     }
-    this.getacessoresponsavel();
-    this.carregaDados(false, id);
+    this.getacessoresponsavel(id);
+
     /* if (!this.novo) {
        this.inicia(id);
      }*/
   }
 
 
-  getacessoresponsavel() {
-    this.GERUTILIZADORESService.getAcessoResponsavel(this.user).subscribe(
+  getacessoresponsavel(id) {
+    this.GERUTILIZADORESService.getAcessoResponsavel(this.user, id).subscribe(
       response => {
         var acesso_responsavel = response;
         this.acesso_responsavel = acesso_responsavel || this.adminuser;
+        this.carregaDados(false, id);
       },
       error => {
+        this.carregaDados(false, id);
       });
   }
 
@@ -290,14 +292,15 @@ export class FichaManutencaoComponent implements OnInit {
 
     this.drop_ambitos_manutencao = [];
     this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
-    this.MANDICAMBITOSService.getAll().subscribe(
+    this.MANDICAMBITOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         for (var x in response) {
 
           this.drop_ambitos_manutencao.push({
-            value: response[x].ID,
-            label: response[x].NOME
+            value: response[x][0],
+            label: response[x][1],
+            email: response[x][2]
           });
 
         }
@@ -523,7 +526,7 @@ export class FichaManutencaoComponent implements OnInit {
               this.btplanear = false;
               this.btsubmeter = false;
               this.btcancelar = false;
-            } if (response[x].ESTADO == 'C') {
+            } else if (response[x].ESTADO == 'C') {
               this.btValidar = true;
               this.btRejeitar = true;
               this.bteditar = false;
@@ -531,8 +534,11 @@ export class FichaManutencaoComponent implements OnInit {
               this.btplanear = false;
               this.btsubmeter = false;
               this.btcancelar = false;
+            } else if (response[x].ESTADO == 'PE') {
+              if (this.acesso_responsavel) this.btplanear = true;
+              this.btsubmeter = false;
             } else {
-              this.btplanear = true;
+              this.btplanear = false;
               this.btsubmeter = false;
             }
 
@@ -801,6 +807,10 @@ export class FichaManutencaoComponent implements OnInit {
     var LOCALIZACAO = "";
     var EQUIPA_UTILIZADOR = "";
     var EMAIL_PARA = "";
+
+    if (ficha_manutencao.ESTADO == "PE") EMAIL_PARA = this.drop_ambitos_manutencao.find(item => item.value != '' && item.value == this.AMBITO_MANUTENCAO).email;
+
+
     if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
       EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
     }

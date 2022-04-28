@@ -26,6 +26,14 @@ export class MANDICAMBITOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(): Observable<MAN_DIC_AMBITOS[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_DIC_AMBITOS2';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteMAN_DIC_AMBITOS/' + id + '')

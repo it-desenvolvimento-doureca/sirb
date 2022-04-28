@@ -244,7 +244,8 @@
                       <label>Descrição do Pedido:</label>
                       <br>
                       <textarea [disabled]="!modoedicao" pInputTextarea [(ngModel)]="DESCRICAO_PEDIDO"
-                        class="form-control2" [ngModelOptions]="{standalone: true}"
+                        [ngClass]="(DESCRICAO_PEDIDO == null)? 'class_required' :''" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" [required]="true"
                         style="height: 71px; width: 100%;"></textarea>
                     </div>
 
