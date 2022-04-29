@@ -39,13 +39,14 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
   estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' },
   { value: 'Submetida', label: 'Submetida' },
   { value: 'Planeada', label: 'Planeada' },
+  { value: 'Pedido Rejeitado', label: 'Pedido Rejeitado' },
   { value: 'Concluída', label: 'Concluída' },
   { value: 'Validada', label: 'Validada' },
   { value: 'Rejeitada', label: 'Rejeitada' },
   { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
   { value: 'Anulada', label: 'Anulada' }];
-
+ 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
   constructor(private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
@@ -167,8 +168,12 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
       return 'Concluída';
     } else if (valor == 'RJ') {
       return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
     } else if (valor == 'RE') {
       return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
     }
 
     return 'Submetida';

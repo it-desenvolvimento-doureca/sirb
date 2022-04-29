@@ -18,6 +18,13 @@ export class MANMOVMANUTENCAOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  MAN_MOV_MANUTENCAO_CREATE_HISTORICO(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_MOV_MANUTENCAO_CREATE_HISTORICO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getAll(): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
     const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CAB';
     return this.http
@@ -46,6 +53,14 @@ export class MANMOVMANUTENCAOCABService {
 
   getbyID(id): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
     const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CABbyid/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getAllManutencoesPendentes(tipo, id): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_PENDENTES/' + tipo + '/' + id;
     return this.http
       .get(url)
       .map(this.extractData)

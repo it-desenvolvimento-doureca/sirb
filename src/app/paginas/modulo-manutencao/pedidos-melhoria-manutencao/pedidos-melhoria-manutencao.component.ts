@@ -59,6 +59,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btapagar: boolean;
   btvoltar: boolean;
   btcancelar: boolean;
+  btRejeitarPedido: boolean;
   bteditar: boolean;
   disCancelar: boolean;
   disValidar: boolean;
@@ -70,6 +71,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
   disSubmeter;
   btsubmeter;
+  disRejeitarPedido;
 
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -118,6 +120,13 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   nota: any = null;
   displayMotivoRejeicao: boolean;
   mototivoRejeicao: string;
+  validacao2: boolean = false;
+  validacao1: boolean = false;
+  lista_manutencoes_pendentes: any[] = [];
+  display_manutencoes_pendentes: boolean = false;
+  estadoRejeitado: string;
+  estado_texto: string;
+
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -168,12 +177,12 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       .subscribe(params => {
         step = params['step'] || 0;
       });
-
+    var id = 0;
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar") || urlarray[1].match("view")) {
         this.novo = false;
 
-        var id;
+
         var sub = this.route
           .queryParams
           .subscribe(params => {
@@ -251,11 +260,11 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
 
   getacessoresponsavel(id) {
-    this.GERUTILIZADORESService.getAcessoResponsavel(this.user,id).subscribe(
+    this.GERUTILIZADORESService.getAcessoResponsavel(this.user, id).subscribe(
       response => {
         var acesso_responsavel = response;
         this.acesso_responsavel = acesso_responsavel || this.adminuser;
-       
+
       },
       error => {
         this.carregaDados(false, id);
@@ -418,6 +427,14 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     } else {
       this.equipamentos();
     }
+
+    if (valor == null && event.value != null && event.value != "") {
+      this.validacao1 = false;
+      this.validacao2 = false;
+      this.validaManutencoesPendentes('L', event.value)
+    } else {
+      this.validacao2 = false;
+    }
   }
 
   listar_equipas(id) {
@@ -476,8 +493,80 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         },
         error => console.log(error));
     }
+
+    if (valor == null && event.value != null && event.value != "") {
+      this.validacao1 = false;
+      this.validacao2 = false;
+      this.validaManutencoesPendentes('E', event.value)
+    } else {
+      this.validacao2 = false;
+    }
   }
 
+
+  validaManutencoesPendentes(tipo, id) {
+    this.lista_manutencoes_pendentes = [];
+    this.MANMOVMANUTENCAOCABService.getAllManutencoesPendentes(tipo, id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.validacao1 = false;
+          this.validacao2 = false;
+        } else {
+          if (tipo == 'L') this.validacao1 = true;
+          if (tipo == 'E') this.validacao2 = true;
+        }
+        for (var x in response) {
+          this.lista_manutencoes_pendentes.push({
+            ID_PEDIDO: response[x][0],
+            DATA_HORA_PEDIDO: this.formatDate2(response[x][1]) + " " + new Date(response[x][1]).toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO: response[x][3],
+            COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
+            ESTADO: this.getestado(response[x][6]),
+            RESPONSAVEL: response[x][2],
+            STATUS_MAQUINA: (response[x][10] == null) ? '' : ((response[x][10] == 'P') ? 'Parada' : 'Em Funcionamento'),
+            LOCALIZACAO: response[x][7],
+            UTILIZADOR: response[x][9],
+            AMBITO: response[x][11]
+          });
+        }
+
+        this.lista_manutencoes_pendentes = this.lista_manutencoes_pendentes.slice();
+
+      },
+      error => console.log(error));
+
+  }
+
+  getestado(valor) {
+    if (valor == 'PE') {
+      return 'Submetida';
+    } if (valor == 'P') {
+      return 'Planeada';
+    } else if (valor == 'V') {
+      return 'Validada';
+    } else if (valor == 'A') {
+      return 'Anulada';
+    } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'EM') {
+      return 'Em Elaboração';
+    } else if (valor == 'CA') {
+      return 'Cancelada';
+    } else if (valor == 'C') {
+      return 'Concluída';
+    } else if (valor == 'RJ') {
+      return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
+    } else if (valor == 'RE') {
+      return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
+    }
+
+    return 'Submetida';
+  }
 
   inicia(id) {
 
@@ -518,14 +607,19 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             }
 
             this.estado = response[x].ESTADO;
+            this.estado_texto = this.getESTADO(response[x].ESTADO);
+
+            this.btRejeitarPedido = false;
             if (response[x].ESTADO == 'P') {
               this.bteditar = false;
               this.modoedicao = false;
               this.btplanear = false;
               this.btsubmeter = false;
+              this.btcancelar = false;
             } else if (response[x].ESTADO == 'EM') {
               this.btsubmeter = true;
               this.btplanear = false;
+              this.btcancelar = true;
             } else if (response[x].ESTADO == 'CA') {
               this.bteditar = false;
               this.modoedicao = false;
@@ -541,11 +635,16 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
               this.btsubmeter = false;
               this.btcancelar = false;
             } else if (response[x].ESTADO == 'PE') {
+              if (this.acesso_responsavel) this.btRejeitarPedido = true;
+              this.btcancelar = false;
               if (this.acesso_responsavel) this.btplanear = true;
+              if (this.acesso_responsavel) this.bteditar = true;
               this.btsubmeter = false;
             } else {
+              this.btcancelar = false;
               this.btplanear = false;
               this.btsubmeter = false;
+              this.bteditar = false;
             }
 
           }
@@ -698,16 +797,34 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     return year + month + day + hour + min + mill;
   }
 
-  getESTADO(estado) {
-    if (estado == "A") {
-      return "Aberta";
-    } else if (estado == "F") {
-      return "Fechada";
-    } else if (estado == "C") {
-      return "Cancelada";
-    } else if (estado == "R") {
-      return "Anulada";
+  getESTADO(valor) {
+    if (valor == 'PE') {
+      return 'Submetida';
+    } if (valor == 'P') {
+      return 'Planeada';
+    } else if (valor == 'V') {
+      return 'Validada';
+    } else if (valor == 'A') {
+      return 'Anulada';
+    } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'EM') {
+      return 'Em Elaboração';
+    } else if (valor == 'CA') {
+      return 'Cancelada';
+    } else if (valor == 'C') {
+      return 'Concluída';
+    } else if (valor == 'RJ') {
+      return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
+    } else if (valor == 'RE') {
+      return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
     }
+
+    return 'Submetida';
   }
 
   //simular click para mostrar mensagem
@@ -850,7 +967,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         res => {
           if (ficha_manutencao.ESTADO == "P") this.cria_MANUTENCAO(res.ID_MANUTENCAO_CAB, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
-
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Criou Novo Pedido Melhoria no estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
             EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
         },
@@ -875,11 +992,24 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
           //this.gravarTabelaStocks(id);
 
+          if (res.ESTADO == "P" && planear) {
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Melhoria para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
+          } else if (submeter) {
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Melhoria para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
+          }
+
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
     }
 
+  }
+
+  criarHISTORICO(id, MOTIVO) {
+    this.MANMOVMANUTENCAOCABService.MAN_MOV_MANUTENCAO_CREATE_HISTORICO([{ ID_OPERARIO: this.user, ID_MANUTENCAO_CAB: id, MOTIVO: MOTIVO }]).subscribe(
+      res => {
+      },
+      error => { console.log(error); });
   }
 
   /*criaSTATUS_MAQUINA(ID_PEDIDO, ID_EQUIPAMENTO) {
@@ -1072,6 +1202,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Cancelou Pedido Melhoria.');
             this.router.navigate(['lista_pedidos_melhoria']);
             this.simular(this.inputapagar);
           },
@@ -1098,6 +1229,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Validou Pedido Melhoria.');
+
             this.router.navigate(['lista_pedidos_melhoria']);
             this.simular(this.inputapagar);
           },
@@ -1117,10 +1250,27 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
         this.mototivoRejeicao = "";
         this.displayMotivoRejeicao = true;
+        this.estadoRejeitado = 'RE';
       }
 
     });
   }
+
+  RejeitarPedido() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende rejeitar o pedido?',
+      header: 'Rejeitar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+
+        this.mototivoRejeicao = "";
+        this.displayMotivoRejeicao = true;
+        this.estadoRejeitado = 'RP';
+      }
+
+    });
+  }
+
 
   gravarRejeitar() {
     var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
@@ -1129,10 +1279,17 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
     ficha_manutencao.UTZ_ULT_MODIF = this.user;
     ficha_manutencao.DATA_ULT_MODIF = new Date();
-    ficha_manutencao.ESTADO = "RE";
+    ficha_manutencao.ESTADO = this.estadoRejeitado;
 
     this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
       res => {
+        if (this.estadoRejeitado == 'RJ') {
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Manutenção de Melhoria.');
+        } else {
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Pedido Melhoria.');
+        }
+
+
         this.insertNOTAS('', this.mototivoRejeicao, null);
         this.router.navigate(['lista_pedidos_melhoria']);
         this.simular(this.inputapagar);
@@ -1158,6 +1315,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Apagou Pedido Melhoria.');
+
             this.router.navigate(['lista_pedidos_melhoria']);
             this.simular(this.inputapagar);
           },
@@ -1495,6 +1654,10 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-') + " " + new Date(date).toLocaleTimeString().slice(0, 8);
+  }
+
+  ver_manutencoes(tipo) {
+    this.display_manutencoes_pendentes = true;
   }
 
 }

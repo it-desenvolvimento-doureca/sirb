@@ -166,6 +166,8 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
       return 'Concluída';
     } else if (valor == 'RJ') {
       return 'Rejeitada';
+    } else if (valor == 'R') {
+      return 'Suspensa';
     }
 
     return 'Submetida';

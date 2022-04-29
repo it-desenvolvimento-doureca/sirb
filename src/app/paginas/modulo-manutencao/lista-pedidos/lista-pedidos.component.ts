@@ -38,6 +38,7 @@ export class ListaPedidosComponent implements OnInit {
 
   estados = [{ value: 'Em Elaboração', label: 'Em Elaboração' },
   { value: 'Submetida', label: 'Submetida' },
+  { value: 'Pedido Rejeitado', label: 'Pedido Rejeitado' },
   { value: 'Planeada', label: 'Planeada' },
   { value: 'Concluída', label: 'Concluída' },
   { value: 'Validada', label: 'Validada' },
@@ -170,8 +171,12 @@ export class ListaPedidosComponent implements OnInit {
       return 'Concluída';
     } else if (valor == 'RJ') {
       return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
     } else if (valor == 'RE') {
       return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
     }
 
     return 'Submetida';
