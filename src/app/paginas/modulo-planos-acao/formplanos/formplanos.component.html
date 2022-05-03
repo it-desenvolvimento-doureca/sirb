@@ -364,6 +364,18 @@
                           <table style="border: none;">
                             <th class="ui-state-default ui-unselectable-text"
                               style="width: 100px; display: table-cell; padding-left: 7px;">
+                              <span class="ui-column-title">ORIGEM</span>
+                            </th>
+                            <th style="border-top: none; border-right: none; border-left: none;">
+                              <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;"
+                                [(ngModel)]="car['origem']" [ngModelOptions]="{standalone: true}" type="text"
+                                class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                ng-reflect-ng-class="ui-inputtext ui-widget ui-stat">
+                            </th>
+                          </table>
+                          <table style="border: none;">
+                            <th class="ui-state-default ui-unselectable-text"
+                              style="width: 100px; display: table-cell; padding-left: 7px;">
                               <span class="ui-column-title">CAUSA</span>
                             </th>
                             <th style="border-top: none; border-right: none; border-left: none;">

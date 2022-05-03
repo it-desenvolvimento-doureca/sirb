@@ -35,4 +35,6 @@ export class PA_MOV_LINHA {
     utz_CRIA: number;
     data_MODIF: Date;
     utz_MODIF: number;
+    origem: string;
+
 }

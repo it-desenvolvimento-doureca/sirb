@@ -658,6 +658,7 @@ export class FormplanosComponent implements OnInit {
               referencia_campo: referencia_campo,
               referencia: response[x][0].referencia, design_REFERENCIA: response[x][0].design_REFERENCIA,
               causa: response[x][0].causa,
+              origem: response[x][0].origem,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
               justificacao_DATA_FIM: null,
               justificacao_RESPONSAVEL: null,
@@ -951,6 +952,7 @@ export class FormplanosComponent implements OnInit {
       accoes.design_REFERENCIA = this.tabelaaccoes[x].design_REFERENCIA;
       accoes.estado = (estado == 'P') ? 'P' : this.tabelaaccoes[x].estado;
       accoes.causa = this.tabelaaccoes[x].causa;
+      accoes.origem = this.tabelaaccoes[x].origem;
 
       accoes.responsavel = id_resp;
       var novo = false;
@@ -1197,7 +1199,7 @@ export class FormplanosComponent implements OnInit {
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: 'E', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
       descricao_ref: (this.referencia == null) ? '' : this.referencia + ' - ' + this.design_REFERENCIA, justificacao_DATA_FIM: null, seguir_LINHA: false, justificacao_RESPONSAVEL: null,
-      causa: null, estado_texto: this.getestado('E'),
+      causa: null, estado_texto: this.getestado('E'), origem: null
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -1657,6 +1659,7 @@ export class FormplanosComponent implements OnInit {
     accoes.item = tabelaaccoes.item;
     accoes.estado = estado;
     accoes.causa = tabelaaccoes.causa;
+    accoes.origem = tabelaaccoes.origem;
     accoes.responsavel = id_resp;
     accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
 
