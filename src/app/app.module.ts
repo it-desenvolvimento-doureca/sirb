@@ -414,6 +414,8 @@ import { MANDICAMBITOUTILIZADORESService } from './servicos/man-dic-ambito-utili
 import { MANMOVMANUTENCAONOTASService } from './servicos/man-mov-manutencao-notas.service';
 import { ListaManutencoesPreventivasComponent } from './paginas/modulo-manutencao/lista-manutencoes-preventivas/lista-manutencoes-preventivas.component';
 import { ManutencoesPreventivasComponent } from './paginas/modulo-manutencao/manutencoes-preventivas/manutencoes-preventivas.component';
+import { MANMOVMANUTENCAOOPERARIOSService } from './servicos/man-mov-manutencao-operarios.service';
+import { MANMOVMANUTENCAOACCOESService } from './servicos/man-mov-manutencao-accoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1541,6 +1543,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANDICAMBITOSService,
     MANDICAMBITOUTILIZADORESService,
     MANMOVMANUTENCAONOTASService,
+    MANMOVMANUTENCAOOPERARIOSService,
+    MANMOVMANUTENCAOACCOESService,
+
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

@@ -21,6 +21,9 @@ import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 import { MAN_MOV_MANUTENCAO_NOTAS } from 'app/entidades/MAN_MOV_MANUTENCAO_NOTAS';
 import { MANMOVMANUTENCAONOTASService } from 'app/servicos/man-mov-manutencao-notas.service';
+import { MANMOVMANUTENCAOOPERARIOSService } from 'app/servicos/man-mov-manutencao-operarios.service';
+import { MANMOVMANUTENCAOACCOESService } from 'app/servicos/man-mov-manutencao-accoes.service';
+import { MAN_MOV_MANUTENCAO_ACCOES } from 'app/entidades/MAN_MOV_MANUTENCAO_ACCOES';
 
 @Component({
   selector: 'app-pedidos-melhoria-manutencao',
@@ -126,6 +129,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   display_manutencoes_pendentes: boolean = false;
   estadoRejeitado: string;
   estado_texto: string;
+  OBSERVACOES: string;
+  operarios: any[];
+  acoes: any[];
 
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
@@ -138,6 +144,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     private GERFORNECEDORService: GERFORNECEDORService,
     private MANDICAMBITOSService: MANDICAMBITOSService,
     private MANMOVMANUTENCAONOTASService: MANMOVMANUTENCAONOTASService,
+    private MANMOVMANUTENCAOOPERARIOSService: MANMOVMANUTENCAOOPERARIOSService,
+    private MANMOVMANUTENCAOACCOESService: MANMOVMANUTENCAOACCOESService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -538,6 +546,20 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
   }
 
+  getestadofunc(valor: any) {
+    if (valor == 'E') {
+      return 'Execução'
+    } else if (valor == 'S') {
+      return 'Pausa'
+    } else if (valor == 'C') {
+      return 'Concluído';
+    } else if (valor == 'R') {
+      return 'Suspenso';
+    } else if (valor == 'D') {
+      return 'Desistiu';
+    }
+  }
+
   getestado(valor) {
     if (valor == 'PE') {
       return 'Submetida';
@@ -599,6 +621,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             this.COD_FORNECEDOR = response[x].COD_FORNECEDOR;
             this.NOME_FORNECEDOR = response[x].NOME_FORNECEDOR;
             this.EMAIL_FORNECEDOR = response[x].EMAIL_FORNECEDOR;
+            this.OBSERVACOES = response[x].OBSERVACOES;
 
             if (this.EQUIPAMENTO != null) {
               this.REFERENTE_EQUIPAMENTO = 'S';
@@ -651,10 +674,70 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
           this.getEquipamentos({ value: this.LOCALIZACAO }, this.EQUIPAMENTO);
           this.carregatabelaFiles(id);
+          this.getOperarios(id);
+          this.getAcoes(id);
         }
 
       }, error => { console.log(error); });
 
+  }
+
+  getOperarios(id: any) {
+    this.operarios = [];
+    this.MANMOVMANUTENCAOOPERARIOSService.getbyID(id)
+      .subscribe((resp: any) => {
+
+        var count = Object.keys(resp).length;
+        if (count > 0) {
+
+          for (var x in resp) {
+
+            this.operarios.push({
+              ID: resp[x][0],
+              ID_OPERARIO: resp[x][2],
+              DATA_INICIO: (resp[x][3] == null) ? '' : this.formatDateTime(resp[x][3]),
+              DATA_FIM: (resp[x][4] == null) ? '' : this.formatDateTime(resp[x][4]),
+              TEMP_EXEC: resp[x][5],
+              TEMP_PAUSA: resp[x][6],
+              TEMP_TOTAL: resp[x][7],
+              ESTADO: resp[x][8],
+              ESTADO_TEXTO: this.getestadofunc(resp[x][8]),
+              NOME_UTILIZADOR: resp[x][13]
+            })
+          }
+          this.operarios = this.operarios.slice();
+        }
+      }, error => {
+
+      }
+      );
+  }
+
+  getAcoes(id: any) {
+    this.acoes = [];
+    this.MANMOVMANUTENCAOACCOESService.getbyID(id)
+      .subscribe((resp: any) => {
+
+        var count = Object.keys(resp).length;
+        if (count > 0) {
+          for (var x in resp) {
+            var dados = new MAN_MOV_MANUTENCAO_ACCOES;
+            dados.ID_MANUTENCAO_ACOES = resp[x][0];
+            dados.ID_MANUTENCAO_CAB = resp[x][1];
+            dados.ID_ACAO = resp[x][2];
+            dados.REALIZADA = resp[x][3];
+            dados.UTZ_CRIA = resp[x][4];
+            dados.DATA_CRIA = resp[x][5];
+            dados.UTZ_ULT_MODIF = resp[x][6];
+            dados.DATA_ULT_MODIF = resp[x][7];
+            this.acoes.push({ dados: dados, name: resp[x][8], key: resp[x][0], REALIZADA: resp[x][3], tempo: (resp[x][9] == null) ? null : resp[x][9].slice(0, 5), savebt: false })
+          }
+          this.acoes = this.acoes.slice();
+        }
+      }, error => {
+
+      }
+      );
   }
 
   carregatabelaFiles(id) {
@@ -916,7 +999,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     ficha_manutencao.DATA_ULT_MODIF = new Date();
 
 
-    if (this.submetergravar && (this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.TIPO_RESPONSAVEL != 'EX') {
+    if (submeter && (this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.TIPO_RESPONSAVEL != 'EX') {
       ficha_manutencao.ESTADO = "P";
     } else if (submeter == true) {
       ficha_manutencao.ESTADO = "PE";

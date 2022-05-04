@@ -38,7 +38,7 @@ export class MANMOVMANUTENCAOOPERARIOSService {
 
 
   getbyID(id): Observable<MAN_MOV_MANUTENCAO_OPERARIOS[]> {
-    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_OPERARIOSbyid/' + id + '/0';
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_OPERARIOSbyid/' + id;
     return this.http
       .get(url)
       .map(this.extractData)

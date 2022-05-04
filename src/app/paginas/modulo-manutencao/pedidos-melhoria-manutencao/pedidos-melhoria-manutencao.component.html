@@ -261,6 +261,14 @@
                         style="height: 71px; width: 100%;"></textarea>
                     </div>
 
+                    <div *ngIf="!novo && estado != 'EM' && estado != 'PE' && estado != 'P'"
+                      style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                      <label>Observações:</label>
+                      <br>
+                      <textarea [disabled]="true" pInputTextarea [(ngModel)]="OBSERVACOES" class="form-control2"
+                        [ngModelOptions]="{standalone: true}" style="height: 71px; width: 100%;"></textarea>
+                    </div>
+
                   </div>
                 </p-panel>
 
@@ -352,6 +360,68 @@
                   </div>
                 </p-panel>
 
+                <p-panel header="Dados Manutenção" *ngIf="!novo" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="form-group col-md-6 col-lg-6">
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="operarios"
+                        styleClass="ExcelTable2007">
+
+                        <p-column [editable]="false" field="NOME_UTILIZADOR" styleClass="ExcelTable2007tdname"
+                          header="Nome Utilizador">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span style="text-align: left; width: 100%; display: block; padding-left: 5px;"
+                              title="{{car['NOME_UTILIZADOR'] }}">{{car['NOME_UTILIZADOR'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [editable]="false" field="DATA_INICIO" styleClass="ExcelTable2007tdname"
+                          header="Data Início">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title=" {{car['DATA_INICIO'] }} "> {{car['DATA_INICIO'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [editable]="false" field="DATA_FIM" styleClass="ExcelTable2007tdname"
+                          header="Data Fim">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title=" {{car['DATA_FIM'] }} "> {{car['DATA_FIM'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [editable]="false" field="ESTADO_TEXTO" styleClass="ExcelTable2007tdname"
+                          header="Estado">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['ESTADO_TEXTO']}}">{{car['ESTADO_TEXTO']}}</span>
+                          </ng-template>
+                        </p-column>
+
+                      </p-dataTable>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="acoes"
+                        styleClass="ExcelTable2007">
+
+                        <p-column [editable]="false" field="name" styleClass="ExcelTable2007tdname" header="Ações">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span style="text-align: left; width: 100%; display: block; padding-left: 5px;"
+                              title="{{car['name'] }}">{{car['name'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'100px'}" [editable]="false" field="tempo"
+                          styleClass="ExcelTable2007tdname" header="Tempo">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title=" {{car['tempo'] }} "> {{car['tempo'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'80px'}" [editable]="false" field="REALIZADA"
+                          styleClass="ExcelTable2007tdname" header="Realizada">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <i *ngIf="car.REALIZADA == false" class="material-icons" style="color: red;">close</i>
+                            <i *ngIf="car.REALIZADA == true" class="material-icons" style="color: green;">check</i>
+                          </ng-template>
+                        </p-column>
+                      </p-dataTable>
+                    </div>
+                  </div>
+                </p-panel>
 
               </div>
 
