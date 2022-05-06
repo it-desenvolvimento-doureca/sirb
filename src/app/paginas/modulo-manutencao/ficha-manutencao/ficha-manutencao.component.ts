@@ -135,7 +135,7 @@ export class FichaManutencaoComponent implements OnInit {
   OBSERVACOES: string;
   operarios: any[];
   acoes: any[];
-
+  btnotas = true;
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -222,6 +222,7 @@ export class FichaManutencaoComponent implements OnInit {
         this.btcancelar = false;
         this.globalVar.setduplicar(false);
         this.novo = true;
+        this.btnotas = false;
         this.bteditar = false;
         this.btplanear = false;
         this.btsubmeter = false;
@@ -251,6 +252,7 @@ export class FichaManutencaoComponent implements OnInit {
       this.btcancelar = false;
       this.globalVar.setduplicar(false);
       this.novo = true;
+      this.btnotas = false;
       this.bteditar = false;
       this.btplanear = false;
       this.btsubmeter = false;
