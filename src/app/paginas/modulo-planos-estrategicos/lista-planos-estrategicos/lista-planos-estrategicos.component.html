@@ -49,7 +49,7 @@
                 [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">
                   <span>
-                    {{car['conclusao']}} %
+                    {{car['conclusao'] | number: '1.2-2'}} %
                   </span>
                 </ng-template>
               </p-column>
@@ -70,7 +70,8 @@
                   </p-column>
                   <p-column [style]="{'width':'27px'}" field="data_objetivo" header="Data Objetivo do Plano">
                     <ng-template let-car="rowData" pTemplate="body">
-                      <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
+                      <div [style.background]="car['cor']" [style.color]="car['cor_letra']"
+                        style="font-size: 11pt !important;">
                         {{car['data_objetivo']}}
                       </div>
                     </ng-template>
@@ -84,8 +85,8 @@
                   <p-column [style]="{'width':'10px','padding-left': '0','padding-right': '0'}" field="conclusao"
                     header="% Conclusão">
                     <ng-template let-car="rowData" pTemplate="body">
-                      <span>
-                        {{car['conclusao']}} %
+                      <span style="font-size: 11pt !important;">
+                        {{car['conclusao'] | number: '1.2-2'}} %
                       </span>
                     </ng-template>
                   </p-column>
@@ -124,7 +125,7 @@
                             <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.objetivo}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.investimentos}}</td>
-                            <td class="tg-0pky" style="min-width: 120px;">{{col.conclusao}} %</td>
+                            <td class="tg-0pky" style="min-width: 120px;">{{col.conclusao | number: '1.2-2'}} %</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
 
                           </tr>
@@ -157,7 +158,8 @@
 
   <!-- Modal Body -->
   <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
-    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input"></app-paginatarefa>
+    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input">
+    </app-paginatarefa>
   </div>
   <!-- Modal Footer -->
   <div class="" style="text-align: -webkit-center;">

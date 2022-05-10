@@ -44,6 +44,7 @@
               <i class="material-icons">playlist_add</i>Notas
               <div class="ripple-container"></div>
             </a>
+            <span class="notification_number">{{notas.length}}</span>
           </li>
 
           <li [class.disabled]="disValidar" [hidden]="!btValidar">
@@ -369,6 +370,36 @@
                             </button>
                           </ng-template>
                         </p-column>
+                      </p-dataTable>
+                    </div>
+                  </div>
+                </p-panel>
+                <p-panel header="Notas" *ngIf="!novo" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="form-group col-md-12 col-lg-12">
+                      <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="notas"
+                        styleClass="ExcelTable2007">
+
+                        <p-column [style]="{'width':'300px'}" [editable]="false" field="utilizador"
+                          styleClass="ExcelTable2007tdname" header="Nome Utilizador">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span style="text-align: left; width: 100%; display: block; padding-left: 5px;"
+                              title="{{car['utilizador'] }}">{{car['utilizador'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'200px'}" [editable]="false" field="data"
+                          styleClass="ExcelTable2007tdname" header="Data/Hora">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title=" {{car['data'] }} "> {{car['data'] }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column [editable]="false" field="mensagem" styleClass="ExcelTable2007tdname"
+                          header="Mensagem">
+                          <ng-template let-col let-car="rowData" pTemplate="body">
+                            <span title="{{car['mensagem']}}">{{car['mensagem']}}</span>
+                          </ng-template>
+                        </p-column>
+
                       </p-dataTable>
                     </div>
                   </div>

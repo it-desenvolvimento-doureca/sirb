@@ -183,12 +183,14 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
         estado: this.getestado(response[x][7]), //cor: response[x][1],
         utilizador: response[x][5], conclusao: response[x][25],
+        objetivo: response[x][31],
         filho: [{
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
           , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29],
           data_registo: (response[x][30] == null) ? "" : this.formatDate(response[x][30]), id_TAREFA: response[x][17]
+          , investimentos: response[x][32],
         }]
       });
     }

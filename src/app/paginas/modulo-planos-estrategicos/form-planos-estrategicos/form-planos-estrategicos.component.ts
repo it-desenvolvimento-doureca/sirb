@@ -162,6 +162,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   displayJustificacaoDATAFIM: boolean;
   displayJustificacaoRESPONSAVEL: boolean;
   disabled_save: boolean;
+  caminho2: string;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -229,33 +230,43 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       });
 
     this.caminho = urlarray[0];
+    this.caminho2 = "planosacao";
     if (urlarray[0] == 'planosestrategicosengenaria') {
       node = "node1611";
       this.tipo = "EP";
+      this.caminho2 = "planosacaoengenaria";
     } else if (urlarray[0] == 'planosestrategicosproducao') {
       node = "node1631";
       this.tipo = "P";
+      this.caminho2 = "planosacaoproducao";
     } else if (urlarray[0] == 'planosestrategicoslogistica') {
       node = "node1641";
       this.tipo = "L";
+      this.caminho2 = "planosacaologistica";
     } else if (urlarray[0] == 'planosestrategicosmanutencao') {
       node = "node1651";
       this.tipo = "M";
+      this.caminho2 = "planosacaomanutencao";
     } else if (urlarray[0] == 'planosestrategicosinjecao') {
       node = "node1661";
       this.tipo = "I";
+      this.caminho2 = "planosacaoinjecao";
     } else if (urlarray[0] == 'planosestrategicosComercial') {
       node = "node1671";
       this.tipo = "C";
+      this.caminho2 = "planosacaoComercial";
     } else if (urlarray[0] == 'planosestrategicosProjetos') {
       node = "node1681";
       this.tipo = "PR";
+      this.caminho2 = "planosacaoProjetos";
     } else if (urlarray[0] == 'planosestrategicosFinanceira') {
       node = "node1691";
       this.tipo = "F";
+      this.caminho2 = "planosacaoFinanceira";
     } else if (urlarray[0] == 'planosestrategicosqualidade') {
       node = "node1621";
       this.tipo = "Q";
+      this.caminho2 = "planosacaoqualidade";
     }
 
 
@@ -904,8 +915,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
             atualizou_datas = true;
           }
           //cria_tarefas = false;
+        } else {
+          accoes.data_CRIA = new Date;
+          accoes.utz_CRIA = this.user;
         }
 
+        accoes.data_MODIF = new Date;
+        accoes.utz_CRIA = this.user;
 
         var id_resp_old = null;
         var atualizou_responsavel = false;
@@ -1285,6 +1301,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     for (var x in this.tabelaplanos) {
       this.PAMOVCABService.getPA_MOV_CABRemoverPlanoEstrategico(this.id_PLANO, this.tabelaplanos[x].id).subscribe(
         res => {
+
         },
         error => { console.log(error); })
     }
@@ -2705,4 +2722,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }
 
+  navegarparaplano(id) {
+    if (this.modoedicao) {
+      this.router.navigate([this.caminho2 + '/view'], { queryParams: { id: id, redirect: this.caminho + "/editarkvk\id=" + this.id_PLANO } });
+
+    } else {
+      this.router.navigate([this.caminho2 + '/view'], { queryParams: { id: id, redirect: this.caminho + "/viewkvk\id=" + this.id_PLANO } });
+    }
+  }
 }

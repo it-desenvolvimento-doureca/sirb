@@ -265,6 +265,10 @@
                         </p-column>
                         <p-column [style]="{'width':'6px','padding-left': '0','padding-right': '0'}" field="numero"
                           header="Nº">
+                          <ng-template let-car="rowData" pTemplate="body">
+                            <a (click)="navegarparaplano(car.id)" style="cursor: pointer; color: black; ">
+                              {{car['numero']}}</a>
+                          </ng-template>
                         </p-column>
                         <p-column [style]="{'width':'14px','padding-left': '0','padding-right': '0'}"
                           field="data_objetivo" header="Data Objetivo do Plano">
@@ -379,7 +383,8 @@
               <button type="reset" (click)="backview()" class="btn btn-danger pull-right"
                 [hidden]="!modoedicao">Cancelar</button>
               <button type="submit" class="btn btn-success pull-right" #buttongravar [hidden]="true">Gravar</button>
-              <button type="submit" class="btn btn-success pull-right" [disabled]="disabled_save" [hidden]="!modoedicao">Gravar</button>
+              <button type="submit" class="btn btn-success pull-right" [disabled]="disabled_save"
+                [hidden]="!modoedicao">Gravar</button>
               <div class="clearfix"></div>
             </form>
           </div>

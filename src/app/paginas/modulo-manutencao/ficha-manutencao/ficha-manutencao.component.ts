@@ -631,8 +631,13 @@ export class FichaManutencaoComponent implements OnInit {
 
             this.btRejeitarPedido = false;
             if (response[x].ESTADO == 'P') {
-              this.bteditar = false;
-              this.modoedicao = false;
+              if (this.acesso_responsavel) {
+                this.bteditar = true;
+              } else {
+                this.bteditar = false;
+                this.modoedicao = false;
+              }
+
               this.btplanear = false;
               this.btsubmeter = false;
               this.btcancelar = false;
@@ -675,6 +680,7 @@ export class FichaManutencaoComponent implements OnInit {
           this.carregatabelaFiles(id);
           this.getOperarios(id);
           this.getAcoes(id);
+          this.vernotas(false);
         }
 
       }, error => { console.log(error); });
@@ -1688,7 +1694,7 @@ export class FichaManutencaoComponent implements OnInit {
   }
 
 
-  vernotas() {
+  vernotas(show = true) {
     this.notas = [];
     this.MANMOVMANUTENCAONOTASService.getbyID(this.ID_PEDIDO).subscribe(
       res => {
@@ -1697,8 +1703,8 @@ export class FichaManutencaoComponent implements OnInit {
           var letra = res[x][1].toString().slice(0, 1);
           this.notas.push({ id: res[x][0].UTZ_CRIA, utilizador: res[x][1], letra: letra, mensagem: res[x][0].DESCRICAO, data: this.formatDateTime(res[x][0].DATA_CRIA) });
         }
-
-        this.display_notas = true;
+        this.notas = this.notas.slice();
+        if (show) this.display_notas = true;
       },
       error => {
         console.log(error);
@@ -1727,6 +1733,7 @@ export class FichaManutencaoComponent implements OnInit {
       res => {
         this.notas.push({ id: this.user, utilizador: this.user_nome, letra: letra, mensagem: notatxt, data: this.formatDateTime(data) });
         this.nota = "";
+        this.vernotas(false);
       },
       error => {
         console.log(error);

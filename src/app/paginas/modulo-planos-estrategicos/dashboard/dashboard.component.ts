@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
       yAxes: [{
         ticks: {
           label: '',
-          beginAtZero: true, 
+          beginAtZero: true,
         }, scaleLabel: {
           display: true,
         }, afterFit: (axis) => {
@@ -124,7 +124,10 @@ export class DashboardComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: ["Departamentos"], backgroundColor: "orange", borderColor: "orange", data: data
+              label: ["Departamentos"],
+              backgroundColor: ['#fa8564', '#1fb5ac', '#aec785', '#a48ad4', '#fdd752', '#ff6c60'],
+              borderColor: ['#fa8564', '#1fb5ac', '#aec785', '#a48ad4', '#fdd752', '#ff6c60'],
+              data: data
             },
           ],
 
