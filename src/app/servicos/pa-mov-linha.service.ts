@@ -26,8 +26,8 @@ export class PAMOVLINHAService {
   }
 
 
-  getById(ip): Observable<PA_MOV_LINHA[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAbyid/' + ip;
+  getById(ip, user): Observable<PA_MOV_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAbyid/' + ip + '/' + user;
     return this.http
       .get(url)
       .map(this.extractData)
@@ -50,16 +50,16 @@ export class PAMOVLINHAService {
       .catch(this.handleError);
   }
 
-  delete_favorito(id): Observable<PA_MOV_LINHA[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAdelete_favorito/' + id;
+  delete_favorito(id, user): Observable<PA_MOV_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAdelete_favorito/' + id + '/' + user;
     return this.http
       .get(url)
       .map(this.extractData)
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  add_favorito(id): Observable<PA_MOV_LINHA[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAadd_favorito/' + id;
+  add_favorito(id, user): Observable<PA_MOV_LINHA[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_LINHAadd_favorito/' + id + '/' + user;
     return this.http
       .get(url)
       .map(this.extractData)

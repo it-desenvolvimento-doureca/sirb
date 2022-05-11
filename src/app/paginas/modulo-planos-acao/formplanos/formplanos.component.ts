@@ -627,7 +627,7 @@ export class FormplanosComponent implements OnInit {
   carregarlinhas(id) {
     this.tabelaaccoes = [];
     this.linhasSelecionadas = null;
-    this.PAMOVLINHAService.getById(id).subscribe(
+    this.PAMOVLINHAService.getById(id, this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
 
@@ -663,7 +663,7 @@ export class FormplanosComponent implements OnInit {
               justificacao_DATA_FIM: null,
               justificacao_RESPONSAVEL: null,
               departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado),
-              seguir_LINHA: response[x][0].seguir_LINHA,
+              seguir_LINHA: (response[x][3] > 0) ? true : false //response[x][0].seguir_LINHA,
             });
 
           }
@@ -940,7 +940,7 @@ export class FormplanosComponent implements OnInit {
       accoes.departamento = this.tabelaaccoes[x].id_departamento;
       accoes.descricao = this.tabelaaccoes[x].observacao;
       accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
-      accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
+      //accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
       accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
       accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
       accoes.fastresponse = this.tabelaaccoes[x].fastresponse;
@@ -1661,7 +1661,7 @@ export class FormplanosComponent implements OnInit {
     accoes.causa = tabelaaccoes.causa;
     accoes.origem = tabelaaccoes.origem;
     accoes.responsavel = id_resp;
-    accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
+    //accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
 
     if (estado == 'C') {
       accoes.data_CONTROLADO = new Date();
@@ -2131,13 +2131,13 @@ export class FormplanosComponent implements OnInit {
   }
 
   delete_favorito(id, col) {
-    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.delete_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = false;
     }, error => { console.log(error); col.seguir_LINHA = true; });
   }
 
   add_favorito(id, col) {
-    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.add_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = true;
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }

@@ -4,6 +4,7 @@ import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
 import { PAMOVCABService } from 'app/servicos/pa-mov-cab.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { PAMOVLINHAService } from 'app/servicos/pa-mov-linha.service';
 
 @Component({
   selector: 'app-listaplanos',
@@ -26,12 +27,16 @@ export class ListaplanosComponent implements OnInit {
   acoes_em_ATRASO = false;
   displayTarefa: boolean;
   id_tarefa_input = null;
+  user: any;
 
   constructor(private ABDICLINHAService: ABDICLINHAService,
     private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute,
+    private PAMOVLINHAService: PAMOVLINHAService,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
+
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
     this.globalVar.setvoltar(false);
     this.globalVar.seteditar(false);
@@ -119,7 +124,7 @@ export class ListaplanosComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: this.FastResponse, EM_ATRASO: this.acoes_em_ATRASO }];
+    var filtros = [{ FASTRESPONSE: this.FastResponse, EM_ATRASO: this.acoes_em_ATRASO, USER: this.user }];
     this.PAMOVCABService.getPA_MOV_CABbyTIPO(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -304,6 +309,34 @@ export class ListaplanosComponent implements OnInit {
       this.displayTarefa = true;
     }
 
+  }
+
+  set_favoritos(col) {
+    if (col.seguir_LINHA) {
+      if (col.id_PLANO_LINHA != null) {
+        this.delete_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = false;
+      }
+    } else {
+      if (col.id_PLANO_LINHA != null) {
+        this.add_favorito(col.id_PLANO_LINHA, col);
+      } else {
+        col.seguir_LINHA = true;
+      }
+    }
+  }
+
+  delete_favorito(id, col) {
+    this.PAMOVLINHAService.delete_favorito(id, this.user).subscribe(result => {
+      col.seguir_LINHA = false;
+    }, error => { console.log(error); col.seguir_LINHA = true; });
+  }
+
+  add_favorito(id, col) {
+    this.PAMOVLINHAService.add_favorito(id, this.user).subscribe(result => {
+      col.seguir_LINHA = true;
+    }, error => { console.log(error); col.seguir_LINHA = false; });
   }
 
 }

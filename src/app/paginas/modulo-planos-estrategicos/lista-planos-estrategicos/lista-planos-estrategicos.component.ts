@@ -26,12 +26,15 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   acoes_em_ATRASO = false;
   displayTarefa: boolean;
   id_tarefa_input = null;
+  user: any;
 
   constructor(
     private PEMOVCABService: PEMOVCABService, private route: ActivatedRoute,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals, private PAMOVLINHAService: PAMOVLINHAService) { }
 
   ngOnInit() {
+
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
     this.globalVar.setvoltar(false);
     this.globalVar.seteditar(false);
@@ -109,7 +112,7 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: this.acoes_em_ATRASO }];
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: this.acoes_em_ATRASO, USER: this.user }];
     this.PEMOVCABService.getPE_MOV_CABbyTIPO(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -290,13 +293,13 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
   }
 
   delete_favorito(id, col) {
-    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.delete_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = false;
     }, error => { console.log(error); col.seguir_LINHA = true; });
   }
 
   add_favorito(id, col) {
-    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.add_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = true;
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }

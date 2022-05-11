@@ -515,6 +515,7 @@ export class AnalisesdashboardComponent implements OnInit {
   id_tarefa_input: any;
   displayTarefa: boolean;
   yearTimeout: any;
+  user: any;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -525,6 +526,8 @@ export class AnalisesdashboardComponent implements OnInit {
     private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
+
     var data = new Date()
     this.data = this.formatDate(data);
     this.data_formatada = this.formatDate(data);
@@ -591,7 +594,7 @@ export class AnalisesdashboardComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false }];
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false, USER: this.user }];
     this.PAMOVCABService.getPA_MOV_CABbyTIPOSEGUIR(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -1671,13 +1674,13 @@ export class AnalisesdashboardComponent implements OnInit {
   }
 
   delete_favorito(id, col) {
-    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.delete_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = false;
     }, error => { console.log(error); col.seguir_LINHA = true; });
   }
 
   add_favorito(id, col) {
-    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.add_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = true;
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }

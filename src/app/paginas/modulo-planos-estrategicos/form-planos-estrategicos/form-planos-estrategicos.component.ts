@@ -592,7 +592,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       this.numero = 1.1;
     }
 
-    this.PAMOVCABService.getPA_MOV_CABbyidPlanoEstrategico(tipo, id).subscribe(
+    this.PAMOVCABService.getPA_MOV_CABbyidPlanoEstrategico(tipo, id, this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
 
@@ -951,7 +951,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         accoes.departamento = this.tabelaaccoes[x].id_departamento;
         accoes.descricao = this.tabelaaccoes[x].observacao;
         accoes.objetivo = this.tabelaaccoes[x].objetivo;
-        accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
+        //accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
         accoes.data_ACCAO = this.tabelaaccoes[x].data_ACCAO;
         accoes.hora_ACCAO = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
         accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCAO;
@@ -1329,7 +1329,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           plano.estado = 'P';
 
           this.updatePAMOVCAB(plano, plano.id_PLANO_CAB, false);
-          this.PAMOVLINHAService.getById(id).subscribe(
+          this.PAMOVLINHAService.getById(id, this.user).subscribe(
             response => {
               var count = Object.keys(response).length;
               for (var x in response) {
@@ -1945,7 +1945,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     accoes.departamento = tabelaaccoes.id_departamento;
     accoes.descricao = tabelaaccoes.observacao;
     accoes.objetivo = tabelaaccoes.objetivo;
-    accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
+    //accoes.seguir_LINHA = tabelaaccoes.seguir_LINHA;
     accoes.data_ACCAO = tabelaaccoes.data_ACCAO;
     accoes.hora_ACCAO = (tabelaaccoes.hora_ACCAO == null) ? null : (tabelaaccoes.hora_ACCAO + ":00").slice(0, 8);;
     accoes.id_ACCAO = tabelaaccoes.id_ACCAO;
@@ -2401,7 +2401,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.dados = [];
     this.lista_expand = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false, ID_PLANO: (this.id_PLANO == null) ? 0 : this.id_PLANO, ANO: this.ano }];
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false, ID_PLANO: (this.id_PLANO == null) ? 0 : this.id_PLANO, ANO: this.ano, USER: this.user }];
     this.PAMOVCABService.getPA_MOV_CABbyTIPOASSOCIAR(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -2572,7 +2572,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   carregarlinhasAcoes(id) {
     this.tabelaaccoes = [];
     this.linhasSelecionadas = null;
-    this.PAMOVLINHAService.getById(id).subscribe(
+    this.PAMOVLINHAService.getById(id, this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
 
@@ -2711,13 +2711,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
   delete_favorito(id, col) {
-    this.PAMOVLINHAService.delete_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.delete_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = false;
     }, error => { console.log(error); col.seguir_LINHA = true; });
   }
 
   add_favorito(id, col) {
-    this.PAMOVLINHAService.add_favorito(id).subscribe(result => {
+    this.PAMOVLINHAService.add_favorito(id, this.user).subscribe(result => {
       col.seguir_LINHA = true;
     }, error => { console.log(error); col.seguir_LINHA = false; });
   }

@@ -93,8 +93,8 @@ export class PAMOVCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
-  getPA_MOV_CABbyidPlanoEstrategico(tipo, ip): Observable<PA_MOV_CAB[]> {
-    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyidPlanoEstrategico/' + tipo + '/' + ip;
+  getPA_MOV_CABbyidPlanoEstrategico(tipo, ip, user): Observable<PA_MOV_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_CABbyidPlanoEstrategico/' + tipo + '/' + ip + '/' + user;
     return this.http
       .get(url)
       .map(this.extractData)
