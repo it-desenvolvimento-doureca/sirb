@@ -638,14 +638,15 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             if (response[x].ESTADO == 'P') {
               if (this.acesso_responsavel) {
                 this.bteditar = true;
+                this.btRejeitarPedido = true;
+                this.btcancelar = true;
               } else {
                 this.bteditar = false;
                 this.modoedicao = false;
+                this.btcancelar = false;
               }
-
               this.btplanear = false;
               this.btsubmeter = false;
-              this.btcancelar = false;
             } else if (response[x].ESTADO == 'EM') {
               this.btsubmeter = true;
               this.btplanear = false;
