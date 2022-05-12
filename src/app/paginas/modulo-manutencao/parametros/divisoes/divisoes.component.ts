@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { MAN_DIC_DIVISOES } from 'app/entidades/MAN_DIC_DIVISOES';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 import { MANDICDIVISOESService } from 'app/servicos/man-dic-divisoes.service';
 import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { ConfirmationService } from 'primeng/primeng';
@@ -30,8 +31,11 @@ export class DivisoesComponent implements OnInit {
   id: any;
   id_piso: any;
   pisos: any[];
+  email_para;
+  cols = [];
+  results;
   constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
-    private renderer: Renderer,
+    private renderer: Renderer, private GERUTILIZADORESService: GERUTILIZADORESService,
     private MANDICDIVISOESService: MANDICDIVISOESService, private MANDICPISOSService: MANDICPISOSService) { }
 
   ngOnInit() {
@@ -58,6 +62,7 @@ export class DivisoesComponent implements OnInit {
 
     this.listar_departs();
     this.listar_pisos();
+    this.getutilizadores()
     //preenche combobox linhas
 
   }
@@ -69,6 +74,7 @@ export class DivisoesComponent implements OnInit {
     this.id = null;
     this.id_piso = null;
     this.descricao = null;
+    this.email_para = null;
     this.dialognovo = true;
   }
 
@@ -80,6 +86,7 @@ export class DivisoesComponent implements OnInit {
     depart.ID = this.id;
     depart.ID_PISO = this.id_piso;
     depart.DESCRICAO = this.descricao;
+    depart.EMAIL_PARA = this.email_para.toString();
 
 
     depart.UTZ_ULT_MODIF = this.user;
@@ -112,7 +119,9 @@ export class DivisoesComponent implements OnInit {
       response => {
         for (var x in response) {
           this.departs.push({
-            id: response[x][0].ID, dados: response[x][0], descricao: response[x][0].DESCRICAO, id_piso: response[x][0].ID_PISO, piso: response[x][1] + ' / ' + response[x][2]
+            id: response[x][0].ID, dados: response[x][0], descricao: response[x][0].DESCRICAO,
+            id_piso: response[x][0].ID_PISO, piso: response[x][1] + ' / ' + response[x][2]
+            , email_para: (response[x][0].EMAIL_PARA != null && response[x][0].EMAIL_PARA != "") ? response[x][0].EMAIL_PARA.split(",") : [],
           });
         }
         this.departs = this.departs.slice();
@@ -160,6 +169,7 @@ export class DivisoesComponent implements OnInit {
     this.id_depart_selected = event.data.id;
     this.id = event.data.id;
     this.descricao = event.data.descricao;
+    this.email_para = event.data.email_para;
     this.id_piso = event.data.id_piso;
     this.novo = false;
     this.dialognovo = true;
@@ -192,6 +202,55 @@ export class DivisoesComponent implements OnInit {
       error => console.log(error));
   }
 
+  /** */
+  search(event) {
+    var input = (<HTMLInputElement><any>document.getElementById('autocompleteinput'));
+    this.results = this.pesquisaemail(event.query);
+    if (event.query.indexOf(";") >= 0) {
+      var email = (event.query.substr(0, event.query.indexOf(";")));
+      if (this.email_para.indexOf(email) < 0 && email.trim().length > 0 && this.validateEmail(email)) {
+        this.email_para.push(email);
+        input.value = "";
+      }
+      if (email.trim().length < 0) {
+        input.value = "";
+      }
+    }
+  }
 
+
+
+  //verifica se é email
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  //verifica se existe algum email
+  pesquisaemail(text) {
+    var result = [];
+    for (var x in this.cols) {
+      if (this.cols[x].email.includes(text)) {
+        result.push(this.cols[x].email);
+      }
+    }
+    return result;
+  }
+
+
+  getutilizadores() {
+    this.cols = [];
+    this.GERUTILIZADORESService.getAll().subscribe(
+      response => {
+        for (var x in response) {
+          if (this.cols.findIndex(item => item.email == response[x].email) == -1) {
+            this.cols.push({ email: response[x].email });
+          }
+        }
+        this.cols = this.cols.slice();
+      },
+      error => console.log(error));
+  }
+  /** */
 
 }

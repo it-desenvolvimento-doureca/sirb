@@ -54,6 +54,14 @@
               [ngModelOptions]="{standalone: true}" styleClass="ui-column-filter">
             </p-dropdown>
           </div>
+          <div class="form-group col-md-12">
+            <label for="para">Enviar Para:</label>
+            <p-autoComplete [disabled]="!acesso_editar" required="true" type="email" inputId="autocompleteinput"
+              placeholder="exemplo@exemplo.com;" styleClass="wid100" forceSelection="true" [minLength]="1"
+              [(ngModel)]="email_para" [suggestions]="results" [ngModelOptions]="{standalone: true}" [multiple]="true"
+              (completeMethod)="search($event)">
+            </p-autoComplete>
+          </div>
         </div>
 
 

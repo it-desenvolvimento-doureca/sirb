@@ -358,7 +358,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       response => {
         for (var x in response) {
           this.drop_localizacoes.push({
-            value: response[x][2] + response[x][0], label: response[x][1]
+            value: response[x][2] + response[x][0], label: response[x][1], email: response[x][3]
           });
         }
         this.drop_localizacoes = this.drop_localizacoes.slice();
@@ -1032,9 +1032,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
       EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
     }
-    if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
-      LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
-    }
+
 
     if (this.TIPO_RESPONSAVEL == 'U') {
       if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
@@ -1051,6 +1049,12 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
     }
 
+    if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+      LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+      var email = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).email;
+      if (email != null) EMAIL_PARA = (EMAIL_PARA == null || EMAIL_PARA == '') ? email : (EMAIL_PARA + ',' + email);
+    }
+
     if (this.novo) {
 
       //console.log(ficha_manutencao)
@@ -1061,7 +1065,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
           this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Criou Novo Pedido Melhoria no estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome);
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -1081,7 +1085,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           this.gravarTabelaFicheiros(id);
 
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + new Date(this.DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome);
           //this.gravarTabelaStocks(id);
 
           if (res.ESTADO == "P" && planear) {
@@ -1663,7 +1667,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
 
 
-  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA) {
+  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO) {
 
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
@@ -1672,6 +1676,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       "\n/DATA_HORA_PEDIDO::" + DATA_HORA_PEDIDO +
       "\n/EQUIPAMENTO::" + EQUIPAMENTO +
       "\n/LOCALIZACAO::" + LOCALIZACAO +
+      "\n/RESPONSAVEL_PEDIDO::" + RESPONSAVEL_PEDIDO +
       "\n/EQUIPA_UTILIZADOR::" + EQUIPA_UTILIZADOR + "}";
 
     var MOMENTO = "NOVO PEDIDO MELHORIA";
