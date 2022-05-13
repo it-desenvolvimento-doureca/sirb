@@ -120,6 +120,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
   OBSERVACOES: string;
   operarios: any[];
   acoes: any[];
+  textotitulo = "";
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -538,6 +539,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
               this.btsubmeter = false;
             }
 
+            this.textotitulo = this.getbytipo(response[x].TIPO_MANUTENCAO)
           }
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
           this.getEquipamentos({ value: this.LOCALIZACAO }, this.EQUIPAMENTO);
@@ -548,6 +550,24 @@ export class ManutencoesPreventivasComponent implements OnInit {
         }
 
       }, error => { console.log(error); });
+
+  }
+
+
+  getbytipo(tipo_manutencao) {
+    if (tipo_manutencao == 'C') {
+      return 'Corretiva';
+    } else if (tipo_manutencao == 'M') {
+      return 'Melhoria';
+    } else if (tipo_manutencao == 'EX') {
+      return 'Externa';
+    } else if (tipo_manutencao == 'P') {
+      return 'Preventiva';
+    } else if (tipo_manutencao == 'MM') {
+      return 'Melhoria';
+    } else {
+      return '';
+    }
 
   }
 

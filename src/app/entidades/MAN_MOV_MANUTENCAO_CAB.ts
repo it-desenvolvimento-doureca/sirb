@@ -28,4 +28,5 @@ export class MAN_MOV_MANUTENCAO_CAB {
     NOTAS_PLANEAMENTO: string;
     STATUS_MAQUINA: string;
     ORDEM: number;
+    ID_ORIGEM: number;
 }

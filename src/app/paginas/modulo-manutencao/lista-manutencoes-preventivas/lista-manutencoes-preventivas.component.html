@@ -5,7 +5,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="red">
-            <h4 class="title">Lista de Manutenções Preventivas</h4>
+            <h4 class="title">Lista de Manutenções Preventivas/Melhoria</h4>
             <p class="category"></p>
           </div>
           <div class="card-content table-responsive">
@@ -13,11 +13,23 @@
             <p-dataTable (onFilter)="atualizaids()" (onSort)="atualizaids()" [emptyMessage]="mensagemtabela"
               [style]="{'min-height':'300px'}" [value]="cols" dataKey="ID_PEDIDO" [rows]="25" [paginator]="true"
               [pageLinks]="3" (onRowDblclick)="abrir($event)" [rowsPerPageOptions]="[25,50,100,'todos']">
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ID_PEDIDO" header="N° PEDIDO"
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ID_PEDIDO" header="N° Pedido"
                 [style]="{'width':'97px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="ID_PEDIDO" #v (ngModelChange)="filtrar(v.value,col.field,false,'in')" type="text">
+                </ng-template>
+              </p-column>
+              <p-column [sortable]="true" filterMatchMode="in" [filter]="true" styleclass="text-danger"
+                field="TIPO_MANUTENCAO" header="Tipo Manutenção" [style]="{'width':'97px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [(ngModel)]="filtrotipo" [ngModelOptions]="{standalone: true}" [options]="tipos"
+                    [style]="{'width':'100%'}" appendTo="body"
+                    (onChange)="filtrar($event.value,col.field,false,col.filterMatchMode)"
+                    styleClass="ui-column-filter"></p-multiSelect>
+                </ng-template>
+                <ng-template pTemplate="body" let-col let-car="rowData">
+                  <span [style.color]="(car.TIPO_MANUTENCAO == 'Preventiva')?'blue':'orange'">{{car['TIPO_MANUTENCAO'] }}</span>
                 </ng-template>
               </p-column>
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="DATA_HORA_PEDIDO"

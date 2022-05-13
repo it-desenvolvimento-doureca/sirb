@@ -30,6 +30,7 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
   EQUIPAMENTO;
   COMPONENTE;
   ESTADO;
+  TIPO_MANUTENCAO;
   RESPONSAVEL;
   STATUS_MAQUINA;
   LOCALIZACAO;
@@ -45,7 +46,11 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
   { value: 'Cancelada', label: 'Cancelada' },
   { value: 'Anulada', label: 'Anulada' }];
 
+  tipos = [{ value: 'Preventiva', label: 'Preventiva' },
+  { value: 'Melhoria', label: 'Melhoria' }];
+
   @ViewChild(DataTable) dataTableComponent: DataTable;
+  filtrotipo = [];
 
   constructor(private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
     private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
@@ -57,6 +62,7 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
 
 
       this.filtro2 = (array['ESTADO'] != undefined) ? array['ESTADO'].value : null;
+      var filtro3 = (array['TIPO_MANUTENCAO'] != undefined) ? array['TIPO_MANUTENCAO'].value : null;
 
       this.dataTableComponent.filters = array;
 
@@ -82,10 +88,24 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
 
         this.filtrar(this.filtro, "ESTADO", true, "in");
       }
+
+      if (filtro3 != null && filtro3 != "") {
+        var f = filtro3.split(',');
+        for (var x in f) {
+          this.filtrotipo.push(f[x])
+        }
+
+        this.filtrotipo = this.filtrotipo.slice();
+
+
+        this.filtrar(this.filtrotipo, "TIPO_MANUTENCAO", true, "in");
+      }
     } else {
       this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
+      this.filtrotipo = ["Preventiva", "Melhoria"];
+      this.filtrar(this.filtrotipo, "TIPO_MANUTENCAO", true, "in");
     }
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
@@ -118,7 +138,7 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.MANMOVMANUTENCAOCABService.getAll2('P', this.user).subscribe(
+    this.MANMOVMANUTENCAOCABService.getAll2('P,MM', this.user).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -136,7 +156,8 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
             STATUS_MAQUINA: (response[x][10] == null) ? '' : ((response[x][10] == 'P') ? 'Parada' : 'Em Funcionamento'),
             LOCALIZACAO: response[x][7],
             UTILIZADOR: response[x][9],
-            AMBITO: response[x][11]
+            AMBITO: response[x][11],
+            TIPO_MANUTENCAO: this.getbytipo(response[x][13]),
           });
 
         }
@@ -144,6 +165,23 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
 
       },
       error => { this.mensagemtabela = "Nenhum Registo foi encontrado..."; console.log(error) });
+
+  }
+
+  getbytipo(tipo_manutencao) {
+    if (tipo_manutencao == 'C') {
+      return 'Corretiva';
+    } else if (tipo_manutencao == 'M') {
+      return 'Melhoria';
+    } else if (tipo_manutencao == 'EX') {
+      return 'Externa';
+    } else if (tipo_manutencao == 'P') {
+      return 'Preventiva';
+    } else if (tipo_manutencao == 'MM') {
+      return 'Melhoria';
+    } else {
+      return '';
+    }
 
   }
 
@@ -183,6 +221,7 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
     this.EQUIPAMENTO = "";
     this.COMPONENTE = "";
     this.ESTADO = "";
+    this.TIPO_MANUTENCAO = "";
     this.RESPONSAVEL = "";
     this.STATUS_MAQUINA = "";
     this.LOCALIZACAO = "";
