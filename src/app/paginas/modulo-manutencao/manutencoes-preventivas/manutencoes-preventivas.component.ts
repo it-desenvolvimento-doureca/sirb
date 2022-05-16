@@ -97,6 +97,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
   drop_equipamentos = [];
   drop_utilizadores: any[];
   ID_PEDIDO: number;
+  ID_PEDIDO_ORIGEM;
   DATA_HORA_PEDIDO: any;
   TIPO_RESPONSAVEL: string;
   AMBITO_MANUTENCAO: number;
@@ -121,6 +122,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
   operarios: any[];
   acoes: any[];
   textotitulo = "";
+  TIPO_MANUTENCAO: string;
+  estado_texto: string;
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -490,6 +493,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
             this.ficha_manutencao_dados = response[x];
 
             this.ID_PEDIDO = response[x].ID_MANUTENCAO_CAB;
+            this.TIPO_MANUTENCAO = response[x].TIPO_MANUTENCAO;
+            this.ID_PEDIDO_ORIGEM = response[x].ID_ORIGEM;
             this.COMPONENTE = response[x].COMPONENTE;
             this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
             this.NOTAS_PLANEAMENTO = response[x].NOTAS_PLANEAMENTO;
@@ -515,6 +520,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
             }
 
             this.estado = response[x].ESTADO;
+            this.estado_texto = this.getESTADO(response[x].ESTADO);
+
             if (response[x].ESTADO == 'P') {
               if (this.acesso_responsavel) {
                 this.bteditar = true;
@@ -784,16 +791,34 @@ export class ManutencoesPreventivasComponent implements OnInit {
     return year + month + day + hour + min + mill;
   }
 
-  getESTADO(estado) {
-    if (estado == "A") {
-      return "Aberta";
-    } else if (estado == "F") {
-      return "Fechada";
-    } else if (estado == "C") {
-      return "Cancelada";
-    } else if (estado == "R") {
-      return "Anulada";
+  getESTADO(valor) {
+    if (valor == 'PE') {
+      return 'Submetida';
+    } if (valor == 'P') {
+      return 'Planeada';
+    } else if (valor == 'V') {
+      return 'Validada';
+    } else if (valor == 'A') {
+      return 'Anulada';
+    } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'EM') {
+      return 'Em Elaboração';
+    } else if (valor == 'CA') {
+      return 'Cancelada';
+    } else if (valor == 'C') {
+      return 'Concluída';
+    } else if (valor == 'RJ') {
+      return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
+    } else if (valor == 'RE') {
+      return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
     }
+
+    return 'Submetida';
   }
 
   //simular click para mostrar mensagem
@@ -1528,4 +1553,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
     return [year, month, day].join('-') + " " + new Date(date).toLocaleTimeString().slice(0, 8);
   }
 
+  navega() {
+    this.router.navigate(['lista_pedidos_melhoria/view'], { queryParams: { id: this.ID_PEDIDO_ORIGEM, redirect: "lista_preventivas/viewkvk\id=" + this.ID_PEDIDO } });
+  }
 }

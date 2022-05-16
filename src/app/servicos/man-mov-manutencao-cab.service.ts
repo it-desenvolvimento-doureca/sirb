@@ -84,6 +84,14 @@ export class MANMOVMANUTENCAOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  MAN_GET_MANUTENCOES_MELHORIA(ID): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/MAN_GET_MANUTENCOES_MELHORIA/' + ID;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;

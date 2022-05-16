@@ -458,6 +458,52 @@
                     </div>
                   </div>
                 </p-panel>
+                <p-panel header="Manutenções Associadas" *ngIf="!novo" [toggleable]="false"
+                  [style]="{'margin-bottom':'0px'}">
+                  <div style="display: inline-block; width: 100%;">
+                    <div class="form-group col-md-12 col-lg-12">
+                      <p-dataTable [emptyMessage]="mensagemtabela" styleClass="ExcelTable2007" [value]="cols"
+                        dataKey="ID_PEDIDO">
+                        <p-column styleclass="text-danger" field="ID_PEDIDO" header="N° PEDIDO"
+                          [style]="{'width':'97px'}">
+                        </p-column>
+                        <p-column styleclass="text-danger" field="DATA_HORA_PEDIDO" header="Data/Hora Pedido"
+                          [style]="{'width':'132px'}">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="RESPONSAVEL" header="Responsável Pedido">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="LOCALIZACAO" header="Localização">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="AMBITO" header="Âmbito">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="UTILIZADOR" header="Utilizador/Equipa /Fornec.">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="EQUIPAMENTO" header="Equipamento">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="COMPONENTE" header="Componente">
+                        </p-column>
+
+                        <p-column styleclass="text-danger" field="ESTADO" header="Estado">
+                        </p-column>
+
+                        <p-column styleClass="col-button" [style]="{'width':'60px'}">
+                          <ng-template let-car="rowData" pTemplate="body">
+                            <a style="color: black; cursor:pointer;" title="Ver mais" (click)="navegar(car.ID_PEDIDO)">
+                              <i class="material-icons">search</i>
+                            </a>
+                          </ng-template>
+                        </p-column>
+                      </p-dataTable>
+                    </div>
+
+                  </div>
+                </p-panel>
 
               </div>
 

@@ -71,11 +71,23 @@
               ngNativeValidate>
               <div class="container-fluid" style="padding: 0;">
 
-                <p-panel header="NOVO PEDIDO" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                <p-panel header="" [toggleable]="false" [style]="{'margin-bottom':'0px'}">
+                  <p-header>
+                    <span class="ui-panel-title ">PEDIDO </span>
+                    <span *ngIf="!novo" class="ui-panel-title " style="float: right;">{{estado_texto}} </span>
+                    <span *ngIf="!novo" class="ui-panel-title "
+                      style="font-weight: bold; margin-right: 7px;float: right;">ESTADO: </span>
+                  </p-header>
                   <div style="display: inline-block; width: 100%;">
                     <div style="padding: 1px 5px 1px 10px; height: 52px;" class="form-group col-md-1 col-lg-1">
-                      <label>Nº PEDIDO:</label>
+                      <label>Nº Man.:</label>
                       <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="ID_PEDIDO"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px; height: 52px;" class="form-group col-md-1 col-lg-1"
+                      *ngIf="TIPO_MANUTENCAO == 'MM'" (click)="navega()">
+                      <label>Nº Pedido:</label>
+                      <input [disabled]="true" type="text" class="form-control2" [(ngModel)]="ID_PEDIDO_ORIGEM"
                         [ngModelOptions]="{standalone: true}">
                     </div>
                     <div style="padding: 1px 5px 1px 10px; height: 52px;" class="form-group col-md-2 col-lg-2">

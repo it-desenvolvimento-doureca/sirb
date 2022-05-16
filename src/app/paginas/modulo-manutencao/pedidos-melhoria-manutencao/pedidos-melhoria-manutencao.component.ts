@@ -133,6 +133,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   operarios: any[];
   acoes: any[];
   btnotas = true;
+  mensagemtabela: string = 'Nenhum Registo foi encontrado...';
+  cols = [];
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -685,9 +687,44 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           this.getOperarios(id);
           this.getAcoes(id);
           this.vernotas(false);
+          this.carregarlista(id);
         }
 
       }, error => { console.log(error); });
+
+  }
+
+  carregarlista(id) {
+    var count = 0;
+    this.mensagemtabela = "A Carregar...";
+
+    this.cols = [];
+    this.MANMOVMANUTENCAOCABService.MAN_GET_MANUTENCOES_MELHORIA(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count == 0) {
+          this.mensagemtabela = "Nenhum Registo foi encontrado...";
+        }
+        for (var x in response) {
+
+          this.cols.push({
+            ID_PEDIDO: response[x][0],
+            DATA_HORA_PEDIDO: this.formatDate2(response[x][1]) + " " + new Date(response[x][1]).toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO: response[x][3],
+            COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
+            ESTADO: this.getestado(response[x][6]),
+            RESPONSAVEL: response[x][2],
+            STATUS_MAQUINA: (response[x][10] == null) ? '' : ((response[x][10] == 'P') ? 'Parada' : 'Em Funcionamento'),
+            LOCALIZACAO: response[x][7],
+            UTILIZADOR: response[x][9],
+            AMBITO: response[x][11]
+          });
+
+        }
+        this.cols = this.cols.slice();
+
+      },
+      error => { this.mensagemtabela = "Nenhum Registo foi encontrado..."; console.log(error) });
 
   }
 
@@ -1758,4 +1795,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     this.display_manutencoes_pendentes = true;
   }
 
+
+  navegar(id) {
+    this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id, redirect: "lista_pedidos_melhoria/viewkvk\id=" + this.ID_PEDIDO } });
+  }
 }
