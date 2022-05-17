@@ -84,6 +84,20 @@ export class MANMOVMANUTENCAOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyid_MANUTENCAO(id): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_MOV_MANUTENCAO_CABbyid_MANUTENCAO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  MAN_TERMINAR_PEDIDO_MELHORIA(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_TERMINAR_PEDIDO_MELHORIA', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
   MAN_GET_MANUTENCOES_MELHORIA(ID): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
     const url = webUrl.host + '/rest/sirb/MAN_GET_MANUTENCOES_MELHORIA/' + ID;
     return this.http

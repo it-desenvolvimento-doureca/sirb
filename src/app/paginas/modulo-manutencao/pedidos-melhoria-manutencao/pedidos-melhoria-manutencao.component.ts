@@ -63,6 +63,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btvoltar: boolean;
   btcancelar: boolean;
   btRejeitarPedido: boolean;
+  btConcluir;
   bteditar: boolean;
   disCancelar: boolean;
   disValidar: boolean;
@@ -75,6 +76,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   disSubmeter;
   btsubmeter;
   disRejeitarPedido;
+  disConcluir;
 
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -637,10 +639,12 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
             this.estado_texto = this.getESTADO(response[x].ESTADO);
 
             this.btRejeitarPedido = false;
+            this.btConcluir = false
             if (response[x].ESTADO == 'P') {
               if (this.acesso_responsavel) {
                 this.bteditar = true;
                 this.btRejeitarPedido = true;
+                this.btConcluir = true;
                 this.btcancelar = true;
               } else {
                 this.bteditar = false;
@@ -1404,7 +1408,48 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     });
   }
 
+  Concluir() {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende concluir o pedido?',
+      header: 'Planear Confirmação',
+      icon: 'fa fa-check',
+      accept: () => {
+        this.MANMOVMANUTENCAOCABService.getbyid_MANUTENCAO(this.ID_PEDIDO).subscribe((resp: any) => {
 
+
+          var count = Object.keys(resp).length;
+          if (count > 0) {
+            this.displayverificar = true;
+            this.mensagem_verifica = "Não é possível concluir o pedido porque existem Manutenções associadas por Concluir!";
+
+          } else {
+            this.TERMINAR_PEDIDO_MELHORIA(this.ID_PEDIDO);
+          }
+        },
+          error => {
+            this.simular(this.inputerro);
+          }
+        );
+      }
+
+    });
+  }
+
+
+  TERMINAR_PEDIDO_MELHORIA(id) {
+    this.MANMOVMANUTENCAOCABService.MAN_TERMINAR_PEDIDO_MELHORIA([{ ID_OPERARIO: this.user, ID_MANUTENCAO_CAB: id }])
+      .subscribe((resp: any) => {
+        //this.insertNOTAS(this.OBSERVACOES, 'C', this.ID_MANUTENCAO_CAB)
+
+        this.router.navigate(['lista_pedidos_melhoria']);
+
+      },
+        error => {
+          //this.error = error;
+          this.simular(this.inputerro);
+        }
+      );
+  }
   gravarRejeitar() {
     var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
 

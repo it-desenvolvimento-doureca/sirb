@@ -64,6 +64,12 @@
               <div class="ripple-container"></div>
             </a>
           </li>
+          <li [class.disabled]="disConcluir" [hidden]="!btConcluir">
+            <a (click)="Concluir()">
+              <i class="material-icons">close</i>Concluir
+              <div class="ripple-container"></div>
+            </a>
+          </li>
           <li [class.disabled]="disApagar" [hidden]="!btapagar" style="float: right;">
             <a (click)="apagar()">
               <i class="material-icons">delete</i>Apagar
