@@ -416,6 +416,10 @@ import { ListaManutencoesPreventivasComponent } from './paginas/modulo-manutenca
 import { ManutencoesPreventivasComponent } from './paginas/modulo-manutencao/manutencoes-preventivas/manutencoes-preventivas.component';
 import { MANMOVMANUTENCAOOPERARIOSService } from './servicos/man-mov-manutencao-operarios.service';
 import { MANMOVMANUTENCAOACCOESService } from './servicos/man-mov-manutencao-accoes.service';
+import { FichaDocumentoComponent } from './paginas/modulo-documentacao/ficha-documento/ficha-documento.component';
+import { PostosDocumentacaoComponent } from './paginas/modulo-documentacao/parametros/postos-documentacao/postos-documentacao.component';
+import { ListaDocumentoComponent } from './paginas/modulo-documentacao/lista-documento/lista-documento.component';
+import { TipoDocumentoComponent } from './paginas/modulo-documentacao/parametros/tipo-documento/tipo-documento.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1071,6 +1075,17 @@ const routes: Routes = [
       { path: 'novo', component: AcordosFormComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
 
+  {
+    path: 'fichadocumento', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Lista Ficha Documentos" },
+    children: [
+      { path: '', component: ListaDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'view', component: FichaDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Ficha Documento" } },
+      { path: 'editar', component: FichaDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
+      { path: 'novo', component: FichaDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
+  },
+  { path: 'tipos_documentacao', component: TipoDocumentoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos de Documento" } },
+  { path: 'postos_documento', component: PostosDocumentacaoComponent, canActivate: [LoginService], data: { breadcrumb: "Postos" } },
+
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -1288,7 +1303,11 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     NiveisCriticidadeComponent,
     AmbitosManutencaoComponent,
     ListaManutencoesPreventivasComponent,
-    ManutencoesPreventivasComponent
+    ManutencoesPreventivasComponent,
+    FichaDocumentoComponent,
+    PostosDocumentacaoComponent,
+    ListaDocumentoComponent,
+    TipoDocumentoComponent
   ],
   imports: [
     BrowserModule,

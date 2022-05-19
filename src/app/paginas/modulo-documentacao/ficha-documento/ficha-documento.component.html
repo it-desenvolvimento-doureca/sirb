@@ -1,0 +1,221 @@
+<div class="col-md-12" id="navbar">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li style="float: right;">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!novobt" [class.disabled]="acessoCriar">
+            <a (click)="novo()" [ngClass]="criar ? 'cor_modo' : null">
+              <i class="material-icons">insert_drive_file</i>Novo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!editarbt" [class.disabled]="acessoEditar">
+            <a (click)="edicao()" [ngClass]="editar ? 'cor_modo' : null">
+              <i class="material-icons">edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form (keydown.enter)="$event.preventDefault()" #form id="formDocumento" (ngSubmit)="gravar()" ngNativeValidate>
+
+
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+              <h4 class="title" style="color: white;">Ficha Documento</h4>
+              <p class="category"></p>
+            </div>
+
+            <div class="card-content">
+
+              <div class="container-fluid" style="padding: 0;">
+
+                <div style="display: inline-block;     width: 100%;">
+
+                  <div class="col-md-12" style="padding: 0;">
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+
+                      <label>Sector:</label>
+                      <div style="display: flex;">
+
+                        <p-dropdown [options]="linhasList" [(ngModel)]="selectedLinha" optionLabel="nome"
+                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
+                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                          [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Sectores"
+                          placeholder="Selecionar Sector" [disabled]="visualizar" style="width: 100%;">
+                        </p-dropdown>
+                      </div>
+
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+
+                      <label>Máquina:</label>
+                      <div style="display: flex;">
+                        <p-dropdown [options]="maquinasList" [(ngModel)]="selectedMaquina" optionLabel="nome"
+                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
+                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                          [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Máquinas"
+                          placeholder="Selecionar Máquina" [disabled]="visualizar" style="width: 100%;">
+                        </p-dropdown>
+
+                      </div>
+
+                    </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                      <label>Referência:</label>
+                      <div style="display: flex;">
+                        <p-dropdown [options]="referenciasList" [(ngModel)]="selectedReferencia" optionLabel="nome"
+                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
+                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                          [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Referências"
+                          placeholder="Selecionar Referência" [disabled]="visualizar" style="width: 100%;">
+                        </p-dropdown>
+
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="padding: 0;">
+                    <div class="col-md-12" style="padding: 0;">
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
+                        <label>Código:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="codigo"
+                          [ngModelOptions]="{standalone: true}" style=" height: 30px;"
+                          (ngModelChange)="codigo = $event.toUpperCase()" [disabled]="visualizar"
+                          placeholder="Código do documento" required>
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-7 col-lg-7">
+                        <label>Nome:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="nome"
+                          [ngModelOptions]="{standalone: true}" style=" height: 30px;"
+                          (ngModelChange)="nome = $event.toUpperCase()" [disabled]="visualizar"
+                          placeholder="Nome do documento" required>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="padding: 0;">
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
+                        <label>Nome Aba:</label>
+                        <input type="text" class="form-control2" [(ngModel)]="nomeAba"
+                          [ngModelOptions]="{standalone: true}" style=" height: 30px;" [disabled]="visualizar"
+                          maxlength="20" placeholder="Nome de aba" required>
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
+                        <label>Tipo:</label>
+                        <p-dropdown [options]="tiposList" [(ngModel)]="selectedTipo" optionLabel="nome"
+                          panelStyleClass="DropdownRegistoProducao" [ngModelOptions]="{standalone: true}"
+                          optionValue="id" [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Tipos"
+                          placeholder="Selecionar Tipo de Documento" [disabled]="visualizar">
+                        </p-dropdown>
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px; " class="form-group col-md-3 col-lg-3">
+                        <label>Ordem:</label>
+                        <br>
+                        <input type="text" class="form-control2" [(ngModel)]="ordem"
+                          [ngModelOptions]="{standalone: true}" style=" height: 30px;" [disabled]="visualizar"
+                          maxlength="20" placeholder="Nome de aba" min="1">
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="padding: 0;">
+
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <label>Descrição:</label>
+                        <textarea pInputTextarea [(ngModel)]="descricao" [ngModelOptions]="{standalone: true}"
+                          class="form-control2" [rows]="2" [style]="{width: '100%'}" autoResize="autoResize"
+                          [disabled]="visualizar"></textarea>
+                      </div>
+                    </div>
+                    <div *ngIf="!visualizar" class="col-md-12" style="padding: 0;">
+
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+                        <p-fileUpload styleClass="uploadFile" customUpload="true" (onSelect)="uploadHandler($event)"
+                          accept=".pdf,image/*" chooseLabel="Escolher Ficheiro" (onRemove)="onRemove()"
+                          [showUploadButton]="false" [showCancelButton]="false" maxFileSize="800000000">
+                          <ng-template pTemplate="content">
+                            <i *ngIf="ficheiro == null && !editar"
+                              style="text-align: center;font-size: 50px;display: flow-root;"
+                              class="pi pi-cloud-upload"></i>
+                            <p *ngIf="ficheiro == null && !editar" class="content-message">
+                              Solte o ficheiro aqui ou clique em "Escolher Ficheiro"</p>
+                            <p *ngIf="ficheiro == null && !editar" class="content-message" style="font-weight: bold;">
+                              Apenas PDF e IMG!</p>
+                            <i *ngIf="editar && !inserirEditado "
+                              style="text-align: center;font-size: 50px;display: flow-root;"
+                              class="pi pi-cloud-upload"></i>
+                            <p *ngIf="editar && !inserirEditado" class="content-message">
+                              Caso pretenda, atualize aqui o seu ficheiro</p>
+                            <p *ngIf="editar && !inserirEditado" class="content-message" style="font-weight: bold;">
+                              Apenas PDF e IMG!</p>
+                          </ng-template>
+                        </p-fileUpload>
+
+                      </div>
+
+                    </div>
+                    <div class="col-md-12" style="padding: 0;">
+
+                      <div *ngIf="visualizar" style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12"
+                        style="display: inline-flex;">
+
+                        <p style="font-weight: bold;">Ficheiro: </p>
+                        <p>{{ficheiroOriginal != null ?
+                          ficheiroOriginal.substring(13,ficheiroOriginal.length):''}}</p>
+
+                      </div>
+                      <div *ngIf="editar && !inserirEditado" style="padding: 1px 5px 1px 10px;"
+                        class="form-group col-md-12 col-lg-12" style="display: inline-flex;">
+
+                        <p style="font-weight: bold;">Ficheiro: </p>
+                        <p>{{ficheiroOriginal != null ?
+                          ficheiroOriginal.substring(13,ficheiroOriginal.length) :''}}</p>
+
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="padding: 0; margin-top: 20px;">
+                    <div class="col-md-12" style="padding: 0; height: 450px; border: 1px solid #80808030;">
+                      <iframe *ngIf="iframeURL != null && tipo_FICHEIRO == 'pdf'" [src]="iframeURL" width="100%"
+                        height="450px" id="iframe-pdf"></iframe>
+                      <img *ngIf="tipo_FICHEIRO == 'img' && iframeURL != null" [src]="iframeURL"
+                        style="max-height: 450px; max-width: 100%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style=" margin-top: 5px;margin-bottom: 50px; " class="buttonContainer" *ngIf="!visualizar">
+
+                <button type="button" (click)="cancelar()" class="btn btn-danger pull-right"
+                  style="margin-right: 10px; float:right; background-color: red; color:white">Cancelar</button>
+                <button type="submit" class="btn btn-success pull-right">Gravar</button>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

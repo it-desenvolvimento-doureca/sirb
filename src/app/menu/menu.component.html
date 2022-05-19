@@ -1517,6 +1517,52 @@
                 </div>
 
 
+                <!-- MENU Documentacao -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"
+                        [class.active]="isLinkActive('/fichadocumento',false) || isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true)">
+                        <h4 class="panel-title">
+                            <a id="node11601" data-toggle="collapse" data-parent="#accordion"
+                                href="#collapseDocumentacao">
+                                <span class="fa fa-file" style="margin-right: 12px;">
+                                </span>Documentação</a>
+                        </h4>
+                    </div>
+                    <div id="collapseDocumentacao" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <li id="node1161" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/fichadocumento']">Ficha Documento</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node1162" data-toggle="collapse" data-target="#parametrosDocumentacao"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active':  isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true)}">
+                                            <a>Parâmetros
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="parametrosDocumentacao">
+                                            <li id="node11621" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipos_documentacao']">
+                                                <a>Tipos de Documento</a>
+                                            </li>
+                                            <li id="node11622" [routerLinkActive]="['active']"
+                                                [routerLink]="['/postos_documento']">
+                                                <a>Postos</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
 
 

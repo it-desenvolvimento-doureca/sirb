@@ -1,0 +1,127 @@
+<p>
+  tipo-documento works!
+</p>
+<div style="padding-bottom: 20px;" class="col-md-12" id="navbar">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul id="nav-tabs-id" class="nav nav-tabs"
+          style="box-shadow: 0 8px 160px -8px rgba(42, 37, 37, 0.28), 0 4px 16px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(122, 113, 112, 0.2); border-radius: 45px;">
+          <li style="float: right;">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!novobt" [class.disabled]="acessoCriar">
+            <a (click)="novo()" [ngClass]="criar ? 'cor_modo' : null">
+              <i class="material-icons">insert_drive_file</i>Novo
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li [hidden]="!editarbt" [class.disabled]="acessoEditar">
+            <a (click)="edicao()" [ngClass]="editar ? 'cor_modo' : null">
+              <i class="material-icons">edit</i>Editar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+       
+                        
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form (keydown.enter)="$event.preventDefault()" #form id="formFichaReferencia" (ngSubmit)="gravar()" ngNativeValidate>
+
+
+  <div class="main-content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="card-header" data-background-color="red" style="background-color: #232A78;">
+                          <h4 class="title" style="color: white;">Ficha Tipo de Documento</h4>
+                          <p class="category"></p>
+                      </div>
+
+                      <div class="card-content">
+
+                          <div class="container-fluid" style="padding: 0;">
+
+                              <div style="display: inline-block;     width: 100%;">
+                                  <div class="col-md-12" style="padding: 0;">
+
+                                      
+                                      <!--<div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
+                                          <label>ID Referencia:</label>
+                                          <input [disabled]="false" type="text" class="form-control2"
+                                              [(ngModel)]="criacao" [ngModelOptions]="{standalone: true}"
+                                              style=" height: 30px;">
+                                      </div>-->
+                                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
+                                          <label>Nome:</label>
+                                          <input  type="text" class="form-control2"
+                                              [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+                                              style=" height: 30px;"  [disabled]="visualizar" required
+                                              >
+                                      </div>
+
+                                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
+                                          <label>Documento Predefinido:</label><br>
+
+                                          <label style=" margin-right: 10px;">Não</label>
+                                          <!--p-inputSwitch [(ngModel)]="predefinido" [ngModelOptions]="{standalone: true}"
+                                              [style]="{'width':'30px', 'height':'19px'}" [disabled]="visualizar"></p-inputSwitch--><label
+                                              style=" margin-left: 10px;">Sim</label>
+                                      </div>
+                                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
+                                          <label>Alerta:</label><br>
+                                          <label style=" margin-right: 10px;">Não</label>
+                                          <!--p-inputSwitch [(ngModel)]="alerta" [ngModelOptions]="{standalone: true}"
+                                              [style]="{'width':'30px', 'height':'19px'}" [disabled]="visualizar"></p-inputSwitch--><label
+                                              style=" margin-left: 10px;">Sim</label>
+                                      </div>
+                                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-1 col-lg-1">
+                                          <label>Cor de aba:</label><br>
+                                          <p-colorPicker [(ngModel)]="cor" format="hex" [ngModelOptions]="{standalone: true}"[disabled]="visualizar" required></p-colorPicker>
+                                      </div>
+                      
+                                  </div>
+                                  <div style="padding: 1px 5px 1px 10px;" class="col-md-12">
+
+                                  </div>
+                              </div>
+
+                          </div>
+
+                          <div style=" margin-top: 5px;margin-bottom: 50px; " class="buttonContainer" *ngIf="!visualizar">
+
+                             <!-- <button style="margin-right: 10px; float:right; background-color: red;" pButton
+                                  (click)="cancelar()" type="button" label="Cancelar"></button>
+
+                              <button style="margin-right: 10px; float:right" pButton type="submit" label="Guardar"
+                                  class="btnGuardar"></button>-->
+
+
+                              <button type="button" (click)="cancelar()" class="btn btn-danger pull-right"
+                                  style="margin-right: 10px; float:right; background-color: red; color:white"
+                                  >Cancelar</button>
+                              <button type="submit" class="btn btn-success pull-right"
+                                  >Gravar</button>
+
+                              <!--<button style="float: left; margin-left: 1%; color: red;" pButton type="reset"
+                                  label="Sair" class="btnSair"></button>-->
+
+                          </div>
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</form>
+
