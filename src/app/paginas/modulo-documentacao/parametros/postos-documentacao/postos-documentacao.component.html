@@ -1,3 +1,61 @@
-<p>
-  postos-documentacao works!
-</p>
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Postos</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [editable]="acesso_editar" [value]="postos"
+              styleClass="tabelaPostos">
+              <p-column [editable]="true" field="descricao" header="NOME POSTO">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  {{car[col.field] }}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
+                  <input [disabled]="!acesso_editar" type="text" class="form-control" [(ngModel)]="car['descricao']"
+                    [ngModelOptions]="{standalone: true}" placeholder="POSTO X" appendTo="body" />
+                </ng-template>
+              </p-column>
+              <p-column [editable]="true" field="ip_POSTO" header="IP POSTO">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  {{car[col.field] }}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
+                  <input [disabled]="!acesso_editar" type="text" class="form-control" [(ngModel)]="car['ip_POSTO']"
+                    [ngModelOptions]="{standalone: true}" placeholder="{{temp_ip}}" appendTo="body"
+                    style="width: 88%; float: left;" />
+                  <button tite="Atualizar com o meu ip" style="margin-top: 3px;" [disabled]="!acesso_editar"
+                    type="button" class="ui-button-warning" pButton (click)="car['ip_POSTO'] = getCookie('IP_CLIENT')"
+                    icon="fa-refresh" appendTo="body"></button>
+                </ng-template>
+              </p-column>
+              <p-column [editable]="false" field="sector" header="SECTOR">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <p-dropdown appendTo="body" [options]="sectores" [autoWidth]="false" [disabled]="!acesso_editar"
+                    [style]="{'width':'100%'}" [(ngModel)]="car['sector']" [ngModelOptions]="{standalone: true}">
+                  </p-dropdown>
+                </ng-template>
+              </p-column>
+
+              <p-column styleClass="col-button" [style]="{'width':'5%'}">
+                <ng-template let-posto="rowData" pTemplate="body">
+                  <button [disabled]="!acesso_apagar" type="button" pButton (click)="eliminar(posto)"
+                    class="ui-button-warning" icon="fa-trash"></button>
+                </ng-template>
+              </p-column>
+              <p-footer>
+                <a (click)="adicionar_linha()" [class.disabled]="!acesso_criar"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

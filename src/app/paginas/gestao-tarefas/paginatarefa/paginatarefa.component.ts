@@ -323,20 +323,20 @@ export class PaginatarefaComponent implements OnInit {
             default:
           }
 
-          this.origem = "Reclamações de Clientes : " + resp[x][15] + nome_step;
-          this.caminho_origem = "#/reclamacoesclientes/view?id=" + resp[x][15] + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Reclamações de Clientes : " + ((resp[x][15] == null)? "--" : resp[x][15]) + nome_step;
+          this.caminho_origem = "#/reclamacoesclientes/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 5 && resp[x][29] == 'F') {
-          this.origem = "Reclamações de Fornecedores : " + resp[x][15];
-          this.caminho_origem = "#/reclamacoesfornecedores/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Reclamações de Fornecedores : " + ((resp[x][15] == null)? "--" : resp[x][15]);
+          this.caminho_origem = "#/reclamacoesfornecedores/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 5 && resp[x][29] == 'D') {
-          this.origem = "Derrogação : " + resp[x][15];
-          this.caminho_origem = "#/derrogacoes/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Derrogação : " + ((resp[x][15] == null)? "--" : resp[x][15]);
+          this.caminho_origem = "#/derrogacoes/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 10) {
-          this.origem = "Amostra : " + resp[x][15];
-          this.caminho_origem = "#/producao/amostras/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Amostra : " + ((resp[x][15] == null)? "--" : resp[x][15]);
+          this.caminho_origem = "#/producao/amostras/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 13) {
-          this.origem = "Planos de Ação: " + resp[x][15];
-          this.caminho_origem = "#/planosacao/view?id=" + resp[x][15] + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Planos de Ação: " + ((resp[x][15] == null)? "--" : resp[x][15]);
+          this.caminho_origem = "#/planosacao/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         }
 
         if (resp[x][33] != null) {

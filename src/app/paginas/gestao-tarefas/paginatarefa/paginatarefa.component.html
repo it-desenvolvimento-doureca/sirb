@@ -61,7 +61,8 @@
                         <!-- <input [disabled]="!modoedicao" type="text" class="form-control2" [(ngModel)]="origem"
                       [ngModelOptions]="{standalone: true}" style="">-->
                         <br>
-                        <a href="{{caminho_origem}}">{{origem}}</a>
+                        <a *ngIf="id_RECLAMACAO != null" href="{{caminho_origem}}">{{origem}}</a>
+                        <a *ngIf="id_RECLAMACAO == null">{{origem}}</a>
                         <a style="cursor: pointer;" (click)="goToTarefas(caminho_origem_pai)">{{origem_pai}}</a>
                       </div>
 

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Renderer } from '@angular/core';
+import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { ConfirmationService } from 'primeng/primeng';
+
 
 
 @Component({
@@ -10,192 +11,184 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class TipoDocumentoComponent implements OnInit {
 
-  nome = null;
-  predefinido = false;
-  alerta = false;
-  cor = null;
 
-  criar: boolean = true;
-  editar: boolean = false;
-  visualizar: boolean = false;
+  user: any;
+  utilizadores: any[];
+  novo: boolean;
+  id_depart_selected: number;
 
+  departs: any[];
+  modoedicao: boolean;
 
-  acessoCriar;
-  acessoEditar;
-  novobt = true;
-  editarbt = true;
-  idParam;
-  user;
+  criar: boolean;
+  dialognovo: boolean;
+  acesso_editar: any;
+  acesso_apagar: any;
+  acesso_criar: any;
 
-  listaTipoDocumentos = [];
+  nome: any;
 
+  dados: any;
+  predefinido: boolean;
+  alerta: boolean;
+  cor: string;
+  constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
+    private renderer: Renderer) { }
 
-  constructor(private route: ActivatedRoute, private router: Router,
-    private location: Location,
-    //private tipoDocumento: TipoDocumentosService
-  ) { }
+  ngOnInit() {
 
-  ngOnInit(): void {
-    //obter o valor do url
-    this.route
-      .queryParams
-      .subscribe(params => {
-        this.idParam = params['id'] || null;
-      });
+    this.globalVar.setapagar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setvoltar(false);
+    this.globalVar.seteditar(false);
+    this.globalVar.setseguinte(false);
+    this.globalVar.setanterior(false);
+    this.globalVar.setduplicar(false);
+    this.globalVar.setatualizar(false);
+    this.globalVar.sethistorico(false);
+    this.globalVar.setcriarmanutencao(false);
+    this.globalVar.setdisCriarmanutencao(true);
+    this.globalVar.setcriar(false);
 
-    var url = this.router.routerState.snapshot.url;
-    url = url.slice(1);
-    var urlarray = url.split("/");
-
-    //ver se é editar/novo/visualizar
-    if (urlarray[1].match("editar")) {
-      this.editar = true;
-      this.criar = false;
-      this.visualizar = false;
-      this.novobt = true;
-      this.editarbt = false;
-    } else if (urlarray[1].match("novo")) {
-      this.editar = false;
-      this.criar = true;
-      this.novobt = false
-      this.visualizar = false;
-      this.editarbt = false;
-    } else if (urlarray[1].match("view")) {
-      this.editar = false;
-      this.criar = false;
-      this.visualizar = true;
-      this.novobt = true;
-      this.editarbt = true;
-
-    }
-
-    /*this.tipoDocumento.getAll().subscribe((response) => {
-      for (let y in response) {
-        this.listaTipoDocumentos.push({ id: response[y].id_TipoDocumento, nome: response[y].nome, cor: response[y].cor, predefinido: response[y].is_Predefinido, alerta: response[y].is_Alerta })
-      }
-    });*/
+    this.acesso_editar = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11621editar");
+    this.acesso_apagar = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11621apagar");
+    this.acesso_criar = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11621criar");
 
 
-    if (this.editar == true || this.visualizar == true) {
-      /*this.tipoDocumento.getTipoDocumentoID(this.idParam).subscribe((response) => {
-        if (response != null) {
-          this.cor = response[0].cor;
-          this.nome = response[0].nome;
-          this.predefinido = response[0].is_Predefinido;
-          this.alerta = response[0].is_Alerta;
+    this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
 
-        }
-      });*/
-
-    }
-    if (this.criar == true) {
-      this.cor = "#000000"
-    }
-
-    this.user = JSON.parse(sessionStorage.getItem('userapp'))["id"];
-  }
-
-  //função que vai registar a nova linha ou fazer update à linha existente
-  gravar() {
-    /* if (this.nome != null) {
-       if (this.alerta == true && this.predefinido == true) {
-         this.showMessage('warn', 'Aviso', 'O tipo de documento não pode ser predefinido e alerta simultaneamente!');
-       } else {
- 
-         let tp = new TipoDocumento;
-         tp.nome = this.nome;
-         tp.cor = this.cor;
-         tp.is_Alerta = this.alerta;
-         tp.is_Predefinido = this.predefinido
- 
- 
-         if (this.editar == true) {
-           if (this.listaTipoDocumentos.find(item => item.predefinido == true) != undefined && this.predefinido == true && this.listaTipoDocumentos.find(item => item.predefinido == true).id != this.idParam) {
-             this.showMessage('warn', 'Aviso', 'Já Existe um tipo de documento predefinido');
-           } else {
-             tp.id_TipoDocumento = Number(this.idParam)
-             this.upd(tp);
-           }
-         }
-         if (this.criar == true) {
-           if (this.listaTipoDocumentos.find(item => item.predefinido == true) != undefined && this.predefinido == true) {
-             this.showMessage('warn', 'Aviso', 'Já Existe um tipo de documento predefinido');
-           } else {
- 
-             this.upd(tp);
-           }
- 
-         }
-       }
- 
- 
-     } else {
-       this.alertasPop();
-     }*/
-  }
-
-
-
-  //função update linha
-  upd(li) {
-    /* this.tipoDocumento.update(li).then((res) => {
-       this.showMessage('success', 'Sucesso', 'Inserido com sucesso!');
-       if (this.criar == true) {
-         this.limpar();
-       } else if (this.editar == true) {
-         this.limpar();
-         this.router.navigate(['tipoDocumentos']);
-       }
-     }, error => {
- 
-       if (error.substring(0, 30) == "Error: Violation of UNIQUE KEY") {
-         this.showMessage('error', 'Erro', 'Esse nome já existe no sistema');
-       } else {
-         this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
-       }
- 
-     });
- */
+    this.listar_departs();
+    //preenche combobox linhas
 
   }
 
-  //mudar ecrãs
-  cancelar() {
-    this.router.navigate(['tipoDocumentos']);
-  }
-
-  anterior() {
-    this.location.back();
-  }
-
-  backClicked() {
-    this.location.back();
-  }
-
-  //limpar variáveis ao registar etc
-  limpar() {
+  //abre popup para adicionar depart
+  showDialogToAdd() {
+    this.novo = true;
+    this.id_depart_selected = 0;
     this.nome = null;
     this.predefinido = false;
     this.alerta = false;
     this.cor = "#000000";
-    this.listaTipoDocumentos = [];
+
+    this.dialognovo = true;
+  }
+
+
+  //gravar unidade de depart
+  gravar() {
+    /* var depart = new MAN_DIC_AMBITOS;
+     if (!this.novo) depart = this.dados;
+     depart.NOME = this.nome;
+ 
+ 
+     depart.UTZ_ULT_MODIF = this.user;
+     depart.DATA_ULT_MODIF = new Date();
+ 
+     if (this.novo) {
+       depart.UTZ_CRIA = this.user;
+       depart.DATA_CRIA = new Date();
+       depart.ATIVO = true;
+       this.MANDICAMBITOSService.create(depart).subscribe(response => {
+         this.gravarlinhas(response.ID);
+         this.listar_departs();
+         this.dialognovo = false;
+       },
+         error => console.log(error));
+     } else {
+       depart.ID = this.id_depart_selected;
+       this.MANDICAMBITOSService.update(depart).then(() => {
+         this.listar_departs();
+         this.dialognovo = false;
+       });
+ 
+     }*/
+  }
+
+
+  //listar os dados na tabela
+  listar_departs() {
+    /*this.departs = [];
+    this.MANDICAMBITOSService.getAll().subscribe(
+      response => {
+        for (var x in response) {
+          this.departs.push({
+            id: response[x].ID, dados: response[x], nome: response[x].NOME
+          });
+        }
+        this.departs = this.departs.slice();
+      },
+      error => console.log(error));*/
+  }
+
+  apagar() {
+    this.dialognovo = false;
+    setTimeout(() => { this.apagardados() }, 100);
+  }
+
+  //apagar zona
+  apagardados() {
+
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      key: 'conf001',
+      accept: () => {
+        /*var depart = new MAN_DIC_AMBITOS;
+        depart = this.dados;
+        depart.ATIVO = false;
+        depart.DATA_ULT_MODIF = new Date();
+        depart.UTZ_ULT_MODIF = this.user;
+
+        this.MANDICAMBITOSService.update(depart).then(() => {
+          this.listar_departs();
+          this.dialognovo = false;
+        });
+*/
+      }, reject: () => {
+        this.dialognovo = true;
+      }
+    });
 
   }
 
-  edicao() {
 
-    this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        this.idParam = params['id'] || 0;
-      });
 
-    this.router.navigate(['tipoDocumentos/editar'], { queryParams: { id: this.idParam } });
+  //ao clicar na tabela abrir popup para editar
+  onRowSelect(event) {
+    this.dados = event.data.dados;
+    this.id_depart_selected = event.data.id;
+    this.nome = event.data.nome;
+    this.predefinido = event.data.predefinido;
+    this.alerta = event.data.alerta;
+    this.cor = event.data.cor;
+
+    this.novo = false;
+    this.dialognovo = true;
   }
 
-  novo() {
-    this.router.navigate(['tipoDocumentos/novo']);
+
+  //simular click para mostrar mensagem
+  simular(element) {
+    let event = new MouseEvent('click', { bubbles: true });
+    this.renderer.invokeElementMethod(
+      element.nativeElement, 'dispatchEvent', [event]);
+  }
+
+
+  ordernar(array) {
+    array.sort((n1, n2) => {
+      if (n1.nome > n2.nome) {
+        return 1;
+      }
+
+      if (n1.nome < n2.nome) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
 }

@@ -595,18 +595,26 @@ export class AmostrasformComponent implements OnInit {
 
 
   apagar_linha(index) {
-    var tab = this.tabelaaccoes[index];
-    if (tab.id_AMOSTRA_ACCAO == null) {
-      this.tabelaaccoes = this.tabelaaccoes.slice(0, index).concat(this.tabelaaccoes.slice(index + 1));
-    } else {
-      this.PRAMOSTRASACCOESService.delete(tab.id_AMOSTRA_ACCAO).then(
-        res => {
-          //atualizaestadoTarefa(tab.id_AMOSTRA_ACCAO,'A');
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar a linha?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+        var tab = this.tabelaaccoes[index];
+        if (tab.id_AMOSTRA_ACCAO == null) {
           this.tabelaaccoes = this.tabelaaccoes.slice(0, index).concat(this.tabelaaccoes.slice(index + 1));
+        } else {
+          this.PRAMOSTRASACCOESService.delete(tab.id_AMOSTRA_ACCAO).then(
+            res => {
+              //atualizaestadoTarefa(tab.id_AMOSTRA_ACCAO,'A');
+              this.tabelaaccoes = this.tabelaaccoes.slice(0, index).concat(this.tabelaaccoes.slice(index + 1));
 
-        },
-        error => { console.log(error); this.simular(this.inputerro); });
-    }
+            },
+            error => { console.log(error); this.simular(this.inputerro); });
+        }
+      }
+    });
+
   }
 
   nomeACCAO(event) {
