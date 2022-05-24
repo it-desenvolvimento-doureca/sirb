@@ -92,7 +92,7 @@ export class ReunioesFormComponent implements OnInit {
     this.btcriar = true;
     this.btapagar = true;
     this.btvoltar = true;
-    this.bteditar = true;
+    this.bteditar = false;
 
     this.user = JSON.parse(localStorage.getItem('userapp'))["id"];
     this.user_nome = JSON.parse(localStorage.getItem('userapp'))["nome"];
@@ -193,6 +193,15 @@ export class ReunioesFormComponent implements OnInit {
         var count = Object.keys(response).length;
         //se existir banhos com o id
         if (count > 0) {
+
+          //this.adminuser
+          if (response[0].utz_CRIA == this.user || this.adminuser) {
+            this.bteditar = true;
+          } else {
+            this.bteditar = false;
+            this.modoedicao = false;
+          }
+
           this.reuniao_dados = response[0];
 
           this.id_REUNIAO = response[0].id_REUNIAO;

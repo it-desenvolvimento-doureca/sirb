@@ -229,6 +229,8 @@ export class FichaDocumentoComponent implements OnInit {
   }
 
 
+  gravar() {
+  }
 
 }
 

@@ -40,26 +40,26 @@
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
           <label>Nome:</label>
           <input type="text" class="form-control2" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
-            style=" height: 30px;" [disabled]="visualizar" required>
+            style=" height: 30px;" [disabled]="acesso_editar" required>
         </div>
 
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
           <label>Documento Predefinido:</label><br>
-          <p-toggleButton [disabled]="visualizar" [ngModelOptions]="{standalone: true}" [(ngModel)]="predefinido"
+          <p-toggleButton [disabled]="acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="predefinido"
             onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'70px'}">
           </p-toggleButton>
 
         </div>
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
           <label>Alerta:</label><br>
-          <p-toggleButton [disabled]="visualizar" [ngModelOptions]="{standalone: true}" [(ngModel)]="alerta"
+          <p-toggleButton [disabled]="acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="alerta"
             onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'70px'}">
           </p-toggleButton>
         </div>
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-1 col-lg-1">
           <label>Cor Aba:</label><br>
           <p-colorPicker [(ngModel)]="cor" format="hex" [ngModelOptions]="{standalone: true}" appendTo="body"
-            [style]="{'height': '25px','display': 'flex'}" [disabled]="visualizar" required></p-colorPicker>
+            [style]="{'height': '25px','display': 'flex'}" [disabled]="acesso_editar" required></p-colorPicker>
         </div>
 
       </div>
