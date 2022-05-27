@@ -420,6 +420,9 @@ import { FichaDocumentoComponent } from './paginas/modulo-documentacao/ficha-doc
 import { PostosDocumentacaoComponent } from './paginas/modulo-documentacao/parametros/postos-documentacao/postos-documentacao.component';
 import { ListaDocumentoComponent } from './paginas/modulo-documentacao/lista-documento/lista-documento.component';
 import { TipoDocumentoComponent } from './paginas/modulo-documentacao/parametros/tipo-documento/tipo-documento.component';
+import { DOCFICHADOCUMENTOSService } from './servicos/doc-ficha-documentos.service';
+import { DOCDICTIPOSDOCUMENTOService } from './servicos/doc-dic-tipos-documento.service';
+import { DOCDICPOSTOSService } from './servicos/doc-dic-postos.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1564,6 +1567,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     MANMOVMANUTENCAONOTASService,
     MANMOVMANUTENCAOOPERARIOSService,
     MANMOVMANUTENCAOACCOESService,
+    DOCFICHADOCUMENTOSService,
+    DOCDICTIPOSDOCUMENTOService,
+    DOCDICPOSTOSService,
 
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],

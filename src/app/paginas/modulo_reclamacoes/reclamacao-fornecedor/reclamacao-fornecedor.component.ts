@@ -257,7 +257,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.disFechar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501fechar");
 
       this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501imprimir");
-      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node526");
+      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501dicionarACCAO");
     }
 
     if (urlarray[1] != null) {

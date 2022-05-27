@@ -433,7 +433,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       this.acessoSTEP7 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step7");
       this.acessoSTEP8 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step8");
 
-      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node526");
+      this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500dicionarACCAO");
 
       this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500apagarficheiros");
 
@@ -483,7 +483,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         this.acessoSTEP6 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step6");
         this.acessoSTEP7 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step7");
         this.acessoSTEP8 = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500step8");
-        this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node526");
+        this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500dicionarACCAO");
 
         var id2;
         var sub = this.route
