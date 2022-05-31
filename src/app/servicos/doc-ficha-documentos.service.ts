@@ -53,6 +53,19 @@ export class DOCFICHADOCUMENTOSService {
   }
 
 
+  checkIfCodeExist(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/checkIfCodeExist', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getTotalPredefinidos(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/getTotalPredefinidos', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();

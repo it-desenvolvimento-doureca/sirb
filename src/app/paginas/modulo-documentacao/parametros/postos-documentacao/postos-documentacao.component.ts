@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { DOC_DIC_POSTOS } from 'app/entidades/DOC_DIC_POSTOS';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { DOCDICPOSTOSService } from 'app/servicos/doc-dic-postos.service';
 import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
   selector: 'app-postos-documentacao',
@@ -8,7 +11,7 @@ import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
   styleUrls: ['./postos-documentacao.component.css']
 })
 export class PostosDocumentacaoComponent implements OnInit {
-  pos: any;
+
   postos = [];
   acesso_editar: any;
   acesso_apagar: any;
@@ -16,7 +19,16 @@ export class PostosDocumentacaoComponent implements OnInit {
 
   user;
   sectores: any;
-  constructor(private globalVar: AppGlobals, private RHSECTORESService: RHSECTORESService) { }
+
+  @ViewChild('inputgravou') inputgravou: ElementRef;
+  @ViewChild('inputnotifi') inputnotifi: ElementRef;
+  @ViewChild('inputapagar') inputapagar: ElementRef;
+  @ViewChild('inputerro') inputerro: ElementRef;
+  @ViewChild('inputerro2') inputerro2: ElementRef;
+  @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
+  @ViewChild('escondebt') escondebt: ElementRef;
+
+  constructor(private renderer: Renderer, private confirmationService: ConfirmationService, private globalVar: AppGlobals, private RHSECTORESService: RHSECTORESService, private DOCDICPOSTOSService: DOCDICPOSTOSService) { }
 
   ngOnInit() {
     this.globalVar.setapagar(false);
@@ -44,19 +56,19 @@ export class PostosDocumentacaoComponent implements OnInit {
 
   //atualizar tabela postos
   listar_departs() {
-    /* this.GERPOSTOSService.getAll().subscribe(
-       response => {
-         this.postos = [];
-         for (var x in response) {
-           this.postos.push({
-             id_POSTO: response[x].id_POSTO, descricao: response[x].descricao, ip_POSTO: response[x].ip_POSTO, impressora: response[x].impressora,
-             ip_IMPRESSORA: response[x].ip_IMPRESSORA, nome_IMPRESSORA: response[x].nome_IMPRESSORA, nome_IMPRESSORA_SILVER: response[x].nome_IMPRESSORA_SILVER
-           });
-         }
-         this.postos = this.postos.slice();
- 
-       },
-       error => { console.log(error); });*/
+    this.DOCDICPOSTOSService.getAll().subscribe(
+      response => {
+        this.postos = [];
+        for (var x in response) {
+          this.postos.push({
+            id_POSTO: response[x].ID, descricao: response[x].NOME, ip_POSTO: response[x].IP_POSTO, sector: response[x].SECTOR,
+            dados: response[x]
+          });
+        }
+        this.postos = this.postos.slice();
+
+      },
+      error => { console.log(error); });
   }
 
   //listar os dados sectores
@@ -79,36 +91,61 @@ export class PostosDocumentacaoComponent implements OnInit {
       error => console.log(error));
   }
 
-  eliminar(posto) {
-    /* this.confirmationService.confirm({
-       message: 'Tem a certeza que pretende apagar?',
-       header: 'Apagar Confirmação',
-       icon: 'fa fa-trash',
-       accept: () => {
-         if (posto.id_POSTO.toString().substring(0, 1) != "P") {
-           this.GERPOSTOSService.delete(posto.id_POSTO).then(() => {
-             this.tabelaPostos();
-           },
-             error => { console.log(error); this.simular(this.inputerro); });
-         } else {
-           let index = -1;
-           for (let i = 0; i < this.postos.length; i++) {
-             if (this.postos[i].id_POSTO == posto.id_POSTO) {
-               index = i;
-               break;
-             }
-           }
-           this.postos.splice(index, 1);
-           this.postos = this.postos.slice();
-         }
-       }
-     });*/
+  eliminar(posto, index) {
+    this.confirmationService.confirm({
+      message: 'Tem a certeza que pretende apagar?',
+      header: 'Apagar Confirmação',
+      icon: 'fa fa-trash',
+      accept: () => {
+        if (posto.id_POSTO != null) {
+          this.DOCDICPOSTOSService.delete(posto.id_POSTO).then(response => {
+            this.postos.splice(index, 1);
+            this.postos = this.postos.slice();
+          },
+            error => { console.log(error); this.simular(this.inputerro); });
+        } else {
+          this.postos.splice(index, 1);
+          this.postos = this.postos.slice();
+        }
+      }
+    });
+  }
+
+
+  gravar(posto) {
+    var depart = new DOC_DIC_POSTOS;
+    if (posto.id_POSTO != null) depart = posto.dados;
+    depart.NOME = posto.descricao;
+    depart.IP_POSTO = posto.ip_POSTO;
+    depart.SECTOR = posto.sector;
+
+
+    depart.UTZ_MODIF = this.user;
+    depart.DATA_MODIF = new Date();
+
+    if (posto.id_POSTO == null) {
+      depart.UTZ_CRIA = this.user;
+      depart.DATA_CRIA = new Date();
+      this.DOCDICPOSTOSService.create(depart).subscribe(response => {
+        posto.id_POSTO = response.ID;
+        this.simular(this.inputnotifi);
+        //this.listar_departs();
+      },
+        error => { console.log(error); this.simular(this.inputerro); });
+    } else {
+      depart.ID = posto.id_POSTO;
+      this.DOCDICPOSTOSService.update(depart).subscribe(() => {
+        //this.listar_departs();
+        this.simular(this.inputgravou);
+      },
+        error => { console.log(error); this.simular(this.inputerro); });
+
+    }
   }
 
   //adicionar linha aos postos
   adicionar_linha() {
-    this.pos++;
-    this.postos.push({ id_POSTO: "P" + this.pos, descricao: "", ip_POSTO: "" });
+    this.postos.push({ id: null, descricao: "", ip_POSTO: "", sector: null });
     this.postos = this.postos.slice();
   }
 
@@ -117,5 +154,12 @@ export class PostosDocumentacaoComponent implements OnInit {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
+  //simular click para mostrar mensagem
+  simular(element) {
+    let event = new MouseEvent('click', { bubbles: true });
+    this.renderer.invokeElementMethod(
+      element.nativeElement, 'dispatchEvent', [event]);
   }
 }

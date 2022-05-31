@@ -40,12 +40,23 @@
                 </ng-template>
               </p-column>
 
-              <p-column styleClass="col-button" [style]="{'width':'5%'}">
-                <ng-template let-posto="rowData" pTemplate="body">
-                  <button [disabled]="!acesso_apagar" type="button" pButton (click)="eliminar(posto)"
-                    class="ui-button-warning" icon="fa-trash"></button>
+              <p-column styleClass="col-button" [style]="{'width':'85px'}">
+                <ng-template let-posto="rowData" let-index="rowIndex" pTemplate="body">
+                  <button style="width: 30px; height: 30px; padding: 0; margin: 0;"
+                    [disabled]="!acesso_editar || posto.sector == null || posto.descricao == '' || posto.descricao == null || posto.ip_POSTO == '' || posto.ip_POSTO == null"
+                    type="button" (click)="gravar(posto)" class="btn btn-success">
+                    <span class="ui-button-icon-left ui-c fa fa-fw fa-save"></span>
+                  </button>
+
+                  <button style="width: 30px; height: 30px; padding: 0; margin: 0; margin-left: 4px;"
+                    [disabled]="!acesso_apagar" type="button" (click)="eliminar(posto,index)" class="btn btn-danger">
+                    <span class="ui-button-icon-left ui-c fa fa-fw fa-trash"></span>
+                  </button>
                 </ng-template>
               </p-column>
+
+
+
               <p-footer>
                 <a (click)="adicionar_linha()" [class.disabled]="!acesso_criar"
                   style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
@@ -53,9 +64,27 @@
                 </a>
               </p-footer>
             </p-dataTable>
+
+
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<button type="button" class="btn btn-danger btn-block" #inputnotifi [hidden]="true"
+  onclick="demo.showNotification('top','right','Inseriu com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+  onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputapagar [hidden]="true"
+  onclick="demo.showNotification('top','right','Apagado com Sucesso!',2)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Registo não foi Gravado!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerro2 [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Erro ao Traduzir!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputartigoexiste [hidden]="true"
+  onclick="demo.showNotification('top','right','Artigo já existe na Lista de Artigos Similares ou é Igual à Referência Principal!',4)"></button>
+<button type="button" class="btn btn-danger btn-block" #inputerroficheiro [hidden]="true"
+  onclick="demo.showNotification('top','right','ERRO!! Falha no Download!',4)"></button>

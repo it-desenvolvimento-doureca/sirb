@@ -11,7 +11,7 @@
             <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
               <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
-              </p-column> >
+              </p-column>
               <p-footer>
                 <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
                   style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
@@ -32,34 +32,34 @@
   [style]="{'max-height':'99vh','width':'100vw','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
   [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
 
-  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()" style="width:98vw;">
+  <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()" style="width:70vw;">
     <!-- Modal Body -->
     <div class="modal-body">
-      <div class="col-md-12" style="padding: 0;">
+      <div class="col-md-12" style="padding: 0; min-height: 171px;">
 
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
           <label>Nome:</label>
           <input type="text" class="form-control2" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
-            style=" height: 30px;" [disabled]="acesso_editar" required>
+            style=" height: 30px;" [disabled]="!acesso_editar" required>
         </div>
 
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
           <label>Documento Predefinido:</label><br>
-          <p-toggleButton [disabled]="acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="predefinido"
+          <p-toggleButton [disabled]="!acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="predefinido"
             onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'70px'}">
           </p-toggleButton>
 
         </div>
         <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
           <label>Alerta:</label><br>
-          <p-toggleButton [disabled]="acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="alerta"
+          <p-toggleButton [disabled]="!acesso_editar" [ngModelOptions]="{standalone: true}" [(ngModel)]="alerta"
             onLabel="Sim" offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'70px'}">
           </p-toggleButton>
         </div>
-        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-1 col-lg-1">
+        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-2 col-lg-2">
           <label>Cor Aba:</label><br>
-          <p-colorPicker [(ngModel)]="cor" format="hex" [ngModelOptions]="{standalone: true}" appendTo="body"
-            [style]="{'height': '25px','display': 'flex'}" [disabled]="acesso_editar" required></p-colorPicker>
+          <p-colorPicker [(ngModel)]="cor" [ngModelOptions]="{standalone: true}" [disabled]="!acesso_editar" required>
+          </p-colorPicker>
         </div>
 
       </div>
@@ -68,7 +68,8 @@
           (click)="dialognovo = false">Fechar</button>
         <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
           [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
-        <button style="float: right; margin-right: 17px;" type="submit" class="btn btn-success ">Gravar</button>
+        <button [disabled]="!acesso_editar" style="float: right; margin-right: 17px;" type="submit"
+          class="btn btn-success ">Gravar</button>
       </div>
     </div>
 

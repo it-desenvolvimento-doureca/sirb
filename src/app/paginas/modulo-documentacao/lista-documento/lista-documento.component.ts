@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { DOCFICHADOCUMENTOSService } from 'app/servicos/doc-ficha-documentos.service';
 import { ConfirmationService, DataTable } from 'primeng/primeng';
 
 
@@ -29,13 +30,15 @@ export class ListaDocumentoComponent implements OnInit {
   SECTOR;
   REFERENCIA;
   MAQUINA;
+  NOME_DOCUMENTO;
 
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
 
   constructor(
-    private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
+    private confirmationService: ConfirmationService, private renderer: Renderer, private router: Router, private globalVar: AppGlobals,
+    private DOCFICHADOCUMENTOSService: DOCFICHADOCUMENTOSService) { }
 
   ngOnInit() {
 
@@ -53,6 +56,7 @@ export class ListaDocumentoComponent implements OnInit {
       this.SECTOR = (array['SECTOR'] != undefined) ? array['SECTOR'].value : "";
       this.REFERENCIA = (array['REFERENCIA'] != undefined) ? array['REFERENCIA'].value : "";
       this.MAQUINA = (array['MAQUINA'] != undefined) ? array['MAQUINA'].value : "";
+      this.NOME_DOCUMENTO = (array['NOME_DOCUMENTO'] != undefined) ? array['NOME_DOCUMENTO'].value : "";
 
 
     } else {
@@ -89,7 +93,7 @@ export class ListaDocumentoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    /*this.MANMOVMANUTENCAOCABService.getAll2('P,MM', this.user).subscribe(
+    this.DOCFICHADOCUMENTOSService.getAll().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -98,24 +102,20 @@ export class ListaDocumentoComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
-            ID_FICHA_DOCUMENTO: response[x][0],
-            DATA_HORA_PEDIDO: this.formatDate(response[x][12]) + " " + new Date(response[x][12]).toLocaleTimeString().slice(0, 5),
-            CODIGO: response[x][3],
-            COMPONENTE: (response[x][4] != null) ? response[x][4] + ' - ' + response[x][5] : null,
-            ESTADO: this.getestado(response[x][6]),
-            RESPONSAVEL: response[x][2],
-            STATUS_MAQUINA: (response[x][10] == null) ? '' : ((response[x][10] == 'P') ? 'Parada' : 'Em Funcionamento'),
-            SECTOR: response[x][7],
-            REFERENCIA: response[x][9],
-            MAQUINA: response[x][11],
-            TIPO_MANUTENCAO: this.getbytipo(response[x][13]),
+            ID_FICHA_DOCUMENTO: response[x].ID,
+            DATA_HORA_PEDIDO: this.formatDate(response[x].DATA_CRIA) + " " + new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5),
+            CODIGO: response[x].COD_DOCUMENTO,
+            SECTOR: response[x].SECTOR,
+            REFERENCIA: response[x].REFERENCIA,
+            MAQUINA: response[x].COD_MAQUINA,
+            NOME_DOCUMENTO: response[x].NOME_DOCUMENTO,
           });
 
         }
         this.cols = this.cols.slice();
 
       },
-      error => { this.mensagemtabela = "Nenhum Registo foi encontrado..."; console.log(error) });*/
+      error => { this.mensagemtabela = "Nenhum Registo foi encontrado..."; console.log(error) });
 
   }
 
@@ -133,6 +133,7 @@ export class ListaDocumentoComponent implements OnInit {
     this.SECTOR = "";
     this.REFERENCIA = "";
     this.MAQUINA = "";
+    this.NOME_DOCUMENTO = "";
 
     this.dataTableComponent.filter("", "", "");
 

@@ -55,9 +55,8 @@
                       <label>Sector:</label>
                       <div style="display: flex;">
 
-                        <p-dropdown [options]="linhasList" [(ngModel)]="selectedLinha" optionLabel="nome"
-                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
-                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                        <p-dropdown [options]=" drop_sectores" [(ngModel)]="selectedSector" optionLabel="nome"
+                          styleClass="Doc" [ngModelOptions]="{standalone: true}" optionValue="id"
                           [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Sectores"
                           placeholder="Selecionar Sector" [disabled]="visualizar" style="width: 100%;">
                         </p-dropdown>
@@ -69,8 +68,7 @@
                       <label>Máquina:</label>
                       <div style="display: flex;">
                         <p-dropdown [options]="maquinasList" [(ngModel)]="selectedMaquina" optionLabel="nome"
-                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
-                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                          styleClass="Doc" [ngModelOptions]="{standalone: true}" optionValue="id"
                           [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Máquinas"
                           placeholder="Selecionar Máquina" [disabled]="visualizar" style="width: 100%;">
                         </p-dropdown>
@@ -80,13 +78,14 @@
                     </div>
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                       <label>Referência:</label>
-                      <div style="display: flex;">
-                        <p-dropdown [options]="referenciasList" [(ngModel)]="selectedReferencia" optionLabel="nome"
-                          panelStyleClass="DropdownRegistoProducao" styleClass="Doc"
-                          [ngModelOptions]="{standalone: true}" optionValue="id"
-                          [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Referências"
-                          placeholder="Selecionar Referência" [disabled]="visualizar" style="width: 100%;">
-                        </p-dropdown>
+                      <div >
+                        <p-autoComplete [(ngModel)]="referencia_campo" [suggestions]="referenciasList"
+                          [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                          (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
+                          emptyMessage="Sem Resultados..." [ngModelOptions]="{standalone: true}" [disabled]="visualizar"
+                          [required]="true" (completeMethod)="filterRef($event)" field="label"
+                          placeholder="Pesquisar..." [minLength]="1">
+                        </p-autoComplete>
 
                       </div>
 
@@ -121,8 +120,8 @@
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                         <label>Tipo:</label>
                         <p-dropdown [options]="tiposList" [(ngModel)]="selectedTipo" optionLabel="nome"
-                          panelStyleClass="DropdownRegistoProducao" [ngModelOptions]="{standalone: true}"
-                          optionValue="id" [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Tipos"
+                          [ngModelOptions]="{standalone: true}" optionValue="id"
+                          [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Tipos"
                           placeholder="Selecionar Tipo de Documento" [disabled]="visualizar">
                         </p-dropdown>
                       </div>
@@ -207,7 +206,7 @@
 
                 <button type="button" (click)="cancelar()" class="btn btn-danger pull-right"
                   style="margin-right: 10px; float:right; background-color: red; color:white">Cancelar</button>
-                <button type="submit" class="btn btn-success pull-right">Gravar</button>
+                <button type="submit" [disabled]="btgravar" class="btn btn-success pull-right">Gravar</button>
 
               </div>
 

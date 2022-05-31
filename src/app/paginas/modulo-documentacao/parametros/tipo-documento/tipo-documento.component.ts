@@ -1,5 +1,7 @@
 import { Component, OnInit, Renderer } from '@angular/core';
+import { DOC_DIC_TIPOS_DOCUMENTO } from 'app/entidades/DOC_DIC_TIPOS_DOCUMENTO';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { DOCDICTIPOSDOCUMENTOService } from 'app/servicos/doc-dic-tipos-documento.service';
 import { ConfirmationService } from 'primeng/primeng';
 
 
@@ -32,7 +34,7 @@ export class TipoDocumentoComponent implements OnInit {
   predefinido: boolean;
   alerta: boolean;
   cor: string;
-  constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals,
+  constructor(private confirmationService: ConfirmationService, private globalVar: AppGlobals, private DOCDICTIPOSDOCUMENTOService: DOCDICTIPOSDOCUMENTOService,
     private renderer: Renderer) { }
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class TipoDocumentoComponent implements OnInit {
     this.nome = null;
     this.predefinido = false;
     this.alerta = false;
-    this.cor = "#000000";
+    this.cor = "#ffffff";
 
     this.dialognovo = true;
   }
@@ -77,48 +79,54 @@ export class TipoDocumentoComponent implements OnInit {
 
   //gravar unidade de depart
   gravar() {
-    /* var depart = new MAN_DIC_AMBITOS;
-     if (!this.novo) depart = this.dados;
-     depart.NOME = this.nome;
- 
- 
-     depart.UTZ_ULT_MODIF = this.user;
-     depart.DATA_ULT_MODIF = new Date();
- 
-     if (this.novo) {
-       depart.UTZ_CRIA = this.user;
-       depart.DATA_CRIA = new Date();
-       depart.ATIVO = true;
-       this.MANDICAMBITOSService.create(depart).subscribe(response => {
-         this.gravarlinhas(response.ID);
-         this.listar_departs();
-         this.dialognovo = false;
-       },
-         error => console.log(error));
-     } else {
-       depart.ID = this.id_depart_selected;
-       this.MANDICAMBITOSService.update(depart).then(() => {
-         this.listar_departs();
-         this.dialognovo = false;
-       });
- 
-     }*/
+    var depart = new DOC_DIC_TIPOS_DOCUMENTO;
+    if (!this.novo) depart = this.dados;
+    depart.NOME = this.nome;
+    depart.DOCUMENTO_PREDEFINIDO = this.predefinido;
+    depart.ALERTA = this.alerta;
+    depart.COR_ABA = "#" + this.cor.replace("#", "");
+
+
+    depart.UTZ_MODIF = this.user;
+    depart.DATA_MODIF = new Date();
+    delete depart['_$visited'];
+    if (this.novo) {
+      depart.UTZ_CRIA = this.user;
+      depart.DATA_CRIA = new Date();
+      depart.INATIVO = false;
+      this.DOCDICTIPOSDOCUMENTOService.create(depart).subscribe(response => {
+        this.listar_departs();
+        this.dialognovo = false;
+      },
+        error => console.log(error));
+    } else {
+      depart.ID = this.id_depart_selected;
+      this.DOCDICTIPOSDOCUMENTOService.update(depart).subscribe(() => {
+        this.listar_departs();
+        this.dialognovo = false;
+      });
+
+    }
   }
 
 
   //listar os dados na tabela
   listar_departs() {
-    /*this.departs = [];
-    this.MANDICAMBITOSService.getAll().subscribe(
+    this.departs = [];
+    this.DOCDICTIPOSDOCUMENTOService.getAll().subscribe(
       response => {
         for (var x in response) {
           this.departs.push({
-            id: response[x].ID, dados: response[x], nome: response[x].NOME
+            id: response[x].ID, dados: response[x], nome: response[x].NOME,
+            cor: response[x].COR_ABA,
+            alerta: response[x].ALERTA,
+            predefinido: response[x].DOCUMENTO_PREDEFINIDO
+
           });
         }
         this.departs = this.departs.slice();
       },
-      error => console.log(error));*/
+      error => console.log(error));
   }
 
   apagar() {
@@ -135,17 +143,17 @@ export class TipoDocumentoComponent implements OnInit {
       icon: 'fa fa-trash',
       key: 'conf001',
       accept: () => {
-        /*var depart = new MAN_DIC_AMBITOS;
+        var depart = new DOC_DIC_TIPOS_DOCUMENTO;
         depart = this.dados;
-        depart.ATIVO = false;
-        depart.DATA_ULT_MODIF = new Date();
-        depart.UTZ_ULT_MODIF = this.user;
-
-        this.MANDICAMBITOSService.update(depart).then(() => {
+        depart.INATIVO = true;
+        depart.DATA_ANULA = new Date();
+        depart.UTZ_ANULA = this.user;
+        delete depart['_$visited'];
+        this.DOCDICTIPOSDOCUMENTOService.update(depart).subscribe(() => {
           this.listar_departs();
           this.dialognovo = false;
         });
-*/
+
       }, reject: () => {
         this.dialognovo = true;
       }

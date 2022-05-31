@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
     maintainAspectRatio: false,
     title: {
       display: true,
-      text: 'Nº Ações em Atraso',
+      text: 'Análise da Execução do Plano',
       fontSize: 16
     },
     legend: {
@@ -41,7 +41,8 @@ export class DashboardComponent implements OnInit {
         label: function (tooltipItems, data) {
 
           return " " + data.datasets[tooltipItems.datasetIndex].label + ": "
-            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' %';
+            + formatMoney(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index], 2, ",", ".") + ' % (' +
+            formatMoney(data.datasets[tooltipItems.datasetIndex].total[tooltipItems.index], 0, ",", ".") + ')';
 
 
         }
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit {
     hover: { animationDuration: 0 },
     scales: {
       yAxes: [{
+        stacked: true,
         ticks: {
           label: '',
           beginAtZero: true,
@@ -63,6 +65,7 @@ export class DashboardComponent implements OnInit {
         },
       }],
       xAxes: [{
+        stacked: true,
         ticks: {
           callback: function (value) { return formatMoney(value, 2, ",", ".") + "%" },
           label: 'label',
@@ -106,30 +109,63 @@ export class DashboardComponent implements OnInit {
 
   carregagrafico() {
     var data = [{ ANO: this.ano }];
+    var cores = ['#1fb5ac', '#aec785', '#ff6c60'];
     this.PEMOVCABService.PE_GET_ANALISE_GRAFICO(data).subscribe(
       response => {
         var count = Object.keys(response).length;
 
         var labels = [];
-        var data = [];
+        var dataPlaneadas = [];
+        var dataConcluidas = [];
+        var dataEmAtraso = [];
+        var totalPlaneadas = [];
+        var totalConcluidas = [];
+        var totalEmAtraso = [];
+        var datasets = [];
         if (count > 0) {
           for (var x in response) {
-            labels.push(response[x][2] + ' (' + response[x][0] + ')');
-            data.push(response[x][1]);
+            labels.push(response[x][1] + ' (' + response[x][0] + ')');
+            dataPlaneadas.push(response[x][2]);
+            dataConcluidas.push(response[x][3]);
+            dataEmAtraso.push(response[x][4]);
+
+            totalPlaneadas.push(response[x][7]);
+            totalConcluidas.push(response[x][5]);
+            totalEmAtraso.push(response[x][6]);
           }
+
+          datasets.push({
+            label: 'Planeadas',
+            backgroundColor: cores[0],
+            borderColor: cores[0],
+            data: dataPlaneadas,
+            total: totalPlaneadas
+          }, {
+            label: 'Concluídas',
+            backgroundColor: cores[1],
+            borderColor: cores[1],
+            data: dataConcluidas,
+            total: totalConcluidas
+          }, {
+            label: 'Em Atraso',
+            backgroundColor: cores[2],
+            borderColor: cores[2],
+            data: dataEmAtraso,
+            total: totalEmAtraso
+          })
         }
 
 
         this.data1 = {
           labels: labels,
-          datasets: [
+          datasets: datasets/*[
             {
               label: ["Departamentos"],
               backgroundColor: ['#fa8564', '#1fb5ac', '#aec785', '#a48ad4', '#fdd752', '#ff6c60'],
               borderColor: ['#fa8564', '#1fb5ac', '#aec785', '#a48ad4', '#fdd752', '#ff6c60'],
               data: data
             },
-          ],
+          ],*/
 
 
         };
@@ -203,7 +239,7 @@ export class DashboardComponent implements OnInit {
               responsavel: response[x][1],
               departamento: response[x][2],
               data_objetivo: response[x][3],
-              n_dias: response[x][4],
+              data_conclusao: this.formatDate(response[x][4]),
             })
 
           }
@@ -214,7 +250,21 @@ export class DashboardComponent implements OnInit {
       }, error => { console.log(error); });
   }
 
+  //formatar a data para yyyy-mm-dd
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
 }
+
+
 
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
