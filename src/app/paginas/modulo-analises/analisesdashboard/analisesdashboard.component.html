@@ -36,7 +36,7 @@
                           <i *ngIf="caraacidentes" style="font-size: 60px;" class="fa fa-frown-o"></i></span>
                         <div class="mini-stat-info">
                           <span>{{total_acidentes}}</span>
-                          Acidentes de Trabalho
+                          Acidentes de Trabalho (últimos 5 dias)
                         </div>
                       </div>
                     </div>
@@ -334,7 +334,7 @@
                       <div class="col-sm-6">
                         <section class="panel">
                           <header class="panel-heading">
-                            <h4 class="widget-h"> Barras Planeadas/Executadas (Semana x -1/2022)</h4>
+                            <h4 class="widget-h"> Barras Planeadas/Executadas (Semana {{semana-1}}/2022)</h4>
                           </header>
                           <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
                             <p-chart type="line" [data]="data_CumprimentoPlanos_semana1"
@@ -345,7 +345,7 @@
                       <div class="col-sm-6">
                         <section class="panel">
                           <header class="panel-heading">
-                            <h4 class="widget-h"> Barras Planeadas/Executadas (Semana x/2022)</h4>
+                            <h4 class="widget-h"> Barras Planeadas/Executadas (Semana {{semana}}/2022)</h4>
                           </header>
                           <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
                             <p-chart type="line" [data]="data_CumprimentoPlanos_semana2"
@@ -439,8 +439,19 @@
                   <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
                     <div class="col-sm-12">
                       <section class="panel">
-                        <header class="panel-heading">
-                          <h4 class="widget-h"> Análise de Rejeições</h4>
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 300px; float: left;"> Análise de Rejeições</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaRejeicoes_area()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right; text-align: right;">
+                            <p-calendar [style]="{'height':'30px','width':'100px','margin-right': '31px'}"
+                              dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                              [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_rejeicoes"
+                              [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
+                            </p-calendar>
+                          </div>
                         </header>
                         <div class="panel-body">
                           <table class="table  table-bordered table-striped table-hover " id="tabelarejeicoes"
@@ -479,72 +490,90 @@
                               <tr>
                                 <td style="border: 1px solid #ddd; text-align: left;">Rejeição Global</td>
 
-                                <td style="">
+                                <td style="text-align: center;">
                                   {{objetivo_rejeicao_global |number : '1.2-2'}}
                                 </td>
-                                <td [style.background]="(tipo0_linha1_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo0_linha1_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo0_linha1_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo0_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo0_linha2_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;" style="text-align: center;"
+                                  [style.background]="(tipo0_linha2_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo0_linha2_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo0_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo0_linha33_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo0_linha33_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo0_linha33_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo0_linha33_area |number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo10_linha1_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo10_linha1_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo10_linha1_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo10_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo10_linha2_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo10_linha2_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo10_linha2_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo10_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo10_linha33_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo10_linha33_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo10_linha33_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo10_linha33_area |number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo20_linha1_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo20_linha1_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo20_linha1_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo20_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo20_linha2_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo20_linha2_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo20_linha2_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo20_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo20_linha33_area > objetivo_rejeicao_global )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo20_linha33_area > objetivo_rejeicao_global )?'red':''"
                                   [style.color]="(tipo20_linha33_area > objetivo_rejeicao_global )?'white':''">
                                   {{tipo20_linha33_area |number : '1.2-2'}}</td>
                               </tr>
 
                               <tr>
                                 <td style="border: 1px solid #ddd; text-align: left;">Rejeição Cromagem (< 10dm2)</td>
-                                <td style="">
+                                <td style="text-align: center;">
                                   {{objetivo_cromagem_menor |number : '1.2-2'}}
                                 </td>
-                                <td [style.background]="(tipo1_linha1_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo1_linha1_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo1_linha1_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo1_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo1_linha2_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo1_linha2_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo1_linha2_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo1_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo1_linha33_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo1_linha33_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo1_linha33_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo1_linha33_area |number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo11_linha1_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo11_linha1_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo11_linha1_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo11_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo11_linha2_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo11_linha2_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo11_linha2_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo11_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo11_linha33_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo11_linha33_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo11_linha33_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo11_linha33_area |number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo21_linha1_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo21_linha1_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo21_linha1_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo21_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo21_linha2_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo21_linha2_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo21_linha2_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo21_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo21_linha33_area > objetivo_cromagem_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo21_linha33_area > objetivo_cromagem_menor )?'red':''"
                                   [style.color]="(tipo21_linha33_area > objetivo_cromagem_menor )?'white':''">
                                   {{tipo21_linha33_area |number : '1.2-2'}}</td>
                               </tr>
@@ -552,35 +581,44 @@
 
                               <tr>
                                 <td style="border: 1px solid #ddd; text-align: left;">Rejeição Cromagem (>=10dm2)</td>
-                                <td style="">{{objetivo_cromagem_maior |number : '1.2-2'}}
+                                <td style="text-align: center;">{{objetivo_cromagem_maior |number : '1.2-2'}}
                                 </td>
-                                <td [style.background]="(tipo2_linha1_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo2_linha1_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo2_linha1_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo2_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo2_linha2_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo2_linha2_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo2_linha2_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo2_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo2_linha33_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo2_linha33_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo2_linha33_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo2_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo12_linha1_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo12_linha1_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo12_linha1_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo12_linha1_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo12_linha2_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo12_linha2_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo12_linha2_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo12_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo12_linha33_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo12_linha33_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo12_linha33_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo12_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo22_linha1_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo22_linha1_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo22_linha1_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo22_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo22_linha2_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo22_linha2_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo22_linha2_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo22_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo22_linha33_area > objetivo_cromagem_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo22_linha33_area > objetivo_cromagem_maior )?'red':''"
                                   [style.color]="(tipo22_linha33_area > objetivo_cromagem_maior )?'white':''">
                                   {{tipo22_linha33_area |number : '1.2-2'}}</td>
                               </tr>
@@ -588,35 +626,44 @@
 
                               <tr>
                                 <td style="border: 1px solid #ddd; text-align: left;">Rejeição Injeção (< 10dm2)</td>
-                                <td style="">{{objetivo_injecao_menor |number : '1.2-2'}}
+                                <td style="text-align: center;">{{objetivo_injecao_menor |number : '1.2-2'}}
                                 </td>
-                                <td [style.background]="(tipo3_linha1_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo3_linha1_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo3_linha1_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo3_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo3_linha2_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo3_linha2_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo3_linha2_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo3_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo3_linha33_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo3_linha33_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo3_linha33_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo3_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo13_linha1_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo13_linha1_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo13_linha1_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo13_linha1_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo13_linha2_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo13_linha2_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo13_linha2_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo13_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo13_linha33_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo13_linha33_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo13_linha33_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo13_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo23_linha1_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo23_linha1_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo23_linha1_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo23_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo23_linha2_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo23_linha2_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo23_linha2_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo23_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo23_linha33_area > objetivo_injecao_menor )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo23_linha33_area > objetivo_injecao_menor )?'red':''"
                                   [style.color]="(tipo23_linha33_area > objetivo_injecao_menor )?'white':''">
                                   {{tipo23_linha33_area |number : '1.2-2'}}</td>
                               </tr>
@@ -624,35 +671,44 @@
 
                               <tr>
                                 <td style="border: 1px solid #ddd; text-align: left;">Rejeição Injeção (>=10dm2)</td>
-                                <td style="">{{objetivo_injecao_maior |number : '1.2-2'}}
+                                <td style="text-align: center;">{{objetivo_injecao_maior |number : '1.2-2'}}
                                 </td>
-                                <td [style.background]="(tipo4_linha1_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo4_linha1_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo4_linha1_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo4_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo4_linha2_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo4_linha2_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo4_linha2_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo4_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo4_linha33_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo4_linha33_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo4_linha33_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo4_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo14_linha1_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo14_linha1_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo14_linha1_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo14_linha1_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo14_linha2_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo14_linha2_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo14_linha2_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo14_linha2_area|number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo14_linha33_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo14_linha33_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo14_linha33_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo14_linha33_area|number : '1.2-2'}}</td>
 
-                                <td [style.background]="(tipo24_linha1_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo24_linha1_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo24_linha1_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo24_linha1_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo24_linha2_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo24_linha2_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo24_linha2_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo24_linha2_area |number : '1.2-2'}}</td>
-                                <td [style.background]="(tipo24_linha33_area > objetivo_injecao_maior )?'red':''"
+                                <td style="text-align: center;"
+                                  [style.background]="(tipo24_linha33_area > objetivo_injecao_maior )?'red':''"
                                   [style.color]="(tipo24_linha33_area > objetivo_injecao_maior )?'white':''">
                                   {{tipo24_linha33_area |number : '1.2-2'}}</td>
                               </tr>
@@ -680,6 +736,61 @@
                       </div>
                       <div class="col-sm-12" style="padding: 0;">
                         <div class="panel-body" style="padding: 0;">
+                          <div
+                            style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+                            class="form-group col-md-12 col-lg-12">
+                            <form #form id="formReclama" (ngSubmit)="carregaref()" ngNativeValidate>
+
+                              <div class="table-row-column col-md-2" style="height: 64px; padding-left: 6px;">
+                                <label>Linha:</label><br>
+                                <p-dropdown [filter]="true" appendTo="body" [options]="linhas"
+                                  [style]="{'width':'90%','height':'27px','background':'white','display': '-webkit-inline-box','padding-top': '1px'}"
+                                  [(ngModel)]="linha" [ngModelOptions]="{standalone: true}">
+                                </p-dropdown>
+                              </div>
+
+                              <div class="table-row-column col-md-5" style="height: 64px; width: 38%;"><label>Data
+                                  Entre:</label><br>
+                                <p-calendar [style]="{'height':'25px','width':'100px','margin-right': '29px'}"
+                                  dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                                  [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_ini"
+                                  [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
+                                </p-calendar>
+                                <input style="width:75px; margin-left:3px; padding: 5px 4px;height: 25px;"
+                                  [(ngModel)]="hora_ini" [ngModelOptions]="{standalone: true}" type="time"
+                                  class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                  ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true"
+                                  placeholder="hh:mm">
+                                e
+                                <p-calendar [style]="{'height':'25px','width':'100px','margin-left': '6px'}"
+                                  dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
+                                  [yearNavigator]="true" yearRange="2000:2050" [(ngModel)]="data_fim"
+                                  [ngModelOptions]="{standalone: true}" [showIcon]="true" [required]="true">
+                                </p-calendar>
+                                <input style="width:75px; margin-left:30px; padding: 5px 4px;height: 25px;"
+                                  [(ngModel)]="hora_fim" [ngModelOptions]="{standalone: true}" type="time"
+                                  class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                  ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true"
+                                  placeholder="hh:mm">
+                              </div>
+
+                              <!--div class="table-row-column col-md-4"
+                                style="padding-left: 16px; width: 28%; padding-top: 30px;">
+                                <p-checkbox [(ngModel)]="objetivos_gerais" [ngModelOptions]="{standalone: true}"
+                                  label="Ref. com objectivos gerais ultrapassados" binary="true">
+                                </p-checkbox>
+                              </div-->
+
+                              <div class="table-row-column col-md-2" style="padding-top: 26px;">
+
+                                <button type="submit" class="btn btn-success " [disabled]="false" [disabled]="loading"
+                                  style="margin: 3px 0 0 39px; height: 27px; padding: 0px 10px 0 10px; width: 100%;">Aplicar</button>
+
+                              </div>
+
+
+                            </form>
+                          </div>
                           <div class="tabela_rej table-row table-header"
                             style=" background: #757676; color: white; font-weight: 500;">
                             <div class="table-row-column col-md-5" style="text-align: left;">
@@ -757,6 +868,7 @@
                                 <tr>
                                   <th scope="col" style="width: 190px;">Cód.</th>
                                   <th scope="col" style="text-align: left;">Referência</th>
+                                  <th scope="col" style="text-align: left;">Cliente</th>
                                   <th scope="col" style="text-align: center;">Tipo</th>
                                   <th scope="col" style="text-align: center;width: 97px;">Data Reg.
                                   </th>
@@ -769,6 +881,7 @@
                                 <tr *ngFor="let rec of reclamacoesclientes ">
                                   <td style="text-align: left;">{{rec.codigo}}</td>
                                   <td style="text-align: left;">{{rec.referencia}}</td>
+                                  <td style="text-align: left;">{{rec.cliente}}</td>
                                   <td>{{rec.tipo}}</td>
                                   <td>{{rec.data}}</td>
                                   <td>{{rec.revista_muro}}</td>
@@ -796,6 +909,8 @@
                                   <th scope="col" style="width: 190px;">Cód.</th>
                                   <th scope="col" style="text-align: left;">Referência
                                   </th>
+                                  <th scope="col" style="text-align: left;">Fornecedor
+                                  </th>
                                   <th scope="col" style="text-align: center;">Tipo</th>
                                   <th scope="col" style="text-align: center; width: 97px;">Data Reg.
                                   </th>
@@ -805,6 +920,7 @@
                                 <tr *ngFor="let for of reclamacoesFornecedores ">
                                   <td style="text-align: left;">{{for.codigo}}</td>
                                   <td style="text-align: left;">{{for.referencia}}</td>
+                                  <td style="text-align: left;">{{for.fornecedor}}</td>
                                   <td>{{for.tipo}}</td>
                                   <td>{{for.data}}</td>
                                 </tr>
@@ -830,8 +946,19 @@
 
                     <div class="col-md-12">
                       <section class="panel">
-                        <header class="panel-heading">
-                          <h4 class="widget-h">Planos de Ação</h4>
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 200px; float: left;">Planos de Ação</h4>
+
+                          <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+
+                            <div class="table-row-column col-md-2" style="padding: 0;">
+                              <p-checkbox [(ngModel)]="acoes_em_ATRASO" [ngModelOptions]="{standalone: true}"
+                                (onChange)="atualizaPlanos($event)" label="Ações em atraso" binary="true">
+                              </p-checkbox>
+                            </div>
+
+                          </form>
+
                         </header>
                         <div class="panel-body">
                           <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"

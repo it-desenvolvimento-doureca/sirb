@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ABDICLINHAService } from 'app/servicos/ab-dic-linha.service';
 import { DASHBOARDANALISESService } from 'app/servicos/dashboard-analises.service';
 import { FINANALISEDIVIDASService } from 'app/servicos/fin-analise-dividas.service';
 import { FINSEGUIMENTOFATURACAOANUALService } from 'app/servicos/fin-seguimento-faturacao-anual.service';
@@ -153,7 +154,7 @@ export class AnalisesdashboardComponent implements OnInit {
         ticks: {
           callback: function (value) { return formatMoney(value, 2, ",", ".") },
           label: 'label',
-          beginAtZero: false,
+          beginAtZero: true,
         }, scaleLabel: {
           display: true,
         },
@@ -209,7 +210,7 @@ export class AnalisesdashboardComponent implements OnInit {
         ticks: {
           callback: function (value) { return formatMoney(value, 2, ",", ".") },
           label: 'label',
-          beginAtZero: false,
+          beginAtZero: true,
         }, scaleLabel: {
           display: true,
         },
@@ -268,7 +269,7 @@ export class AnalisesdashboardComponent implements OnInit {
       },
     },
     animation: {
-      onComplete: drawBarValues
+      onComplete: drawBarValuesPercentage
     },
     hover: { animationDuration: 0 },
     scales: {
@@ -487,7 +488,7 @@ export class AnalisesdashboardComponent implements OnInit {
   };
 
   dados = [];
-  lista_expand: any[];
+  lista_expand: any[] = [];
   data: any;
   data_ini: any;
   data_fim: any;
@@ -516,6 +517,9 @@ export class AnalisesdashboardComponent implements OnInit {
   displayTarefa: boolean;
   yearTimeout: any;
   user: any;
+  linhas: any[];
+  acoes_em_ATRASO = true;
+  data_rejeicoes: any;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -523,6 +527,7 @@ export class AnalisesdashboardComponent implements OnInit {
     private FINSEGUIMENTOFATURACAOANUALService: FINSEGUIMENTOFATURACAOANUALService,
     private PAMOVLINHAService: PAMOVLINHAService,
     private router: Router,
+    private ABDICLINHAService: ABDICLINHAService,
     private GERREFERENCIASFASTRESPONSEREJEICOESService: GERREFERENCIASFASTRESPONSEREJEICOESService) { }
 
   ngOnInit() {
@@ -530,6 +535,7 @@ export class AnalisesdashboardComponent implements OnInit {
 
     var data = new Date()
     this.data = this.formatDate(data);
+    this.data_rejeicoes = this.data;
     this.data_formatada = this.formatDate(data);
     this.data_filtro = this.formatDate(data);
     var d = new Date(this.data);
@@ -542,6 +548,8 @@ export class AnalisesdashboardComponent implements OnInit {
     d.setDate(d.getDate() + 1);
     this.data_fim = this.formatDate(d);
 
+
+
     for (var x = 2005; x <= 2075; x++) {
       this.anos.push({ value: x, label: x })
     }
@@ -550,11 +558,45 @@ export class AnalisesdashboardComponent implements OnInit {
       this.semanas.push({ value: y, label: y })
     }
 
-    this.semana = this.getWeek(new Date()) + 1;
+    this.semana = this.getWeek(new Date()) /*+ 1*/;
+    var dados = [{ DATA: this.formatDate(new Date()) }];
+    //var dados = [{ DATA: this.formatDate('2019-02-06') }];
+
+    this.DASHBOARDANALISESService.getDATA_DIA(dados).subscribe(
+      response => {
+        this.data_rejeicoes = this.formatDate(response[0][0]);
+        this.limpar_dados();
+        this.carregaLinhas();
+        this.atualizar();
 
 
-    this.atualizar();
+      }, error => {
+        console.log(error);
+        this.limpar_dados();
+        this.carregaLinhas();
+        this.atualizar();
 
+
+      });
+
+
+  }
+
+  carregaLinhas() {
+    this.ABDICLINHAService.getAll().subscribe(
+      response => {
+        this.linhas = [];
+        this.linhas.push({ label: "Sel. Linha", value: null });
+        for (var x in response) {
+          this.linhas.push({ label: response[x].nome_LINHA, value: response[x].id_LINHA });
+        }
+
+        this.linhas = this.linhas.slice();
+
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   randomcolor(i) {
@@ -589,12 +631,15 @@ export class AnalisesdashboardComponent implements OnInit {
     this.carregaDadosFinanceira();
   }
 
+  atualizaPlanos(event) {
+    this.carregarlista('T');
+  }
 
   carregarlista(tipo) {
     this.dados = [];
     this.lista_expand = [];
-    //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: false, USER: this.user }];
+
+    var filtros = [{ FASTRESPONSE: false, EM_ATRASO: this.acoes_em_ATRASO, USER: this.user }];
     this.PAMOVCABService.getPA_MOV_CABbyTIPOSEGUIR(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -683,6 +728,7 @@ export class AnalisesdashboardComponent implements OnInit {
                 this.reclamacoesclientes.push({
                   codigo: response[x][4], referencia: response[x][5], tipo: response[x][6],
                   data: this.formatDate(response[x][7]), revista_muro: response[x][13]
+                  , cliente: response[x][14]
                 });
               }
             }
@@ -720,7 +766,7 @@ export class AnalisesdashboardComponent implements OnInit {
               if (parseInt(x) < 5) {
                 this.reclamacoesFornecedores.push({
                   codigo: response[x][3], referencia: response[x][4], tipo: response[x][5],
-                  data: this.formatDate(response[x][6]),
+                  data: this.formatDate(response[x][6]), fornecedor: response[x][10],
                 });
               }
             }
@@ -905,16 +951,16 @@ export class AnalisesdashboardComponent implements OnInit {
   carregaRejeicoes_area() {
     /*this.limpar_dados();
     this.loadingRejeicoes = true;*/
-
+    this.limpar_dados();
     var serie1 = [];
     var serie2 = [];
     var serie3 = [];
     var serie2_b = [];
     var limite = [];
 
-    var dados = [{ DATA: this.formatDate(this.data) }];
+    var dados = [{ DATA: this.formatDate(this.data_rejeicoes) }];
     //this.rejeicao_area = [];
-    var d = new Date(this.data);
+    var d = new Date(this.data_rejeicoes);
     d.setDate(d.getDate() - 15);
 
     this.DASHBOARDANALISESService.getDASHBOARD_REJEICOES_AREA2(dados).subscribe(
@@ -928,7 +974,7 @@ export class AnalisesdashboardComponent implements OnInit {
           for (var x in response) {
 
             if (response[x][0] == 0 || response[x][0] == 1 || response[x][0] == 2 || response[x][0] == 3 || response[x][0] == 4) {
-              if (this.formatDate(this.data) == this.formatDate(response[x][3])) this['tipo' + response[x][0] + '_linha' + response[x][7] + '_area'] = response[x][8];
+              if (this.formatDate(this.data_rejeicoes) == this.formatDate(response[x][3])) this['tipo' + response[x][0] + '_linha' + response[x][7] + '_area'] = response[x][8];
             } else {
               this['tipo' + response[x][0] + '_linha' + response[x][7] + '_area'] = response[x][8];
             }
@@ -1146,10 +1192,14 @@ export class AnalisesdashboardComponent implements OnInit {
             var datahj = new Date();
             var data_hj = this.formatDate(datahj);
 
-            if (new Date(this.formatDate(response[x][2])).getTime() == new Date(data_a).getTime() || new Date(this.formatDate(response[x][2])).getTime() == new Date(data_hj).getTime()) {
-              this.caraacidentes = true;
-              this.total_acidentes++;
-            }
+            /* if (new Date(this.formatDate(response[x][2])).getTime() == new Date(data_a).getTime() || new Date(this.formatDate(response[x][2])).getTime() == new Date(data_hj).getTime()) {
+               this.caraacidentes = true;
+               this.total_acidentes++;
+             }*/
+            this.total_acidentes++;
+          }
+          if (this.total_acidentes > 0) {
+            this.caraacidentes = true;
           }
           //this.ocorrencias = this.ocorrencias.slice();
         }
@@ -1216,13 +1266,18 @@ export class AnalisesdashboardComponent implements OnInit {
   carregaGraficoPLaneadas() {
 
 
-    var labels = [];
-    var data1 = [];
-    var data2 = [];
-    var labels_1 = [];
-    var data1_1 = [];
-    var data2_1 = [];
+    var labels = [''];
+    var data1 = [0];
+    var data2 = [0];
+
+    var labels_1 = [''];
+    var data1_1 = [0];
+    var data2_1 = [0];
     var dados = [{ ANO: this.ano, SEMANA: this.semana }];
+
+    var valor = 0;
+    var valor1 = 1;
+
     this.DASHBOARDANALISESService.getDASHBOARD_PLANEAMENTO_GRAFICOS(dados).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -1232,14 +1287,16 @@ export class AnalisesdashboardComponent implements OnInit {
           var dia_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
           for (var x in response) {
 
-            if (response[x][0] == 0) {
+            if (response[x][0] == 1) {
+              valor += (response[x][4] == null) ? 0 : response[x][4];
               labels.push(this.formatDate(response[x][1]) /*+ ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')'*/);
               data1.push(response[x][5]);
-              data2.push(response[x][4]);
+              data2.push(valor);
             } else {
+              valor1 += (response[x][4] == null) ? 0 : response[x][4];
               labels_1.push(this.formatDate(response[x][1]) /*+ ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')'*/);
               data1_1.push(response[x][5]);
-              data2_1.push(response[x][4]);
+              data2_1.push(valor1);
             }
 
           }
@@ -1266,6 +1323,8 @@ export class AnalisesdashboardComponent implements OnInit {
   }
 
   carregaGraficoPLaneadasSemana1_graf(labels, data1, data2) {
+    this.options_CumprimentoPlanos_semana1.title.text = 'Barras Planeadas/Executadas (Semana ' + (this.semana - 1) + '/2022)';
+
     this.data_CumprimentoPlanos_semana1 = {
       labels: labels,
       datasets: [
@@ -1292,6 +1351,8 @@ export class AnalisesdashboardComponent implements OnInit {
   }
 
   carregaGraficoPLaneadasSemana2_graf(labels, data1, data2) {
+    this.options_CumprimentoPlanos_semana2.title.text = 'Barras Planeadas/Executadas (Semana ' + this.semana + '/2022)';
+
     this.data_CumprimentoPlanos_semana2 = {
       labels: labels,
       datasets: [
@@ -1705,6 +1766,103 @@ export class AnalisesdashboardComponent implements OnInit {
     }, 250);
   }
 
+  limpar_dados() {
+    this.objetivo_cromagem_menor = null;
+    this.objetivo_cromagem_maior = null;
+    this.objetivo_injecao_maior = null;
+    this.objetivo_injecao_menor = null;
+    this.objetivo_rejeicao_global = null;
+
+    /* DATA */
+
+    this.tipo0_linha33 = 0;
+    this.tipo1_linha33 = 0;
+    this.tipo2_linha33 = 0;
+    this.tipo3_linha33 = 0;
+    this.tipo4_linha33 = 0;
+
+
+
+    /* MES */
+
+
+    this.tipo10_linha33 = 0;
+    this.tipo11_linha33 = 0;
+    this.tipo12_linha33 = 0;
+    this.tipo13_linha33 = 0;
+    this.tipo14_linha33 = 0;
+
+
+
+    this.tipo20_linha33 = 0;
+    this.tipo21_linha33 = 0;
+    this.tipo22_linha33 = 0;
+    this.tipo23_linha33 = 0;
+    this.tipo24_linha33 = 0;
+
+
+    /* DATA */
+    this.tipo0_linha1_area = 0;
+    this.tipo1_linha1_area = 0;
+    this.tipo2_linha1_area = 0;
+    this.tipo3_linha1_area = 0;
+    this.tipo4_linha1_area = 0;
+
+    this.tipo0_linha2_area = 0;
+    this.tipo1_linha2_area = 0;
+    this.tipo2_linha2_area = 0;
+    this.tipo3_linha2_area = 0;
+    this.tipo4_linha2_area = 0;
+
+    this.tipo0_linha33_area = 0;
+    this.tipo1_linha33_area = 0;
+    this.tipo2_linha33_area = 0;
+    this.tipo3_linha33_area = 0;
+    this.tipo4_linha33_area = 0;
+
+
+
+    /* MES */
+    this.tipo10_linha1_area = 0;
+    this.tipo11_linha1_area = 0;
+    this.tipo12_linha1_area = 0;
+    this.tipo13_linha1_area = 0;
+    this.tipo14_linha1_area = 0;
+
+    this.tipo10_linha2_area = 0;
+    this.tipo11_linha2_area = 0;
+    this.tipo12_linha2_area = 0;
+    this.tipo13_linha2_area = 0;
+    this.tipo14_linha2_area = 0;
+
+    this.tipo10_linha33_area = 0;
+    this.tipo11_linha33_area = 0;
+    this.tipo12_linha33_area = 0;
+    this.tipo13_linha33_area = 0;
+    this.tipo14_linha33_area = 0;
+
+    /* ANO */
+    this.tipo20_linha1_area = 0;
+    this.tipo21_linha1_area = 0;
+    this.tipo22_linha1_area = 0;
+    this.tipo23_linha1_area = 0;
+    this.tipo24_linha1_area = 0;
+
+    this.tipo20_linha2_area = 0;
+    this.tipo21_linha2_area = 0;
+    this.tipo22_linha2_area = 0;
+    this.tipo23_linha2_area = 0;
+    this.tipo24_linha2_area = 0;
+
+    this.tipo20_linha33_area = 0;
+    this.tipo21_linha33_area = 0;
+    this.tipo22_linha33_area = 0;
+    this.tipo23_linha33_area = 0;
+    this.tipo24_linha33_area = 0;
+
+
+
+  }
 }
 
 
@@ -1739,6 +1897,27 @@ function drawBarValues() {
       var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
       if (dataset.data[i] !== null && dataset.label != 'Linha de Tendência' && dataset.label != 'Objetivo') {
         ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' ', model.x - 1, model.y - 5);
+      }
+    }
+  });
+}
+
+
+function drawBarValuesPercentage() {
+  // render the value of the chart above the bar
+  var ctx = this.chart.ctx;
+
+  ctx.fillStyle = 'grey'
+  ctx.font = "10px Helvetica Neue, Helvetica, Arial, sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+
+  this.data.datasets.forEach(function (dataset) {
+    for (var i = 0; i < dataset.data.length; i++) {
+      if (dataset.hidden === true && dataset._meta[Object.keys(dataset._meta)[0]].hidden !== false) { continue; }
+      var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+      if (dataset.data[i] !== null && dataset.label != 'Linha de Tendência' && dataset.label != 'Objetivo') {
+        ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' %', model.x - 1, model.y - 5);
       }
     }
   });

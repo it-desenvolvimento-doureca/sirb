@@ -76,6 +76,14 @@ export class DASHBOARDANALISESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getDATA_DIA(data) {
+    const url = webUrl.host_dashboard + '/getDATA_DIA';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDASHBOARD_RECLAMACOES_CLIENTES(data) {
     const url = webUrl.host_dashboard + '/getDASHBOARD_RECLAMACOES_CLIENTES';
     return this.http

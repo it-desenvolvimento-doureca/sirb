@@ -99,7 +99,7 @@ export class FichaEquipamentoComponent implements OnInit {
   filedescricao = [];
   filedescricaoAnexo = [];
 
-  drop_periocidade = [{ value: '', label: 'Sel. Periocidade' }, { value: 1, label: 'Diário' }, { value: 2, label: 'Semanal' }, { value: 3, label: 'Mensal' }, { value: 4, label: 'Semestral' }, { value: 5, label: 'Timestral' }, { value: 6, label: 'Anual' }]
+  drop_periodicidade = [{ value: '', label: 'Sel. Periodicidade' }, { value: 1, label: 'Diário' }, { value: 2, label: 'Semanal' }, { value: 3, label: 'Mensal' }, { value: 4, label: 'Semestral' }, { value: 5, label: 'Timestral' }, { value: 6, label: 'Anual' }]
   equipamento_dados: MAN_MOV_MANUTENCAO_EQUIPAMENTOS;
   drop_equipas: any;
   drop_localizacoes: any[];
@@ -128,8 +128,8 @@ export class FichaEquipamentoComponent implements OnInit {
   repetir: any;
   dias_SEMANA: any;
 
-  displayperiocidade;
-  index_selected_periocidade: any;
+  displayperiodicidade;
+  index_selected_periodicidade: any;
   tipo_equipa;
   TIPO_EQUIPA: string = 'E';
   UTILIZADOR: number;
@@ -405,7 +405,7 @@ export class FichaEquipamentoComponent implements OnInit {
             data_FINAL: response[x].DATA_FINAL,
             tipo_REPETICAO: response[x].TIPO_REPETICAO,
             repetir: response[x].REPETIR,
-            dias_SEMANA: response[x].DIAS_SEMANA,
+            dias_SEMANA: (response[x].DIAS_SEMANA == null) ? null : response[x].DIAS_SEMANA.split(','),
             data_ULTIMA_REALIZADA: (response[x].DATA_ULTIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_ULTIMA_REALIZADA) : null,
             data_PROXIMA_REALIZADA: (response[x].DATA_PROXIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_PROXIMA_REALIZADA) : null,
             data_INICIO: (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null,
@@ -789,8 +789,8 @@ export class FichaEquipamentoComponent implements OnInit {
   }
 
 
-  getPeriocidade(id) {
-    if (id != null) var dt = this.drop_periocidade.find(item => item.value == id);
+  getPeriodicidade(id) {
+    if (id != null) var dt = this.drop_periodicidade.find(item => item.value == id);
 
     var nome = null;
     if (dt) {
@@ -1737,6 +1737,7 @@ export class FichaEquipamentoComponent implements OnInit {
       tabela.ID_MANUTENCAO = id;
       if (this.tabelaaccoes[x].id != null) {
         tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].proxima_REALIZAR;
+        if (tabela.DATA_PROXIMA_REALIZADA == null) tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].data_INICIO;
       } else {
         tabela.DATA_PROXIMA_REALIZADA = this.tabelaaccoes[x].data_INICIO;
       }
@@ -1753,7 +1754,7 @@ export class FichaEquipamentoComponent implements OnInit {
       tabela.DATA_FINAL = this.tabelaaccoes[x].data_FINAL;
       tabela.TIPO_REPETICAO = this.tabelaaccoes[x].tipo_REPETICAO;
       tabela.REPETIR = this.tabelaaccoes[x].repetir;
-      tabela.DIAS_SEMANA = this.tabelaaccoes[x].dias_SEMANA;
+      tabela.DIAS_SEMANA = (this.tabelaaccoes[x].dias_SEMANA == null) ? null : this.tabelaaccoes[x].dias_SEMANA.toString();
       tabela.DATA_INICIO = this.tabelaaccoes[x].data_INICIO;
       /*tabela.hora_INICIO = this.hora_INICIO;*/
 
@@ -1969,7 +1970,7 @@ export class FichaEquipamentoComponent implements OnInit {
     }
   }
 
-  abrePeriocidade(dados, index) {
+  abrePeriodicidade(dados, index) {
     this.tipo_FIM = (dados.tipo_FIM == null) ? 1 : dados.tipo_FIM;
     this.ocorrencias = dados.ocorrencias;
     this.total_OCORRENCIAS = dados.total_OCORRENCIAS;
@@ -1981,13 +1982,13 @@ export class FichaEquipamentoComponent implements OnInit {
     this.data_PROXIMA_REALIZADA = dados.data_PROXIMA_REALIZADA;
     this.data_INICIO = dados.data_INICIO;
     /*this.hora_INICIO = dados.hora_INICIO;*/
-    this.index_selected_periocidade = index;
-    this.displayperiocidade = true;
+    this.index_selected_periodicidade = index;
+    this.displayperiodicidade = true;
 
   }
 
-  atualizarperiocidade() {
-    var index = this.index_selected_periocidade;
+  atualizarperiodicidade() {
+    var index = this.index_selected_periodicidade;
     this.tabelaaccoes[index].tipo_FIM = this.tipo_FIM;
     this.tabelaaccoes[index].ocorrencias = this.ocorrencias;
     this.tabelaaccoes[index].total_OCORRENCIAS = this.total_OCORRENCIAS;
@@ -2000,7 +2001,7 @@ export class FichaEquipamentoComponent implements OnInit {
     this.tabelaaccoes[index].data_INICIO = this.data_INICIO;
     /*this.tabelaaccoes[index].hora_INICIO = dados.hora_INICIO;*/
 
-    this.displayperiocidade = false;
+    this.displayperiodicidade = false;
   }
 
   verStock(proref) {

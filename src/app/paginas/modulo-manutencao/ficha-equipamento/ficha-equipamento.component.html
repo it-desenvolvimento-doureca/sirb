@@ -443,12 +443,12 @@
                         header="Periodicidade">
                         <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                           <button type="button" class="btn btn-default  btn-xs" title="Periodicidade"
-                            (click)="abrePeriocidade(car,index)">
+                            (click)="abrePeriodicidade(car,index)">
                             <span class="glyphicon glyphicon-time"></span>
                           </button>
                         </ng-template>
                         <!--ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                          <p-dropdown [filter]="true" [options]="drop_periocidade"
+                          <p-dropdown [filter]="true" [options]="drop_periodicidade"
                             [style]="{'width':'80%','height':'25px','background':'white'}"
                             [(ngModel)]="car['periociodade']" [ngModelOptions]="{standalone: true}"
                             [disabled]="!modoedicao" appendTo="body">
@@ -566,10 +566,10 @@
 
                       <p-column [editable]="true" field="periociodade" header="Periodicidade">
                         <ng-template let-col let-car="rowData" pTemplate="body">
-                          {{getPeriocidade(car[col.field]) }}
+                          {{getPeriodicidade(car[col.field]) }}
                         </ng-template>
                         <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                          <p-dropdown [filter]="true" [options]="drop_periocidade" appendTo="body"
+                          <p-dropdown [filter]="true" [options]="drop_periodicidade" appendTo="body"
                             [style]="{'width':'80%','height':'25px','background':'white'}"
                             [(ngModel)]="car['periociodade']" [ngModelOptions]="{standalone: true}"
                             [disabled]="!modoedicao" appendTo="body">
@@ -873,10 +873,10 @@
 </p-dialog>
 
 
-<p-dialog header="Periocidade" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
-  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayperiocidade"
+<p-dialog header="Periodicidade" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayperiodicidade"
   [modal]="true">
-  <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="atualizarperiocidade()"
+  <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" (ngSubmit)="atualizarperiodicidade()"
     ngNativeValidate>
     <div style="display: inline-block; width: 100%;">
 
@@ -993,8 +993,8 @@
         </div>
       </div>
       <div style="width: 100%; text-align: right;">
-        <button type="button" class="btn btn-default" (click)="displayperiocidade = false">Fechar</button>
-        <button type="submit" class="btn btn-success ">Gravar</button>
+        <button type="button" class="btn btn-default" (click)="displayperiodicidade = false">Fechar</button>
+        <button [hidden]="!modoedicao" type="submit" class="btn btn-success ">Gravar</button>
       </div>
     </div>
   </form>

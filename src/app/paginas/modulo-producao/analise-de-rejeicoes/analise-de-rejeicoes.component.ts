@@ -663,10 +663,11 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
   getfamdefeitos(id) {
     this.cars1.find(item => item.id == id).iconplus = !this.cars1.find(item => item.id == id).iconplus;
     var PROREF = this.cars1.find(item => item.id == id).proref;
+    var FASE = this.cars1.find(item => item.id == id).fase;
     var data = [{
       AREA_PECA: this.area_peca, DATA_INI: this.formatDate(this.data_ini),
       HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
-      DATA_FIM: this.formatDate(this.data_fim), LINHA: this.linha, PROREF: PROREF, FAM: null
+      DATA_FIM: this.formatDate(this.data_fim), LINHA: this.linha, PROREF: PROREF, FAM: null, FASE: FASE
     }];
     if (this.cars1.find(item => item.id == id).child.length == 0 && !this.cars1.find(item => item.id == id).atualiza) {
       this.cars1.find(item => item.id == id).iconplus = true;
@@ -711,10 +712,11 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
     this.cars1[index].child.find(item => item.id == fam).iconplus = !this.cars1[index].child.find(item => item.id == fam).iconplus;
     var PROREF = this.cars1.find(item => item.id == ref).proref;
     var FAM = this.cars1[index].child.find(item => item.id == fam).familia;
+    var FASE = this.cars1.find(item => item.id == ref).fase;
     var data = [{
       AREA_PECA: this.area_peca, DATA_INI: this.formatDate(this.data_ini), DATA_FIM: this.formatDate(this.data_fim),
       HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
-      LINHA: this.linha, PROREF: PROREF, FAM: FAM
+      LINHA: this.linha, PROREF: PROREF, FAM: FAM, FASE: FASE
     }];
     if (this.cars1[index].child.find(item => item.id == fam).child.length == 0 && !this.cars1[index].child.find(item => item.id == fam).atualiza) {
       this.cars1[index].child.find(item => item.id == fam).iconplus = true;
@@ -757,11 +759,12 @@ export class AnaliseDeRejeicoesComponent implements OnInit {
 
 
     var PROREF = this.cars1.find(item => item.id == ref).proref;
+    var FASE = this.cars1.find(item => item.id == ref).fase;
     var DEFEITO = this.cars1[index].child[index2].child.find(item => item.id == defeito).tipodefeito;
     var data = [{
       AREA_PECA: this.area_peca, DATA_INI: this.formatDate(this.data_ini), DATA_FIM: this.formatDate(this.data_fim),
       HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
-      LINHA: this.linha, PROREF: PROREF, DEFEITO: DEFEITO
+      LINHA: this.linha, PROREF: PROREF, DEFEITO: DEFEITO, FASE: FASE
     }];
     if (this.cars1[index].child[index2].child.find(item => item.id == defeito).child.length == 0 && !this.cars1[index].child[index2].child.find(item => item.id == defeito).atualiza) {
       this.cars1[index].child[index2].child.find(item => item.id == defeito).iconplus = true;
