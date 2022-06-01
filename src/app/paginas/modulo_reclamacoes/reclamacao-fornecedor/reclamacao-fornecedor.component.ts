@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer, Input } from '@angular/core';
 import { FileUpload, ConfirmationService } from 'primeng/primeng';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -53,6 +53,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputartigoexiste') inputartigoexiste: ElementRef;
   @ViewChild('alteraeditar2') alteraeditar2: ElementRef;
+  @Input() id_reclamacao_input;
 
   user: any;
   user_nome: any;
@@ -200,6 +201,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         step = params['step'] || 0;
       });
 
+    if (this.id_reclamacao_input != null) urlarray = ['reclamacoesfornecedores', 'view']
 
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
@@ -210,6 +212,9 @@ export class ReclamacaoFornecedorComponent implements OnInit {
         .subscribe(params => {
           id = params['id'] || 0;
         });
+
+      if (this.id_reclamacao_input != null) id = this.id_reclamacao_input;
+
       if (this.globalVar.getfiltros("reclamacaofornecedor_id") && this.globalVar.getfiltros("reclamacaofornecedor_id").length > 0) {
         this.reclamacoes = this.globalVar.getfiltros("reclamacaofornecedor_id");
         this.i = this.reclamacoes.indexOf(+id);
@@ -259,6 +264,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
       this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501imprimir");
       this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node501dicionarACCAO");
     }
+
 
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {

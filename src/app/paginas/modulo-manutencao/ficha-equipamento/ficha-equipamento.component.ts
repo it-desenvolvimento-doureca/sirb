@@ -145,6 +145,11 @@ export class FichaEquipamentoComponent implements OnInit {
   COD_FORNECEDOR: string;
   NOME_FORNECEDOR: string;
   EMAIL_FORNECEDOR: string;
+  selected_lines = [];
+  displayverificar: boolean;
+  mensagem_verifica: string;
+  selected_d: any;
+  acessocriarmanutencoespreventivas: any;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -192,6 +197,9 @@ export class FichaEquipamentoComponent implements OnInit {
     this.globalVar.setdisDuplicar(!JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591duplicar"));
 
     this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591adicionarACCAO");
+    this.acessocriarmanutencoespreventivas = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591acessocriarmanutencoespreventivas");
+
+
 
     this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591apagarficheiros");
 
@@ -408,7 +416,7 @@ export class FichaEquipamentoComponent implements OnInit {
             dias_SEMANA: (response[x].DIAS_SEMANA == null) ? null : response[x].DIAS_SEMANA.split(','),
             data_ULTIMA_REALIZADA: (response[x].DATA_ULTIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_ULTIMA_REALIZADA) : null,
             data_PROXIMA_REALIZADA: (response[x].DATA_PROXIMA_REALIZADA != null) ? this.formatDate(response[x].DATA_PROXIMA_REALIZADA) : null,
-            data_INICIO: (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null,
+            data_INICIO: (response[x].DATA_INICIO != null) ? new Date(response[x].DATA_INICIO) : null, checked: false
             /*hora_INICIO: response[x].hora_INICIO*/
           });
         }
@@ -719,7 +727,7 @@ export class FichaEquipamentoComponent implements OnInit {
       data_ULTIMA_REALIZADA: null,
       data_PROXIMA_REALIZADA: null,
       data_INICIO: null,
-      hora_INICIO: null, tempo_ESTIMADO: '00:00'
+      hora_INICIO: null, tempo_ESTIMADO: '00:00', checked: false
     });
     this.tabelaaccoes = this.tabelaaccoes.slice();
   }
@@ -2029,6 +2037,61 @@ export class FichaEquipamentoComponent implements OnInit {
     if (event.value != null && event.value != "") {
       this.NOME_FORNECEDOR = this.drop_fornecedor.find(item => item.value == event.value).nome;
       this.EMAIL_FORNECEDOR = this.drop_fornecedor.find(item => item.value == event.value).email;
+    }
+  }
+
+
+  criarPreventivas() {
+    if (this.selected_lines.length == 0) {
+      this.displayverificar = true;
+      this.mensagem_verifica = "É necessário selecionar Ações.";
+    } else {
+      this.confirmationService.confirm({
+        message: 'Criar Manutenção Preventiva para Ações Selecionados?',
+        header: 'Aviso',
+        icon: 'fa fa-exclamation-triangle',
+        accept: () => {
+          console.log(this.selected_lines.toString())
+          for (var x in this.selected_lines) {
+
+          }
+          this.selected_lines = [];
+          this.simular(this.inputnotifi);
+        }
+
+
+      });
+    }
+
+  }
+
+  selectt_d(valor) {
+
+    if (valor == this.selected_d) {
+      valor = null;
+    }
+
+    this.selected_lines = [];
+
+    if (valor == null) {
+      for (var x in this.tabelaaccoes) {
+        this.tabelaaccoes[x].checked = false;
+      }
+      setTimeout(() => {
+        this.selected_d = null;
+      }, 50);
+    } else {
+      for (var x in this.tabelaaccoes) {
+        if (valor == "T") {
+          if (this.tabelaaccoes[x].id != null) {
+            this.selected_lines.push(this.tabelaaccoes[x].id);
+            this.tabelaaccoes[x].checked = true;
+          }
+
+        } else {
+
+        }
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
-<app-controlos (anteriorbt)="anterior()" (duplicarbt)="duplicar()" (seguintebt)="seguinte()" (cancelarbt)="cancelar()"
+<app-controlos *ngIf="id_reclamacao_input == null" (anteriorbt)="anterior()" (duplicarbt)="duplicar()" (seguintebt)="seguinte()" (cancelarbt)="cancelar()"
   (apagarbt)="apagar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div class="card-header" *ngIf="id_reclamacao_input == null"  style="height: 49px; padding-top: 22px;" data-background-color="red">
             <h4 style="position: absolute;" class="title">Reclamações Cliente</h4>
             <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado:
               <b>{{texto_estado}}</b>
@@ -657,7 +657,7 @@
                             <p-column [style]="{'width':'105px'}" [editable]="false" field="descricao" header="">
                               <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                                 <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
-                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro)">
+                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro,car.id)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a class="btn btn-primary btn-xs" title="Download"
@@ -2411,14 +2411,14 @@
     <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
       autoplay="" controls="">Your
       browser does not support the audio element.</audio>
-    <iframe *ngIf="( type == 'txt')  && display" class="embed-responsive-item"
+    <iframe *ngIf="( type == 'txt' || type == 'pdf')  && display" class="embed-responsive-item"
       style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [src]="srcelement" type="application/pdf"
       scale="aspect" frameborder="0"></iframe>
-    <div *ngIf="(type == 'pdf' )  && display" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;">
+    <!--div *ngIf="(type == 'pdf' )  && display" style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;">
       <object *ngIf="(type == 'pdf' )  && display" class="embed-responsive-item"
         style="width: 100%; max-height: 90vh; height: 79vh; max-width: 100%;" [data]="srcelement" type="application/pdf"
         scale="aspect" frameborder="0"></object>
-    </div>
+    </div-->
     <img *ngIf="type == 'img' && display" [src]="srcelement" style="max-height: 79vh; max-width: 100%;">
     <video *ngIf="type == 'video' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
       autoplay="" controls="">Video

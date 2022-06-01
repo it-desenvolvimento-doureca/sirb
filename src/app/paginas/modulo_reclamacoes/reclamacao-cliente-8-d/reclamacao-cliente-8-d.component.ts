@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer, ElementRef, Input } from '@angular/core';
 import { webUrl } from 'assets/config/webUrl';
 import { FileUpload, ConfirmationService } from '../../../../../node_modules/primeng/primeng';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -173,7 +173,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   @ViewChild('alteraeditar2') alteraeditar2: ElementRef;
   @ViewChild('alteracancelar') alteracancelar: ElementRef;
   @ViewChild('inputartigoexiste') inputartigoexiste: ElementRef;
-
+  @Input() id_reclamacao_input;
 
   reclamacao_dados: RC_MOV_RECLAMACAO;
   hora_CRIA: string;
@@ -363,7 +363,9 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         step = params['step'] || 0;
       });
     if (step != 0) { this.classstep = step; }
-
+    
+    if (this.id_reclamacao_input != null) urlarray = ['reclamacoesclientes', 'view']
+    
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
 
@@ -373,6 +375,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         .subscribe(params => {
           id = params['id'] || 0;
         });
+
+      if (this.id_reclamacao_input != null) id = this.id_reclamacao_input;
 
       this.numero_RECLAMACAO_RELATORIO = id;
       if (this.globalVar.getfiltros("reclamacaocliente_id") && this.globalVar.getfiltros("reclamacaocliente_id").length > 0) {
@@ -444,6 +448,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       this.disimprimir = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node500imprimir");
     }
 
+    
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {
         this.globalVar.setseguinte(false);
@@ -1844,7 +1849,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
-  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, id_FICHEIRO = null) {
     this.srcelement = "";
     if (type == "pdf" || type == 'txt') {
       if (ficheiro == null) {
@@ -1853,14 +1858,22 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       } else {
         /*var blob = new Blob([ficheiro], { type: datatype });
         var blobUrl = URL.createObjectURL(blob);*/
-        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+
+        if (id_FICHEIRO != null && type == "pdf") {
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/RC_MOV_RECLAMACAO_FICHEIROS/ID/' + id_FICHEIRO + '/pdf');
+
+        } else {
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+        }
+
+
       }
     }
-    if (ficheiro == null) {
-      this.srcelement = webUrl.link + srcelement;
-    } else {
-      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
-    }
+    /* if (ficheiro == null) {
+       this.srcelement = webUrl.link + srcelement;
+     } else {
+       this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+     }*/
     if (type == "excel" || type == "word") {
       this.download(nomeficheiro, srcelement, datatype, ficheiro)
     } else if (type == "msg") {
@@ -4297,7 +4310,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               logs.data_CRIA = new Date();
               logs.descricao = data_logs[x].descricao;
               this.criaLogs(logs);
-              this.atualizaSUBTAREFAS(id,estado,this.user);
+              this.atualizaSUBTAREFAS(id, estado, this.user);
             }
 
 
@@ -4313,8 +4326,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     }
   }
 
-  atualizaSUBTAREFAS(id,estado,utilizador) {
-    this.GTMOVTAREFASService.getAtualizaSubtarefas(id,estado,utilizador).subscribe(response => {
+  atualizaSUBTAREFAS(id, estado, utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id, estado, utilizador).subscribe(response => {
     }, error => {
       console.log(error);
     });

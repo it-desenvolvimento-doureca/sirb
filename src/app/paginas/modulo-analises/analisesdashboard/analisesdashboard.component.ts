@@ -515,11 +515,15 @@ export class AnalisesdashboardComponent implements OnInit {
   total_acidentes: number;
   id_tarefa_input: any;
   displayTarefa: boolean;
+  displayReclamacao = false;
   yearTimeout: any;
   user: any;
   linhas: any[];
   acoes_em_ATRASO = true;
   data_rejeicoes: any;
+  linha = null;
+  id_reclamacao_input: any;
+  id_reclamacao_inputFornecedor: any;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -544,9 +548,10 @@ export class AnalisesdashboardComponent implements OnInit {
     this.hora_ini = "06:01";
     this.hora_fim = "06:00";
 
-    this.data_ini = this.formatDate(d);
-    d.setDate(d.getDate() + 1);
+
     this.data_fim = this.formatDate(d);
+    d.setDate(d.getDate() - 1);
+    this.data_ini = this.formatDate(d);
 
 
 
@@ -728,7 +733,7 @@ export class AnalisesdashboardComponent implements OnInit {
                 this.reclamacoesclientes.push({
                   codigo: response[x][4], referencia: response[x][5], tipo: response[x][6],
                   data: this.formatDate(response[x][7]), revista_muro: response[x][13]
-                  , cliente: response[x][14]
+                  , cliente: response[x][14], id_reclamacao: response[x][8]
                 });
               }
             }
@@ -766,7 +771,7 @@ export class AnalisesdashboardComponent implements OnInit {
               if (parseInt(x) < 5) {
                 this.reclamacoesFornecedores.push({
                   codigo: response[x][3], referencia: response[x][4], tipo: response[x][5],
-                  data: this.formatDate(response[x][6]), fornecedor: response[x][10],
+                  data: this.formatDate(response[x][6]), fornecedor: response[x][10], id_reclamacao: response[x][7]
                 });
               }
             }
@@ -1096,12 +1101,12 @@ export class AnalisesdashboardComponent implements OnInit {
     this.cars1 = [];
     this.dados_analise = [];
     var objetivos_gerais = 0;
-    var refs = '';
+    var refs = null;
     //this.ref_rejeicao = "34268060B"
     //if (this.referencia.length > 0) refs = this.referencia.toString();
     //if (this.objetivos_gerais) objetivos_gerais = 1;
 
-    this.GERREFERENCIASFASTRESPONSEREJEICOESService.getByData([{ DATA: this.formatDate(this.data_filtro) }]).subscribe(
+    /*this.GERREFERENCIASFASTRESPONSEREJEICOESService.getByData([{ DATA: this.formatDate(this.data_filtro) }]).subscribe(
       response => {
         for (var y in response) {
           if (parseInt(y) == 0) {
@@ -1111,41 +1116,41 @@ export class AnalisesdashboardComponent implements OnInit {
           }
         }
 
-        this.ref_rejeicao = refs;
+        this.ref_rejeicao = refs;*/
 
-        var data = [{
-          AREA_PECA: this.area_peca, DATA_INI: this.formatDate(this.data_ini),
-          HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
-          DATA_FIM: this.formatDate(this.data_fim), LINHA: null, REF: refs, objetivos_gerais: objetivos_gerais, FAM: null
-        }];
-        if (refs != '') {
-          this.PEDIDOSPRODUCAOService.getRejeicoesRefe(data).subscribe(
-            response => {
-              var count = Object.keys(response).length;
+    var data = [{
+      AREA_PECA: this.area_peca, DATA_INI: this.formatDate(this.data_ini),
+      HORA_INI: this.hora_ini, HORA_FIM: this.hora_fim,
+      DATA_FIM: this.formatDate(this.data_fim), LINHA: this.linha, REF: refs, objetivos_gerais: objetivos_gerais, FAM: null
+    }];
+    if (refs != '') {
+      this.PEDIDOSPRODUCAOService.getRejeicoesRefeTOP20(data).subscribe(
+        response => {
+          var count = Object.keys(response).length;
 
-              if (count > 0) {
+          if (count > 0) {
 
-                for (var x in response) {
-                  this.cars1.push({
-                    id: parseInt(x) + 1, brand: response[x][0] + ' - ' + response[x][1], proref: response[x][0], areadef: response[x][10],
-                    fase: response[x][2], areapeca: response[x][3], produzidas: response[x][4], defeito: response[x][5], areprod: response[x][6], barras: response[x][9],
-                    objetivov: (response[x][7]), percdefeitov: response[x][8], media: response[x][11],
-                    objetivo: (response[x][7] == null) ? 0.00 : (response[x][7]).toFixed(2), percdefeito: (response[x][8] == null) ? 0.00 : response[x][8].toFixed(3), atualiza: false, iconplus: true, child: []
-                  })
-                }
-                this.assignCopy()
-              }
-              this.loading = false;
-
-            }, error => {
-              this.loading = false;
-            });
-        } else {
+            for (var x in response) {
+              this.cars1.push({
+                id: parseInt(x) + 1, brand: response[x][0] + ' - ' + response[x][1], proref: response[x][0], areadef: response[x][10],
+                fase: response[x][2], areapeca: response[x][3], produzidas: response[x][4], defeito: response[x][5], areprod: response[x][6], barras: response[x][9],
+                objetivov: (response[x][7]), percdefeitov: response[x][8], media: response[x][11],
+                objetivo: (response[x][7] == null) ? 0.00 : (response[x][7]).toFixed(2), percdefeito: (response[x][8] == null) ? 0.00 : response[x][8].toFixed(3), atualiza: false, iconplus: true, child: []
+              })
+            }
+            this.assignCopy()
+          }
           this.loading = false;
-        }
 
-      },
-      error => { console.log(error); });
+        }, error => {
+          this.loading = false;
+        });
+    } else {
+      this.loading = false;
+    }
+
+    /* },
+     error => { console.log(error); });*/
   }
 
   assignCopy() {
@@ -1223,24 +1228,24 @@ export class AnalisesdashboardComponent implements OnInit {
           for (var x in response) {
             this.dados_indice_comprimento.push({
               DATA: this.formatDate(response[x][0]) + ' (' + dia_da_semana[new Date(response[x][0]).getDay()] + ')',
-              CUMP_PLANOL1T1: response[x][1],
-              CUMP_PLANOL1T2: response[x][2],
-              CUMP_PLANOL1T3: response[x][3],
-              CUMP_PLANOL2T1: response[x][4],
-              CUMP_PLANOL2T2: response[x][5],
-              CUMP_PLANOL2T3: response[x][6],
-              OCUP_LINHAL1T1: response[x][7],
-              OCUP_LINHAL1T2: response[x][8],
-              OCUP_LINHAL1T3: response[x][9],
-              OCUP_LINHAL2T1: response[x][10],
-              OCUP_LINHAL2T2: response[x][11],
-              OCUP_LINHAL2T3: response[x][12],
-              OCUP_TOTALL1T1: response[x][13],
-              OCUP_TOTALL1T2: response[x][14],
-              OCUP_TOTALL1T3: response[x][15],
-              OCUP_TOTALL2T1: response[x][16],
-              OCUP_TOTALL2T2: response[x][17],
-              OCUP_TOTALL2T3: response[x][18],
+              CUMP_PLANOL1T1: (response[x][1] == null) ? 0 : response[x][1],
+              CUMP_PLANOL1T2: (response[x][2] == null) ? 0 : response[x][2],
+              CUMP_PLANOL1T3: (response[x][3] == null) ? 0 : response[x][3],
+              CUMP_PLANOL2T1: (response[x][4] == null) ? 0 : response[x][4],
+              CUMP_PLANOL2T2: (response[x][5] == null) ? 0 : response[x][5],
+              CUMP_PLANOL2T3: (response[x][6] == null) ? 0 : response[x][6],
+              OCUP_LINHAL1T1: (response[x][7] == null) ? 0 : response[x][7],
+              OCUP_LINHAL1T2: (response[x][8] == null) ? 0 : response[x][8],
+              OCUP_LINHAL1T3: (response[x][9] == null) ? 0 : response[x][9],
+              OCUP_LINHAL2T1: (response[x][10] == null) ? 0 : response[x][10],
+              OCUP_LINHAL2T2: (response[x][11] == null) ? 0 : response[x][11],
+              OCUP_LINHAL2T3: (response[x][12] == null) ? 0 : response[x][12],
+              OCUP_TOTALL1T1: (response[x][13] == null) ? 0 : response[x][13],
+              OCUP_TOTALL1T2: (response[x][14] == null) ? 0 : response[x][14],
+              OCUP_TOTALL1T3: (response[x][15] == null) ? 0 : response[x][15],
+              OCUP_TOTALL2T1: (response[x][16] == null) ? 0 : response[x][16],
+              OCUP_TOTALL2T2: (response[x][17] == null) ? 0 : response[x][17],
+              OCUP_TOTALL2T3: (response[x][18] == null) ? 0 : response[x][18],
 
             });
           }
@@ -1717,6 +1722,31 @@ export class AnalisesdashboardComponent implements OnInit {
     }
 
   }
+
+  verReclamacao(id_reclamacao) {
+
+    if (id_reclamacao != null) {
+      this.id_reclamacao_input = id_reclamacao;
+      this.displayReclamacao = true;
+    }
+
+  }
+
+
+  verReclamacaoFornecedor(id_reclamacao) {
+
+    if (id_reclamacao != null) {
+      this.id_reclamacao_inputFornecedor = id_reclamacao;
+      this.displayReclamacao = true;
+    }
+
+  }
+
+  onHide(){
+    this.id_reclamacao_inputFornecedor = null;
+    this.id_reclamacao_input = null;
+  }
+
 
   set_favoritos(col) {
     if (col.seguir_LINHA) {

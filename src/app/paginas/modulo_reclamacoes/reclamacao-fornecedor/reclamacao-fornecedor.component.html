@@ -1,4 +1,4 @@
-<div class="col-md-12  hidden-xs">
+<div *ngIf="id_reclamacao_input == null" class="col-md-12  hidden-xs">
   <div class="card-header" data-background-color="orange">
     <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
@@ -62,7 +62,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div *ngIf="id_reclamacao_input == null" class="card-header" style="height: 49px; padding-top: 22px;"
+            data-background-color="red">
             <h4 style="position: absolute;" class="title">Reclamações Fornecedor</h4>
             <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado:
               <b>{{texto_estado}}</b>

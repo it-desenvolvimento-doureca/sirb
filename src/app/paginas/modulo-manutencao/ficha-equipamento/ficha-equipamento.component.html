@@ -406,8 +406,28 @@
                       <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
                         [(ngModel)]="DESCRICAO_MANUTENCAO" [ngModelOptions]="{standalone: true}">
                     </div>
+                    <button type="button" class="btn btn-warning btn-xs"
+                      *ngIf="acessocriarmanutencoespreventivas && !novo" title="Criar Manutenções Preventivas"
+                      (click)="criarPreventivas()">
+                      <span class="glyphicon glyphicon-plus"></span>Criar Manutenções Preventivas
+                    </button>
                     <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                       styleClass="ExcelTable2007">
+
+                      <p-column [style]="{'width':'38px'}" field="checked">
+                        <ng-template pTemplate="header">
+                          <p-radioButton [disabled]="!acessocriarmanutencoespreventivas" (onClick)="selectt_d('T')"
+                            name="groupname" value="T" [(ngModel)]="selected_d">
+                          </p-radioButton>
+                        </ng-template>
+                        <ng-template let-col let-car="rowData" pTemplate="body">
+                          <p-checkbox name="groupROW" [value]="car.id" (onChange)=" car.checked = $event;"
+                            [disabled]="car.id == null || !acessocriarmanutencoespreventivas"
+                            [(ngModel)]="selected_lines">
+                          </p-checkbox>
+
+                        </ng-template>
+                      </p-column>
 
                       <p-column [editable]="true" field="descricao" header="Ação">
 
@@ -525,6 +545,7 @@
                           </button>
                         </ng-template>
                       </p-column>
+
                       <p-footer [style]="{'text-align':'center'}">
                         <a (click)="adicionar_linha_acoes()" [class.disabled]="!modoedicao"
                           style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
@@ -1055,4 +1076,20 @@
   <div class="" style="text-align: -webkit-center;">
     <button type="button" class="btn btn-default" (click)="displaylocalizacaostock = false">Fechar</button>
   </div>
+</p-dialog>
+
+<p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="500"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar"
+  [modal]="true" styleClass="dialog_index2">
+  <form role="form">
+    <!-- Modal Body -->
+    <div style="padding: 0px 50px 0px 50px">
+      <span [innerHTML]="mensagem_verifica" style="font-size: 17px;"></span>
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayverificar = false">Fechar</button>
+
+    </div>
+  </form>
 </p-dialog>

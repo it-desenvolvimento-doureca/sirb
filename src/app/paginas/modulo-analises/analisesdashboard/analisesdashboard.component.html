@@ -878,7 +878,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let rec of reclamacoesclientes ">
+                                <tr *ngFor="let rec of reclamacoesclientes " (click)="verReclamacao(rec.id_reclamacao)">
                                   <td style="text-align: left;">{{rec.codigo}}</td>
                                   <td style="text-align: left;">{{rec.referencia}}</td>
                                   <td style="text-align: left;">{{rec.cliente}}</td>
@@ -917,7 +917,8 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let for of reclamacoesFornecedores ">
+                                <tr *ngFor="let for of reclamacoesFornecedores "
+                                  (click)="verReclamacaoFornecedor(for.id_reclamacao)">
                                   <td style="text-align: left;">{{for.codigo}}</td>
                                   <td style="text-align: left;">{{for.referencia}}</td>
                                   <td style="text-align: left;">{{for.fornecedor}}</td>
@@ -1194,6 +1195,31 @@
   <!-- Modal Footer -->
   <div class="" style="text-align: -webkit-center;">
     <button type="button" class="btn btn-default" style="margin: 0;" (click)="displayTarefa = false">Fechar</button>
+  </div>
+
+</p-dialog>
+
+
+<p-dialog header="Reclamação" [responsive]="true" [positionTop]="0" [style]="{'height':'99vh','width': '100vw'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayReclamacao"
+  (onHide)="onHide()" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
+    <app-reclamacao-cliente-8-d class="cssapp-paginatarefa" *ngIf="id_reclamacao_input != null"
+      [id_reclamacao_input]="id_reclamacao_input">
+    </app-reclamacao-cliente-8-d>
+
+    <app-reclamacao-fornecedor class="cssapp-paginatarefa" *ngIf="id_reclamacao_inputFornecedor != null"
+      [id_reclamacao_input]="id_reclamacao_inputFornecedor">
+    </app-reclamacao-fornecedor>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" style="margin: 0;"
+      (click)="displayReclamacao = false;">Fechar</button>
   </div>
 
 </p-dialog>

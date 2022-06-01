@@ -30,6 +30,16 @@ export class PEDIDOSPRODUCAOService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  
+  getRejeicoesRefeTOP20(data) {
+    const url = webUrl.host + '/rest/sirb/getRejeicoesRefeTOP20';
+    return this.http
+      .post(url, JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   getanalise_rejeicoes(data) {
     const url = webUrl.host + '/rest/sirb/getanalise_rejeicoes';
     return this.http

@@ -707,6 +707,10 @@ h4.widget-h {
     background: #aec785 !important;
 }
 
+.mini-stat .red {
+    background: red !important;
+}
+
 .pink {
     background: #a48ad4 !important;
 }
@@ -732,7 +736,7 @@ h4.widget-h {
 }
 
 .red-c {
-    background: rgba(255, 0, 0, 0.747)!important;
+    background: rgba(255, 0, 0, 0.747) !important;
 }
 
 .blue-c {
