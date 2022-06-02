@@ -406,7 +406,7 @@
                       <input style="width: 100%;" [disabled]="!modoedicao" type="text" class="form-control2"
                         [(ngModel)]="DESCRICAO_MANUTENCAO" [ngModelOptions]="{standalone: true}">
                     </div>
-                    <button type="button" class="btn btn-warning btn-xs"
+                    <button type="button" class="btn btn-warning btn-xs" [disabled]="btcriapreventiva"
                       *ngIf="acessocriarmanutencoespreventivas && !novo" title="Criar Manutenções Preventivas"
                       (click)="criarPreventivas()">
                       <span class="glyphicon glyphicon-plus"></span>Criar Manutenções Preventivas

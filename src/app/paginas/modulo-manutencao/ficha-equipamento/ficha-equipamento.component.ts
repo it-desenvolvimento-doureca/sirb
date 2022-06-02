@@ -150,6 +150,7 @@ export class FichaEquipamentoComponent implements OnInit {
   mensagem_verifica: string;
   selected_d: any;
   acessocriarmanutencoespreventivas: any;
+  btcriapreventiva: boolean;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -2042,21 +2043,27 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
   criarPreventivas() {
+    this.btcriapreventiva = true;
     if (this.selected_lines.length == 0) {
       this.displayverificar = true;
       this.mensagem_verifica = "É necessário selecionar Ações.";
     } else {
       this.confirmationService.confirm({
-        message: 'Criar Manutenção Preventiva para Ações Selecionados?',
+        message: 'Criar Manutenção Preventiva para Ações Selecionadas?',
         header: 'Aviso',
         icon: 'fa fa-exclamation-triangle',
         accept: () => {
-          console.log(this.selected_lines.toString())
-          for (var x in this.selected_lines) {
 
-          }
-          this.selected_lines = [];
-          this.simular(this.inputnotifi);
+          var dados = [{ IDS: this.selected_lines.toString(), USER: this.user }];
+          this.MANMOVMANUTENCAOEQUIPAMENTOSService.MAN_FORCA_CRIAR_MANUTENCOES_PREVENTIVAS(dados).subscribe(
+            res => {
+              this.selected_d = false;
+              this.selected_lines = [];
+              this.simular(this.inputnotifi);
+              this.btcriapreventiva = false;
+            },
+            error => { console.log(error); this.simular(this.inputerro); this.btcriapreventiva = false; });
+
         }
 
 

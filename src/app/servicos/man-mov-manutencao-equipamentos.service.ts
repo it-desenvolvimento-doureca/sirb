@@ -77,6 +77,13 @@ export class MANMOVMANUTENCAOEQUIPAMENTOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  MAN_FORCA_CRIAR_MANUTENCOES_PREVENTIVAS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_FORCA_CRIAR_MANUTENCOES_PREVENTIVAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;
