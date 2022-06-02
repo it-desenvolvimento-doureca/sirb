@@ -1,11 +1,12 @@
-<app-controlos *ngIf="id_reclamacao_input == null" (anteriorbt)="anterior()" (duplicarbt)="duplicar()" (seguintebt)="seguinte()" (cancelarbt)="cancelar()"
-  (apagarbt)="apagar()"></app-controlos>
+<app-controlos *ngIf="id_reclamacao_input == null" (anteriorbt)="anterior()" (duplicarbt)="duplicar()"
+  (seguintebt)="seguinte()" (cancelarbt)="cancelar()" (apagarbt)="apagar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" *ngIf="id_reclamacao_input == null"  style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div class="card-header" *ngIf="id_reclamacao_input == null" style="height: 49px; padding-top: 22px;"
+            data-background-color="red">
             <h4 style="position: absolute;" class="title">Reclamações Cliente</h4>
             <h5 *ngIf="texto_estado != ''" style="position: absolute; right: 185px; " class="title">Estado:
               <b>{{texto_estado}}</b>
@@ -657,12 +658,12 @@
                             <p-column [style]="{'width':'105px'}" [editable]="false" field="descricao" header="">
                               <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                                 <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
-                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro,car.id)">
+                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro,car.idfile)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a class="btn btn-primary btn-xs" title="Download"
-                                  (click)="download(car.name,car.src,car.datatype,car.ficheiro)" target="_blank"
-                                  style="padding: 3px 0px 3px 12px; margin: 0;">
+                                  (click)="download(car.name,car.src,car.datatype,car.ficheiro,car.idfile)"
+                                  target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
@@ -1428,13 +1429,13 @@
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;"
                                   *ngIf="fileselectinput[file.id] != null" type="button" class="btn btn-default btn-xs"
                                   title="Ver Ficheiro"
-                                  (click)="showDialog(fileselectinput[file.id].type, fileselectinput[file.id].src,fileselectinput[file.id].name,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro)">
+                                  (click)="showDialog(fileselectinput[file.id].type, fileselectinput[file.id].src,fileselectinput[file.id].name,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro,fileselectinput[file.id].id)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;"
                                   *ngIf="fileselectinput[file.id] != null" class="btn btn-primary btn-xs"
                                   title="Download"
-                                  (click)="download(fileselectinput[file.id].name,fileselectinput[file.id].src,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro)"
+                                  (click)="download(fileselectinput[file.id].name,fileselectinput[file.id].src,fileselectinput[file.id].datatype,fileselectinput[file.id].ficheiro,fileselectinput[file.id].id)"
                                   target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
@@ -1924,12 +1925,12 @@
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;"
                                   *ngIf="fileselectinput[99999] != null" type="button" class="btn btn-default btn-xs"
                                   title="Ver Ficheiro"
-                                  (click)="showDialog(fileselectinput[99999].type, fileselectinput[99999].src,fileselectinput[99999].name,fileselectinput[99999].datatype,fileselectinput[99999].ficheiro)">
+                                  (click)="showDialog(fileselectinput[99999].type, fileselectinput[99999].src,fileselectinput[99999].name,fileselectinput[99999].datatype,fileselectinput[99999].ficheiro,fileselectinput[99999].id)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;"
                                   *ngIf="fileselectinput[99999] != null" class="btn btn-primary btn-xs" title="Download"
-                                  (click)="download(fileselectinput[99999].name,fileselectinput[99999].src,fileselectinput[99999].datatype,fileselectinput[99999].ficheiro)"
+                                  (click)="download(fileselectinput[99999].name,fileselectinput[99999].src,fileselectinput[99999].datatype,fileselectinput[99999].ficheiro,fileselectinput[99999].id)"
                                   target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
@@ -2408,6 +2409,7 @@
   [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="display"
   [modal]="true">
   <div style="width: 80vw; text-align: -webkit-center;">
+    <span *ngIf="srcelement == null || srcelement == ''" style="width: 100%; text-align: center;">A Carregar...</span>
     <audio *ngIf="type == 'audio' && display" [src]="srcelement" id="player" style="max-height: 79vh; max-width: 100%;"
       autoplay="" controls="">Your
       browser does not support the audio element.</audio>

@@ -27,6 +27,33 @@ export class RCMOVRECLAMACAOFICHEIROSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyidreclamacao2(id): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROSbyidRECLAMACAO2/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getbyid(id): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROSbyid/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
+
+  getbyidreclamacaoFICHEIRO(id): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROSbyidRECLAMACAOFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   getbyidtarefa(id): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
     const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROSbyidTAREFA/' + id;
     return this.http
