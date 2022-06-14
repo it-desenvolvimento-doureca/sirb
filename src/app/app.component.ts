@@ -5,7 +5,7 @@ import { ABDICLINHAService } from "app/servicos/ab-dic-linha.service";
 import { AppGlobals } from "app/menu/sidebar.metadata";
 import { GERPERFILLINService } from "app/servicos/ger-perfil-lin.service";
 import { UploadService } from 'app/servicos/upload.service';
-import { FileUpload } from 'primeng/primeng';
+import { FileUpload, Message } from 'primeng/primeng';
 import { RCDICGRAUIMPORTANCIAService } from './servicos/rc-dic-grau-importancia.service';
 import { PEDIDOS_APP } from './entidades/PEDIDOS_APP';
 import { PEDIDOSAPPService } from './servicos/pedidos-app.service';
@@ -41,7 +41,12 @@ export class AppComponent {
     telefone_CONTACTO: string;
     dialog_suporte: boolean;
     dialog_sugestoes: boolean;
-    constructor(private FICHEIROSPAGINASService: FICHEIROSPAGINASService, private PEDIDOSAPPService: PEDIDOSAPPService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService, private UploadService: UploadService, private GERPERFILLINService: GERPERFILLINService, private globalVar: AppGlobals, private ABDICLINHAService: ABDICLINHAService, private renderer: Renderer, location: Location, private router: Router) {
+    msgs: Message[] = [];
+
+    constructor(private FICHEIROSPAGINASService: FICHEIROSPAGINASService,
+        private PEDIDOSAPPService: PEDIDOSAPPService,
+        private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
+        private UploadService: UploadService, private GERPERFILLINService: GERPERFILLINService, private globalVar: AppGlobals, private ABDICLINHAService: ABDICLINHAService, private renderer: Renderer, location: Location, private router: Router) {
         //this.myDate = new Date();
         var vers = this.getCookie("app_sgiid_versao");
         this.versao = "versão " + ((vers != null) ? vers.replace(",", "") : "1.1.1");
@@ -94,6 +99,10 @@ export class AppComponent {
                     localStorage.setItem('acessos', JSON.stringify(array));
                 }, error => { console.log(error); });
         }
+
+        this.UploadService.messageSubject$.subscribe((message) => {
+            this.msgs = message;
+        });
     }
 
     isnome() {
@@ -400,5 +409,6 @@ export class AppComponent {
     goToHome() {
         this.router.navigate(['/']);
     }
+
 
 }

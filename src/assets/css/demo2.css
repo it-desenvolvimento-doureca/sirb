@@ -4953,6 +4953,11 @@ checkbox {
     width: 102%;
 }
 
+
+.autoch input {
+    height: 29px;
+}
+
 .ui-progressbar {
     height: 1.2em;
     text-align: left;
@@ -6026,4 +6031,85 @@ body>.ui-dropdown-panel {
     height: 100%;
     width: 100%;
     pointer-events: none;
+}
+
+.pgrowlmsg .ui-growl {
+    z-index: 1148 !important;
+}
+
+.ui-growl .ui-growl-message-success {
+    background-color: #dff0d8;
+    /*color: #3c763d;*/
+}
+
+.ui-growl .ui-growl-message-info {
+    background-color: #d9edf7;
+    /*color: #31708f;*/
+}
+
+.ui-growl .ui-growl-message-warn {
+    background-color: #fcf8e3;
+    /* color: #8a6d3b;*/
+}
+
+.ui-growl .ui-growl-message-error {
+    background-color: #f2dede;
+    /*color: #a94442;*/
+}
+
+
+.ui-growl {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 20em;
+    z-index: 1073;
+}
+
+.ui-growl-item-container {
+    position: relative;
+    margin: 0 0 10px 0;
+    opacity: .95;
+    filter: alpha(opacity=95)
+}
+
+.ui-growl-item {
+    position: relative;
+    display: block;
+    padding: .5em 1em
+}
+
+.ui-growl-item p {
+    padding: 0;
+    margin: 0
+}
+
+.ui-growl-icon-close {
+    position: absolute;
+    /*top: 4px;
+    right: 4px;*/
+    cursor: pointer;
+}
+
+.ui-growl-title {
+    font-weight: bold;
+    padding: 0 0 .5em 0;
+    display: block
+}
+
+.ui-growl-image {
+    position: absolute;
+    display: none !important;
+    left: .5em;
+    top: .25em;
+    padding: 0
+}
+
+.ui-growl-message {
+    padding: 0 0 .25em 0;
+    margin-left: 2.5em
+}
+
+.ui-growl-message p {
+    font-weight: normal
 }

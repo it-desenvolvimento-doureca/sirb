@@ -4,6 +4,7 @@ import { Observable } from "rxjs/Observable";
 import { webUrl } from 'assets/config/webUrl';
 import 'rxjs/Rx';
 import { EMAIL } from "app/entidades/EMAIL";
+import { Subject } from 'rxjs/Rx';
 
 @Injectable()
 export class UploadService {
@@ -126,5 +127,14 @@ export class UploadService {
   private handleError(error: any): Promise<any> {
     return Promise.reject(error.message || error);
   }
+
+  private messageSubject = new Subject<any>();
+
+  // Observable string streams
+  messageSubject$ = this.messageSubject.asObservable();
+  addMessage(message) {
+    this.messageSubject.next(message); // emit event
+  }
+
 
 }

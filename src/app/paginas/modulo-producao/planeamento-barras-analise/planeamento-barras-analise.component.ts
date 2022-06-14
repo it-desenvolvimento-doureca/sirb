@@ -223,6 +223,7 @@ export class PlaneamentoBarrasAnaliseComponent implements OnInit {
 
 
     this.globalVar.setapagar(false);
+    this.globalVar.setcriar(false);
     this.globalVar.seteditar(false);
     this.globalVar.setvoltar(true);
     this.globalVar.seteditar(false);

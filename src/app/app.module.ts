@@ -423,6 +423,7 @@ import { TipoDocumentoComponent } from './paginas/modulo-documentacao/parametros
 import { DOCFICHADOCUMENTOSService } from './servicos/doc-ficha-documentos.service';
 import { DOCDICTIPOSDOCUMENTOService } from './servicos/doc-dic-tipos-documento.service';
 import { DOCDICPOSTOSService } from './servicos/doc-dic-postos.service';
+import { GrowlModule } from 'primeng/primeng';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1348,6 +1349,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     TooltipModule,
     ChartsModule,
     TabViewModule,
+    GrowlModule,
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,

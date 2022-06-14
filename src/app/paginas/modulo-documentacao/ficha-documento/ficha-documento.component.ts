@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -6,6 +6,9 @@ import { RHSECTORESService } from 'app/servicos/rh-sectores.service';
 import { DOCFICHADOCUMENTOSService } from 'app/servicos/doc-ficha-documentos.service';
 import { DOCDICTIPOSDOCUMENTOService } from 'app/servicos/doc-dic-tipos-documento.service';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
+import { DOC_FICHA_DOCUMENTOS } from 'app/entidades/DOC_FICHA_DOCUMENTOS';
+import { Message } from 'primeng/primeng';
+import { UploadService } from 'app/servicos/upload.service';
 
 @Component({
   selector: 'app-ficha-documento',
@@ -30,7 +33,7 @@ export class FichaDocumentoComponent implements OnInit {
   file = null;
   ficheiro = null;
   ficheiroOriginal = null;
-  path = null;
+
 
   iframeURL = null;
   inserirEditado = false;
@@ -41,7 +44,7 @@ export class FichaDocumentoComponent implements OnInit {
   drop_artigos: any[];
   btgravar: boolean;
   referencia_campo: { value: any; label: string; DESIGN: any; };
-  ;
+
 
   criar: boolean = true;
   editar: boolean = false;
@@ -63,13 +66,16 @@ export class FichaDocumentoComponent implements OnInit {
 
   tiposList = []
   tipo_FICHEIRO: string;
-  constructor(
+  msgs: Message[] = [];
+
+  constructor(private renderer: Renderer,
     private route: ActivatedRoute, private router: Router,
     private location: Location,
     private RHSECTORESService: RHSECTORESService,
     private DOCFICHADOCUMENTOSService: DOCFICHADOCUMENTOSService,
     private DOCDICTIPOSDOCUMENTOService: DOCDICTIPOSDOCUMENTOService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
+    private UploadService: UploadService,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -106,9 +112,9 @@ export class FichaDocumentoComponent implements OnInit {
 
     }
 
-    if (this.criar == true) {
-      this.carregarDados();
-    }
+
+    this.carregarDados();
+
 
     if (this.editar == true || this.visualizar == true) {
       this.inicia(this.idParam);
@@ -148,21 +154,32 @@ export class FichaDocumentoComponent implements OnInit {
 
         //this.carregarDados2(response[0].id_Linha, response[0].id_TipoDocumento);
         //obter o ficheiro para carregar no iframe
-        /* this.documento.getFile(this.idParam).subscribe((response) => {
-           this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-             URL.createObjectURL(response)
-           );
-           this.ficheiro = this.blobToFile(response, this.ficheiroOriginal)
-         }, error => {
-           console.log(error);
-           if (error == 'Not Found') {
-             this.showMessage('warn', 'Aviso', 'Ficheiro associado ao documento não existe');
-           }
-         });*/
+        var linkFile = 'http://192.168.40.107:8080/alfresco/api/-default-/public/alfresco/versions/1/nodes/81e21aca-ea3c-4384-b335-aee0b757445f/content?attachment=false&alf_ticket=TICKET_fdec92959760d1664781448cd79c986f3af48df7';
+        this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+          linkFile
+        );
+        this.ficheiro = linkFile;
+        this.tipo_FICHEIRO = 'pdf';
+        this.DOCFICHADOCUMENTOSService.getFile(linkFile).subscribe((response) => {
+
+          this.ficheiro = this.blobToFile(response, this.ficheiroOriginal)
+        }, error => {
+          console.log(error);
+          if (error == 'Not Found') {
+            this.showMessage('warn', 'Aviso', 'Ficheiro associado ao documento não existe');
+          }
+        });
 
       }
     });
 
+  }
+
+  blobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
   }
 
   //listar os dados sectores
@@ -235,7 +252,7 @@ export class FichaDocumentoComponent implements OnInit {
         if (count > 0) {
 
           for (var x in response) {
-            this.maquinasList.push({ value: response[x].ssecod, label: response[x].SSEDES });
+            this.maquinasList.push({ value: response[x].ssecod, label: response[x].ssecod + ' - ' + response[x].SSEDES, descricao: response[x].SSEDES });
           }
 
           this.maquinasList = this.maquinasList.slice();
@@ -249,24 +266,80 @@ export class FichaDocumentoComponent implements OnInit {
 
 
   guardarDocumento() {
-    this.btgravar = true;
+    //this.btgravar = true;
     const bodyFormData = new FormData();
+    var documento = new DOC_FICHA_DOCUMENTOS;
     if (this.ordem == 0) {
-      bodyFormData.append('ordem', '999');
+      bodyFormData.append('ORDEM', '999');
+      documento.ORDEM = 999;
     } else {
-      bodyFormData.append('ordem', String(this.ordem));
+      bodyFormData.append('ORDEM', String(this.ordem));
+      documento.ORDEM = this.ordem;
     }
 
-    bodyFormData.append('codigo', this.codigo);
-    bodyFormData.append('descricao', this.descricao);
-    bodyFormData.append('nome', this.nome);
-    bodyFormData.append('id_Linha', this.selectedSector);
-    bodyFormData.append('id_Maquina', this.selectedMaquina);
-    bodyFormData.append('id_TipoDocumento', this.selectedTipo);
-    bodyFormData.append('id_Referencia', this.selectedReferencia);
-    bodyFormData.append('id_User', this.user);
-    bodyFormData.append('nome_aba', this.nomeAba);
-    bodyFormData.append('path', this.path);
+    var descricaoMaquina = null;
+    if (this.selectedMaquina != null && this.selectedMaquina != "") {
+      descricaoMaquina = this.maquinasList.find(item => item.value == this.selectedMaquina).descricao
+    }
+
+    var descricaoSector = null;
+    if (this.selectedSector != null && this.selectedSector != "") {
+      descricaoSector = this.drop_sectores.find(item => item.value == this.selectedSector).label
+    }
+
+    var descricaoTipoDocumento = null;
+    if (this.selectedTipo != null && this.selectedTipo != "") {
+      descricaoTipoDocumento = this.tiposList.find(item => item.value == this.selectedTipo).label
+    }
+
+
+    documento.COD_DOCUMENTO = this.codigo;
+    documento.DESCRICAO = this.descricao;
+    documento.NOME_DOCUMENTO = this.nome;
+    documento.SECTOR = this.selectedSector;
+    documento.COD_MAQUINA = this.selectedMaquina;
+    documento.DESC_MAQUINA = descricaoMaquina;
+    documento.TIPO_DOCUMENTO = this.selectedTipo;
+    documento.REFERENCIA = this.selectedReferencia;
+    documento.DESC_REFERENCIA = this.selectedReferencia;
+    documento.NOME_ABA = this.nomeAba;
+    documento.UTZ_MODIF = this.user;
+    documento.DATA_MODIF = new Date();
+    documento.INATIVO = false;
+
+    bodyFormData.append('COD_DOCUMENTO', this.codigo);
+    bodyFormData.append('DESCRICAO', this.descricao);
+    bodyFormData.append('NOME_DOCUMENTO', this.nome);
+    bodyFormData.append('SECTOR', this.selectedSector);
+    bodyFormData.append('COD_MAQUINA', this.selectedMaquina);
+    bodyFormData.append('DESC_MAQUINA', descricaoMaquina);
+    bodyFormData.append('TIPO_DOCUMENTO', this.selectedTipo);
+    bodyFormData.append('REFERENCIA', this.selectedReferencia);
+    bodyFormData.append('DESC_REFERENCIA', this.selectedReferencia);
+    bodyFormData.append('UTZ', this.user);
+    bodyFormData.append('NOME_ABA', this.nomeAba);
+    bodyFormData.append('TIPO_FICHEIRO', this.tipo_FICHEIRO);
+
+    var caminho = descricaoTipoDocumento;
+
+    if (this.selectedReferencia != null && this.selectedReferencia != "") {
+      caminho = (caminho == "") ? "" : caminho + '/';
+      caminho += this.selectedReferencia;
+    }
+
+    if (this.selectedMaquina != null && this.selectedMaquina != "") {
+      caminho = (caminho == "") ? "" : caminho + '/';
+      caminho += descricaoMaquina;
+    }
+
+    if (this.selectedSector != null && this.selectedSector != "") {
+      caminho = (caminho == "") ? "" : caminho + '/';
+      caminho += descricaoSector;
+    }
+
+    bodyFormData.append('caminho', caminho);
+
+
 
 
     if (this.criar == true) {
@@ -274,10 +347,12 @@ export class FichaDocumentoComponent implements OnInit {
       bodyFormData.append('ficheiro', this.ficheiro.name);
       bodyFormData.append('atual', String(Date.now()));
       bodyFormData.append('file', this.ficheiro);
+      documento.UTZ_CRIA = this.user;
+      documento.DATA_CRIA = new Date();
     }
 
     if (this.editar == true) {
-      bodyFormData.append('id_Documento', this.idParam);
+      bodyFormData.append('ID', this.idParam);
       if (this.ficheiroOriginal == this.ficheiro.name) {
         //caso seja usado o mesmo ficheiro na edição
         bodyFormData.append('atual', null);
@@ -285,9 +360,9 @@ export class FichaDocumentoComponent implements OnInit {
         bodyFormData.append('file', '');
       } else {
         //caso o ficheiro na edição seja diferente
-        /*this.DOCFICHADOCUMENTOSService.deleteFile(this.idParam).then((response) => {
+        this.DOCFICHADOCUMENTOSService.deleteFile(this.idParam).then((response) => {
 
-        });*/
+        });
 
         bodyFormData.append('atual', String(Date.now()));
         bodyFormData.append('ficheiro', this.ficheiro.name);
@@ -298,22 +373,22 @@ export class FichaDocumentoComponent implements OnInit {
     if (this.criar == true) {
       let data = {};
       data = {
-        id_Linha: this.selectedSector,
-        id_Maquina: this.selectedMaquina,
-        id_Referencia: this.selectedReferencia,
+        SECTOR: this.selectedSector,
+        MAQUINA: this.selectedMaquina,
+        REFERENCIA: this.selectedReferencia,
+        ID: (this.idParam == null) ? 0 : this.idParam,
+        CODIGO: this.codigo,
       }
-      //ver se existem ficheiros predefinidos para linha/maquina/referencia
-      this.DOCFICHADOCUMENTOSService.getTotalPredefinidos(data).subscribe((response) => {
+      //ver se existem ficheiros predefinidos para sector/máquina/referência selecionado
+      this.DOCFICHADOCUMENTOSService.getTotalPredefinidos([data]).subscribe((response) => {
         if (response != null) {
-          if (response[0].total == 0) {
-            this.upd(bodyFormData);
+          if (response[0] == 0) {
+            this.upd(bodyFormData, documento, true);
           } else {
-            if (this.selectedInstruçãoPredefinida == true) {
-              this.btgravar = false;
-              this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para a linha/máquina/referência!');
-            } else {
-              this.upd(bodyFormData);
-            }
+
+            this.btgravar = false;
+            this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
+
           }
         }
       });
@@ -321,17 +396,19 @@ export class FichaDocumentoComponent implements OnInit {
 
       let data = {};
       data = {
-        id_Linha: this.selectedSector,
-        id_Maquina: this.selectedMaquina,
-        id_Referencia: this.selectedReferencia,
+        SECTOR: this.selectedSector,
+        MAQUINA: this.selectedMaquina,
+        REFERENCIA: this.selectedReferencia,
+        ID: this.idParam,
+        CODIGO: this.codigo,
       }
       //ver se existem ficheiros predefinidos para linha/maquina/referencia
-      this.DOCFICHADOCUMENTOSService.getTotalPredefinidos(data).subscribe((response) => {
+      this.DOCFICHADOCUMENTOSService.getTotalPredefinidos([data]).subscribe((response) => {
         if (response != null) {
-          if (response[0].total == 0) {
-            this.upd(bodyFormData);
+          if (response[0] == 0) {
+            this.upd(bodyFormData, documento, true);
           } else {
-            this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para a linha/máquina/referência!');
+            this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
             this.btgravar = false;
           }
         }
@@ -339,22 +416,37 @@ export class FichaDocumentoComponent implements OnInit {
     }
   }
 
-  upd(documento) {
-    this.DOCFICHADOCUMENTOSService.update(documento).subscribe((res) => {
-      this.showMessage('success', 'Sucesso', 'Inserido com sucesso!');
+  upd(documentoFile, documento, novoficheiro) {
+    if (novoficheiro) {
+      this.DOCFICHADOCUMENTOSService.insertFile(documentoFile).subscribe((res) => {
+        this.showMessage('success', 'Sucesso', 'Inserido com sucesso!');
 
-      this.limpar();
-      this.router.navigate(['fichadocumento']);
+        /* this.limpar();
+         this.router.navigate(['fichadocumento']);*/
 
 
-    }, error => {
-      this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
-      this.btgravar = false;
-    });
+      }, error => {
+        this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
+        this.btgravar = false;
+      });
+    } else {
+      this.DOCFICHADOCUMENTOSService.update(documento).subscribe((res) => {
+        this.showMessage('success', 'Sucesso', 'Atualizado com sucesso!');
+
+        this.limpar();
+        this.router.navigate(['fichadocumento']);
+
+      }, error => {
+        this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
+        this.btgravar = false;
+      });
+    }
+
   }
 
 
   limpar() {
+    this.referencia_campo = null;
     this.selectedSector = null;
     this.codigo = null;
     this.nome = null;
@@ -368,14 +460,14 @@ export class FichaDocumentoComponent implements OnInit {
     this.descricao = null;
     this.ordem = 0;
     this.nomeAba = null;
-    document.getElementById('iframe-pdf').setAttribute('src', '');
+    this.iframeURL = "";
     this.uploadedFiles = [];
     this.selectedInstruçãoPredefinida = false;
   }
 
   //mudar de ecrãs
   cancelar() {
-    this.router.navigate(['documentos']);
+    this.router.navigate(['fichadocumento']);
   }
 
   anterior() {
@@ -395,7 +487,7 @@ export class FichaDocumentoComponent implements OnInit {
         this.idParam = params['id'] || 0;
       });
 
-    this.router.navigate(['documentos/editar'], { queryParams: { id: this.idParam } });
+    this.router.navigate(['fichadocumento/editar'], { queryParams: { id: this.idParam } });
   }
   //ao remover ficheiro
   onRemove() {
@@ -404,7 +496,7 @@ export class FichaDocumentoComponent implements OnInit {
   }
 
   novo() {
-    this.router.navigate(['documentos/novo']);
+    this.router.navigate(['fichadocumento/novo']);
   }
 
 
@@ -466,19 +558,21 @@ export class FichaDocumentoComponent implements OnInit {
 
   gravar() {
 
-    if ((this.criar == true || this.editar == true) && this.codigo != null && this.nome != null && this.selectedSector != null && this.selectedTipo && this.ficheiro != null && this.nomeAba != null) {
+    if ((this.criar == true || this.editar == true) && this.codigo != null && this.nome != null && this.selectedTipo && this.ficheiro != null && this.nomeAba != null) {
       let dataCheckCode = {};
       dataCheckCode = {
-        id_Linha: this.selectedSector,
-        id_Documento: this.idParam,
-        codigo: this.codigo,
+        SECTOR: this.selectedSector,
+        MAQUINA: this.selectedMaquina,
+        REFERENCIA: this.selectedReferencia,
+        ID: (this.idParam == null) ? 0 : this.idParam,
+        CODIGO: this.codigo,
       }
-      //ver se o código de documento exsite para a linha
-      this.DOCFICHADOCUMENTOSService.checkIfCodeExist(dataCheckCode)
+      //ver se o código de documento existe
+      this.DOCFICHADOCUMENTOSService.checkIfCodeExist([dataCheckCode])
         .subscribe((response) => {
-          var existeCodigo = response[0];
+          var existeCodigo = response[0][0];
           if (existeCodigo == true) {
-            this.showMessage('warn', 'Aviso', 'Já existe um documento com este código para a linha selecionada!');
+            this.showMessage('warn', 'Aviso', 'Já existe um documento com este código para sector/máquina/referência selecionado!');
             existeCodigo = false;
           } else {
             this.guardarDocumento();
@@ -499,8 +593,8 @@ export class FichaDocumentoComponent implements OnInit {
     if (this.nome == null)
       this.showMessage('error', 'Erro', 'É necessário especificar nome');
 
-    if (this.selectedSector == null)
-      this.showMessage('error', 'Erro', 'É necessário especificar uma linha');
+    /*if (this.selectedSector == null)
+      this.showMessage('error', 'Erro', 'É necessário especificar uma linha');*/
 
     if (this.selectedTipo == null)
       this.showMessage('error', 'Erro', 'É necessário especificar um tipo de documento');
@@ -510,15 +604,15 @@ export class FichaDocumentoComponent implements OnInit {
   }
 
   showMessage(severity, summary, detail) {
-    // this.messageService.add({ key: 'myKey1', severity: severity, summary: summary, detail: detail });
+    this.msgs = [];
+    this.msgs.push({ severity: severity, summary: summary, detail: detail });
+    this.UploadService.addMessage(this.msgs);
   }
-
 
   filterRef(event) {
 
     this.referenciasList = this.pesquisa(event.query);
   }
-
 
   pesquisa(text) {
     var result = [];
@@ -543,5 +637,10 @@ export class FichaDocumentoComponent implements OnInit {
     this.selectedReferencia = event.value;
     this.selectedReferenciadescricao = event.descricao;
   }
+
+
+
+
+
 }
 

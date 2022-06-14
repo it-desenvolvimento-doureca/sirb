@@ -107,6 +107,7 @@ export class DiasProducaoComponent implements OnInit {
     if (this.id_linha != null) producao.id_LINHA = this.id_linha.id;
     producao.data_MODIF = new Date();
     producao.utz_MODIF = this.user;
+    delete producao['_$visited'];
     if (this.novo) {
       producao.data_CRIA = new Date();
       producao.utz_CRIA = this.user;

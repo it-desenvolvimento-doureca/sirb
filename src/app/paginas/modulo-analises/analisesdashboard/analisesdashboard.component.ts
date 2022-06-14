@@ -524,6 +524,7 @@ export class AnalisesdashboardComponent implements OnInit {
   linha = null;
   id_reclamacao_input: any;
   id_reclamacao_inputFornecedor: any;
+  data_absentismo;
 
   constructor(private PAMOVCABService: PAMOVCABService, private DASHBOARDANALISESService: DASHBOARDANALISESService,
     private PEDIDOSPRODUCAOService: PEDIDOSPRODUCAOService,
@@ -552,6 +553,7 @@ export class AnalisesdashboardComponent implements OnInit {
     this.data_fim = this.formatDate(d);
     d.setDate(d.getDate() - 1);
     this.data_ini = this.formatDate(d);
+    this.data_absentismo = this.formatDate(d);
 
 
 
@@ -848,7 +850,7 @@ export class AnalisesdashboardComponent implements OnInit {
 
   carregaAbsentismo() {
 
-    var dados = [{ DATA: this.formatDate(this.data), TIPO: 'NOVO', LOCAL: 1, COD_TURNO: null, COD_SECTOR: null }];
+    var dados = [{ DATA: this.formatDate(this.data_absentismo), TIPO: 'NOVO', LOCAL: 1, COD_TURNO: null, COD_SECTOR: null }];
     var month = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     var objetivo = 0;
     this.DASHBOARDANALISESService.getDASHBOARD_ABSENTISMO_TABELA(dados).subscribe(
@@ -1742,7 +1744,7 @@ export class AnalisesdashboardComponent implements OnInit {
 
   }
 
-  onHide(){
+  onHide() {
     this.id_reclamacao_inputFornecedor = null;
     this.id_reclamacao_input = null;
   }

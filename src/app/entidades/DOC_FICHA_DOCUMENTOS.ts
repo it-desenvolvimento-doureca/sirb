@@ -18,4 +18,9 @@ export class DOC_FICHA_DOCUMENTOS {
     DATA_ANULA: Date;
     UTZ_ANULA: number;
     INATIVO: boolean;
+    ID_FICHEIRO: string;
+    ID_PASTA: string;
+    CAMINHO: string;
+    NOME_FICHEIRO: string;
+    TIPO_FICHEIRO: string;
 }

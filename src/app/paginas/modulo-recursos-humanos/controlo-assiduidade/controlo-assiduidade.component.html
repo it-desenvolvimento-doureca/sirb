@@ -67,8 +67,9 @@
                 <div class="card-content table-responsive">
 
                   <!-- GERAL -->
-                  <div *ngIf="!acesso_geral" class="tab-pane fade show in" [ngClass]="{'active': classstep == 'geral'}"
-                    id="nav-geral" role="tabpanel" aria-labelledby="nav-geral-tab">
+                  <div *ngIf="!acesso_geral" class="tab-pane fade show in" style="color: black !important;"
+                    [ngClass]="{'active': classstep == 'geral'}" id="nav-geral" role="tabpanel"
+                    aria-labelledby="nav-geral-tab">
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <form #form id="formReclama" (ngSubmit)="atualizar('geral')" ngNativeValidate>
@@ -144,7 +145,7 @@
                   </div>
 
                   <!-- ASSIDUIDADE -->
-                  <div *ngIf="!acesso_assiduidade" class="tab-pane fade show in"
+                  <div *ngIf="!acesso_assiduidade" class="tab-pane fade show in" style="color: black !important;"
                     [ngClass]="{'active': classstep == 'assiduidade'}" id="nav-assiduidade" role="tabpanel"
                     aria-labelledby="nav-assiduidade-tab">
 
@@ -328,7 +329,7 @@
                   </div>
 
                   <!-- PRODUTIVIDADE -->
-                  <div *ngIf="!acesso_produtividade" class="tab-pane fade show in"
+                  <div *ngIf="!acesso_produtividade" class="tab-pane fade show in" style="color: black !important;"
                     [ngClass]="{'active': classstep == 'produtividade'}" id="nav-produtividade" role="tabpanel"
                     aria-labelledby="nav-produtividade-tab">
 
@@ -500,8 +501,8 @@
                   </div>
 
                   <!-- OPERAÇÕES -->
-                  <div *ngIf="!acesso_operacoes" class="tab-pane fade show in" id="nav-operacoes"
-                    [ngClass]="{'active': classstep == 'operacoes'}" role="tabpanel"
+                  <div *ngIf="!acesso_operacoes" class="tab-pane fade show in" style="color: black !important;"
+                    id="nav-operacoes" [ngClass]="{'active': classstep == 'operacoes'}" role="tabpanel"
                     aria-labelledby="nav-operacoes-tab">
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
@@ -666,8 +667,8 @@
                   </div>
 
                   <!-- COMPARATIVA -->
-                  <div *ngIf="!acesso_comparativa" class="tab-pane fade show in " id="nav-comparativa"
-                    [ngClass]="{'active': classstep == 'comparativa'}" role="tabpanel"
+                  <div *ngIf="!acesso_comparativa" class="tab-pane fade show in " style="color: black !important;"
+                    id="nav-comparativa" [ngClass]="{'active': classstep == 'comparativa'}" role="tabpanel"
                     aria-labelledby="nav-comparativa-tab">
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <form #form id="formReclama_5" (ngSubmit)="atualizar('comparativa')" ngNativeValidate>
@@ -819,8 +820,9 @@
                   </div>
 
                   <!-- SECTOR -->
-                  <div *ngIf="!acesso_sector" class="tab-pane fade show in" id="nav-sector" role="tabpanel"
-                    [ngClass]="{'active': classstep == 'sector'}" aria-labelledby="nav-sector-tab">
+                  <div *ngIf="!acesso_sector" class="tab-pane fade show in" style="color: black !important;"
+                    id="nav-sector" role="tabpanel" [ngClass]="{'active': classstep == 'sector'}"
+                    aria-labelledby="nav-sector-tab">
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <form #form id="formReclama_6" (ngSubmit)="atualizar('sector')" ngNativeValidate>
@@ -978,8 +980,9 @@
 
 
                   <!-- PAUSAS -->
-                  <div *ngIf="!acesso_pausas" class="tab-pane fade show in" id="nav-pausas"
-                    [ngClass]="{'active': classstep == 'pausas'}" role="tabpanel" aria-labelledby="nav-pausas-tab">
+                  <div *ngIf="!acesso_pausas" class="tab-pane fade show in" style="color: black !important;"
+                    id="nav-pausas" [ngClass]="{'active': classstep == 'pausas'}" role="tabpanel"
+                    aria-labelledby="nav-pausas-tab">
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <form #form id="formReclama_7" (ngSubmit)="atualizar('pausas')" ngNativeValidate>
@@ -1100,8 +1103,9 @@
 
 
                   <!-- CADENCIAS -->
-                  <div *ngIf="!acesso_cadencias" class="tab-pane fade show in" id="nav-cadencias" role="tabpanel"
-                    [ngClass]="{'active': classstep == 'cadencias'}" aria-labelledby="nav-cadencias-tab">
+                  <div *ngIf="!acesso_cadencias" class="tab-pane fade show in" style="color: black !important;"
+                    id="nav-cadencias" role="tabpanel" [ngClass]="{'active': classstep == 'cadencias'}"
+                    aria-labelledby="nav-cadencias-tab">
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                       <form #form id="formReclama_8" (ngSubmit)="atualizar('cadencias')" ngNativeValidate>
@@ -1174,14 +1178,16 @@
                           <ul class="pager" style="margin: 0px;">
                             <li class="previous" style="background: none;     padding: 0;">
                               <a (click)="onBtFirst()">
-                                << Primeira</a> </li> <li class="previous" style="background: none; padding: 0;">
-                                  <a (click)="onBtPrevious()">
-                                    < Anterior</a> </li> <span
-                                      style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
-                                      Página
-                                      <span class="value" id="lbCurrentPage">-</span> de
-                                      <span class="value" id="lbTotalPages">-</span>
-                                      </span>
+                                << Primeira</a>
+                            </li>
+                            <li class="previous" style="background: none; padding: 0;">
+                              <a (click)="onBtPrevious()">
+                                < Anterior</a>
+                            </li> <span style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
+                              Página
+                              <span class="value" id="lbCurrentPage">-</span> de
+                              <span class="value" id="lbTotalPages">-</span>
+                            </span>
                             <li class="next" style="background: none;     padding: 0;">
                               <a (click)="onBtNext()">Seguinte > </a>
                             </li>
@@ -1212,7 +1218,7 @@
 
                   <!-- CADENCIAS/FUNCIONARIO -->
                   <div *ngIf="!acesso_cadencias_funcionario" class="tab-pane fade show in"
-                    id="nav-cadencias_funcionario" role="tabpanel"
+                    style="color: black !important;" id="nav-cadencias_funcionario" role="tabpanel"
                     [ngClass]="{'active': classstep == 'cadencias_funcionario'}"
                     aria-labelledby="nav-cadencias_funcionario-tab">
 
@@ -1291,14 +1297,16 @@
                           <ul class="pager" style="margin: 0px;">
                             <li class="previous" style="background: none;     padding: 0;">
                               <a (click)="onBtFirst_func()">
-                                << Primeira</a> </li> <li class="previous" style="background: none; padding: 0;">
-                                  <a (click)="onBtPrevious_func()">
-                                    < Anterior</a> </li> <span
-                                      style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
-                                      Página
-                                      <span class="value" id="lbCurrentPage">-</span> de
-                                      <span class="value" id="lbTotalPages">-</span>
-                                      </span>
+                                << Primeira</a>
+                            </li>
+                            <li class="previous" style="background: none; padding: 0;">
+                              <a (click)="onBtPrevious_func()">
+                                < Anterior</a>
+                            </li> <span style="position: relative; display: inline-block; width: 150px; bottom: 11px;">
+                              Página
+                              <span class="value" id="lbCurrentPage">-</span> de
+                              <span class="value" id="lbTotalPages">-</span>
+                            </span>
                             <li class="next" style="background: none;     padding: 0;">
                               <a (click)="onBtNext_func()">Seguinte > </a>
                             </li>
