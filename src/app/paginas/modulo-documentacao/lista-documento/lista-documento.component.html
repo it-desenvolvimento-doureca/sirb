@@ -14,6 +14,7 @@
               [style]="{'min-height':'300px'}" [value]="cols" dataKey="ID_FICHA_DOCUMENTO" [rows]="25"
               [paginator]="true" [pageLinks]="3" (onRowDblclick)="abrir($event)"
               [rowsPerPageOptions]="[25,50,100,'todos']">
+
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="ID_FICHA_DOCUMENTO"
                 header="N°" [style]="{'width':'97px'}">
                 <ng-template pTemplate="filter" let-col>
@@ -23,7 +24,8 @@
                 </ng-template>
               </p-column>
 
-              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="CODIGO" header="Código">
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="CODIGO" header="Código"
+                [style]="{'width':'197px'}">
                 <ng-template pTemplate="filter" let-col>
                   <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
                     [(ngModel)]="CODIGO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">

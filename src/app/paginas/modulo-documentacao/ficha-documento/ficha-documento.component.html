@@ -178,16 +178,14 @@
                         style="display: inline-flex;">
 
                         <p style="font-weight: bold;">Ficheiro: </p>
-                        <p>{{ficheiroOriginal != null ?
-                          ficheiroOriginal.substring(13,ficheiroOriginal.length):''}}</p>
+                        <p>{{ficheiroOriginal != null ? ficheiroOriginal:''}}</p>
 
                       </div>
                       <div *ngIf="editar && !inserirEditado" style="padding: 1px 5px 1px 10px;"
                         class="form-group col-md-12 col-lg-12" style="display: inline-flex;">
 
                         <p style="font-weight: bold;">Ficheiro: </p>
-                        <p>{{ficheiroOriginal != null ?
-                          ficheiroOriginal.substring(13,ficheiroOriginal.length) :''}}</p>
+                        <p>{{ficheiroOriginal != null ? ficheiroOriginal :''}}</p>
 
                       </div>
 
@@ -220,4 +218,3 @@
     </div>
   </div>
 </form>
-

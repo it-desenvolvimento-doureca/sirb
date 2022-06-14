@@ -42,7 +42,7 @@ export class ListaDocumentoComponent implements OnInit {
 
   ngOnInit() {
 
-    var array = this.globalVar.getfiltros("lista_preventivas");
+    var array = this.globalVar.getfiltros("fichadocumento");
     if (array) {
 
 
@@ -106,8 +106,8 @@ export class ListaDocumentoComponent implements OnInit {
             DATA_HORA_PEDIDO: this.formatDate(response[x].DATA_CRIA) + " " + new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5),
             CODIGO: response[x].COD_DOCUMENTO,
             SECTOR: response[x].SECTOR,
-            REFERENCIA: response[x].REFERENCIA,
-            MAQUINA: response[x].COD_MAQUINA,
+            REFERENCIA: (response[x].REFERENCIA == null) ? '' : response[x].REFERENCIA + ' - ' + response[x].DESC_REFERENCIA,
+            MAQUINA: (response[x].COD_MAQUINA == null) ? '' : response[x].COD_MAQUINA + ' - ' + response[x].DESC_MAQUINA,
             NOME_DOCUMENTO: response[x].NOME_DOCUMENTO,
           });
 
@@ -154,7 +154,7 @@ export class ListaDocumentoComponent implements OnInit {
 
       this.dataTableComponent.filter(value.toString(), coluna, filtro);
 
-      this.globalVar.setfiltros("lista_preventivas", this.dataTableComponent.filters);
+      this.globalVar.setfiltros("fichadocumento", this.dataTableComponent.filters);
       var ids = [];
       var array = this.dataTableComponent._value;
       if (this.dataTableComponent.filteredValue != null) array = this.dataTableComponent.filteredValue;
@@ -166,7 +166,7 @@ export class ListaDocumentoComponent implements OnInit {
         this.mensagemtabela = "Nenhum Registo foi encontrado...";
       }
 
-      this.globalVar.setfiltros("lista_preventivas_id", ids);
+      this.globalVar.setfiltros("fichadocumento_id", ids);
     }, 250);
   }
 
@@ -179,12 +179,12 @@ export class ListaDocumentoComponent implements OnInit {
       ids.push(array[x].ID_FICHA_DOCUMENTO);
     }
 
-    this.globalVar.setfiltros("lista_preventivas_id", ids);
+    this.globalVar.setfiltros("fichadocumento_id", ids);
   }
 
   //clicar 2 vezes na tabela abre linha
   abrir(event) {
-    this.router.navigate(['lista_preventivas/view'], { queryParams: { id: event.data.ID_FICHA_DOCUMENTO } });
+    this.router.navigate(['fichadocumento/view'], { queryParams: { id: event.data.ID_FICHA_DOCUMENTO } });
   }
 
   //simular click para mostrar mensagem

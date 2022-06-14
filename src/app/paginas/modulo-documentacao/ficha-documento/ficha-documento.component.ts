@@ -67,6 +67,9 @@ export class FichaDocumentoComponent implements OnInit {
   tiposList = []
   tipo_FICHEIRO: string;
   msgs: Message[] = [];
+  caminhoOriginal: string;
+  ID_FICHEIRO: string;
+  dados: DOC_FICHA_DOCUMENTOS;
 
   constructor(private renderer: Renderer,
     private route: ActivatedRoute, private router: Router,
@@ -132,9 +135,10 @@ export class FichaDocumentoComponent implements OnInit {
   }
 
   inicia(id) {
-    this.DOCFICHADOCUMENTOSService.getbyid(id).subscribe(async (response) => {
+    this.DOCFICHADOCUMENTOSService.getbyid(id).subscribe((response) => {
       if (response != null) {
         //carregar campos do form
+        this.dados = response[0];
         this.codigo = response[0].COD_DOCUMENTO;
         this.nomeAba = response[0].NOME_ABA;
         this.ordem = response[0].ORDEM;
@@ -144,35 +148,36 @@ export class FichaDocumentoComponent implements OnInit {
         //let reff = response[0].id_Referencia;
         this.selectedTipo = response[0].TIPO_DOCUMENTO;
         this.selectedSector = response[0].SECTOR;
-
-
+        this.ID_FICHEIRO = response[0].ID_FICHEIRO;
+        this.caminhoOriginal = response[0].CAMINHO;
         if (response[0].REFERENCIA != null) this.referencia_campo = { value: response[0].REFERENCIA, label: response[0].REFERENCIA + " - " + response[0].DESC_REFERENCIA, DESIGN: response[0].DESC_REFERENCIA };
         //this.tipoOriginal = response[0].TIPO_DOCUMENTO;
-
-        // this.ficheiroOriginal = response[0].ficheiro;
-
-
-        //this.carregarDados2(response[0].id_Linha, response[0].id_TipoDocumento);
-        //obter o ficheiro para carregar no iframe
-        var linkFile = 'http://192.168.40.107:8080/alfresco/api/-default-/public/alfresco/versions/1/nodes/81e21aca-ea3c-4384-b335-aee0b757445f/content?attachment=false&alf_ticket=TICKET_fdec92959760d1664781448cd79c986f3af48df7';
-        this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-          linkFile
-        );
-        this.ficheiro = linkFile;
-        this.tipo_FICHEIRO = 'pdf';
-        this.DOCFICHADOCUMENTOSService.getFile(linkFile).subscribe((response) => {
-
-          this.ficheiro = this.blobToFile(response, this.ficheiroOriginal)
-        }, error => {
-          console.log(error);
-          if (error == 'Not Found') {
-            this.showMessage('warn', 'Aviso', 'Ficheiro associado ao documento não existe');
-          }
-        });
+        this.tipo_FICHEIRO = response[0].TIPO_FICHEIRO;
+        this.ficheiroOriginal = response[0].NOME_FICHEIRO;
+        this.getFILEALFRESCO(response[0].ID_FICHEIRO);
 
       }
     });
 
+  }
+
+  getFILEALFRESCO(id) {
+    this.DOCFICHADOCUMENTOSService.getFileAlfresco(id).subscribe((response) => {
+      var linkFile = response;
+      this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+        linkFile
+      );
+      //this.ficheiro = linkFile;
+
+      this.DOCFICHADOCUMENTOSService.getFile(linkFile).subscribe((response) => {
+        this.ficheiro = this.blobToFile(response, this.ficheiroOriginal)
+      }, error => {
+        console.log(error);
+      });
+    }, error => {
+      console.log(error);
+
+    });
   }
 
   blobToFile(theBlob, fileName) {
@@ -266,9 +271,14 @@ export class FichaDocumentoComponent implements OnInit {
 
 
   guardarDocumento() {
-    //this.btgravar = true;
+    this.btgravar = true;
     const bodyFormData = new FormData();
     var documento = new DOC_FICHA_DOCUMENTOS;
+
+    if (this.editar) {
+      documento = this.dados;
+    }
+
     if (this.ordem == 0) {
       bodyFormData.append('ORDEM', '999');
       documento.ORDEM = 999;
@@ -301,7 +311,7 @@ export class FichaDocumentoComponent implements OnInit {
     documento.DESC_MAQUINA = descricaoMaquina;
     documento.TIPO_DOCUMENTO = this.selectedTipo;
     documento.REFERENCIA = this.selectedReferencia;
-    documento.DESC_REFERENCIA = this.selectedReferencia;
+    documento.DESC_REFERENCIA = this.selectedReferenciadescricao;
     documento.NOME_ABA = this.nomeAba;
     documento.UTZ_MODIF = this.user;
     documento.DATA_MODIF = new Date();
@@ -315,12 +325,12 @@ export class FichaDocumentoComponent implements OnInit {
     bodyFormData.append('DESC_MAQUINA', descricaoMaquina);
     bodyFormData.append('TIPO_DOCUMENTO', this.selectedTipo);
     bodyFormData.append('REFERENCIA', this.selectedReferencia);
-    bodyFormData.append('DESC_REFERENCIA', this.selectedReferencia);
+    bodyFormData.append('DESC_REFERENCIA', this.selectedReferenciadescricao);
     bodyFormData.append('UTZ', this.user);
     bodyFormData.append('NOME_ABA', this.nomeAba);
     bodyFormData.append('TIPO_FICHEIRO', this.tipo_FICHEIRO);
 
-    var caminho = descricaoTipoDocumento;
+    var caminho = 'Doureca/Produção/' + descricaoTipoDocumento;
 
     if (this.selectedReferencia != null && this.selectedReferencia != "") {
       caminho = (caminho == "") ? "" : caminho + '/';
@@ -329,7 +339,7 @@ export class FichaDocumentoComponent implements OnInit {
 
     if (this.selectedMaquina != null && this.selectedMaquina != "") {
       caminho = (caminho == "") ? "" : caminho + '/';
-      caminho += descricaoMaquina;
+      caminho += this.selectedMaquina + ' - ' + descricaoMaquina;
     }
 
     if (this.selectedSector != null && this.selectedSector != "") {
@@ -340,16 +350,16 @@ export class FichaDocumentoComponent implements OnInit {
     bodyFormData.append('caminho', caminho);
 
 
-
-
     if (this.criar == true) {
-
       bodyFormData.append('ficheiro', this.ficheiro.name);
       bodyFormData.append('atual', String(Date.now()));
       bodyFormData.append('file', this.ficheiro);
       documento.UTZ_CRIA = this.user;
       documento.DATA_CRIA = new Date();
     }
+
+    var novoficheiro = false;
+    var novocaminho = false;
 
     if (this.editar == true) {
       bodyFormData.append('ID', this.idParam);
@@ -360,14 +370,19 @@ export class FichaDocumentoComponent implements OnInit {
         bodyFormData.append('file', '');
       } else {
         //caso o ficheiro na edição seja diferente
-        this.DOCFICHADOCUMENTOSService.deleteFile(this.idParam).then((response) => {
+        this.DOCFICHADOCUMENTOSService.deleteFile(this.ID_FICHEIRO).then((response) => {
 
         });
-
+        novoficheiro = true;
         bodyFormData.append('atual', String(Date.now()));
         bodyFormData.append('ficheiro', this.ficheiro.name);
         bodyFormData.append('file', this.ficheiro);
       }
+
+      if (this.caminhoOriginal != caminho) {
+        novocaminho = true;
+      }
+
 
     }
     if (this.criar == true) {
@@ -383,7 +398,7 @@ export class FichaDocumentoComponent implements OnInit {
       this.DOCFICHADOCUMENTOSService.getTotalPredefinidos([data]).subscribe((response) => {
         if (response != null) {
           if (response[0] == 0) {
-            this.upd(bodyFormData, documento, true);
+            this.upd(bodyFormData, documento, true, false, caminho);
           } else {
 
             this.btgravar = false;
@@ -406,7 +421,7 @@ export class FichaDocumentoComponent implements OnInit {
       this.DOCFICHADOCUMENTOSService.getTotalPredefinidos([data]).subscribe((response) => {
         if (response != null) {
           if (response[0] == 0) {
-            this.upd(bodyFormData, documento, true);
+            this.upd(bodyFormData, documento, novoficheiro, novocaminho, caminho);
           } else {
             this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
             this.btgravar = false;
@@ -416,13 +431,13 @@ export class FichaDocumentoComponent implements OnInit {
     }
   }
 
-  upd(documentoFile, documento, novoficheiro) {
+  upd(documentoFile, documento, novoficheiro, novocaminho, caminho) {
     if (novoficheiro) {
       this.DOCFICHADOCUMENTOSService.insertFile(documentoFile).subscribe((res) => {
         this.showMessage('success', 'Sucesso', 'Inserido com sucesso!');
 
-        /* this.limpar();
-         this.router.navigate(['fichadocumento']);*/
+        this.limpar();
+        this.router.navigate(['fichadocumento']);
 
 
       }, error => {
@@ -430,20 +445,42 @@ export class FichaDocumentoComponent implements OnInit {
         this.btgravar = false;
       });
     } else {
-      this.DOCFICHADOCUMENTOSService.update(documento).subscribe((res) => {
-        this.showMessage('success', 'Sucesso', 'Atualizado com sucesso!');
+      if (novocaminho) {
+        let data = {};
+        data = {
+          fileId: this.ID_FICHEIRO,
+          caminho: caminho,
+        }
+        this.DOCFICHADOCUMENTOSService.moveNodeFolder(data).subscribe((response) => {
+          console.log(response)
+          if (response != null) {
+            documento.CAMINHO = caminho;
+            documento.ID_FICHEIRO = response.entry.id;
+            documento.ID_PASTA = response.entry.parentId;
+          }
 
-        this.limpar();
-        this.router.navigate(['fichadocumento']);
-
-      }, error => {
-        this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
-        this.btgravar = false;
-      });
+          this.atualizaDOCUMENTO(documento);
+        });
+      } else {
+        this.atualizaDOCUMENTO(documento);
+      }
     }
 
   }
 
+
+  atualizaDOCUMENTO(documento) {
+    this.DOCFICHADOCUMENTOSService.update(documento).subscribe((res) => {
+      this.showMessage('success', 'Sucesso', 'Atualizado com sucesso!');
+
+      this.limpar();
+      this.router.navigate(['fichadocumento']);
+
+    }, error => {
+      this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
+      this.btgravar = false;
+    });
+  }
 
   limpar() {
     this.referencia_campo = null;
@@ -457,6 +494,7 @@ export class FichaDocumentoComponent implements OnInit {
     this.file = null;
     this.ficheiro = null;
     this.ficheiroOriginal = null;
+    this.caminhoOriginal = null;
     this.descricao = null;
     this.ordem = 0;
     this.nomeAba = null;

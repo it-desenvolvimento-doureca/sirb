@@ -48,9 +48,10 @@ export class DOCFICHADOCUMENTOSService {
   getFile(url) {
     return this.http
       .get(url)
-      .map(this.extractData)
+      .map(this.extractDataBlob)
       .catch((error: any) => Observable.throw('Server error'));
   }
+
   update(data: DOC_FICHA_DOCUMENTOS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateDOC_FICHA_DOCUMENTOS', JSON.stringify(data), { headers: this.headers })
@@ -88,8 +89,33 @@ export class DOCFICHADOCUMENTOSService {
       .catch(this.handleError);
   }
 
+
+  moveNodeFolder(data) {
+    return this.http
+      .post(webUrl.middleware_alfresco + '/moveNodeFolder', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  getFileAlfresco(id) {
+    return this.http
+      .get(webUrl.middleware_alfresco + '/getFile/' + id + '')
+      .map(this.extractDataString)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
+    return body;
+  }
+
+  private extractDataBlob(res: Response) {
+    let body = res;
+    return body;
+  }
+
+  private extractDataString(res: Response) {
+    let body = res.text();
     return body;
   }
 }
