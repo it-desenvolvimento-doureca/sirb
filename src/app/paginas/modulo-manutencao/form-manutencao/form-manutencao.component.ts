@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
@@ -27,12 +27,11 @@ import { MAN_MOV_MANUTENCAO_ACCOES } from 'app/entidades/MAN_MOV_MANUTENCAO_ACCO
 
 
 @Component({
-  selector: 'app-manutencoes-preventivas',
-  templateUrl: './manutencoes-preventivas.component.html',
-  styleUrls: ['./manutencoes-preventivas.component.css']
+  selector: 'app-form-manutencao',
+  templateUrl: './form-manutencao.component.html',
+  styleUrls: ['./form-manutencao.component.css']
 })
-export class ManutencoesPreventivasComponent implements OnInit {
-
+export class FormManutencaoComponent implements OnInit {
 
   //drop_moradas = [];
   filedescricao = [];
@@ -57,20 +56,6 @@ export class ManutencoesPreventivasComponent implements OnInit {
   uploadedFiles: any[] = [];
   campo_x: number;
 
-  disEditar: boolean;
-  disApagar: boolean;
-  disCriar: boolean;
-  btcriar: boolean;
-  btapagar: boolean;
-  btvoltar: boolean;
-  btcancelar: boolean;
-  bteditar: boolean;
-  disCancelar: boolean;
-  disPlanear;
-  btplanear;
-
-  disSubmeter;
-  btsubmeter;
 
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -81,6 +66,10 @@ export class ManutencoesPreventivasComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('buttongravar') buttongravar: ElementRef;
+
+  @Output()
+  onDialogClose: EventEmitter<any> = new EventEmitter();
+
   srcelement;
   nomeficheiro: any;
   type: string;
@@ -96,14 +85,13 @@ export class ManutencoesPreventivasComponent implements OnInit {
   drop_componentes = [];
   drop_equipamentos = [];
   drop_utilizadores: any[];
-  ID_PEDIDO: number;
-  ID_PEDIDO_ORIGEM;
+  @Input() ID_PEDIDO_INPUT: number;
   DATA_HORA_PEDIDO: any;
   TIPO_RESPONSAVEL: string;
   AMBITO_MANUTENCAO: number;
   STATUS_MAQUINA: string;
-  UTILIZADOR: number;
-  ID_EQUIPA: number;
+  UTILIZADOR;
+  ID_EQUIPA;
   drop_equipas: any[];
   displayverificar: boolean;
   mensagem_verifica: string;
@@ -118,12 +106,21 @@ export class ManutencoesPreventivasComponent implements OnInit {
   notas: any[] = [];
   display_notas: boolean = false;
   nota: any = null;
+  displayMotivoRejeicao: boolean;
+  mototivoRejeicao: string;
+  validacao2: boolean = false;
+  validacao1: boolean = false;
+  lista_manutencoes_pendentes: any[] = [];
+  display_manutencoes_pendentes: boolean = false;
+  estadoRejeitado: string;
+  estado_texto: string;
   OBSERVACOES: string;
   operarios: any[];
   acoes: any[];
-  textotitulo = "";
-  TIPO_MANUTENCAO: string;
-  estado_texto: string;
+
+  mensagemtabela: string = 'Nenhum Registo foi encontrado...';
+  cols = [];
+  displayCriarmanutencao: boolean;
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -148,11 +145,6 @@ export class ManutencoesPreventivasComponent implements OnInit {
     this.globalVar.setseguinte(true);
     this.globalVar.setanterior(true);
 
-    this.btcriar = true;
-    this.btapagar = true;
-    this.btvoltar = true;
-    this.btcancelar = true;
-    this.bteditar = true;
     this.globalVar.setatualizar(false);
     this.globalVar.setduplicar(false);
     this.globalVar.sethistorico(false);
@@ -164,95 +156,20 @@ export class ManutencoesPreventivasComponent implements OnInit {
     this.adminuser = JSON.parse(localStorage.getItem('userapp'))["admin"];
 
 
-    var url = this.router.routerState.snapshot.url;
-    url = url.slice(1);
-    var urlarray = url.split("/");
 
-    var step;
-    var substep = this.route
-      .queryParams
-      .subscribe(params => {
-        step = params['step'] || 0;
-      });
+    this.novo = true;
+    this.modoedicao = true;
 
-    if (urlarray[1] != null) {
-      if (urlarray[1].match("editar") || urlarray[1].match("view")) {
-        this.novo = false;
+    this.data_CRIA = new Date();
+    this.hora_CRIA = new Date().toLocaleTimeString().slice(0, 5);
+    this.utz_CRIA = this.user;
+    this.ID_RESPONSAVEL = this.user;
+    this.DATA_HORA_PEDIDO = this.data_CRIA;
 
-        var id;
-        var sub = this.route
-          .queryParams
-          .subscribe(params => {
-            id = params['id'] || 0;
-          });
+    this.getacessoresponsavel(this.ID_PEDIDO_INPUT);
+    if (this.ID_PEDIDO_INPUT != null) this.inicia(this.ID_PEDIDO_INPUT);
+    //this.carregaDados(false, id);
 
-        this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585editar");
-        this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585criar");
-        this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585apagar");
-        //this.disPlanear
-      }
-    }
-
-    if (urlarray[1] != null) {
-      if (urlarray[1].match("editar")) {
-        this.btapagar = true;
-        this.btcriar = true;
-        this.modoedicao = true;
-
-      } else if (urlarray[1].match("novo")) {
-        this.btapagar = false;
-        this.btcriar = true;
-        this.btcancelar = false;
-        this.globalVar.setduplicar(false);
-        this.novo = true;
-        this.bteditar = false;
-        this.btplanear = false;
-        this.btsubmeter = false;
-        this.modoedicao = true;
-        this.btcancelar = false;
-        var dirtyFormID = 'formReclama';
-        var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
-        resetForm.reset();
-        this.data_CRIA = new Date();
-        this.hora_CRIA = new Date().toLocaleTimeString().slice(0, 5);
-        this.utz_CRIA = this.user;
-        this.ID_RESPONSAVEL = this.user;
-        this.DATA_HORA_PEDIDO = this.data_CRIA;
-        //this.carregaDados(false, null);
-
-      } else if (urlarray[1].match("view")) {
-        this.globalVar.setdisDuplicar(false);
-        this.btcriar = true;
-      } else if (urlarray[1].match("duplicar")) {
-
-      }
-
-    } else {
-      this.btapagar = false;
-      this.btcriar = true;
-      this.btcancelar = false;
-      this.globalVar.setduplicar(false);
-      this.novo = true;
-      this.bteditar = false;
-      this.btplanear = false;
-      this.btsubmeter = false;
-      this.modoedicao = true;
-      this.btcancelar = false;
-      var dirtyFormID = 'formReclama';
-      var resetForm = <HTMLFormElement>document.getElementById(dirtyFormID);
-      resetForm.reset();
-      this.data_CRIA = new Date();
-      this.hora_CRIA = new Date().toLocaleTimeString().slice(0, 5);
-      this.utz_CRIA = this.user;
-      this.ID_RESPONSAVEL = this.user;
-      this.DATA_HORA_PEDIDO = this.data_CRIA;
-    }
-
-    this.getacessoresponsavel(id);
-    this.carregaDados(false, id);
-    /*if (!this.novo) {
-      this.inicia(id);
-    }*/
   }
 
 
@@ -261,8 +178,10 @@ export class ManutencoesPreventivasComponent implements OnInit {
       response => {
         var acesso_responsavel = response;
         this.acesso_responsavel = acesso_responsavel || this.adminuser;
+        this.carregaDados(false, id);
       },
       error => {
+        this.carregaDados(false, id);
       });
   }
 
@@ -290,14 +209,15 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
     this.drop_ambitos_manutencao = [];
     this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
-    this.MANDICAMBITOSService.getAll().subscribe(
+    this.MANDICAMBITOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         for (var x in response) {
 
           this.drop_ambitos_manutencao.push({
-            value: response[x].ID,
-            label: response[x].NOME
+            value: response[x][0],
+            label: response[x][1],
+            email: response[x][2]
           });
 
         }
@@ -314,6 +234,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
         }
       });
   }
+
   fornecedores(id) {
     this.fornecedores_silver = [];
     this.fornecedores_silver.push({ label: 'Seleccione Fornecedor', value: "" });
@@ -346,9 +267,11 @@ export class ManutencoesPreventivasComponent implements OnInit {
         }
         this.drop_localizacoes = this.drop_localizacoes.slice();
         this.listar_equipas(id);
-        ;
       },
-      error => { console.log(error); this.listar_equipas(id); });
+      error => {
+        console.log(error);
+        this.listar_equipas(id);
+      });
   }
 
   equipamentos() {
@@ -418,6 +341,14 @@ export class ManutencoesPreventivasComponent implements OnInit {
     } else {
       this.equipamentos();
     }
+
+    if (valor == null && event.value != null && event.value != "") {
+      this.validacao1 = false;
+      this.validacao2 = false;
+      //this.validaManutencoesPendentes('L', event.value)
+    } else {
+      this.validacao2 = false;
+    }
   }
 
   listar_equipas(id) {
@@ -433,9 +364,10 @@ export class ManutencoesPreventivasComponent implements OnInit {
           });
         }
         this.drop_equipas = this.drop_equipas.slice();
+
         this.fornecedores(id);
       },
-      error => { console.log(error); this.fornecedores(id); });
+      error => { console.log(error); this.fornecedores(id) });
   }
 
 
@@ -475,8 +407,60 @@ export class ManutencoesPreventivasComponent implements OnInit {
         },
         error => console.log(error));
     }
+
+    if (valor == null && event.value != null && event.value != "") {
+      this.validacao1 = false;
+      this.validacao2 = false;
+      //this.validaManutencoesPendentes('E', event.value)
+    } else {
+      this.validacao2 = false;
+    }
   }
 
+
+  getestadofunc(valor: any) {
+    if (valor == 'E') {
+      return 'Execução'
+    } else if (valor == 'S') {
+      return 'Pausa'
+    } else if (valor == 'C') {
+      return 'Concluído';
+    } else if (valor == 'R') {
+      return 'Suspenso';
+    } else if (valor == 'D') {
+      return 'Desistiu';
+    }
+  }
+
+  getestado(valor) {
+    if (valor == 'PE') {
+      return 'Submetida';
+    } if (valor == 'P') {
+      return 'Planeada';
+    } else if (valor == 'V') {
+      return 'Validada';
+    } else if (valor == 'A') {
+      return 'Anulada';
+    } else if (valor == 'E') {
+      return 'Em Execução';
+    } else if (valor == 'EM') {
+      return 'Em Elaboração';
+    } else if (valor == 'CA') {
+      return 'Cancelada';
+    } else if (valor == 'C') {
+      return 'Concluída';
+    } else if (valor == 'RJ') {
+      return 'Rejeitada';
+    } else if (valor == 'RP') {
+      return 'Pedido Rejeitado';
+    } else if (valor == 'RE') {
+      return 'Reaberta';
+    } else if (valor == 'R') {
+      return 'Suspensa';
+    }
+
+    return 'Submetida';
+  }
 
   inicia(id) {
 
@@ -487,14 +471,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
         if (count > 0) {
 
           for (var x in response) {
-            this.data_CRIA = new Date(response[x].DATA_CRIA);
-            this.hora_CRIA = new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5);
-            this.utz_CRIA = response[x].UTZ_CRIA;
-            this.ficha_manutencao_dados = response[x];
 
-            this.ID_PEDIDO = response[x].ID_MANUTENCAO_CAB;
-            this.TIPO_MANUTENCAO = response[x].TIPO_MANUTENCAO;
-            this.ID_PEDIDO_ORIGEM = response[x].ID_ORIGEM;
             this.COMPONENTE = response[x].COMPONENTE;
             this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
             this.NOTAS_PLANEAMENTO = response[x].NOTAS_PLANEAMENTO;
@@ -522,38 +499,11 @@ export class ManutencoesPreventivasComponent implements OnInit {
             this.estado = response[x].ESTADO;
             this.estado_texto = this.getESTADO(response[x].ESTADO);
 
-            if (response[x].ESTADO == 'P') {
-              if (this.acesso_responsavel) {
-                this.bteditar = true;
-              } else {
-                this.bteditar = false;
-                this.modoedicao = false;
-              }
-
-              this.btplanear = false;
-              this.btsubmeter = false;
-            } else if (response[x].ESTADO == 'EM') {
-              this.btsubmeter = true;
-              this.btplanear = false;
-            } else if (response[x].ESTADO == 'CA') {
-              this.bteditar = false;
-              this.modoedicao = false;
-              this.btplanear = false;
-              this.btsubmeter = false;
-              this.btcancelar = false;
-            } else {
-              this.btplanear = true;
-              this.btsubmeter = false;
-            }
-
-            this.textotitulo = this.getbytipo(response[x].TIPO_MANUTENCAO)
           }
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
           this.getEquipamentos({ value: this.LOCALIZACAO }, this.EQUIPAMENTO);
-          //this.carregatabelaFiles(id);
-          this.getAcoes(id);
-          this.vernotas(false);
-          this.getOperarios(id);
+          this.carregatabelaFiles(id);
+
         }
 
       }, error => { console.log(error); });
@@ -561,95 +511,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
   }
 
 
-  getbytipo(tipo_manutencao) {
-    if (tipo_manutencao == 'C') {
-      return 'Corretiva';
-    } else if (tipo_manutencao == 'M') {
-      return 'Melhoria';
-    } else if (tipo_manutencao == 'EX') {
-      return 'Externa';
-    } else if (tipo_manutencao == 'P') {
-      return 'Preventiva';
-    } else if (tipo_manutencao == 'MM') {
-      return 'Melhoria';
-    } else {
-      return '';
-    }
 
-  }
-
-  getOperarios(id: any) {
-    this.operarios = [];
-    this.MANMOVMANUTENCAOOPERARIOSService.getbyID(id)
-      .subscribe((resp: any) => {
-
-        var count = Object.keys(resp).length;
-        if (count > 0) {
-
-          for (var x in resp) {
-
-            this.operarios.push({
-              ID: resp[x][0],
-              ID_OPERARIO: resp[x][2],
-              DATA_INICIO: (resp[x][3] == null) ? '' : this.formatDateTime(resp[x][3]),
-              DATA_FIM: (resp[x][4] == null) ? '' : this.formatDateTime(resp[x][4]),
-              TEMP_EXEC: resp[x][5],
-              TEMP_PAUSA: resp[x][6],
-              TEMP_TOTAL: resp[x][7],
-              ESTADO: resp[x][8],
-              ESTADO_TEXTO: this.getestadofunc(resp[x][8]),
-              NOME_UTILIZADOR: resp[x][13]
-            })
-          }
-          this.operarios = this.operarios.slice();
-        }
-      }, error => {
-
-      }
-      );
-  }
-
-  getAcoes(id: any) {
-    this.acoes = [];
-    this.MANMOVMANUTENCAOACCOESService.getbyID(id)
-      .subscribe((resp: any) => {
-
-        var count = Object.keys(resp).length;
-        if (count > 0) {
-          for (var x in resp) {
-            var dados = new MAN_MOV_MANUTENCAO_ACCOES;
-            dados.ID_MANUTENCAO_ACOES = resp[x][0];
-            dados.ID_MANUTENCAO_CAB = resp[x][1];
-            dados.ID_ACAO = resp[x][2];
-            dados.REALIZADA = resp[x][3];
-            dados.UTZ_CRIA = resp[x][4];
-            dados.DATA_CRIA = resp[x][5];
-            dados.UTZ_ULT_MODIF = resp[x][6];
-            dados.DATA_ULT_MODIF = resp[x][7];
-            this.acoes.push({ dados: dados, name: resp[x][8], key: resp[x][0], REALIZADA: resp[x][3], tempo: (resp[x][9] == null) ? null : resp[x][9].slice(0, 5), savebt: false })
-          }
-          this.acoes = this.acoes.slice();
-        }
-      }, error => {
-
-      }
-      );
-  }
-
-
-  getestadofunc(valor: any) {
-    if (valor == 'E') {
-      return 'Execução'
-    } else if (valor == 'S') {
-      return 'Pausa'
-    } else if (valor == 'C') {
-      return 'Concluído';
-    } else if (valor == 'R') {
-      return 'Suspenso';
-    } else if (valor == 'D') {
-      return 'Desistiu';
-    }
-  }
 
   carregatabelaFiles(id) {
     this.uploadedFiles = [];
@@ -743,7 +605,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
       var ficheiros = new MAN_MOV_PEDIDOS_DOCUMENTOS;
       ficheiros.DATA_CRIA = data;
       ficheiros.UTZ_CRIA = this.user;
-      ficheiros.ID_PEDIDO = this.ID_PEDIDO;
+      //ficheiros.ID_PEDIDO = this.ID_PEDIDO;
       ficheiros.CAMINHO = nome + '.' + tipo[1];
       ficheiros.NOME = file.name;
       ficheiros.TIPO = type;
@@ -828,41 +690,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
       element.nativeElement, 'dispatchEvent', [event]);
   }
 
-  planear() {
 
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende Planear?',
-      header: 'Validação Confirmação',
-      icon: 'fa fa-check',
-      accept: () => {
-        if ((this.UTILIZADOR != null || this.ID_EQUIPA != null)) {
-          this.gravar(true);
-        } else {
-          this.displayverificar = true;
-          this.mensagem_verifica = "É necessário selecionar um Utilizador/Equipa.";
-        }
-
-      }
-
-    });
-
-  }
-
-  submeter() {
-
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende Submeter?',
-      header: 'Validação Confirmação',
-      icon: 'fa fa-check',
-      accept: () => {
-
-        this.gravar(false, true);
-
-      }
-
-    });
-
-  }
 
   gravar(planear = false, submeter = false) {
 
@@ -874,7 +702,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
     if (this.novo) ficha_manutencao.DATA_CRIA = new Date(this.data_CRIA.toDateString() + " " + this.hora_CRIA.slice(0, 5));
     if (this.novo) ficha_manutencao.UTZ_CRIA = this.utz_CRIA;
-    if (this.novo) ficha_manutencao.TIPO_MANUTENCAO = 'M';
+    if (this.novo) ficha_manutencao.TIPO_MANUTENCAO = 'MM';
 
     if (this.REFERENTE_EQUIPAMENTO = 'N') {
       this.EQUIPAMENTO == null
@@ -894,6 +722,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
     ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
     ficha_manutencao.AMBITO_MANUTENCAO = this.AMBITO_MANUTENCAO;
     ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
+    ficha_manutencao.ID_ORIGEM = this.ID_PEDIDO_INPUT;
 
     if (this.TIPO_RESPONSAVEL == 'U') {
       ficha_manutencao.UTILIZADOR = this.UTILIZADOR;
@@ -910,27 +739,24 @@ export class ManutencoesPreventivasComponent implements OnInit {
     ficha_manutencao.DATA_ULT_MODIF = new Date();
 
 
-    if (this.submetergravar && (this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.TIPO_RESPONSAVEL != 'EX') {
-      ficha_manutencao.ESTADO = "P";
-    } else if (submeter == true) {
+    ficha_manutencao.ESTADO = "PE";
+    if ((this.UTILIZADOR == null && this.ID_EQUIPA == null && this.NOME_FORNECEDOR == null)) {
       ficha_manutencao.ESTADO = "PE";
-    } else if (planear == true) {
+    } else if ((this.UTILIZADOR != null || this.ID_EQUIPA != null || this.NOME_FORNECEDOR != null)) {
       ficha_manutencao.ESTADO = "P";
-    } else if ((this.UTILIZADOR == null && this.ID_EQUIPA == null) && this.novo) {
-      ficha_manutencao.ESTADO = "EM";
-      //ficha_manutencao.ESTADO = "P";
-    } else if ((this.UTILIZADOR != null || this.ID_EQUIPA != null) && this.novo) {
-      //ficha_manutencao.ESTADO = "V";
-      ficha_manutencao.ESTADO = "EM";
     }
 
     var EQUIPAMENTO = "";
     var LOCALIZACAO = "";
     var EQUIPA_UTILIZADOR = "";
     var EMAIL_PARA = "";
+
+    if (ficha_manutencao.ESTADO == "PE") EMAIL_PARA = this.drop_ambitos_manutencao.find(item => item.value != '' && item.value == this.AMBITO_MANUTENCAO).email;
+
     if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
       EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
     }
+
 
     if (this.TIPO_RESPONSAVEL == 'U') {
       if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
@@ -953,44 +779,30 @@ export class ManutencoesPreventivasComponent implements OnInit {
       if (email != null) EMAIL_PARA = (EMAIL_PARA == null || EMAIL_PARA == '') ? email : (EMAIL_PARA + ',' + email);
     }
 
-    if (this.novo) {
 
-      //console.log(ficha_manutencao)
+    this.MANMOVMANUTENCAOCABService.create(ficha_manutencao).subscribe(
+      res => {
+        if (ficha_manutencao.ESTADO == "P") this.cria_MANUTENCAO(res.ID_MANUTENCAO_CAB, res.EQUIPAMENTO);
+        this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
 
-      this.MANMOVMANUTENCAOCABService.create(ficha_manutencao).subscribe(
-        res => {
-          if (ficha_manutencao.ESTADO == "P") this.cria_MANUTENCAO(res.ID_MANUTENCAO_CAB, res.EQUIPAMENTO);
-          this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
+        this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Criou Nova Manutenção de Melhoria no estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
 
-          if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome);
-        },
-        error => { console.log(error); this.simular(this.inputerro); });
 
-    } else {
-      var id;
-      var sub = this.route
-        .queryParams
-        .subscribe(params => {
-          id = params['id'] || 0;
-        });
+      },
+      error => { console.log(error); this.simular(this.inputerro); });
 
-      ficha_manutencao.ID_MANUTENCAO_CAB = id;
-      //console.log(ficha_manutencao)
-      this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
-        res => {
-          /*if (res.ESTADO == "P" && planear) this.cria_MANUTENCAO(res.ID_MANUTENCAO_CAB, res.EQUIPAMENTO);
-       
 
-          if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + new Date(this.DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA);*/
-          //this.gravarTabelaStocks(id);
-          this.gravarTabelaFicheiros(id);
-        },
-        error => { console.log(error); this.simular(this.inputerro); });
+  }
 
-    }
+  closeDialog() {
+    this.onDialogClose.emit();
+  }
 
+  criarHISTORICO(id, MOTIVO) {
+    this.MANMOVMANUTENCAOCABService.MAN_MOV_MANUTENCAO_CREATE_HISTORICO([{ ID_OPERARIO: this.user, ID_MANUTENCAO_CAB: id, MOTIVO: MOTIVO }]).subscribe(
+      res => {
+      },
+      error => { console.log(error); });
   }
 
   /*criaSTATUS_MAQUINA(ID_PEDIDO, ID_EQUIPAMENTO) {
@@ -1059,41 +871,12 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
         if (count == this.uploadedFiles.length) {
           if (this.novo) {
-            //this.router.navigate(['lista_preventivas/editar'], { queryParams: { id: id } });
-            var back;
-            var sub2 = this.route
-              .queryParams
-              .subscribe(params => {
-                // Defaults to 0 if no query param provided.
-                back = params['redirect'] || 0;
-              });
-
-            if (back != 0) {
-              //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id, redirect: back } });
-              this.router.navigate(['lista_preventivas']);
-
-            } else {
-              //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id } });
-              this.router.navigate(['lista_preventivas']);
-            }
+            //this.router.navigate(['lista_pedidos_melhoria/editar'], { queryParams: { id: id } });
+            this.closeDialog();
 
             this.simular(this.inputnotifi);
           } else {
-            var back;
-            var sub2 = this.route
-              .queryParams
-              .subscribe(params => {
-                // Defaults to 0 if no query param provided.
-                back = params['redirect'] || 0;
-              });
-            //if (!this.modoedicao) { this.inicia(id); }
-            if (back != 0) {
-              // this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id, redirect: back } });
-              this.router.navigate(['lista_preventivas']);
-            } else {
-              //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id } });
-              this.router.navigate(['lista_preventivas']);
-            }
+            this.closeDialog();
             this.simular(this.inputgravou);
           }
         }
@@ -1125,41 +908,9 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
 
       if (this.novo) {
-        //this.router.navigate(['lista_preventivas/editar'], { queryParams: { id: id } });
-        var back;
-        var sub2 = this.route
-          .queryParams
-          .subscribe(params => {
-            // Defaults to 0 if no query param provided.
-            back = params['redirect'] || 0;
-          });
-
-        this.simular(this.inputnotifi);
-        if (back != 0) {
-          //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id, redirect: back } });
-          this.router.navigate(['lista_preventivas']);
-        } else {
-          //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id } });
-          this.router.navigate(['lista_preventivas']);
-        }
+        this.closeDialog();
       } else {
-        var back;
-        var sub2 = this.route
-          .queryParams
-          .subscribe(params => {
-            // Defaults to 0 if no query param provided.
-            back = params['redirect'] || 0;
-          });
-
-        if (!this.modoedicao) { this.inicia(id); }
-
-        if (back != 0) {
-          //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id, redirect: back } });
-          this.router.navigate(['lista_preventivas']);
-        } else {
-          //this.router.navigate(['lista_preventivas/view'], { queryParams: { id: id } });
-          this.router.navigate(['lista_preventivas']);
-        }
+        this.closeDialog();
         this.simular(this.inputgravou);
       }
     }
@@ -1167,78 +918,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
   }
 
 
-  cancelar() {
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende cancelar?',
-      header: 'Cancelar Confirmação',
-      icon: 'fa fa-trash',
-      accept: () => {
-        var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
 
-        ficha_manutencao = this.ficha_manutencao_dados;
-
-        ficha_manutencao.UTZ_ULT_MODIF = this.user;
-        ficha_manutencao.DATA_ULT_MODIF = new Date();
-        ficha_manutencao.ESTADO = "CA";
-
-        this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
-          res => {
-            this.router.navigate(['lista_preventivas']);
-            this.simular(this.inputapagar);
-          },
-          error => { console.log(error); this.simular(this.inputerro); });
-
-      }
-
-    });
-  }
-
-
-  apagar() {
-
-    this.confirmationService.confirm({
-      message: 'Tem a certeza que pretende apagar?',
-      header: 'Apagar Confirmação',
-      icon: 'fa fa-trash',
-      accept: () => {
-        var ficha_manutencao = new MAN_MOV_MANUTENCAO_CAB;
-
-        ficha_manutencao = this.ficha_manutencao_dados;
-
-        ficha_manutencao.UTZ_ULT_MODIF = this.user;
-        ficha_manutencao.DATA_ULT_MODIF = new Date();
-        //ficha_manutencao.ATIVO = false;
-        ficha_manutencao.ESTADO = "A";
-
-        this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
-          res => {
-            this.router.navigate(['lista_preventivas']);
-            this.simular(this.inputapagar);
-          },
-          error => { console.log(error); this.simular(this.inputerro); });
-
-      }
-
-    });
-  }
-
-  imprimir(relatorio, id) {
-
-  }
-
-
-  consulta() {
-
-  }
-
-  duplicar() {
-
-  }
-
-
-  btconcluir() {
-
-  }
   backview() {
     this.location.back();
   }
@@ -1257,8 +937,14 @@ export class ManutencoesPreventivasComponent implements OnInit {
   }
 
   btgravar() {
-    this.submetergravar = false;
-    this.simular(this.buttongravar);
+    if (((this.TIPO_RESPONSAVEL == 'U' && this.UTILIZADOR != null && this.UTILIZADOR != '')
+      || (this.TIPO_RESPONSAVEL == 'E' && this.ID_EQUIPA != null && this.ID_EQUIPA != '')
+      || (this.TIPO_RESPONSAVEL == 'EX' && this.NOME_FORNECEDOR != null && this.NOME_FORNECEDOR != ''))) {
+      this.submetergravar = false;
+      this.simular(this.buttongravar);
+    } else {
+      this.showMessage('error', 'Erro', 'É necessário selecionar um Utilizador/Equipa/Externo.');
+    }
   }
 
   btgravar2() {
@@ -1286,10 +972,6 @@ export class ManutencoesPreventivasComponent implements OnInit {
       error => { console.log(error); });
 
   }
-
-
-
-
 
 
   removeFile(file: File, uploader: FileUpload) {
@@ -1434,43 +1116,11 @@ export class ManutencoesPreventivasComponent implements OnInit {
   }
 
 
-  edita() {
-    var page;
-    var sub = this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        page = params['id'] || 0;
-      });
-    var back;
-    var sub2 = this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        back = params['redirect'] || 0;
-      });
-
-    if (this.globalVar.geteditar()) {
-      if (back != 0) {
-        this.router.navigate(['lista_preventivas/editar'], { queryParams: { id: page, redirect: back } });
-      } else {
-        this.router.navigate(['lista_preventivas/editar'], { queryParams: { id: page } });
-      }
-
-    }
-  }
-
-  novaficha() {
-    this.router.navigate(['lista_preventivas/novo']);
-  }
-
-
-
   sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO) {
 
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
-      "\n/link::" + webUrl.host + '/#/lista_preventivas/view?id=' + N_PEDIDO +
+      "\n/link::" + webUrl.host + '/#/lista_pedidos_melhoria/view?id=' + N_PEDIDO +
       "\n/DESCRICAO_PEDIDO::" + ((DESCRICAO_PEDIDO == null) ? '' : DESCRICAO_PEDIDO) +
       "\n/DATA_HORA_PEDIDO::" + DATA_HORA_PEDIDO +
       "\n/EQUIPAMENTO::" + EQUIPAMENTO +
@@ -1494,53 +1144,6 @@ export class ManutencoesPreventivasComponent implements OnInit {
     });
   }
 
-  vernotas(show = true) {
-    this.notas = [];
-    this.MANMOVMANUTENCAONOTASService.getbyID(this.ID_PEDIDO).subscribe(
-      res => {
-
-        for (var x in res) {
-          var letra = res[x][1].toString().slice(0, 1);
-          this.notas.push({ id: res[x][0].UTZ_CRIA, utilizador: res[x][1], letra: letra, mensagem: res[x][0].DESCRICAO, data: this.formatDateTime(res[x][0].DATA_CRIA) });
-        }
-        this.notas = this.notas.slice();
-        if (show) this.display_notas = true;
-      },
-      error => {
-        console.log(error);
-      });
-
-
-  }
-
-  adicionarnotas() {
-    var letra = this.user_nome.slice(0, 1);
-    var data = new Date();
-    this.insertNOTAS(letra, this.nota, data);
-
-  }
-
-  insertNOTAS(letra, notatxt, data) {
-    var nota = new MAN_MOV_MANUTENCAO_NOTAS;
-
-    nota.DATA_CRIA = new Date();
-    nota.DESCRICAO = notatxt;
-    nota.ESTADO = this.estado;
-    nota.ID_MANUTENCAO_CAB = this.ID_PEDIDO;
-    nota.UTZ_CRIA = this.user;
-
-    this.MANMOVMANUTENCAONOTASService.create(nota).subscribe(
-      res => {
-        this.notas.push({ id: this.user, utilizador: this.user_nome, letra: letra, mensagem: notatxt, data: this.formatDateTime(data) });
-        this.nota = "";
-        this.vernotas(false);
-      },
-      error => {
-        console.log(error);
-        this.simular(this.inputerro);
-      });
-  }
-
   formatDateTime(date: any) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -1553,7 +1156,10 @@ export class ManutencoesPreventivasComponent implements OnInit {
     return [year, month, day].join('-') + " " + new Date(date).toLocaleTimeString().slice(0, 8);
   }
 
-  navega() {
-    this.router.navigate(['lista_pedidos_melhoria/view'], { queryParams: { id: this.ID_PEDIDO_ORIGEM, redirect: "lista_preventivas/viewkvk\id=" + this.ID_PEDIDO } });
+  showMessage(severity, summary, detail) {
+    var msgs = [];
+    msgs.push({ severity: severity, summary: summary, detail: detail });
+    this.UploadService.addMessage(msgs);
   }
+
 }

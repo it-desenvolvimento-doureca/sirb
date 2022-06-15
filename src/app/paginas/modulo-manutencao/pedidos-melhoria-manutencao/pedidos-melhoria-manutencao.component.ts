@@ -64,6 +64,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btcancelar: boolean;
   btRejeitarPedido: boolean;
   btConcluir;
+  btCriarManutencao;
   bteditar: boolean;
   disCancelar: boolean;
   disValidar: boolean;
@@ -77,6 +78,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btsubmeter;
   disRejeitarPedido;
   disConcluir;
+  disCriarManutencao;
 
   REFERENTE_EQUIPAMENTO = 'N';
   @ViewChild('fileInput') fileInput: FileUpload;
@@ -137,6 +139,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   btnotas = true;
   mensagemtabela: string = 'Nenhum Registo foi encontrado...';
   cols = [];
+  displayCriarmanutencao: boolean;
+  ID_PEDIDO_INPUT: number;
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -293,7 +297,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: "" });
         var grupo = [];
         for (var x in response) {
-          this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+          this.drop_utilizadores.push({ label: ((response[x].cod_UTZ == null) ? '' : response[x].cod_UTZ) + ' - ' + response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
         }
 
         this.drop_utilizadores = this.drop_utilizadores.slice();
@@ -640,11 +644,13 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
             this.btRejeitarPedido = false;
             this.btConcluir = false
+            this.btCriarManutencao = false;
             if (response[x].ESTADO == 'P') {
               if (this.acesso_responsavel) {
                 this.bteditar = true;
                 this.btRejeitarPedido = true;
                 this.btConcluir = true;
+                this.btCriarManutencao = true;
                 this.btcancelar = true;
               } else {
                 this.bteditar = false;
@@ -1435,6 +1441,17 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
     });
   }
 
+  CriarManutencao() {
+    //this.router.navigate(['lista_preventivas/novo'], { queryParams: { id: this.ID_PEDIDO } });
+    this.displayCriarmanutencao = true;
+    this.ID_PEDIDO_INPUT = this.ID_PEDIDO;
+  }
+
+  closeDialog(): void {
+    this.ID_PEDIDO_INPUT = null;
+    this.displayCriarmanutencao = false;
+    this.carregarlista(this.ID_PEDIDO);
+  }
 
   TERMINAR_PEDIDO_MELHORIA(id) {
     this.MANMOVMANUTENCAOCABService.MAN_TERMINAR_PEDIDO_MELHORIA([{ ID_OPERARIO: this.user, ID_MANUTENCAO_CAB: id }])

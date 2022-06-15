@@ -296,7 +296,7 @@ export class FichaManutencaoComponent implements OnInit {
         this.drop_utilizadores.push({ label: "Selecionar Utilizador", value: "" });
         var grupo = [];
         for (var x in response) {
-          this.drop_utilizadores.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+          this.drop_utilizadores.push({ label: ((response[x].cod_UTZ == null) ? '' : response[x].cod_UTZ) + ' - ' + response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
         }
 
         this.drop_utilizadores = this.drop_utilizadores.slice();

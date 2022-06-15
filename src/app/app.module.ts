@@ -424,6 +424,7 @@ import { DOCFICHADOCUMENTOSService } from './servicos/doc-ficha-documentos.servi
 import { DOCDICTIPOSDOCUMENTOService } from './servicos/doc-dic-tipos-documento.service';
 import { DOCDICPOSTOSService } from './servicos/doc-dic-postos.service';
 import { GrowlModule } from 'primeng/primeng';
+import { FormManutencaoComponent } from './paginas/modulo-manutencao/form-manutencao/form-manutencao.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1311,7 +1312,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     FichaDocumentoComponent,
     PostosDocumentacaoComponent,
     ListaDocumentoComponent,
-    TipoDocumentoComponent
+    TipoDocumentoComponent,
+    FormManutencaoComponent
   ],
   imports: [
     BrowserModule,

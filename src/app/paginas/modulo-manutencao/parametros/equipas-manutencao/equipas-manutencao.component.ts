@@ -221,7 +221,7 @@ export class EquipasManutencaoComponent implements OnInit {
       response => {
         for (var x in response) {
 
-          this.sourceUtilizadores.push({ nome: response[x].nome_UTILIZADOR, id: response[x].id_UTILIZADOR });
+          this.sourceUtilizadores.push({ nome: ((response[x].cod_UTZ == null) ? '' : response[x].cod_UTZ) + ' - ' + response[x].nome_UTILIZADOR, id: response[x].id_UTILIZADOR });
 
         }
         this.sourceUtilizadores = this.sourceUtilizadores.slice();
@@ -237,7 +237,7 @@ export class EquipasManutencaoComponent implements OnInit {
     this.MANDICEQUIPASUTILIZADORESService.getUtilizadores(id).subscribe(
       response => {
         for (var x in response) {
-          this.sourceUtilizadores.push({ nome: response[x].nome_UTILIZADOR, id_UTZ: response[x].id_UTILIZADOR });
+          this.sourceUtilizadores.push({ nome: ((response[x].cod_UTZ == null) ? '' : response[x].cod_UTZ) + ' - ' + response[x].nome_UTILIZADOR, id_UTZ: response[x].id_UTILIZADOR });
         }
         this.sourceUtilizadores = this.sourceUtilizadores.slice();
       }, error => { console.log(error); });
