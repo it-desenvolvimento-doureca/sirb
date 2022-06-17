@@ -76,6 +76,7 @@ export class FormManutencaoComponent implements OnInit {
   display: boolean;
   ficha_manutencao_dados: MAN_MOV_MANUTENCAO_CAB;
   COMPONENTE: number;
+  ID_PEDIDO;
   DESCRICAO_PEDIDO: string = null;
   NOTAS_PLANEAMENTO: string = null;
   ID_RESPONSAVEL: number;
@@ -471,7 +472,7 @@ export class FormManutencaoComponent implements OnInit {
         if (count > 0) {
 
           for (var x in response) {
-
+            this.ID_PEDIDO = id;
             this.COMPONENTE = response[x].COMPONENTE;
             this.DESCRICAO_PEDIDO = response[x].DESCRICAO_PEDIDO;
             this.NOTAS_PLANEAMENTO = response[x].NOTAS_PLANEAMENTO;
