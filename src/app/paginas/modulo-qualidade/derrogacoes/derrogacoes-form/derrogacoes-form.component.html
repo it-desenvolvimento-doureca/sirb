@@ -204,10 +204,19 @@
                   <div style="display: inline-block; width: 100%;">
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
                       <label>Referência:</label>
-                      <p-dropdown [filter]="true" (onChange)="alteraReferencia($event)" [options]="drop_referencia"
+                      <p-dropdown *ngIf="cliente != '' && cliente != null " [filter]="true"
+                        (onChange)="alteraReferencia($event)" [options]="drop_referencia"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="referencia"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_referencia.length > 0)"
                         [required]="true"></p-dropdown>
+                      <p-autoComplete *ngIf="cliente == '' || cliente == null " [(ngModel)]="referencia_campo"
+                        [suggestions]="filteredreferencias" class="autocompleseguranca"
+                        [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
+                        (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
+                        emptyMessage="Sem Resultados..." [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
+                        [required]="true" (completeMethod)="filterRef($event)" field="label" placeholder="Pesquisar..."
+                        [minLength]="1">
+                      </p-autoComplete>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">

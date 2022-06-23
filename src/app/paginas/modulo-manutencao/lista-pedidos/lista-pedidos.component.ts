@@ -45,6 +45,7 @@ export class ListaPedidosComponent implements OnInit {
   { value: 'Rejeitada', label: 'Rejeitada' },
   { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
+  { value: 'Suspensa', label: 'Suspensa' },
   { value: 'Anulada', label: 'Anulada' }];
 
   @ViewChild(DataTable) dataTableComponent: DataTable;
@@ -86,7 +87,7 @@ export class ListaPedidosComponent implements OnInit {
 
 
     } else {
-      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada"];
+      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada", "Suspensa"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }

@@ -130,6 +130,8 @@ export class DerrogacoesFormComponent implements OnInit {
   tabelaEquipa: any;
   displaygrupos: boolean;
   tabelagrupos: any[];
+  filteredreferencias: any[];
+  referencia_campo: { value: any; label: string; DESIGN: any; };
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private renderer: Renderer,
@@ -259,22 +261,20 @@ export class DerrogacoesFormComponent implements OnInit {
   }
 
   artigos(inicia, id) {
-    if (!this.novo) {
-      this.ABDICCOMPONENTEService.getComponentesTodos().subscribe(
-        response => {
-          this.drop_artigos = [];
-          var count = Object.keys(response).length;
-          if (count > 0) {
-            //  this.drop_artigos.push({ label: 'Sel. Ref. Comp.', value: null });
-            for (var x in response) {
-              this.drop_artigos.push({ valor: response[x].PROREF, design: response[x].PRODES1, FAMCOD: response[x].FAMCOD });
-            }
+
+    this.ABDICCOMPONENTEService.getReferencias().subscribe(
+      response => {
+        this.drop_artigos = [];
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          //  this.drop_artigos.push({ label: 'Sel. Ref. Comp.', value: null });
+          for (var x in response) {
+            this.drop_artigos.push({ value: response[x].PROREF, label: response[x].PROREF + ' - ' + response[x].PRODES1, descricao: response[x].PRODES1, FAMCOD: response[x].FAMCOD });
           }
-          this.clientes(inicia, id);
-        }, error => { this.clientes(inicia, id); console.log(error); });
-    } else {
-      this.clientes(inicia, id);
-    }
+        }
+        this.clientes(inicia, id);
+      }, error => { this.clientes(inicia, id); console.log(error); });
+
   }
 
   clientes(inicia, id) {
@@ -333,6 +333,9 @@ export class DerrogacoesFormComponent implements OnInit {
             this.utz_FECHO = response[x].utz_FECHO;
             this.data_FECHO_texto = (response[x].data_FECHO == null) ? null : this.formatDate2(response[x].data_FECHO);
 
+            if (response[x].referencia != null && response[x].id_CLIENTE == null) {
+              this.referencia_campo = { value: response[x].referencia, label: response[x].referencia + " - " + response[x].designacao_REF, DESIGN: response[x].designacao_REF };
+            }
 
 
             this.cliente = this.drop_cliente.find(item => item.value.id == response[x].id_CLIENTE).value;
@@ -673,63 +676,68 @@ export class DerrogacoesFormComponent implements OnInit {
 
   //ao alterar cliente atualiza morada
   getMoradas(event, mor = false) {
-    this.drop_moradas = [];
-    this.drop_referencia = [];
-    this.morada_CLIENTE = "";
-    this.referencia = "";
-    this.designacao_REF = "";
-    if (!mor) this.familia_REF = "";
+    if ((this.morada_CLIENTE == null || this.morada_CLIENTE == 0 || this.morada_CLIENTE == "") || !mor) {
+      this.drop_moradas = [];
+      this.drop_referencia = [];
+      this.morada_CLIENTE = "";
+      this.referencia = "";
+      this.designacao_REF = "";
+      if (!mor) this.familia_REF = "";
 
-    this.ABDICCOMPONENTEService.getMoradas(event).subscribe(
-      response => {
-        var count = Object.keys(response).length;
-        if (count > 0) {
-          this.drop_moradas.push({ label: 'Sel. Morada.', value: "" });
-          for (var x in response) {
-            this.drop_moradas.push({ label: response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { id: response[x].ETSNUM, nome: response[x].ADRNOM + ' ' + response[x].ADRLIB1 } });
+      this.ABDICCOMPONENTEService.getMoradas(event).subscribe(
+        response => {
+          var count = Object.keys(response).length;
+          if (count > 0) {
+            this.drop_moradas.push({ label: 'Sel. Morada', value: "" });
+            for (var x in response) {
+              this.drop_moradas.push({ label: response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { id: response[x].ETSNUM, nome: response[x].ADRNOM + ' ' + response[x].ADRLIB1 } });
+            }
+            this.drop_moradas = this.drop_moradas.slice();
+            if (mor) this.morada_CLIENTE = this.drop_moradas.find(item => item.value.id == this.etsnum).value;
+          } else {
+            this.drop_moradas.push({ label: 'Sem Moradas para o Cliente Selecionado', value: 0 });
+            this.morada_CLIENTE = 0;
           }
-          this.drop_moradas = this.drop_moradas.slice();
-          if (mor) this.morada_CLIENTE = this.drop_moradas.find(item => item.value.id == this.etsnum).value;
-        } else {
-          this.drop_moradas.push({ label: 'Sem Moradas para o Cliente Seleccionado', value: 0 });
-          this.morada_CLIENTE = 0;
-        }
-      }, error => {
-        console.log(error);
-      });
+        }, error => {
+          console.log(error);
+        });
+    }
   }
 
   //ao alterar moradas atualiza artigos
   getArtigos(event, ref = false) {
+    if ((this.referencia == null || this.referencia == 0 || this.referencia == "") || !ref) {
+      if (!ref) {
+        this.designacao_REF = "";
+        this.familia_REF = "";
+      }
 
-    if (!ref) {
-      this.designacao_REF = "";
-      this.familia_REF = "";
+      this.ABDICCOMPONENTEService.getComponentesdoCliente(this.cliente.id, event).subscribe(
+        response => {
+          this.drop_referencia = [];
+          var count = Object.keys(response).length;
+          if (count > 0) {
+            this.drop_referencia.push({ label: 'Sel. Ref. Comp.', value: "" });
+            for (var x in response) {
+              this.drop_referencia.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1 + ' ' + response[x].PRODES2, value: { valor: response[x].PROREF, design: response[x].PRODES1, FAMCOD: response[x].FAMCOD } });
+            }
+            this.drop_referencia = this.drop_referencia.slice();
+
+            if (ref) {
+              this.referencia = this.drop_referencia.find(item => item.value.valor == this.referencia_temp).value;
+              this.designacao_REF = this.referencia.design;
+              if (this.referencia.FAMCOD != null && this.referencia.FAMCOD != "") this.familia_REF = this.referencia.FAMCOD;
+            }
+          } else {
+            this.drop_referencia.push({ label: 'Sem Artigos para a Morada Selecionada', value: 0 });
+            this.referencia = 0;
+          }
+        }, error => {
+          console.log(error);
+        });
+    } else {
+
     }
-
-    this.ABDICCOMPONENTEService.getComponentesdoCliente(this.cliente.id, event).subscribe(
-      response => {
-        this.drop_referencia = [];
-        var count = Object.keys(response).length;
-        if (count > 0) {
-          this.drop_referencia.push({ label: 'Sel. Ref. Comp.', value: "" });
-          for (var x in response) {
-            this.drop_referencia.push({ label: response[x].PROREF + ' - ' + response[x].PRODES1 + ' ' + response[x].PRODES2, value: { valor: response[x].PROREF, design: response[x].PRODES1, FAMCOD: response[x].FAMCOD } });
-          }
-          this.drop_referencia = this.drop_referencia.slice();
-
-          if (ref) {
-            this.referencia = this.drop_referencia.find(item => item.value.valor == this.referencia_temp).value;
-            this.designacao_REF = this.referencia.design;
-            if (this.referencia.FAMCOD != null && this.referencia.FAMCOD != "") this.familia_REF = this.referencia.FAMCOD;
-          }
-        } else {
-          this.drop_referencia.push({ label: 'Sem Artigos para a Morada Seleccionada', value: 0 });
-          this.referencia = 0;
-        }
-      }, error => {
-        console.log(error);
-      });
   }
 
   btgravar() {
@@ -1777,4 +1785,87 @@ export class DerrogacoesFormComponent implements OnInit {
     });
   }
   /****** */
+
+
+
+
+  /**** AUTO COMPLETE  */
+
+  filterRef(event) {
+    this.filteredreferencias = this.pesquisa(event.query);
+  }
+
+
+  pesquisa(text) {
+    var result = [];
+    for (var x in this.drop_artigos) {
+      let ref = this.drop_artigos[x];
+      if (ref.label.toLowerCase().includes(text.toLowerCase())) {
+        result.push(this.drop_artigos[x]);
+      }
+    }
+    return result;
+  }
+
+  filteronUnselect(event) {
+    this.designacao_REF = null;
+  }
+
+  filterSelect(event) {
+    var tab = this.drop_artigos.find(item => item.value == event.value)
+    if (tab) {
+      this.referencia = event.value;
+      this.designacao_REF = event.descricao;
+      this.familia_REF = event.FAMCOD;
+      this.getMoradasReferencia(event)
+    } else {
+      this.referencia = null;
+      this.designacao_REF = null;
+      this.familia_REF = null;
+    };
+  }
+
+  //ao alterar referencia atualiza morada
+  getMoradasReferencia(event) {
+    this.drop_moradas = [];
+    this.drop_cliente = [];
+    this.morada_CLIENTE = "";
+    this.cliente = null;
+
+    this.ABDICCOMPONENTEService.getMoradasREFERENCIA(event.value).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          this.drop_moradas.push({ label: 'Sel. Morada', value: "" });
+
+          this.drop_cliente.push({ label: 'Sel. Cliente.', value: "" });
+
+          for (var x in response) {
+            if (response[x].TIPO == 'MORADA' && response[x].CLICOD != null) this.drop_moradas.push({ label: response[x].ADRNOM + ' ' + response[x].ADRLIB1, value: { id: response[x].ETSNUM, nome: response[x].ADRNOM + ' ' + response[x].ADRLIB1 } });
+            if (response[x].TIPO == 'CLIENTE' && response[x].CLICOD != null) this.drop_cliente.push({ label: response[x].ADRNOM, value: { id: response[x].CLICOD, nome: response[x].ADRNOM } });
+
+          }
+          this.drop_moradas = this.drop_moradas.slice();
+          this.drop_cliente = this.drop_cliente.slice();
+          if (this.drop_moradas.length == 2) {
+            this.morada_CLIENTE = this.drop_moradas[1].value.id;
+          }
+
+          if (this.drop_cliente.length == 2) {
+            this.cliente = this.drop_cliente[1].value.id;
+          }
+
+        } else {
+          this.drop_moradas.push({ label: 'Interno', value: 0 });
+          this.morada_CLIENTE = 0;
+
+          this.drop_cliente.push({ label: 'Interno', value: 0 });
+          this.cliente = 0;
+        }
+      }, error => {
+        console.log(error);
+      });
+  }
+
+
 }

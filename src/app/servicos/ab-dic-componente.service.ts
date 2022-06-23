@@ -125,6 +125,7 @@ export class ABDICCOMPONENTEService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
   getMaquinas() {
     const url = webUrl.host + '/rest/sirb/getMaquinas';
     return this.http
@@ -135,6 +136,15 @@ export class ABDICCOMPONENTEService {
 
   getMoradas(clicod) {
     const url = webUrl.host + '/rest/sirb/getMoradas/' + clicod;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+
+  }
+
+  getMoradasREFERENCIA(referencia) {
+    const url = webUrl.host + '/rest/sirb/getMoradasReferencia/' + encodeURIComponent(referencia);
     return this.http
       .get(url)
       .map(this.extractData)
