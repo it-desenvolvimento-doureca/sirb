@@ -184,9 +184,14 @@
                       <label>Cliente:</label>
                       <br>
                       <p-dropdown [filter]="true" #dropc (onChange)="getMoradas(dropc.value.id)"
-                        [options]="drop_cliente" [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [options]="drop_cliente"
+                        [style]="{'width':'calc(100% - 40px)','height':'25px','background':'white'}"
                         [(ngModel)]="cliente" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
                         [required]="true"></p-dropdown>
+                      <button type="button" style="width: 33px; padding-left: 11px; margin: 0;"
+                        class="btn btn-danger btn-xs" [disabled]="!modoedicao   " title="Limpar" (click)="limpar()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
                     </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
@@ -204,13 +209,13 @@
                   <div style="display: inline-block; width: 100%;">
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-5">
                       <label>Referência:</label>
-                      <p-dropdown *ngIf="cliente != '' && cliente != null " [filter]="true"
+                      <p-dropdown *ngIf="cliente != '' && cliente != null && !getbyreferencia" [filter]="true"
                         (onChange)="alteraReferencia($event)" [options]="drop_referencia"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="referencia"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao || !(drop_referencia.length > 0)"
                         [required]="true"></p-dropdown>
-                      <p-autoComplete *ngIf="cliente == '' || cliente == null " [(ngModel)]="referencia_campo"
-                        [suggestions]="filteredreferencias" class="autocompleseguranca"
+                      <p-autoComplete *ngIf="cliente == '' || cliente == null || getbyreferencia"
+                        [(ngModel)]="referencia_campo" [suggestions]="filteredreferencias" class="autocompleseguranca"
                         [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
                         (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
                         emptyMessage="Sem Resultados..." [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"

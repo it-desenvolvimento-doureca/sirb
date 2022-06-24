@@ -131,7 +131,7 @@ export class DerrogacoesComponent implements OnInit {
             data_INICIO: this.formatDate(response[x][0].data_INICIO),
             data_FIM: this.formatDate(response[x][0].data_FIM),
             interna_EXTERNA: this.getinterna_EXTERNA(response[x][0].interna_EXTERNA),
-            cliente: response[x][0].nome_CLIENTE,
+            cliente: (response[x][0].nome_CLIENTE == null) ? 'INTERNO' : response[x][0].nome_CLIENTE,
             unidade: this.getUnidade(response[x][0].unidade),
             emissor: response[x][1],
             referencia: response[x][0].referencia,

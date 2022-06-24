@@ -132,6 +132,7 @@ export class DerrogacoesFormComponent implements OnInit {
   tabelagrupos: any[];
   filteredreferencias: any[];
   referencia_campo: { value: any; label: string; DESIGN: any; };
+  getbyreferencia: boolean;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private renderer: Renderer,
@@ -333,13 +334,18 @@ export class DerrogacoesFormComponent implements OnInit {
             this.utz_FECHO = response[x].utz_FECHO;
             this.data_FECHO_texto = (response[x].data_FECHO == null) ? null : this.formatDate2(response[x].data_FECHO);
 
-            if (response[x].referencia != null && response[x].id_CLIENTE == null) {
+            if (response[x].referencia != null && (response[x].id_CLIENTE == null || response[x].id_CLIENTE == 0)) {
               this.referencia_campo = { value: response[x].referencia, label: response[x].referencia + " - " + response[x].designacao_REF, DESIGN: response[x].designacao_REF };
+              this.drop_moradas.push({ label: 'INTERNO', value: 0 });
+              this.morada_CLIENTE = 0;
+              this.drop_cliente = [];
+              this.drop_cliente.push({ label: 'INTERNO', value: 0 });
+              this.cliente = 0;
+              this.getbyreferencia = true;
+            } else {
+              this.cliente = this.drop_cliente.find(item => item.value.id == response[x].id_CLIENTE).value;
+              this.getbyreferencia = false;
             }
-
-
-            this.cliente = this.drop_cliente.find(item => item.value.id == response[x].id_CLIENTE).value;
-
 
             this.texto_estado = this.getESTADO(this.estado);
 
@@ -375,8 +381,8 @@ export class DerrogacoesFormComponent implements OnInit {
 
           }
 
-          this.getMoradas(this.cliente.id, true);
-          this.getArtigos(this.etsnum, true);
+          if (!this.getbyreferencia) this.getMoradas(this.cliente.id, true);
+          if (!this.getbyreferencia) this.getArtigos(this.etsnum, true);
           this.carregatabelaFiles(id);
           this.carregatabelasaccoes(id);
           this.carregatabelaEquipa(id);
@@ -460,7 +466,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
     derrogacao.motivo = this.motivo;
     derrogacao.qtd = this.qtd;
-    derrogacao.referencia = this.referencia.valor;
+    derrogacao.referencia = (this.getbyreferencia) ? this.referencia : this.referencia.valor;
     derrogacao.setor = this.setor;
     derrogacao.unidade = this.unidade;
     derrogacao.causa = this.causa;
@@ -676,7 +682,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
   //ao alterar cliente atualiza morada
   getMoradas(event, mor = false) {
-    if ((this.morada_CLIENTE == null || this.morada_CLIENTE == 0 || this.morada_CLIENTE == "") || !mor) {
+    if (!this.getbyreferencia) {
       this.drop_moradas = [];
       this.drop_referencia = [];
       this.morada_CLIENTE = "";
@@ -706,7 +712,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
   //ao alterar moradas atualiza artigos
   getArtigos(event, ref = false) {
-    if ((this.referencia == null || this.referencia == 0 || this.referencia == "") || !ref) {
+    if (!this.getbyreferencia) {
       if (!ref) {
         this.designacao_REF = "";
         this.familia_REF = "";
@@ -1087,6 +1093,14 @@ export class DerrogacoesFormComponent implements OnInit {
           }
         }
 
+      }
+    } else {
+      if (this.novo) {
+        this.router.navigate(['derrogacoes/editar'], { queryParams: { id: id } });
+        this.simular(this.inputnotifi);
+      } else {
+        this.router.navigate(['derrogacoes/view'], { queryParams: { id: id } });
+        this.simular(this.inputnotifi);
       }
     }
 
@@ -1831,7 +1845,7 @@ export class DerrogacoesFormComponent implements OnInit {
     this.drop_cliente = [];
     this.morada_CLIENTE = "";
     this.cliente = null;
-
+    this.getbyreferencia = true;
     this.ABDICCOMPONENTEService.getMoradasREFERENCIA(event.value).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -1848,18 +1862,18 @@ export class DerrogacoesFormComponent implements OnInit {
           this.drop_moradas = this.drop_moradas.slice();
           this.drop_cliente = this.drop_cliente.slice();
           if (this.drop_moradas.length == 2) {
-            this.morada_CLIENTE = this.drop_moradas[1].value.id;
+            this.morada_CLIENTE = this.drop_moradas[1].value;
           }
 
           if (this.drop_cliente.length == 2) {
-            this.cliente = this.drop_cliente[1].value.id;
+            this.cliente = this.drop_cliente[1].value;
           }
 
         } else {
-          this.drop_moradas.push({ label: 'Interno', value: 0 });
+          this.drop_moradas.push({ label: 'INTERNO', value: 0 });
           this.morada_CLIENTE = 0;
 
-          this.drop_cliente.push({ label: 'Interno', value: 0 });
+          this.drop_cliente.push({ label: 'INTERNO', value: 0 });
           this.cliente = 0;
         }
       }, error => {
@@ -1867,5 +1881,17 @@ export class DerrogacoesFormComponent implements OnInit {
       });
   }
 
+  limpar() {
+    this.cliente = null;
+    this.morada_CLIENTE = null;
+    this.drop_moradas = [];
+    this.drop_cliente = [];
+    this.referencia = null;
+    this.designacao_REF = null;
+    this.familia_REF = null;
+    this.referencia_campo = null
+    this.clientes(false, 0);
+    this.getbyreferencia = false;
+  }
 
 }
