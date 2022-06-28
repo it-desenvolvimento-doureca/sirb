@@ -62,6 +62,14 @@ export class RCMOVRECLAMACAOFICHEIROSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyidtarefa2(id): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROSbyidTAREFA2/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getAll(): Observable<RC_MOV_RECLAMACAO_FICHEIROS[]> {
     const url = webUrl.host + '/rest/sirb/getRC_MOV_RECLAMACAO_FICHEIROS';
     return this.http

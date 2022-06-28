@@ -323,20 +323,20 @@ export class PaginatarefaComponent implements OnInit {
             default:
           }
 
-          this.origem = "Reclamações de Clientes : " + ((resp[x][15] == null)? "--" : resp[x][15]) + nome_step;
-          this.caminho_origem = "#/reclamacoesclientes/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Reclamações de Clientes : " + ((resp[x][15] == null) ? "--" : resp[x][15]) + nome_step;
+          this.caminho_origem = "#/reclamacoesclientes/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&step=" + step + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 5 && resp[x][29] == 'F') {
-          this.origem = "Reclamações de Fornecedores : " + ((resp[x][15] == null)? "--" : resp[x][15]);
-          this.caminho_origem = "#/reclamacoesfornecedores/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Reclamações de Fornecedores : " + ((resp[x][15] == null) ? "--" : resp[x][15]);
+          this.caminho_origem = "#/reclamacoesfornecedores/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 5 && resp[x][29] == 'D') {
-          this.origem = "Derrogação : " + ((resp[x][15] == null)? "--" : resp[x][15]);
-          this.caminho_origem = "#/derrogacoes/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Derrogação : " + ((resp[x][15] == null) ? "--" : resp[x][15]);
+          this.caminho_origem = "#/derrogacoes/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 10) {
-          this.origem = "Amostra : " + ((resp[x][15] == null)? "--" : resp[x][15]);
-          this.caminho_origem = "#/producao/amostras/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Amostra : " + ((resp[x][15] == null) ? "--" : resp[x][15]);
+          this.caminho_origem = "#/producao/amostras/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         } else if (resp[x][28] == 13) {
-          this.origem = "Planos de Ação: " + ((resp[x][15] == null)? "--" : resp[x][15]);
-          this.caminho_origem = "#/planosacao/view?id=" + ((resp[x][15] == null)? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
+          this.origem = "Planos de Ação: " + ((resp[x][15] == null) ? "--" : resp[x][15]);
+          this.caminho_origem = "#/planosacao/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         }
 
         if (resp[x][33] != null) {
@@ -445,16 +445,16 @@ export class PaginatarefaComponent implements OnInit {
   carregatabelaFiles_RECLAMACAO(id) {
     this.uploadedFiles = [];
 
-    this.RCMOVRECLAMACAOFICHEIROSService.getbyidtarefa(id).subscribe(
+    this.RCMOVRECLAMACAOFICHEIROSService.getbyidtarefa2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
           for (var x in response) {
             if (response[x].id_FICHEIRO == null) {
               this.uploadedFiles.push({
-                data: response[x], ficheiro: response[x].ficheiro,
-                id: response[x].id, name: response[x].nome,
-                src: response[x].caminho, type: response[x].tipo, datatype: response[x].datatype, size: response[x].tamanho, descricao: response[x].descricao
+                data: [], ficheiro: null,
+                id: response[x][1], name: response[x][6],
+                src: response[x][7], type: response[x][8], datatype: response[x][9], size: response[x][10], descricao: response[x][11]
               });
             }
           }
@@ -468,15 +468,15 @@ export class PaginatarefaComponent implements OnInit {
   carregatabelaFiles_TAREFA(id) {
     this.uploadedFiles = [];
 
-    this.GTMOVFICHEIROSService.getbyidtarefa(id).subscribe(
+    this.GTMOVFICHEIROSService.getbyidtarefa2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
           for (var x in response) {
             this.uploadedFiles.push({
-              data: response[x][0], ficheiro: response[x][0].ficheiro_1 + response[x][0].ficheiro_2,
-              id: response[x][0].id, name: response[x][0].nome,
-              src: response[x][0].caminho, type: response[x][0].tipo, datatype: response[x][0].datatype, size: response[x][0].tamanho, descricao: response[x][0].descricao
+              data: [], ficheiro: null, //response[x][0].ficheiro_1 + response[x][0].ficheiro_2,
+              id: response[x][1], name: response[x][5],
+              src: response[x][6], type: response[x][7], datatype: response[x][8], size: response[x][9], descricao: response[x][10]
             });
 
           }
@@ -1377,29 +1377,90 @@ export class PaginatarefaComponent implements OnInit {
 
   //FICHEIROS
 
-  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+  /* showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+     this.srcelement = "";
+     if (type == "pdf" || type == 'txt') {
+       if (ficheiro == null) {
+ 
+         this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+       } else {
+         /*var blob = new Blob([ficheiro], { type: datatype });
+         var blobUrl = URL.createObjectURL(blob);*/
+  /* this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+ }
+}
+if (ficheiro == null) {
+ this.srcelement = webUrl.link + srcelement;
+} else {
+ this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+} 
+if (type == "excel" || type == "word") {
+ this.download(nomeficheiro, srcelement, datatype, ficheiro)
+} else if (type == "msg") {
+ this.downloadTXT(nomeficheiro, srcelement, ficheiro)
+}
+else {
+ this.nomeficheiro = nomeficheiro;
+ this.type = type;
+ this.display = true;
+}
+
+}*/
+
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, id_FICHEIRO = null) {
     this.srcelement = "";
+    var caminho = "";
+
+    if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
+      caminho = "RC_MOV_RECLAMACAO_FICHEIROS"
+    } else {
+      caminho = "GT_MOV_FICHEIROS"
+    }
+
     if (type == "pdf" || type == 'txt') {
       if (ficheiro == null) {
+        if (id_FICHEIRO != null && type == "pdf") {
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/'+caminho+'/ID/' + id_FICHEIRO + '/pdf');
+        } else {
 
-        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
+          if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
+            this.getficheiro1(id_FICHEIRO);
+          } else {
+            this.getficheiro2(id_FICHEIRO);
+          }
+
+        }
+
       } else {
         /*var blob = new Blob([ficheiro], { type: datatype });
         var blobUrl = URL.createObjectURL(blob);*/
+
+        if (id_FICHEIRO != null && type == "pdf") {
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/'+caminho+'/ID/' + id_FICHEIRO + '/pdf');
+
+        } else {
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+        }
+
+
+      }
+    } else {
+      if (ficheiro == null) {
+        if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
+          this.getficheiro1(id_FICHEIRO);
+        } else {
+          this.getficheiro2(id_FICHEIRO);
+        }
+      } else {
         this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
       }
     }
-    if (ficheiro == null) {
-      this.srcelement = webUrl.link + srcelement;
-    } else {
-      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
-    }
+
     if (type == "excel" || type == "word") {
-      this.download(nomeficheiro, srcelement, datatype, ficheiro)
+      this.download(nomeficheiro, srcelement, datatype, ficheiro, id_FICHEIRO)
     } else if (type == "msg") {
-      this.downloadTXT(nomeficheiro, srcelement, ficheiro)
-    }
-    else {
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro, id_FICHEIRO)
+    } else {
       this.nomeficheiro = nomeficheiro;
       this.type = type;
       this.display = true;
@@ -1407,16 +1468,35 @@ export class PaginatarefaComponent implements OnInit {
 
   }
 
-  download(nome, filename, datatype, ficheiro) {
+  getficheiro1(id_FICHEIRO,) {
+    this.RCMOVRECLAMACAOFICHEIROSService.getbyidreclamacaoFICHEIRO(id_FICHEIRO).subscribe(
+      (res) => {
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0][0]);
+      }, error => {
+        this.simular(this.inputerroficheiro);
+        console.log(error);
+      }
+    );
+  }
+
+  getficheiro2(id_FICHEIRO) {
+    this.GTMOVFICHEIROSService.getbyidFICHEIRO(id_FICHEIRO).subscribe(
+      (res) => {
+        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0][0]);
+      }, error => {
+        this.simular(this.inputerroficheiro);
+        console.log(error);
+      }
+    );
+  }
+
+  download(nome, filename, datatype, ficheiro, id_FICHEIRO) {
     if (ficheiro == null) {
-      this.UploadService.download("report", filename, datatype).subscribe(
-        (res) => {
-          FileSaver.saveAs(res, nome);
-        }, error => {
-          this.simular(this.inputerroficheiro);
-          console.log(error);
-        }
-      );
+      if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
+        this.download1(id_FICHEIRO, false, nome, null);
+      } else {
+        this.download2(id_FICHEIRO, false, nome, null);
+      }
     } else {
 
       const downloadLink = document.createElement("a");
@@ -1427,20 +1507,71 @@ export class PaginatarefaComponent implements OnInit {
     }
   }
 
+  download1(id_FICHEIRO, txt, nome, filename) {
+    this.RCMOVRECLAMACAOFICHEIROSService.getbyidreclamacaoFICHEIRO(id_FICHEIRO).subscribe(
+      (res) => {
+        if (txt) {
+          this.UploadService.downloadFileMSGBASE64(filename, res[0][0]).subscribe(
+            (res) => {
+              var fileURL = URL.createObjectURL(res);
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+              this.nomeficheiro = nome;
+              this.type = 'txt';
+              this.display = true;
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            });
+        } else {
+          const downloadLink = document.createElement("a");
 
-  downloadTXT(nomeficheiro, filename, ficheiro) {
+          downloadLink.href = res[0][0];
+          downloadLink.download = nome;
+          downloadLink.click();
+        }
+      }, error => {
+        this.simular(this.inputerroficheiro);
+        console.log(error);
+      }
+    );
+  }
+
+  download2(id_FICHEIRO, txt, nome, filename) {
+    this.GTMOVFICHEIROSService.getbyidFICHEIRO(id_FICHEIRO).subscribe(
+      (res) => {
+        if (txt) {
+          this.UploadService.downloadFileMSGBASE64(filename, res[0][0]).subscribe(
+            (res) => {
+              var fileURL = URL.createObjectURL(res);
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+              this.nomeficheiro = nome;
+              this.type = 'txt';
+              this.display = true;
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            });
+        } else {
+          const downloadLink = document.createElement("a");
+
+          downloadLink.href = res[0][0];
+          downloadLink.download = nome;
+          downloadLink.click();
+        }
+      }, error => {
+        this.simular(this.inputerroficheiro);
+        console.log(error);
+      }
+    );
+  }
+
+  downloadTXT(nomeficheiro, filename, ficheiro, id_FICHEIRO) {
     if (ficheiro == null) {
-      this.UploadService.downloadTXT(filename).subscribe(
-        (res) => {
-          var fileURL = URL.createObjectURL(res);
-          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-          this.nomeficheiro = nomeficheiro;
-          this.type = 'txt';
-          this.display = true;
-        }, error => {
-          this.simular(this.inputerroficheiro);
-          console.log(error);
-        });
+      if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
+        this.download1(id_FICHEIRO, true, nomeficheiro, filename);
+      } else {
+        this.download2(id_FICHEIRO, true, nomeficheiro, filename);
+      }
     } else {
       this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
         (res) => {

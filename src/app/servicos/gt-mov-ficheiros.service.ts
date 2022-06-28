@@ -29,6 +29,14 @@ export class GTMOVFICHEIROSService {
   }
 
 
+  getbyidtarefa2(id): Observable<GT_MOV_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getGT_MOV_FICHEIROSbyidTAREFA2/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getAll(): Observable<GT_MOV_FICHEIROS[]> {
     const url = webUrl.host + '/rest/sirb/getGT_MOV_FICHEIROS';
     return this.http
@@ -52,7 +60,13 @@ export class GTMOVFICHEIROSService {
       .catch(this.handleError);
   }
 
-
+  getbyidFICHEIRO(id): Observable<GT_MOV_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getGT_MOV_FICHEIROSbyidFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   private extractData(res: Response) {
     let body = res.json();

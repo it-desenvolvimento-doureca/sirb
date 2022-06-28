@@ -6,3 +6,8 @@
 .class_required .ui-radiobutton-box {
     border: 1px solid red !important;
 }
+
+
+.planosestrategicostabela #tabelaaccoes .ui-datatable-scrollable-body {
+    overflow: auto !important;
+}

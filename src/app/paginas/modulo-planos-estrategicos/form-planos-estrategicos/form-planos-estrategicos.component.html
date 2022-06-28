@@ -594,9 +594,9 @@
           </div>
 
 
-          <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
-            <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
-              styleClass="ExcelTable2007" id="tabelaaccoes">
+          <div class="col-md-12 planosestrategicostabela" style="padding-right: 5px; padding-left: 10px;">
+            <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes" scrollable="true"
+              scrollHeight="calc(100vh - 390px)" styleClass="ExcelTable2007" id="tabelaaccoes">
 
               <p-column [editable]="false" field="seguir_LINHA" header="Seguir" [style]="{'width':'52px'}">
                 <ng-template let-col let-car="rowData" pTemplate="body">

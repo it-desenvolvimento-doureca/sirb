@@ -1062,10 +1062,10 @@ export class FichaManutencaoComponent implements OnInit {
           if (ficha_manutencao.ESTADO == "P") this.cria_MANUTENCAO(res.ID_MANUTENCAO_CAB, res.EQUIPAMENTO);
           this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
 
-          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Criou Novo Pedido Manutenção no estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Criou Novo Pedido Manutenção no estado ' + this.getestado(ficha_manutencao.ESTADO) + '.', false, null, null, null, null, null, null, null, null);
 
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, TEXTO_STATUS_MAQUINA);
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, TEXTO_STATUS_MAQUINA, "NOVO PEDIDO MANUTENÇÃO", null);
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -1085,13 +1085,13 @@ export class FichaManutencaoComponent implements OnInit {
           this.gravarTabelaFicheiros(id);
 
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + new Date(this.DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, TEXTO_STATUS_MAQUINA);
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, TEXTO_STATUS_MAQUINA, "NOVO PEDIDO MANUTENÇÃO", null);
           //this.gravarTabelaStocks(id);
 
           if (res.ESTADO == "P" && planear) {
-            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Manutenção para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Manutenção para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.', false, null, null, null, null, null, null, null, null);
           } else if (submeter) {
-            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Manutenção para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.');
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Alterou Pedido Manutenção para o estado ' + this.getestado(ficha_manutencao.ESTADO) + '.', false, null, null, null, null, null, null, null, null);
           }
 
         },
@@ -1101,9 +1101,14 @@ export class FichaManutencaoComponent implements OnInit {
 
   }
 
-  criarHISTORICO(id, MOTIVO) {
+  criarHISTORICO(id, MOTIVO, sendemail, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, user_nome) {
     this.MANMOVMANUTENCAOCABService.MAN_MOV_MANUTENCAO_CREATE_HISTORICO([{ ID_OPERARIO: this.user, ID_MANUTENCAO_CAB: id, MOTIVO: MOTIVO }]).subscribe(
       res => {
+        if (sendemail) {
+
+          this.sendemail(id, DESCRICAO_PEDIDO, this.formatDate2(DATA_HORA_PEDIDO) + " " + new Date(DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, user_nome, TEXTO_STATUS_MAQUINA, 'ALTERAÇÃO ESTADO', user_nome + ' ' + MOTIVO);
+        }
       },
       error => { console.log(error); });
   }
@@ -1303,9 +1308,44 @@ export class FichaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
-            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Cancelou Pedido Manutenção.');
+            var EQUIPAMENTO = "";
+            var LOCALIZACAO = "";
+            var EQUIPA_UTILIZADOR = "";
+            var EMAIL_PARA = "";
+
+            var TEXTO_STATUS_MAQUINA = "Em funcionamento";
+            if (this.STATUS_MAQUINA == 'P') {
+              TEXTO_STATUS_MAQUINA = "Parada";
+            }
+
+            if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+              EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+            }
+
+            EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+            if (this.TIPO_RESPONSAVEL == 'U') {
+              if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+                EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+              }
+            } else if (this.TIPO_RESPONSAVEL == 'E') {
+              if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+                EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+              }
+
+            } else if (this.TIPO_RESPONSAVEL == 'EX') {
+              EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+            }
+
+            if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+              LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+            }
+
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Cancelou Pedido Manutenção.', true, this.DESCRICAO_PEDIDO, this.DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, this.user_nome);
             this.router.navigate(['lista_pedidos']);
-            this.simular(this.inputapagar);
+            this.simular(this.inputgravou);
           },
           error => { console.log(error); this.simular(this.inputerro); });
 
@@ -1330,9 +1370,44 @@ export class FichaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
-            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Validou Pedido Manutenção.');
+            var EQUIPAMENTO = "";
+            var LOCALIZACAO = "";
+            var EQUIPA_UTILIZADOR = "";
+            var EMAIL_PARA = "";
+
+            var TEXTO_STATUS_MAQUINA = "Em funcionamento";
+            if (this.STATUS_MAQUINA == 'P') {
+              TEXTO_STATUS_MAQUINA = "Parada";
+            }
+
+            if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+              EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+            }
+
+            EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+            if (this.TIPO_RESPONSAVEL == 'U') {
+              if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+                EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+              }
+            } else if (this.TIPO_RESPONSAVEL == 'E') {
+              if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+                EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+              }
+
+            } else if (this.TIPO_RESPONSAVEL == 'EX') {
+              EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+            }
+
+            if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+              LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+            }
+
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Validou Pedido Manutenção.', true, this.DESCRICAO_PEDIDO, this.DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, this.user_nome);
             this.router.navigate(['lista_pedidos']);
-            this.simular(this.inputapagar);
+            this.simular(this.inputgravou);
           },
           error => { console.log(error); this.simular(this.inputerro); });
 
@@ -1382,15 +1457,50 @@ export class FichaManutencaoComponent implements OnInit {
 
     this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
       res => {
+        var EQUIPAMENTO = "";
+        var LOCALIZACAO = "";
+        var EQUIPA_UTILIZADOR = "";
+        var EMAIL_PARA = "";
+
+        var TEXTO_STATUS_MAQUINA = "Em funcionamento";
+        if (this.STATUS_MAQUINA == 'P') {
+          TEXTO_STATUS_MAQUINA = "Parada";
+        }
+
+        if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+          EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+        }
+
+        EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+        if (this.TIPO_RESPONSAVEL == 'U') {
+          if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+            EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+          }
+        } else if (this.TIPO_RESPONSAVEL == 'E') {
+          if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+            EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+          }
+
+        } else if (this.TIPO_RESPONSAVEL == 'EX') {
+          EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+        }
+
+        if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+          LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+        }
+
         if (this.estadoRejeitado == 'RJ') {
-          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Manutenção Corretiva.');
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Manutenção Corretiva.', true, this.DESCRICAO_PEDIDO, this.DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, this.user_nome);
         } else {
-          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Pedido de Manutenção.');
+          this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Rejeitou Pedido de Manutenção.', true, this.DESCRICAO_PEDIDO, this.DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, this.user_nome);
         }
 
         this.insertNOTAS('', this.mototivoRejeicao, null);
         this.router.navigate(['lista_pedidos']);
-        this.simular(this.inputapagar);
+        this.simular(this.inputgravou);
       },
       error => { console.log(error); this.simular(this.inputerro); });
   }
@@ -1412,7 +1522,42 @@ export class FichaManutencaoComponent implements OnInit {
 
         this.MANMOVMANUTENCAOCABService.update(ficha_manutencao).subscribe(
           res => {
-            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Apagou Pedido Manutenção.');
+            var EQUIPAMENTO = "";
+            var LOCALIZACAO = "";
+            var EQUIPA_UTILIZADOR = "";
+            var EMAIL_PARA = "";
+
+            var TEXTO_STATUS_MAQUINA = "Em funcionamento";
+            if (this.STATUS_MAQUINA == 'P') {
+              TEXTO_STATUS_MAQUINA = "Parada";
+            }
+
+            if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+              EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+            }
+
+            EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+            if (this.TIPO_RESPONSAVEL == 'U') {
+              if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+                EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+              }
+            } else if (this.TIPO_RESPONSAVEL == 'E') {
+              if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+                EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+              }
+
+            } else if (this.TIPO_RESPONSAVEL == 'EX') {
+              EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+            }
+
+            if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+              LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+            }
+
+            this.criarHISTORICO(res.ID_MANUTENCAO_CAB, 'Apagou Pedido Manutenção.', true, this.DESCRICAO_PEDIDO, this.DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, TEXTO_STATUS_MAQUINA, this.user_nome);
             this.router.navigate(['lista_pedidos']);
             this.simular(this.inputapagar);
           },
@@ -1666,7 +1811,7 @@ export class FichaManutencaoComponent implements OnInit {
 
 
 
-  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO, STATUS_MAQUINA) {
+  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO, STATUS_MAQUINA, MOMENTO, DESCRICAO_ACAO) {
 
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
@@ -1677,9 +1822,10 @@ export class FichaManutencaoComponent implements OnInit {
       "\n/LOCALIZACAO::" + LOCALIZACAO +
       "\n/RESPONSAVEL_PEDIDO::" + RESPONSAVEL_PEDIDO +
       "\n/STATUS_MAQUINA::" + STATUS_MAQUINA +
+      "\n/DESCRICAO_ACAO::" + DESCRICAO_ACAO +
       "\n/EQUIPA_UTILIZADOR::" + EQUIPA_UTILIZADOR + "}";
 
-    var MOMENTO = "NOVO PEDIDO MANUTENÇÃO";
+    // var MOMENTO = "NOVO PEDIDO MANUTENÇÃO";
 
 
     var data = [{ MODULO: 14, MOMENTO: MOMENTO, PAGINA: "PEDIDO MANUTENÇÃO", FICHEIROS: null, ESTADO: true, DADOS: dados, EMAIL_PARA: EMAIL_PARA }];
