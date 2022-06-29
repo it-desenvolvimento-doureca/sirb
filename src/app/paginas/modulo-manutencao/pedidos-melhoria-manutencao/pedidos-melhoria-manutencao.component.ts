@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
@@ -89,6 +89,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('buttongravar') buttongravar: ElementRef;
+  @Input() ID_PEDIDO_INPUT_2: number;
   srcelement;
   nomeficheiro: any;
   type: string;
@@ -194,6 +195,9 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
         step = params['step'] || 0;
       });
     var id = 0;
+
+    if (this.ID_PEDIDO_INPUT_2 != null) urlarray = ['lista_pedidos_melhoria', 'view']
+
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar") || urlarray[1].match("view")) {
         this.novo = false;
@@ -204,6 +208,8 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
           .subscribe(params => {
             id = params['id'] || 0;
           });
+
+        if (this.ID_PEDIDO_INPUT_2 != null) id = this.ID_PEDIDO_INPUT_2;
 
         this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584editar");
         this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11584criar");
@@ -1896,7 +1902,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
 
 
-  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO, MOMENTO, DESCRICAO_ACAO) {
+  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO, MOMENTO, DESCRICAO_ACAO, NOTA = null, UTILIZADOR_NOTA = null) {
 
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
@@ -1907,12 +1913,17 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
       "\n/LOCALIZACAO::" + LOCALIZACAO +
       "\n/RESPONSAVEL_PEDIDO::" + RESPONSAVEL_PEDIDO +
       "\n/DESCRICAO_ACAO::" + DESCRICAO_ACAO +
+      "\n/NOTA::" + NOTA +
+      "\n/UTILIZADOR_NOTA::" + UTILIZADOR_NOTA +
       "\n/EQUIPA_UTILIZADOR::" + EQUIPA_UTILIZADOR + "}";
 
     //var MOMENTO = "NOVO PEDIDO MELHORIA";
 
+    var PAGINA = "PEDIDO MELHORIA";
 
-    var data = [{ MODULO: 14, MOMENTO: MOMENTO, PAGINA: "PEDIDO MELHORIA", FICHEIROS: null, ESTADO: true, DADOS: dados, EMAIL_PARA: EMAIL_PARA }];
+    if (NOTA != null) PAGINA = 'MANUTENÇÕES';
+
+    var data = [{ MODULO: 14, MOMENTO: MOMENTO, PAGINA: PAGINA, FICHEIROS: null, ESTADO: true, DADOS: dados, EMAIL_PARA: EMAIL_PARA }];
 
 
 
@@ -1962,6 +1973,41 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
     this.MANMOVMANUTENCAONOTASService.create(nota).subscribe(
       res => {
+
+        var EQUIPAMENTO = "";
+        var LOCALIZACAO = "";
+        var EQUIPA_UTILIZADOR = "";
+        var EMAIL_PARA = "";
+
+
+        if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+          EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+        }
+
+        EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+        if (this.TIPO_RESPONSAVEL == 'U') {
+          if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+            EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+          }
+        } else if (this.TIPO_RESPONSAVEL == 'E') {
+          if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+            EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+          }
+
+        } else if (this.TIPO_RESPONSAVEL == 'EX') {
+          EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+        }
+
+        if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+          LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+        }
+
+        if (data != null) this.sendemail(this.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + new Date(this.DATA_HORA_PEDIDO).toLocaleTimeString().slice(0, 5),
+          EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, 'AO INSERIR NOTA', null, notatxt, this.user_nome);
+
         this.notas.push({ id: this.user, utilizador: this.user_nome, letra: letra, mensagem: notatxt, data: this.formatDateTime(data) });
         this.nota = "";
         this.vernotas(false);

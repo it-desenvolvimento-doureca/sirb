@@ -45,8 +45,9 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
   { value: 'Rejeitada', label: 'Rejeitada' },
   { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
+  { value: 'Pausa', label: 'Pausa' },
   { value: 'Anulada', label: 'Anulada' }];
- 
+
   @ViewChild(DataTable) dataTableComponent: DataTable;
 
   constructor(private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService,
@@ -174,6 +175,8 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
       return 'Reaberta';
     } else if (valor == 'R') {
       return 'Suspensa';
+    } else if (valor == 'S') {
+      return 'Pausa';
     }
 
     return 'Submetida';

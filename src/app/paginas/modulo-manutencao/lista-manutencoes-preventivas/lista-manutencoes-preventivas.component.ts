@@ -44,6 +44,7 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
   { value: 'Validada', label: 'Validada' },
   { value: 'Rejeitada', label: 'Rejeitada' },
   { value: 'Cancelada', label: 'Cancelada' },
+  { value: 'Pausa', label: 'Pausa' },
   { value: 'Anulada', label: 'Anulada' }];
 
   tipos = [{ value: 'Preventiva', label: 'Preventiva' },
@@ -206,6 +207,8 @@ export class ListaManutencoesPreventivasComponent implements OnInit {
       return 'Rejeitada';
     } else if (valor == 'R') {
       return 'Suspensa';
+    } else if (valor == 'S') {
+      return 'Pausa';
     }
 
     return 'Submetida';

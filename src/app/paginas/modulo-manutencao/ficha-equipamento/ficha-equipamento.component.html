@@ -725,7 +725,13 @@
                       </p-column>
                       <p-column field="estado" header="Estado">
                       </p-column>
-
+                      <p-column styleClass="col-button" [style]="{'width':'60px'}">
+                        <ng-template let-car="rowData" pTemplate="body">
+                          <a style="color: black; cursor:pointer;" title="Ver mais" (click)="verManutencao(car)">
+                            <i class="material-icons">search</i>
+                          </a>
+                        </ng-template>
+                      </p-column>
                     </p-dataTable>
                   </div>
 
@@ -1092,4 +1098,32 @@
 
     </div>
   </form>
+</p-dialog>
+
+
+<p-dialog header="Manutenção" [responsive]="true" [positionTop]="0" [style]="{'height':'99vh','width': '100vw'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayManutencao"
+  (onHide)="onHide()" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
+    <app-pedidos-melhoria-manutencao class="cssapp-paginatarefa" *ngIf="CLASSIFICACAO == 'M'"
+      [ID_PEDIDO_INPUT_2]="ID_PEDIDO_INPUT">
+    </app-pedidos-melhoria-manutencao>
+
+    <app-ficha-manutencao class="cssapp-paginatarefa" *ngIf="CLASSIFICACAO == 'C'" [ID_PEDIDO_INPUT]="ID_PEDIDO_INPUT">
+    </app-ficha-manutencao>
+
+    <app-manutencoes-preventivas class="cssapp-paginatarefa" *ngIf="CLASSIFICACAO == 'P' || CLASSIFICACAO == 'MM'"
+      [ID_PEDIDO_INPUT]="ID_PEDIDO_INPUT">
+    </app-manutencoes-preventivas>
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" style="margin: 0;"
+      (click)="displayManutencao = false;">Fechar</button>
+  </div>
+
 </p-dialog>

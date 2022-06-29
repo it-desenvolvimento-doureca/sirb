@@ -1,4 +1,4 @@
-<div class="col-md-12  hidden-xs">
+<div *ngIf="ID_PEDIDO_INPUT_2 == null" class="col-md-12  hidden-xs">
   <div class="card-header" data-background-color="orange">
     <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
@@ -92,7 +92,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div class="card-header" *ngIf="ID_PEDIDO_INPUT_2 == null" style="height: 49px; padding-top: 22px;" data-background-color="red">
             <h4 style="position: absolute;" class="title">Pedidos de Melhoria / Investimento</h4>
 
           </div>

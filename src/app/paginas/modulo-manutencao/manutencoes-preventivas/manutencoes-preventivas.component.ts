@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
@@ -81,6 +81,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('buttongravar') buttongravar: ElementRef;
+  @Input() ID_PEDIDO_INPUT: number;
   srcelement;
   nomeficheiro: any;
   type: string;
@@ -175,6 +176,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
         step = params['step'] || 0;
       });
 
+    if (this.ID_PEDIDO_INPUT != null) urlarray = ['lista_preventivas', 'view']
+
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar") || urlarray[1].match("view")) {
         this.novo = false;
@@ -185,6 +188,8 @@ export class ManutencoesPreventivasComponent implements OnInit {
           .subscribe(params => {
             id = params['id'] || 0;
           });
+
+        if (this.ID_PEDIDO_INPUT != null) id = this.ID_PEDIDO_INPUT;
 
         this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585editar");
         this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11585criar");
@@ -963,7 +968,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
           this.gravarTabelaFicheiros(res.ID_MANUTENCAO_CAB);
 
           if (submeter) this.sendemail(res.ID_MANUTENCAO_CAB, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
-            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome);
+            EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, null, null);
         },
         error => { console.log(error); this.simular(this.inputerro); });
 
@@ -1466,7 +1471,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
 
 
-  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO) {
+  sendemail(N_PEDIDO, DESCRICAO_PEDIDO, DATA_HORA_PEDIDO, EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, RESPONSAVEL_PEDIDO, NOTA, UTILIZADOR_NOTA) {
 
 
     var dados = "{N_PEDIDO::" + N_PEDIDO +
@@ -1476,12 +1481,17 @@ export class ManutencoesPreventivasComponent implements OnInit {
       "\n/EQUIPAMENTO::" + EQUIPAMENTO +
       "\n/LOCALIZACAO::" + LOCALIZACAO +
       "\n/RESPONSAVEL_PEDIDO::" + RESPONSAVEL_PEDIDO +
+      "\n/NOTA::" + NOTA +
+      "\n/UTILIZADOR_NOTA::" + UTILIZADOR_NOTA +
       "\n/EQUIPA_UTILIZADOR::" + EQUIPA_UTILIZADOR + "}";
 
     var MOMENTO = "NOVO PEDIDO MELHORIA";
+    var PAGINA = "PEDIDO MELHORIA";
 
+    if (NOTA != null) PAGINA = 'MANUTENÇÕES';
+    if (NOTA != null) MOMENTO = 'AO INSERIR NOTA';
 
-    var data = [{ MODULO: 14, MOMENTO: MOMENTO, PAGINA: "PEDIDO MELHORIA", FICHEIROS: null, ESTADO: true, DADOS: dados, EMAIL_PARA: EMAIL_PARA }];
+    var data = [{ MODULO: 14, MOMENTO: MOMENTO, PAGINA: PAGINA, FICHEIROS: null, ESTADO: true, DADOS: dados, EMAIL_PARA: EMAIL_PARA }];
 
 
 
@@ -1531,6 +1541,46 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
     this.MANMOVMANUTENCAONOTASService.create(nota).subscribe(
       res => {
+
+        var EQUIPAMENTO = "";
+        var LOCALIZACAO = "";
+        var EQUIPA_UTILIZADOR = "";
+        var EMAIL_PARA = "";
+
+        var TEXTO_STATUS_MAQUINA = "Em funcionamento";
+        if (this.STATUS_MAQUINA == 'P') {
+          TEXTO_STATUS_MAQUINA = "Parada";
+        }
+
+        if (this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO)) {
+          EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
+        }
+
+        EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+
+        if (this.TIPO_RESPONSAVEL == 'U') {
+          if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
+            EQUIPA_UTILIZADOR = this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR).label;
+
+
+          }
+        } else if (this.TIPO_RESPONSAVEL == 'E') {
+          if (this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA)) {
+            EQUIPA_UTILIZADOR = this.drop_equipas.find(item => item.value != '' && item.value == this.ID_EQUIPA).label;
+          }
+
+        } else if (this.TIPO_RESPONSAVEL == 'EX') {
+          EQUIPA_UTILIZADOR = this.NOME_FORNECEDOR;
+        }
+
+        if (this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO)) {
+          LOCALIZACAO = this.drop_localizacoes.find(item => item.value != '' && item.value == this.LOCALIZACAO).label;
+        }
+
+
+        if (data != null) this.sendemail(this.ID_PEDIDO, this.DESCRICAO_PEDIDO, this.formatDate2(this.DATA_HORA_PEDIDO) + " " + this.DATA_HORA_PEDIDO.toLocaleTimeString().slice(0, 5),
+          EQUIPAMENTO, LOCALIZACAO, EQUIPA_UTILIZADOR, EMAIL_PARA, this.user_nome, notatxt, this.user_nome);
+
         this.notas.push({ id: this.user, utilizador: this.user_nome, letra: letra, mensagem: notatxt, data: this.formatDateTime(data) });
         this.nota = "";
         this.vernotas(false);

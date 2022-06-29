@@ -151,6 +151,9 @@ export class FichaEquipamentoComponent implements OnInit {
   selected_d: any;
   acessocriarmanutencoespreventivas: any;
   btcriapreventiva: boolean;
+  CLASSIFICACAO: string;
+  ID_PEDIDO_INPUT: string;
+  displayManutencao: boolean;
 
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
     private renderer: Renderer, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer,
@@ -332,11 +335,13 @@ export class FichaEquipamentoComponent implements OnInit {
             }
 
             this.tabela_historico.push({
-              tipo_manutencao: (response[x][0] == 'C') ? 'Corretiva' : 'Preventiva',
+              tipo_manutencao: this.getTipo(response[x][0]),
               estado: this.estadosManutencoes(response[x][1]),
               data_inicio: (response[x][2] == null) ? null : this.formatDate(response[x][2]) + " " + new Date(response[x][2]).toLocaleTimeString(),
               data_fim: (response[x][3] == null) ? null : this.formatDate(response[x][3]) + " " + new Date(response[x][3]).toLocaleTimeString(),
-              data_pedido: data
+              data_pedido: data,
+              ID_PEDIDO: response[x][6],
+              CLASSIFICACAO: response[x][0]
             });
           }
         } else {
@@ -346,6 +351,18 @@ export class FichaEquipamentoComponent implements OnInit {
       },
       error => console.log(error));
 
+  }
+
+  getTipo(tipo) {
+    if (tipo == 'C') {
+      return 'Corretiva'
+    } else if (tipo == 'P') {
+      return 'Preventiva'
+    } else if (tipo == 'M') {
+      return 'Pedido Melhoria'
+    } else if (tipo == 'MM') {
+      return 'Manutenção Melhoria'
+    }
   }
 
   estadosManutencoes(valor: any) {
@@ -2100,5 +2117,16 @@ export class FichaEquipamentoComponent implements OnInit {
         }
       }
     }
+  }
+
+  verManutencao(dados) {
+    this.displayManutencao = true;
+    this.ID_PEDIDO_INPUT = dados.ID_PEDIDO;
+    this.CLASSIFICACAO = dados.CLASSIFICACAO;
+  }
+
+  onHide() {
+    this.ID_PEDIDO_INPUT = null;
+    this.CLASSIFICACAO = null;
   }
 }

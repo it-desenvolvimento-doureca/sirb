@@ -45,6 +45,7 @@ export class ListaPedidosComponent implements OnInit {
   { value: 'Rejeitada', label: 'Rejeitada' },
   { value: 'Reaberta', label: 'Reaberta' },
   { value: 'Cancelada', label: 'Cancelada' },
+  { value: 'Pausa', label: 'Pausa' },
   { value: 'Suspensa', label: 'Suspensa' },
   { value: 'Anulada', label: 'Anulada' }];
 
@@ -178,6 +179,8 @@ export class ListaPedidosComponent implements OnInit {
       return 'Reaberta';
     } else if (valor == 'R') {
       return 'Suspensa';
+    } else if (valor == 'S') {
+      return 'Pausa';
     }
 
     return 'Submetida';
