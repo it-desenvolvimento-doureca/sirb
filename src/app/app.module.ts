@@ -425,6 +425,7 @@ import { DOCDICTIPOSDOCUMENTOService } from './servicos/doc-dic-tipos-documento.
 import { DOCDICPOSTOSService } from './servicos/doc-dic-postos.service';
 import { GrowlModule } from 'primeng/primeng';
 import { FormManutencaoComponent } from './paginas/modulo-manutencao/form-manutencao/form-manutencao.component';
+import { PainelControloViewComponent } from './paginas/modulo-manutencao/painel-controlo-view/painel-controlo-view.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1026,6 +1027,7 @@ const routes: Routes = [
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
+  { path: 'painel_controlo_manutencao', component: PainelControloViewComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
   {
     path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido de Manutenção" },
     children: [
@@ -1313,7 +1315,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PostosDocumentacaoComponent,
     ListaDocumentoComponent,
     TipoDocumentoComponent,
-    FormManutencaoComponent
+    FormManutencaoComponent,
+    PainelControloViewComponent
   ],
   imports: [
     BrowserModule,

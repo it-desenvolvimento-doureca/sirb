@@ -852,7 +852,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"
                         [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
-                    || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true)
+                    || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true) || isLinkActive('/painel_controlo_manutencao',true)
                     || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_preventivas',true) || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
@@ -912,6 +912,13 @@
                                         <li id="node11592" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/quadro_pedidos_pendentes']">Quadro Pedidos
                                                 Pendentes</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node11593" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/painel_controlo_manutencao']">Painel Controlo</a>
                                         </li>
                                     </td>
                                 </tr>
