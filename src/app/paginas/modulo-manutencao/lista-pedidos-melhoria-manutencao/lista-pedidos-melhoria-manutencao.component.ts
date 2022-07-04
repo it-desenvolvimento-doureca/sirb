@@ -86,7 +86,7 @@ export class ListaPedidosMelhoriaManutencaoComponent implements OnInit {
         this.filtrar(this.filtro, "ESTADO", true, "in");
       }
     } else {
-      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada"];
+      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada", "Reaberta"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }

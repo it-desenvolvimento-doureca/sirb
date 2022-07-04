@@ -88,7 +88,7 @@ export class ListaPedidosComponent implements OnInit {
 
 
     } else {
-      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada", "Suspensa"];
+      this.filtro = ["Em Elaboração", "Submetida", "Planeada", "Concluída", "Rejeitada", "Suspensa","Reaberta"];
       this.filtrar(this.filtro, "ESTADO", true, "in");
 
     }
