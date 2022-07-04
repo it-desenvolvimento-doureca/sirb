@@ -295,14 +295,15 @@ export class ManutencoesPreventivasComponent implements OnInit {
 
     this.drop_ambitos_manutencao = [];
     this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: "" });
-    this.MANDICAMBITOSService.getAll().subscribe(
+    this.MANDICAMBITOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         for (var x in response) {
 
           this.drop_ambitos_manutencao.push({
-            value: response[x].ID,
-            label: response[x].NOME
+            value: response[x][0],
+            label: response[x][1],
+            email: response[x][2]
           });
 
         }
@@ -1556,7 +1557,11 @@ export class ManutencoesPreventivasComponent implements OnInit {
           EQUIPAMENTO = this.drop_equipamentos.find(item => item.value != '' && item.value == this.EQUIPAMENTO).label;
         }
 
-        EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+        if (this.TIPO_MANUTENCAO != 'P') {
+          EMAIL_PARA = (this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL)) ? this.drop_utilizadores.find(item => item.value != '' && item.value == this.ID_RESPONSAVEL).email : null;
+        } else {
+          EMAIL_PARA = (this.drop_ambitos_manutencao.find(item => item.value != '' && item.value == this.AMBITO_MANUTENCAO)) ? this.drop_ambitos_manutencao.find(item => item.value != '' && item.value == this.AMBITO_MANUTENCAO).email : null;
+        }
 
         if (this.TIPO_RESPONSAVEL == 'U') {
           if (this.drop_utilizadores.find(item => item.value != '' && item.value == this.UTILIZADOR)) {
