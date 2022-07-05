@@ -173,6 +173,7 @@ export class FormplanosComponent implements OnInit {
     { value: 'V', label: "Controlada/ Verificada" }]
 
   editar_linha: boolean = true;
+  drop_utilizadoresInativos: any[];
 
 
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
@@ -445,10 +446,13 @@ export class FormplanosComponent implements OnInit {
         }
 
         this.drop_accoes = this.drop_accoes.slice();
-        if (countinua) this.carregaUtilizadores(inicia, id)
+        if (countinua) {
+          this.carregaUtilizadores(inicia, id);
+          this.carregaUtilizadoresInativos();
+        }
 
       },
-      error => { console.log(error); if (countinua) this.carregaUtilizadores(inicia, id) });
+      error => { console.log(error); if (countinua) { this.carregaUtilizadores(inicia, id); this.carregaUtilizadoresInativos(); } });
   }
 
   carregaUtilizadores(inicia, id) {
@@ -468,6 +472,22 @@ export class FormplanosComponent implements OnInit {
         if (inicia) this.inicia(id);
       },
       error => { console.log(error); if (inicia) this.inicia(id); });
+  }
+
+  carregaUtilizadoresInativos() {
+    this.drop_utilizadoresInativos = [];
+    this.GERUTILIZADORESService.getAllInativo().subscribe(
+      response => {
+
+        for (var x in response) {
+
+          this.drop_utilizadoresInativos.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email });
+        }
+
+        this.drop_utilizadoresInativos = this.drop_utilizadoresInativos.slice();
+
+      },
+      error => { console.log(error); });
   }
 
   carrega_PLANOS_ESTRATEGICOS() {
@@ -645,6 +665,11 @@ export class FormplanosComponent implements OnInit {
             }
 
             var referencia_campo = (response[x][0].referencia == null) ? null : { value: response[x][0].referencia, label: response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA, descricao: response[x][0].design_REFERENCIA }
+
+            var utzinativo = this.drop_utilizadoresInativos.find(item => item.value == response[x][0].responsavel);
+            if (utzinativo) {
+              this.drop_utilizadores.push(utzinativo);
+            }
 
             this.tabelaaccoes.push({
               dados: response[x][0],

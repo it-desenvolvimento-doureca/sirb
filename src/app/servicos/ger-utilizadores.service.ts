@@ -36,6 +36,14 @@ export class GERUTILIZADORESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAllInativo(): Observable<GER_UTILIZADORES[]> {
+    const url = webUrl.host + '/rest/sirb/getGER_UTILIZADORES_INATIVO';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   getDadosUtilizador(id): Observable<GER_UTILIZADORES[]> {
     const url = webUrl.host + '/rest/sirb/getDadosUtilizador/' + id;
     return this.http
