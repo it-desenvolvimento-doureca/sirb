@@ -1,0 +1,76 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tipos de Documento</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
+              </p-column>
+              <p-column field="caminho" header="Caminho" [filter]="true" [sortable]="true" filterMatchMode="equals">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <div class="lista_gestao_pastas">
+                    <p-breadcrumb [model]="car.items"></p-breadcrumb>
+                  </div>
+                </ng-template>
+              </p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal dados-->
+<p-dialog header="Tipo de Documento" [responsive]="true" [positionTop]="50" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'100vw','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+  [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
+
+  <form id="formReclama" class="gestao_pastas" role="form" ngNativeValidate (ngSubmit)="gravar()" style="width:70vw;">
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="col-md-12" style="padding: 0; min-height: 171px;">
+
+        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-5 col-lg-5">
+          <label>Nome:</label>
+          <input type="text" class="form-control2" [(ngModel)]="nome" [ngModelOptions]="{standalone: true}"
+            style=" height: 30px;" [disabled]="!acesso_editar" required>
+        </div>
+
+        <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
+          <label>Caminho:</label>
+          <input type="text" #v4 (ngModelChange)="atualizaItems(v4.value)" class="form-control2" [(ngModel)]="caminho"
+            [ngModelOptions]="{standalone: true}" style=" height: 30px;" [disabled]="!acesso_editar" required>
+          <span style="font-size: 10px;">Separar Pastas com "/".</span>
+          <p-breadcrumb [model]="items"></p-breadcrumb>
+        </div>
+
+
+      </div>
+      <div class="col-md-12">
+        <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
+          (click)="dialognovo = false">Fechar</button>
+        <button [disabled]="!acesso_apagar" style="float: right; margin-right: 17px;" type="button" (click)="apagar()"
+          [hidden]="novo" class="btn btn-danger" data-dismiss="modal">Remover</button>
+        <button [disabled]="!acesso_editar" style="float: right; margin-right: 17px;" type="submit"
+          class="btn btn-success ">Gravar</button>
+      </div>
+    </div>
+
+    <p-footer>
+    </p-footer>
+  </form>
+</p-dialog>

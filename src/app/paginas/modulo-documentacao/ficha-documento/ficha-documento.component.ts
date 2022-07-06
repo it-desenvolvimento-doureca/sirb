@@ -9,6 +9,7 @@ import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
 import { DOC_FICHA_DOCUMENTOS } from 'app/entidades/DOC_FICHA_DOCUMENTOS';
 import { Message } from 'primeng/primeng';
 import { UploadService } from 'app/servicos/upload.service';
+import { DOCGESTAOPASTASService } from 'app/servicos/doc-gestao-pastas.service';
 
 @Component({
   selector: 'app-ficha-documento',
@@ -70,6 +71,8 @@ export class FichaDocumentoComponent implements OnInit {
   caminhoOriginal: string;
   ID_FICHEIRO: string;
   dados: DOC_FICHA_DOCUMENTOS;
+  id_CAMINHO: any;
+  drop_localizacoes: any;
 
   constructor(private renderer: Renderer,
     private route: ActivatedRoute, private router: Router,
@@ -78,6 +81,7 @@ export class FichaDocumentoComponent implements OnInit {
     private DOCFICHADOCUMENTOSService: DOCFICHADOCUMENTOSService,
     private DOCDICTIPOSDOCUMENTOService: DOCDICTIPOSDOCUMENTOService,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService,
+    private DOCGESTAOPASTASService: DOCGESTAOPASTASService,
     private UploadService: UploadService,
     private sanitizer: DomSanitizer) { }
 
@@ -132,6 +136,7 @@ export class FichaDocumentoComponent implements OnInit {
     this.listarTiposDocumento();
     this.artigos();
     this.maquinas();
+    this.localizacoes_alfresco();
   }
 
   inicia(id) {
@@ -153,6 +158,7 @@ export class FichaDocumentoComponent implements OnInit {
         if (response[0].REFERENCIA != null) this.referencia_campo = { value: response[0].REFERENCIA, label: response[0].REFERENCIA + " - " + response[0].DESC_REFERENCIA, DESIGN: response[0].DESC_REFERENCIA };
         //this.tipoOriginal = response[0].TIPO_DOCUMENTO;
         this.tipo_FICHEIRO = response[0].TIPO_FICHEIRO;
+        this.id_CAMINHO = response[0].ID_CAMINHO;
         this.ficheiroOriginal = response[0].NOME_FICHEIRO;
         this.getFILEALFRESCO(response[0].ID_FICHEIRO);
 
@@ -269,6 +275,27 @@ export class FichaDocumentoComponent implements OnInit {
 
   }
 
+  localizacoes_alfresco() {
+    this.DOCGESTAOPASTASService.getAll().subscribe(
+      response => {
+        this.drop_localizacoes = [];
+        this.drop_localizacoes.push({ value: '', label: 'Selecionar Localização' });
+        var count = Object.keys(response).length;
+        if (count > 0) {
+
+          for (var x in response) {
+            this.drop_localizacoes.push({ value: response[x].ID, label: response[x].NOME + ' (' + response[x].CAMINHO + ')', caminho: response[x].CAMINHO });
+          }
+
+          this.drop_localizacoes = this.drop_localizacoes.slice();
+
+
+        }
+
+      }, error => { console.log(error); });
+
+  }
+
 
   guardarDocumento() {
     this.btgravar = true;
@@ -313,6 +340,7 @@ export class FichaDocumentoComponent implements OnInit {
     documento.REFERENCIA = this.selectedReferencia;
     documento.DESC_REFERENCIA = this.selectedReferenciadescricao;
     documento.NOME_ABA = this.nomeAba;
+    documento.ID_CAMINHO = this.id_CAMINHO;
     documento.UTZ_MODIF = this.user;
     documento.DATA_MODIF = new Date();
     documento.INATIVO = false;
@@ -329,8 +357,12 @@ export class FichaDocumentoComponent implements OnInit {
     bodyFormData.append('UTZ', this.user);
     bodyFormData.append('NOME_ABA', this.nomeAba);
     bodyFormData.append('TIPO_FICHEIRO', this.tipo_FICHEIRO);
+    bodyFormData.append('ID_CAMINHO', this.id_CAMINHO);
 
-    var caminho = 'Doureca/Produção/' + descricaoTipoDocumento;
+    // var caminho = 'Doureca/Produção/' + descricaoTipoDocumento;
+
+    var caminho = this.drop_localizacoes.find(item => item.value == this.id_CAMINHO).caminho;
+    caminho = caminho + '/' + descricaoTipoDocumento
 
     if (this.selectedReferencia != null && this.selectedReferencia != "") {
       caminho = (caminho == "") ? "" : caminho + '/';
@@ -342,10 +374,10 @@ export class FichaDocumentoComponent implements OnInit {
       caminho += this.selectedMaquina + ' - ' + descricaoMaquina;
     }
 
-    if (this.selectedSector != null && this.selectedSector != "") {
+    /*if (this.selectedSector != null && this.selectedSector != "") {
       caminho = (caminho == "") ? "" : caminho + '/';
       caminho += descricaoSector;
-    }
+    }*/
 
     bodyFormData.append('caminho', caminho);
 

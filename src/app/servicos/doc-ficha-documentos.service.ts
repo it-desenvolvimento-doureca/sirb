@@ -97,6 +97,15 @@ export class DOCFICHADOCUMENTOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  createNodeFolder(data) {
+    return this.http
+      .post(webUrl.middleware_alfresco + '/createNodeFolder', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractDataString)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+
   getFileAlfresco(id) {
     return this.http
       .get(webUrl.middleware_alfresco + '/getFile/' + id + '')

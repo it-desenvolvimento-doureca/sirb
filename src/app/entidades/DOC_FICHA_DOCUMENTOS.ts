@@ -23,4 +23,5 @@ export class DOC_FICHA_DOCUMENTOS {
     CAMINHO: string;
     NOME_FICHEIRO: string;
     TIPO_FICHEIRO: string;
+    ID_CAMINHO: number;
 }

@@ -49,7 +49,7 @@ export class LoginService implements CanActivate {
         node028: "tipologia_dosificadores", node029: "dosificacao", node0261: 'dosificadores', node170: 'planosestrategicos',
         node1611: 'planosestrategicosengenaria', node1631: 'planosestrategicosproducao', node1641: 'planosestrategicoslogistica', node1651: 'planosestrategicosmanutencao', node1671: 'planosestrategicosComercial', node1681: 'planosestrategicosProjetos',
         node1691: 'planosestrategicosFinanceira', node1661: 'planosestrategicosinjecao', node1621: 'planosestrategicosqualidade', node17012: 'analise_planosestrategicos'
-        , node22: 'analisesdashboard', node11592: 'quadro_pedidos_pendentes', node11593: 'painel_controlo_manutencao', node11583: 'pedidos_melhoria', node11584: 'lista_pedidos_melhoria', node1167101: 'ambitosmanutencao', node11585: 'lista_preventivas'
+        , node22: 'analisesdashboard', node11592: 'quadro_pedidos_pendentes', node11593: 'painel_controlo_manutencao', node11583: 'pedidos_melhoria', node11584: 'lista_pedidos_melhoria', node1167101: 'ambitosmanutencao', node11623: 'gestao_pastas', node11585: 'lista_preventivas'
         , node1161: 'fichadocumento', node11621: 'tipos_documentacao', node11622: 'postos_documento'
     };
 

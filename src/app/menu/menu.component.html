@@ -940,7 +940,7 @@
                                     <td>
                                         <li id="node116210" data-toggle="collapse" data-target="#parametrosmanutencao"
                                             class="collapsed"
-                                            [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/edificios',true)
+                                            [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/ambitosmanutencao',true)   || isLinkActive('/edificios',true)
                                             || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) }">
 
                                             <a>Parâmetros
@@ -972,7 +972,7 @@
                                             <li id="node1167101" [routerLinkActive]="['active']"
                                                 [routerLink]="['/ambitosmanutencao']">
                                                 <a>Âmbitos Manutenção</a>
-                                            </li>
+                                            </li>                                          
 
                                         </ul>
                                     </td>
@@ -1527,7 +1527,7 @@
                 <!-- MENU Documentacao -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [class.active]="isLinkActive('/fichadocumento',false) || isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true)">
+                        [class.active]="isLinkActive('/fichadocumento',false) || isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true) || isLinkActive('/gestao_pastas',true) ">
                         <h4 class="panel-title">
                             <a id="node11601" data-toggle="collapse" data-parent="#accordion"
                                 href="#collapseDocumentacao">
@@ -1549,7 +1549,7 @@
                                     <td>
                                         <li id="node1162" data-toggle="collapse" data-target="#parametrosDocumentacao"
                                             class="collapsed"
-                                            [ngClass]="{ 'active':  isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true)}">
+                                            [ngClass]="{ 'active':  isLinkActive('/tipos_documentacao',true) ||  isLinkActive('/postos_documento',true) || isLinkActive('/gestao_pastas',true)  }">
                                             <a>Parâmetros
                                                 <span class="arrow"></span>
                                             </a>
@@ -1563,6 +1563,10 @@
                                                 [routerLink]="['/postos_documento']">
                                                 <a>Postos</a>
                                             </li>
+                                            <li id="node11623" [routerLinkActive]="['active']"
+                                            [routerLink]="['/gestao_pastas']">
+                                            <a>Gestão Pastas</a>
+                                        </li>
                                         </ul>
                                     </td>
                                 </tr>

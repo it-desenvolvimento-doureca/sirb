@@ -10,7 +10,7 @@ import { HomeComponent } from './paginas/home/home.component';
 import { RouterComponent } from "app/router.component";
 import { FornecedoresComponent } from './paginas/fornecedores/fornecedores.component';
 import { TinasComponent } from './paginas/tinas/tinas.component';
-import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule, OverlayPanelModule, TriStateCheckboxModule, TooltipModule, TabViewModule } from 'primeng/primeng';
+import { DataTableModule, SharedModule, ConfirmDialogModule, ConfirmationService, DropdownModule, CalendarModule, DialogModule, ColorPickerModule, RadioButtonModule, TreeNode, ChartModule, PickListModule, MultiSelectModule, EditorModule, AutoCompleteModule, ProgressBarModule, FileUploadModule, ToggleButtonModule, ListboxModule, ScheduleModule, OrderListModule, PanelModule, SelectButtonModule, OverlayPanelModule, TriStateCheckboxModule, TooltipModule, TabViewModule, BreadcrumbModule } from 'primeng/primeng';
 import { AppGlobals } from "app/menu/sidebar.metadata";
 import { FormComponent } from './paginas/fornecedores/form/form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -426,6 +426,8 @@ import { DOCDICPOSTOSService } from './servicos/doc-dic-postos.service';
 import { GrowlModule } from 'primeng/primeng';
 import { FormManutencaoComponent } from './paginas/modulo-manutencao/form-manutencao/form-manutencao.component';
 import { PainelControloViewComponent } from './paginas/modulo-manutencao/painel-controlo-view/painel-controlo-view.component';
+import { LocalizacoesAlfrescoComponent } from './paginas/modulo-documentacao/parametros/localizacoes-alfresco/localizacoes-alfresco.component';
+import { DOCGESTAOPASTASService } from './servicos/doc-gestao-pastas.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1024,6 +1026,7 @@ const routes: Routes = [
   { path: 'niveis_criticidade', component: NiveisCriticidadeComponent, canActivate: [LoginService], data: { breadcrumb: "Níveis de Criticidade" } },
   { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Equipas Manutenção" } },
   { path: 'ambitosmanutencao', component: AmbitosManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Âmbitos Manutenção" } },
+  { path: 'gestao_pastas', component: LocalizacoesAlfrescoComponent, canActivate: [LoginService], data: { breadcrumb: "Gestão Pastas" } },
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
@@ -1316,7 +1319,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ListaDocumentoComponent,
     TipoDocumentoComponent,
     FormManutencaoComponent,
-    PainelControloViewComponent
+    PainelControloViewComponent,
+    LocalizacoesAlfrescoComponent
   ],
   imports: [
     BrowserModule,
@@ -1355,6 +1359,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     ChartsModule,
     TabViewModule,
     GrowlModule,
+    BreadcrumbModule,
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,
@@ -1577,7 +1582,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DOCFICHADOCUMENTOSService,
     DOCDICTIPOSDOCUMENTOService,
     DOCDICPOSTOSService,
-
+    DOCGESTAOPASTASService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

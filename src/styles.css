@@ -11,3 +11,25 @@
 .planosestrategicostabela #tabelaaccoes .ui-datatable-scrollable-body {
     overflow: auto !important;
 }
+
+.gestao_pastas .ui-breadcrumb ul {
+    padding-left: 0 !important;
+}
+
+.lista_gestao_pastas .ui-breadcrumb ul {
+    padding-left: 0 !important;
+}
+
+.lista_gestao_pastas .ui-breadcrumb a {
+    color: black !important;
+}
+
+.lista_gestao_pastas .ui-breadcrumb ul a {
+    color: black !important;
+}
+
+.lista_gestao_pastas .ui-breadcrumb {
+    height: 24px !important;
+    padding: 0 !important;
+    background: none !important;
+}
