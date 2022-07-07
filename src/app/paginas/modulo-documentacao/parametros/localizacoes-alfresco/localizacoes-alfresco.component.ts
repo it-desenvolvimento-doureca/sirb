@@ -89,7 +89,7 @@ export class LocalizacoesAlfrescoComponent implements OnInit {
         this.showMessage('warn', 'Aviso', 'Já existe uma Localização com o mesmo caminho!');
       } else {
         if (this.novo || this.caminho != this.caminho_antigo) {
-          this.criar_altera_pasta_alfresco(this.novo);
+          this.criar_altera_pasta_alfresco(this.novo, this.id_depart_selected);
         } else {
           this.gravar2(null);
         }
@@ -98,7 +98,7 @@ export class LocalizacoesAlfrescoComponent implements OnInit {
       error => {
         console.log(error);
         if (this.novo || this.caminho != this.caminho_antigo) {
-          this.criar_altera_pasta_alfresco(this.novo);
+          this.criar_altera_pasta_alfresco(this.novo, this.id_depart_selected);
         } else {
           this.gravar2(null);
         }
@@ -135,11 +135,12 @@ export class LocalizacoesAlfrescoComponent implements OnInit {
     }
   }
 
-  criar_altera_pasta_alfresco(novo) {
+  criar_altera_pasta_alfresco(novo, id) {
     let data = {};
     data = {
       caminho: this.caminho,
-      novo: novo
+      novo: novo,
+      id: id
     }
     this.DOCFICHADOCUMENTOSService.createNodeFolder(data).subscribe((res) => {
       this.gravar2(res);
