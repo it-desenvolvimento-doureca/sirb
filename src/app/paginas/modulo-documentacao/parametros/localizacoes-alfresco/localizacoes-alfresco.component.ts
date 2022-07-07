@@ -139,6 +139,7 @@ export class LocalizacoesAlfrescoComponent implements OnInit {
     let data = {};
     data = {
       caminho: this.caminho,
+      caminho_antigo: this.caminho_antigo,
       novo: novo,
       id: id
     }
