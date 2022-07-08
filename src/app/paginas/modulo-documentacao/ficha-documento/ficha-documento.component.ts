@@ -152,7 +152,7 @@ export class FichaDocumentoComponent implements OnInit {
         this.selectedMaquina = response[0].COD_MAQUINA;
         //let reff = response[0].id_Referencia;
         this.selectedTipo = response[0].TIPO_DOCUMENTO;
-        this.selectedSector = response[0].SECTOR;
+        this.selectedSector = (response[0].SECTOR == null) ? [] : response[0].SECTOR.split(',');
         this.ID_FICHEIRO = response[0].ID_FICHEIRO;
         this.caminhoOriginal = response[0].CAMINHO;
         if (response[0].REFERENCIA != null) this.referencia_campo = { value: response[0].REFERENCIA, label: response[0].REFERENCIA + " - " + response[0].DESC_REFERENCIA, DESIGN: response[0].DESC_REFERENCIA };
@@ -196,7 +196,7 @@ export class FichaDocumentoComponent implements OnInit {
   //listar os dados sectores
   listarsectores() {
     this.drop_sectores = [];
-    this.drop_sectores.push({ value: '', label: 'Selecionar Sector' });
+    //this.drop_sectores.push({ value: '', label: 'Selecionar Sector' });
     this.RHSECTORESService.getAll().subscribe(
       response => {
         for (var x in response) {
@@ -319,10 +319,10 @@ export class FichaDocumentoComponent implements OnInit {
       descricaoMaquina = this.maquinasList.find(item => item.value == this.selectedMaquina).descricao
     }
 
-    var descricaoSector = null;
+    /*var descricaoSector = null;
     if (this.selectedSector != null && this.selectedSector != "") {
       descricaoSector = this.drop_sectores.find(item => item.value == this.selectedSector).label
-    }
+    }*/
 
     var descricaoTipoDocumento = null;
     if (this.selectedTipo != null && this.selectedTipo != "") {
@@ -333,7 +333,7 @@ export class FichaDocumentoComponent implements OnInit {
     documento.COD_DOCUMENTO = this.codigo;
     documento.DESCRICAO = this.descricao;
     documento.NOME_DOCUMENTO = this.nome;
-    documento.SECTOR = this.selectedSector;
+    documento.SECTOR = (this.selectedSector == null || this.selectedSector.length == 0) ? null : this.selectedSector.toString();
     documento.COD_MAQUINA = this.selectedMaquina;
     documento.DESC_MAQUINA = descricaoMaquina;
     documento.TIPO_DOCUMENTO = this.selectedTipo;
@@ -348,7 +348,7 @@ export class FichaDocumentoComponent implements OnInit {
     bodyFormData.append('COD_DOCUMENTO', this.codigo);
     bodyFormData.append('DESCRICAO', this.descricao);
     bodyFormData.append('NOME_DOCUMENTO', this.nome);
-    bodyFormData.append('SECTOR', this.selectedSector);
+    bodyFormData.append('SECTOR', (this.selectedSector == null || this.selectedSector.length == 0) ? null : this.selectedSector.toString());
     bodyFormData.append('COD_MAQUINA', this.selectedMaquina);
     bodyFormData.append('DESC_MAQUINA', descricaoMaquina);
     bodyFormData.append('TIPO_DOCUMENTO', this.selectedTipo);
@@ -420,9 +420,9 @@ export class FichaDocumentoComponent implements OnInit {
     if (this.criar == true) {
       let data = {};
       data = {
-        SECTOR: this.selectedSector,
-        MAQUINA: this.selectedMaquina,
-        REFERENCIA: this.selectedReferencia,
+        SECTOR: (this.selectedSector == null || this.selectedSector.length == 0) ? null : this.selectedSector.toString(),
+        MAQUINA: (this.selectedMaquina == '') ? null : this.selectedMaquina,
+        REFERENCIA: (this.selectedReferencia == '') ? null : this.selectedReferencia,
         ID: (this.idParam == null) ? 0 : this.idParam,
         CODIGO: this.codigo,
       }
@@ -443,9 +443,9 @@ export class FichaDocumentoComponent implements OnInit {
 
       let data = {};
       data = {
-        SECTOR: this.selectedSector,
-        MAQUINA: this.selectedMaquina,
-        REFERENCIA: this.selectedReferencia,
+        SECTOR: (this.selectedSector == null || this.selectedSector.length == 0) ? null : this.selectedSector.toString(),
+        MAQUINA: (this.selectedMaquina == '') ? null : this.selectedMaquina,
+        REFERENCIA: (this.selectedReferencia == '') ? null : this.selectedReferencia,
         ID: this.idParam,
         CODIGO: this.codigo,
       }
@@ -631,9 +631,9 @@ export class FichaDocumentoComponent implements OnInit {
     if ((this.criar == true || this.editar == true) && this.codigo != null && this.nome != null && this.selectedTipo && this.ficheiro != null && this.nomeAba != null) {
       let dataCheckCode = {};
       dataCheckCode = {
-        SECTOR: this.selectedSector,
-        MAQUINA: this.selectedMaquina,
-        REFERENCIA: this.selectedReferencia,
+        SECTOR: (this.selectedSector == null || this.selectedSector.length == 0) ? null : this.selectedSector.toString(),
+        MAQUINA: (this.selectedMaquina == '') ? null : this.selectedMaquina,
+        REFERENCIA: (this.selectedReferencia == '') ? null : this.selectedReferencia,
         ID: (this.idParam == null) ? 0 : this.idParam,
         CODIGO: this.codigo,
       }

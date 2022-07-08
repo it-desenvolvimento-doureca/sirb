@@ -61,7 +61,7 @@ export class PostosDocumentacaoComponent implements OnInit {
         this.postos = [];
         for (var x in response) {
           this.postos.push({
-            id_POSTO: response[x].ID, descricao: response[x].NOME, ip_POSTO: response[x].IP_POSTO, sector: response[x].SECTOR,
+            id_POSTO: response[x].ID, descricao: response[x].NOME, ip_POSTO: response[x].IP_POSTO, sector: (response[x].SECTOR == null) ? null : response[x].SECTOR.split(','),
             dados: response[x]
           });
         }
@@ -74,7 +74,7 @@ export class PostosDocumentacaoComponent implements OnInit {
   //listar os dados sectores
   listarsectores() {
     this.sectores = [];
-    this.sectores.push({ value: '', label: 'Selecionar Sector' });
+    //this.sectores.push({ value: '', label: 'Selecionar Sector' });
     this.RHSECTORESService.getAll().subscribe(
       response => {
         for (var x in response) {
@@ -117,7 +117,7 @@ export class PostosDocumentacaoComponent implements OnInit {
     if (posto.id_POSTO != null) depart = posto.dados;
     depart.NOME = posto.descricao;
     depart.IP_POSTO = posto.ip_POSTO;
-    depart.SECTOR = posto.sector;
+    depart.SECTOR = (posto.sector == null || posto.sector.length == 0) ? null : posto.sector.toString();
 
 
     depart.UTZ_MODIF = this.user;

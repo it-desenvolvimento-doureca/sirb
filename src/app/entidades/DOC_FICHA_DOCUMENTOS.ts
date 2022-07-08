@@ -1,6 +1,6 @@
 export class DOC_FICHA_DOCUMENTOS {
     ID: number;
-    SECTOR: number;
+    SECTOR: string;
     DESC_MAQUINA: string;
     COD_MAQUINA: string;
     REFERENCIA: string;

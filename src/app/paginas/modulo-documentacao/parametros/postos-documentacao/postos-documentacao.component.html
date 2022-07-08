@@ -34,9 +34,9 @@
               </p-column>
               <p-column [editable]="false" field="sector" header="SECTOR">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <p-dropdown appendTo="body" [options]="sectores" [autoWidth]="false" [disabled]="!acesso_editar"
+                  <p-multiSelect appendTo="body" [options]="sectores" [disabled]="!acesso_editar"
                     [style]="{'width':'100%'}" [(ngModel)]="car['sector']" [ngModelOptions]="{standalone: true}">
-                  </p-dropdown>
+                  </p-multiSelect>
                 </ng-template>
               </p-column>
 
