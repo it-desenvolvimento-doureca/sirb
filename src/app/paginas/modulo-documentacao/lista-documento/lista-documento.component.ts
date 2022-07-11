@@ -93,7 +93,7 @@ export class ListaDocumentoComponent implements OnInit {
     this.mensagemtabela = "A Carregar...";
 
     this.cols = [];
-    this.DOCFICHADOCUMENTOSService.getAll().subscribe(
+    this.DOCFICHADOCUMENTOSService.getAll2().subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count == 0) {
@@ -102,13 +102,13 @@ export class ListaDocumentoComponent implements OnInit {
         for (var x in response) {
 
           this.cols.push({
-            ID_FICHA_DOCUMENTO: response[x].ID,
-            DATA_HORA_PEDIDO: this.formatDate(response[x].DATA_CRIA) + " " + new Date(response[x].DATA_CRIA).toLocaleTimeString().slice(0, 5),
-            CODIGO: response[x].COD_DOCUMENTO,
-            SECTOR: response[x].SECTOR,
-            REFERENCIA: (response[x].REFERENCIA == null) ? '' : response[x].REFERENCIA + ' - ' + response[x].DESC_REFERENCIA,
-            MAQUINA: (response[x].COD_MAQUINA == null) ? '' : response[x].COD_MAQUINA + ' - ' + response[x].DESC_MAQUINA,
-            NOME_DOCUMENTO: response[x].NOME_DOCUMENTO,
+            ID_FICHA_DOCUMENTO: response[x][0],
+            DATA_HORA_PEDIDO: this.formatDate(response[x][1]) + " " + new Date(response[x][1]).toLocaleTimeString().slice(0, 5),
+            CODIGO: response[x][2],
+            SECTOR: response[x][8],
+            REFERENCIA: (response[x][3] == null) ? '' : response[x][3] + ' - ' + response[x][4],
+            MAQUINA: (response[x][5] == null) ? '' : response[x][5] + ' - ' + response[x][6],
+            NOME_DOCUMENTO: response[x][7],
           });
 
         }

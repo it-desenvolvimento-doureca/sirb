@@ -891,10 +891,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           this.gravalinhasPLANOACOES(response.id_PLANO_CAB, response.estado, cria_tarefas, false);
         }, error => { console.log(error); });
     } else {
+      plano.utz_CRIA = this.utilizador;
       this.PAMOVCABService.update(plano).then(
         response => {
           //cria_tarefas   
-          if (plano.estado != "P") cria_tarefas = true;
+          if (plano.estado != "E") cria_tarefas = true;
           this.gravalinhasPLANOACOES(plano.id_PLANO_CAB, plano.estado, cria_tarefas, true);
         }, error => { console.log(error); });
     }
@@ -972,6 +973,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           novo = true;
         } else {
           cria_tarefas = false;
+          if (this.tabelaaccoes[x].id_TAREFA == null && estado != 'E') cria_tarefas = true;
         }
         var email_p = "";
 

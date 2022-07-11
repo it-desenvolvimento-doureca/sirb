@@ -24,6 +24,15 @@
                 </ng-template>
               </p-column>
 
+              <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="NOME_DOCUMENTO"
+                header="Nome Documento" [style]="{'width':'197px'}">
+                <ng-template pTemplate="filter" let-col>
+                  <input class="ui-column-filter ui-inputtext ui-widget ui-state-default ui-corner-all"
+                    [(ngModel)]="NOME_DOCUMENTO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')"
+                    type="text">
+                </ng-template>
+              </p-column>
+
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="CODIGO" header="Código"
                 [style]="{'width':'197px'}">
                 <ng-template pTemplate="filter" let-col>
@@ -31,7 +40,6 @@
                     [(ngModel)]="CODIGO" #v (ngModelChange)="filtrar(v.value,col.field,false,'contains')" type="text">
                 </ng-template>
               </p-column>
-
 
 
               <p-column [sortable]="true" [filter]="true" styleclass="text-danger" field="SECTOR" header="Sector">

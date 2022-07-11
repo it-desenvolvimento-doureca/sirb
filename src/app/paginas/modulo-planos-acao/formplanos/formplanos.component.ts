@@ -995,6 +995,8 @@ export class FormplanosComponent implements OnInit {
       if (novo) {
         accoes.data_CRIA = new Date();
         accoes.utz_CRIA = this.user;
+      } else {
+        if (this.tabelaaccoes[x].id_TAREFA == null) cria_tarefas = true;
       }
       accoes.data_MODIF = new Date();
       accoes.utz_MODIF = this.user;

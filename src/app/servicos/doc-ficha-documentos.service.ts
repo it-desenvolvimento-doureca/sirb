@@ -27,6 +27,14 @@ export class DOCFICHADOCUMENTOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getAll2(): Observable<DOC_FICHA_DOCUMENTOS[]> {
+    const url = webUrl.host + '/rest/sirb/getDOC_FICHA_DOCUMENTOS2';
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deleteDOC_FICHA_DOCUMENTOS/' + id + '')
