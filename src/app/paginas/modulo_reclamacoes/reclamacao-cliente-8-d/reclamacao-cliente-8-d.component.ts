@@ -303,6 +303,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
   drop_cliente_pesquisa: any[];
   cliente_pesquisa: any;
+  yearTimeout: any;
+  selected_row: any;
+  justificacao_DATA_FIM: any;
+  displayJustificacaoRESPONSAVEL: boolean;
+  displayJustificacaoDATAFIM: boolean;
+  justificacao_RESPONSAVEL: any;
 
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
@@ -1163,7 +1169,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               this.tabelaaccoescorretivas.push({
                 obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                 data: response[x], concluido_UTZ: response[x].concluido_UTZ, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
-                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO,
+                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO, justificacao_DATA_FIM: null,
+                justificacao_RESPONSAVEL: null,
                 data_PREVISTA: new Date(response[x].data_PREVISTA), descricao: accao, area: response[x].area
               });
 
@@ -1172,7 +1179,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               this.tabelaEficacia.push({
                 obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                 data: response[x], concluido_UTZ: response[x].concluido_UTZ, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
-                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO,
+                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO, justificacao_DATA_FIM: null,
+                justificacao_RESPONSAVEL: null,
                 data_PREVISTA: new Date(response[x].data_PREVISTA), descricao: accao, area: response[x].area
               });
 
@@ -1181,7 +1189,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               this.tabelaaccoesimediatas.push({
                 obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                 data: response[x], concluido_UTZ: response[x].concluido_UTZ, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
-                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO,
+                id: id2, data_REAL: data_real, responsavel: tipo + response[x].responsavel, id_ACCOES: response[x].id_ACCAO, justificacao_DATA_FIM: null,
+                justificacao_RESPONSAVEL: null,
                 data_PREVISTA: new Date(response[x].data_PREVISTA), ordem: response[x].ordem, descricao: accao, area: response[x].area
               });
 
@@ -1190,7 +1199,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
               this.tabelapreventiva.push({
                 obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                 data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
-                id: id2, ordem: response[x].ordem, data_REAL: data_real, data_PREVISTA: new Date(response[x].data_PREVISTA),
+                id: id2, ordem: response[x].ordem, data_REAL: data_real, data_PREVISTA: new Date(response[x].data_PREVISTA), justificacao_DATA_FIM: null,
+                justificacao_RESPONSAVEL: null,
                 responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
               });
 
@@ -1405,7 +1415,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       let sum = 0;
       if (this.tabelaaccoesimediatas.length > 0) sum = this.tabelaaccoesimediatas.reduce((max, b) => Math.max(max, b.ordem), this.tabelaaccoesimediatas[0].ordem);
 
-      this.tabelaaccoesimediatas.push({ area: "", obriga_EVIDENCIAS: false, id: null, ordem: sum + 1, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: this.temporesposta['step3_data'] });
+      this.tabelaaccoesimediatas.push({ area: "", obriga_EVIDENCIAS: false, id: null, ordem: sum + 1, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: this.temporesposta['step3_data'], justificacao_DATA_FIM: null, justificacao_RESPONSAVEL: null });
       this.tabelaaccoesimediatas = this.tabelaaccoesimediatas.slice();
     } else if (tabela == "tabelaEquipa") {
       this.tabelaEquipa.push({ id: null, responsavel: null, area: "", email: "", telefone: "" });
@@ -1414,16 +1424,16 @@ export class ReclamacaoCliente8DComponent implements OnInit {
       let sum = 0;
       if (this.tabelapreventiva.length > 0) sum = this.tabelapreventiva.reduce((max, b) => Math.max(max, b.ordem), this.tabelapreventiva[0].ordem);
 
-      this.tabelapreventiva.push({ area: "", obriga_EVIDENCIAS: false, id: null, concluido_UTZ: null, ordem: sum + 1, descricao: "", responsavel: null, id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step7_data'] });
+      this.tabelapreventiva.push({ area: "", obriga_EVIDENCIAS: false, id: null, concluido_UTZ: null, ordem: sum + 1, descricao: "", responsavel: null, id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step7_data'], justificacao_DATA_FIM: null, justificacao_RESPONSAVEL: null });
       this.tabelapreventiva = this.tabelapreventiva.slice();
     } else if (tabela == "tabelaArtigosSimilar") {
       this.tabelaArtigosSimilar.push({ id: null, artigo: "", of: "", qtd: 0, onde: "" });
       this.tabelaArtigosSimilar = this.tabelaArtigosSimilar.slice();
     } else if (tabela == "tabelaaccoescorretivas") {
-      this.tabelaaccoescorretivas.push({ area: "", obriga_EVIDENCIAS: false, id: null, concluido_UTZ: null, responsavel: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step4_data'] });
+      this.tabelaaccoescorretivas.push({ area: "", obriga_EVIDENCIAS: false, id: null, concluido_UTZ: null, responsavel: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step4_data'], justificacao_DATA_FIM: null, justificacao_RESPONSAVEL: null });
       this.tabelaaccoescorretivas = this.tabelaaccoescorretivas.slice();
     } else if (tabela == "tabelaEficacia") {
-      this.tabelaEficacia.push({ area: "", obriga_EVIDENCIAS: false, id: null, responsavel: null, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step5_data'] });
+      this.tabelaEficacia.push({ area: "", obriga_EVIDENCIAS: false, id: null, responsavel: null, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null, nome_estado: "Pendente", data_REAL: "", data_PREVISTA: this.temporesposta['step5_data'], justificacao_DATA_FIM: null, justificacao_RESPONSAVEL: null });
       this.tabelaEficacia = this.tabelaEficacia.slice();
     } else if (tabela == "tabelaTipoNaoDetecao") {
       this.tabelaTipoNaoDetecao.push({ id: null, responsavel: null, codigo: null, descricao: null });
@@ -2579,9 +2589,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         count++;
         if (this.tabelaaccoesimediatas[x].responsavel != null && this.tabelaaccoesimediatas[x].responsavel != "" && this.tabelaaccoesimediatas[x].descricao != null && this.tabelaaccoesimediatas[x].descricao != "") {
           var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+          var accoesold = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
           var novo = false;
           if (this.tabelaaccoesimediatas[x].id != null) {
             accoes = this.tabelaaccoesimediatas[x].data;
+            accoesold = JSON.parse(JSON.stringify(accoes));
           } else {
             novo = true;
             accoes.data_CRIA = new Date();
@@ -2622,6 +2634,34 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.gravarTabelaAccoesCorretivas(id);
           }
 
+          if (!novo && !this.duplica) {
+            var atualizou_datas = false;
+
+            if (this.formatDate2(accoesold.data_PREVISTA) != this.formatDate2(this.tabelaaccoesimediatas[x].data_PREVISTA)) {
+              atualizou_datas = true;
+            }
+
+            var id_resp_old = null;
+            var atualizou_responsavel = false;
+
+            id_resp_old = accoesold.responsavel;
+            if (accoesold.tipo_RESPONSAVEL + accoesold.responsavel != this.tabelaaccoesimediatas[x].responsavel) {
+              atualizou_responsavel = true;
+            }
+            
+            /*console.log('atualizou_responsavel', atualizou_responsavel)
+            console.log('ccoesold.tipo_RESPONSAVEL + accoesold.responsavel', accoesold.tipo_RESPONSAVEL + accoesold.responsavel)
+            console.log('this.tabelaaccoesimediatas[x].responsavel', this.tabelaaccoesimediatas[x].responsavel)
+            console.log('atualizou_datas', atualizou_datas)
+            console.log('this.formatDate2(accoesold.data_PREVISTA)', this.formatDate2(accoesold.data_PREVISTA))
+            console.log('this.formatDate2(this.tabelaaccoesimediatas[x].data_PREVISTA)', this.formatDate2(this.tabelaaccoesimediatas[x].data_PREVISTA))*/
+
+
+            this.alterardadosTarefa(atualizou_datas, atualizou_responsavel, accoesold.id, id_resp, accoesold.tipo_RESPONSAVEL + accoesold.responsavel, this.tabelaaccoesimediatas[x].descricao, this.tabelaaccoesimediatas[x].data_PREVISTA, this.tabelaaccoesimediatas[x].justificacao_DATA_FIM,
+              this.tabelaaccoesimediatas[x].justificacao_RESPONSAVEL);
+            if (atualizou_datas || atualizou_responsavel) this.gravarTabelaAccoes(accoes);
+          }
+
         }
       }
     } else {
@@ -2654,9 +2694,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         count++;
         if (this.tabelaaccoescorretivas[x].responsavel != null && this.tabelaaccoescorretivas[x].responsavel != "" && this.tabelaaccoescorretivas[x].descricao != null && this.tabelaaccoescorretivas[x].descricao != "") {
           var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+          var accoesold = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
           var novo = false;
           if (this.tabelaaccoescorretivas[x].id != null) {
             accoes = this.tabelaaccoescorretivas[x].data;
+            accoesold = JSON.parse(JSON.stringify(accoes));
           } else {
             novo = true;
             accoes.data_CRIA = new Date();
@@ -2698,6 +2740,26 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.gravarTabelaFicheirosAnalise(id);
           }
 
+
+          if (!novo && !this.duplica) {
+            var atualizou_datas = false;
+
+            if (this.formatDate2(accoesold.data_PREVISTA) != this.formatDate2(this.tabelaaccoescorretivas[x].data_PREVISTA)) {
+              atualizou_datas = true;
+            }
+
+            var id_resp_old = null;
+            var atualizou_responsavel = false;
+
+            id_resp_old = accoesold.responsavel;
+            if (accoesold.tipo_RESPONSAVEL + accoesold.responsavel != this.tabelaaccoescorretivas[x].responsavel) {
+              atualizou_responsavel = true;
+            }
+
+            this.alterardadosTarefa(atualizou_datas, atualizou_responsavel, accoesold.id, id_resp, accoesold.tipo_RESPONSAVEL + accoesold.responsavel, this.tabelaaccoescorretivas[x].descricao, this.tabelaaccoescorretivas[x].data_PREVISTA, this.tabelaaccoescorretivas[x].justificacao_DATA_FIM,
+              this.tabelaaccoescorretivas[x].justificacao_RESPONSAVEL);
+            if (atualizou_datas || atualizou_responsavel) this.gravarTabelaAccoes(accoes);
+          }
 
         } else if (count == this.tabelaaccoescorretivas.length) {
           this.gravarTabelaFicheirosAnalise(id);
@@ -2839,9 +2901,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         count++;
         if (this.tabelaEficacia[x].responsavel != null && this.tabelaEficacia[x].responsavel != "" && this.tabelaEficacia[x].descricao != null && this.tabelaEficacia[x].descricao != "") {
           var eficacia = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+          var eficaciaold = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
           var novo = false;
           if (this.tabelaEficacia[x].id != null) {
             eficacia = this.tabelaEficacia[x].data;
+            eficaciaold = JSON.parse(JSON.stringify(eficacia));
           } else {
             novo = true;
             eficacia.data_CRIA = new Date();
@@ -2883,6 +2947,26 @@ export class ReclamacaoCliente8DComponent implements OnInit {
           }
 
 
+          if (!novo && !this.duplica) {
+            var atualizou_datas = false;
+
+            if (this.formatDate2(eficaciaold.data_PREVISTA) != this.formatDate2(this.tabelaEficacia[x].data_PREVISTA)) {
+              atualizou_datas = true;
+            }
+
+            var id_resp_old = null;
+            var atualizou_responsavel = false;
+
+            id_resp_old = eficaciaold.responsavel;
+            if (eficaciaold.tipo_RESPONSAVEL + eficaciaold.responsavel != this.tabelaEficacia[x].responsavel) {
+              atualizou_responsavel = true;
+            }
+
+            this.alterardadosTarefa(atualizou_datas, atualizou_responsavel, eficaciaold.id, id_resp, eficaciaold.tipo_RESPONSAVEL + eficaciaold.responsavel, this.tabelaEficacia[x].descricao, this.tabelaEficacia[x].data_PREVISTA, this.tabelaEficacia[x].justificacao_DATA_FIM,
+              this.tabelaEficacia[x].justificacao_RESPONSAVEL);
+            if (atualizou_datas || atualizou_responsavel) this.gravarTabelaAccoes(eficacia);
+          }
+
         } else if (count == this.tabelaEficacia.length) {
           this.gravarTabelaAccoesPreventivas(id);
         }
@@ -2916,9 +3000,11 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         count++;
         if (this.tabelapreventiva[x].responsavel != null && this.tabelapreventiva[x].responsavel != "" && this.tabelapreventiva[x].descricao != null && this.tabelapreventiva[x].descricao != "") {
           var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+          var accoesold = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
           var novo = false;
           if (this.tabelapreventiva[x].id != null) {
             accoes = this.tabelapreventiva[x].data;
+            accoesold = JSON.parse(JSON.stringify(accoes));
           } else {
             novo = true;
             accoes.data_CRIA = new Date();
@@ -2953,6 +3039,26 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.gravarTabelaAccoesPreventivas2(accoes, count, this.tabelapreventiva.length, id);
           } else if (count == this.tabelapreventiva.length) {
             this.gravarTabelaEnviosGarantidos(id);
+          }
+
+          if (!novo && !this.duplica) {
+            var atualizou_datas = false;
+
+            if (this.formatDate2(accoesold.data_PREVISTA) != this.formatDate2(this.tabelapreventiva[x].data_PREVISTA)) {
+              atualizou_datas = true;
+            }
+
+            var id_resp_old = null;
+            var atualizou_responsavel = false;
+
+            id_resp_old = accoesold.responsavel;
+            if (accoesold.tipo_RESPONSAVEL + accoesold.responsavel != this.tabelapreventiva[x].responsavel) {
+              atualizou_responsavel = true;
+            }
+
+            this.alterardadosTarefa(atualizou_datas, atualizou_responsavel, accoesold.id, id_resp, accoesold.tipo_RESPONSAVEL + accoesold.responsavel, this.tabelapreventiva[x].descricao, this.tabelapreventiva[x].data_PREVISTA, this.tabelapreventiva[x].justificacao_DATA_FIM,
+              this.tabelapreventiva[x].justificacao_RESPONSAVEL);
+            if (atualizou_datas || atualizou_responsavel) this.gravarTabelaAccoes(accoes);
           }
 
         } else if (count == this.tabelapreventiva.length) {
@@ -3221,6 +3327,24 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     }
     return nome;
   }
+
+  //devolve email responsavel
+  getEmailResponsavel(id) {
+    if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
+    if (id != null && id.toString().includes("u")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Utilizadores").itens;
+      utz = utz2.find(item => item.value == id);
+    } else if (id != null && id.toString().includes("g")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Grupos").itens;
+      utz = utz2.find(item => item.value == id);
+    }
+    var email = null;
+    if (utz) {
+      email = utz.email;
+    }
+    return email;
+  }
+
 
   //devolve node Ficheiros de Análise 
   getficheirodeanalise(id) {
@@ -4745,6 +4869,190 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.getMoradas(this.cliente_pesquisa.id, true);
     this.getArtigos(this.cliente_pesquisa.ETSNUM, true);
     this.display_ref_cliente = false;
+  }
+
+  alterardadosTarefa(atualizou_datas, atualizou_reponsavel, id, responsavel, responsavel_anterior, nome_accao, data_prevista, justificacao_DATA_FIM, justificacao_RESPONSAVEL) {
+
+
+    var email_p = this.getEmailResponsavel(responsavel);
+
+    if (atualizou_datas) {
+
+      var tarefa = new GT_MOV_TAREFAS;
+      tarefa.id_MODULO = 5;
+      tarefa.sub_MODULO = "C";
+      tarefa.id_CAMPO = id;
+      tarefa.data_ULT_MODIF = new Date();
+      tarefa.utz_ULT_MODIF = this.user;
+      tarefa.data_FIM = new Date(data_prevista);
+      tarefa.justificacao_DATA_FIM = justificacao_DATA_FIM;
+      var logs = new GT_LOGS;
+      logs.utz_CRIA = this.user;
+      logs.data_CRIA = new Date();
+      logs.descricao = "Alterou Prazo Conclusão";
+      logs.justificacao = justificacao_DATA_FIM;
+      var email_para = email_p;
+      this.atualizaTarefa(tarefa, logs, false, null, null, null, null);
+      if (!atualizou_reponsavel) this.enviarEvento(this.data_RECLAMACAO, this.observacoes_RECLAMACAO, this.numero_RECLAMACAO, this.cliente.nome, this.referencia + " - " + this.designacao_REF,
+        "Ao Alterar Data Objetivo", email_para.toString(), nome_accao, data_prevista, 0);
+    }
+
+    if (atualizou_reponsavel) {
+      var tarefa = new GT_MOV_TAREFAS;
+      tarefa.id_MODULO = 5;
+      tarefa.sub_MODULO = "C";
+      tarefa.id_CAMPO = id;
+      tarefa.utz_ID = responsavel;
+      tarefa.data_ULT_MODIF = new Date();
+      tarefa.utz_ULT_MODIF = this.user;
+      tarefa.justificacao_RESPONSAVEL = justificacao_RESPONSAVEL;
+
+      var logs = new GT_LOGS;
+      logs.utz_CRIA = this.user;
+      logs.data_CRIA = new Date();
+      //logs.justificacao = justificacao_RESPONSAVEL;
+      var nome1 = this.getResponsavel(responsavel_anterior);
+      var nome2 = this.getResponsavel(responsavel);
+      var email_para = email_p;
+
+      logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
+      this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, data_prevista, "Ao Alterar Responsável");
+    }
+  }
+
+  atualizaTarefa(tarefa, logs, enviarEvento, email_para, nome_accao, data_prevista, MOMENTO) {
+
+    this.GTMOVTAREFASService.atualizaTAREFA(tarefa).subscribe(response => {
+      logs.id_TAREFA = response[0][0];
+      this.criaLogs(logs);
+      if (enviarEvento) {
+        //Ao Alterar Responsável
+        //Ao Alterar Data Objetivo
+        this.enviarEvento(this.data_RECLAMACAO, this.observacoes_RECLAMACAO, this.numero_RECLAMACAO, this.cliente.nome, this.referencia.valor + " - " + this.designacao_REF,
+          MOMENTO, email_para.toString(), nome_accao, data_prevista, response[0][0]);
+      }
+    }, error => {
+      console.log(error);
+      this.simular(this.inputerro);
+    });
+  }
+
+  enviarEvento(data_reclamacao, observacao, numero_reclamacao, cliente, referencia, MOMENTO, email_para, accao, data_prevista, numero_tarefa) {
+    if (observacao == null) {
+      observacao = "";
+    }
+    var dados = "{observacao::" + observacao + "\n/link::" + webUrl.host + '/#/reclamacoesclientes/view?id=' + numero_reclamacao
+      + "\n/numero_reclamacao::" + numero_reclamacao
+      + "\n/numero_tarefa::" + numero_tarefa
+      + "\n/accao::" + accao
+      + "\n/cliente::" + cliente
+      + "\n/data_prevista::" + new Date(data_prevista).toLocaleDateString()
+      + "\n/data_reclamacao::" + new Date(data_reclamacao).toLocaleDateString() + "\n/referencia::" + referencia + "}";
+
+
+
+    var data = [{ MODULO: 5, MOMENTO: MOMENTO, PAGINA: "Reclamações Clientes", ESTADO: true, DADOS: dados, EMAIL_PARA: email_para }];
+
+    this.UploadService.verficaEventos(data).subscribe(result => {
+    }, error => {
+      console.log(error);
+    });
+  }
+
+
+  verificadatas(row) {
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
+
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+        var atualizou_datas = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
+        if (row.id != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+          accoes = row.data;
+          if (this.formatDate2(accoes.data_PREVISTA) != this.formatDate2(row.data_PREVISTA)) {
+            atualizou_datas = true;
+          }
+        }
+        if (atualizou_datas) {
+          this.selected_row = row;
+          this.displayJustificacaoDATAFIM = true;
+        }
+
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
+  }
+
+
+  verificaResponsavel(row, event) {
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
+
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+        var atualizou_reponsavel = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
+
+        if (row.id != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
+          accoes = row.data;
+          if (accoes.responsavel != row.responsavel) {
+            atualizou_reponsavel = true;
+          }
+        }
+        if (atualizou_reponsavel) {
+          this.selected_row = row;
+          this.yearTimeout = setTimeout(() => {
+            this.displayJustificacaoRESPONSAVEL = true;
+          }, 100);
+
+        }
+
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
+
+  }
+
+  onHide() {
+    if (this.justificacao_DATA_FIM == null && this.selected_row != null) {
+      var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+      accoes = this.selected_row.data;
+      this.selected_row.data_PREVISTA = this.formatDate2(accoes.data_PREVISTA);
+    }
+  }
+
+  onHideJustificacaoRESPONSAVEL() {
+    if (this.justificacao_RESPONSAVEL == null && this.selected_row != null) {
+      var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
+      accoes = this.selected_row.data;
+      this.selected_row.responsavel = accoes.responsavel;
+    }
+  }
+
+  atualizarlinhajustificacao_DATA_FIM() {
+    this.selected_row.justificacao_DATA_FIM = this.justificacao_DATA_FIM;
+    this.displayJustificacaoDATAFIM = false;
+  }
+
+
+  atualizarlinhajustificacao_RESPONSAVEL() {
+    this.selected_row.justificacao_RESPONSAVEL = this.justificacao_RESPONSAVEL;
+    this.displayJustificacaoRESPONSAVEL = false;
+  }
+
+  gravarTabelaAccoes(accoes: RC_MOV_RECLAMACAO_PLANOS_ACCOES) {
+    this.RCMOVRECLAMACAOPLANOACCOESCORRETIVASService.update(accoes).subscribe(
+      res => {
+
+      },
+      error => { console.log(error); });
   }
 
 }

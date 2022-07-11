@@ -634,7 +634,7 @@
 
               <p-column [editable]="true" field="descricao" [style]="{'width':'326px'}" header="AÇÃO">
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                  <input [disabled]="!modoedicao"
+                  <input [disabled]="!modoedicao" title="{{car.descricao}}"
                     style="padding: 5px 4px;height: 25px; color: transparent; text-shadow: 0 0 0 black;"
                     [required]="true" [(ngModel)]="car['descricao']" [ngModelOptions]="{standalone: true}" type="text"
                     class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
@@ -645,6 +645,10 @@
                     [style]="{'width':'80%','height':'25px','background':'white'}" [(ngModel)]="car['id_ACCAO']"
                     [ngModelOptions]="{standalone: true}"
                     [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')" appendTo="body">
+                    <ng-template let-car pTemplate="item">
+                      <span title="{{car.label}}"
+                        style="max-width: 550px; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{car.label}}</span>
+                    </ng-template>
                   </p-dropdown>
                   <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao" title="Adicionar"
                     (click)="showDialogToAdd(index)">

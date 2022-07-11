@@ -1172,8 +1172,9 @@
                               {{getResponsavel(car[col.field]) }}
                             </ng-template>
                             <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                              <select (change)="alterarEmail2(index,$event,'tabelaaccoesimediatas')"
-                                [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
+                              <select
+                                (change)="alterarEmail2(index,$event,'tabelaaccoesimediatas');verificaResponsavel(car,$event)"
+                                [ngClass]="( car['estado'] == 'A' || car['estado'] == 'C' || step3CONCLUIDO )? 'disabled' : ''" [(ngModel)]="car['responsavel']"
                                 [ngModelOptions]=" {standalone: true}" class="form-control2">
                                 <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
                                   <option [selected]="f.value == car['responsavel']" [value]="f.value"
@@ -1195,10 +1196,10 @@
                               {{car[col.field] | date: 'yyyy-MM-dd'}}
                             </ng-template>
                             <ng-template let-col let-car="rowData" pTemplate="editor">
-                              <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
+                              <p-calendar [disabled]="!modoedicao ||  car['estado'] == 'A' || car['estado'] == 'C' || step3CONCLUIDO"
                                 [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                                 [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
-                                [(ngModel)]="car['data_PREVISTA']" appendTo="body"
+                                [(ngModel)]="car['data_PREVISTA']" appendTo="body"  (ngModelChange)="verificadatas(car)"
                                 [ngModelOptions]="{standalone: true}"></p-calendar>
                             </ng-template>
                           </p-column>
@@ -1565,8 +1566,9 @@
                                 {{getResponsavel(car[col.field]) }}
                               </ng-template>
                               <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                                <select (change)="alterarEmail2(index,$event,'tabelaaccoescorretivas')"
-                                  [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
+                                <select
+                                  (change)="alterarEmail2(index,$event,'tabelaaccoescorretivas');verificaResponsavel(car,$event)"
+                                  [ngClass]="(  car['estado'] == 'A' || car['estado'] == 'C' || step5CONCLUIDO)? 'disabled' : ''" [(ngModel)]="car['responsavel']"
                                   [ngModelOptions]=" {standalone: true}" class="form-control2">
                                   <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
                                     <option [selected]="f.value == car['responsavel']" [value]="f.value"
@@ -1588,10 +1590,10 @@
                                 {{car[col.field] | date: 'yyyy-MM-dd'}}
                               </ng-template>
                               <ng-template let-col let-car="rowData" pTemplate="editor">
-                                <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
+                                <p-calendar [disabled]="!modoedicao ||  car['estado'] == 'A' || car['estado'] == 'C' || step3CONCLUIDO"
                                   [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd"
                                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
-                                  yearRange="2000:2050" appendTo="body" [(ngModel)]="car['data_PREVISTA']"
+                                  yearRange="2000:2050" appendTo="body" [(ngModel)]="car['data_PREVISTA']"  (ngModelChange)="verificadatas(car)"
                                   [ngModelOptions]="{standalone: true}"></p-calendar>
                               </ng-template>
                             </p-column>
@@ -1753,8 +1755,9 @@
                                 {{getResponsavel(car[col.field]) }}
                               </ng-template>
                               <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                                <select (change)="alterarEmail2(index,$event,'tabelaEficacia')"
-                                  [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
+                                <select
+                                  (change)="alterarEmail2(index,$event,'tabelaEficacia');verificaResponsavel(car,$event)"
+                                  [ngClass]="(car['estado'] == 'A' || car['estado'] == 'C' || step6CONCLUIDO)? 'disabled' : ''" [(ngModel)]="car['responsavel']"
                                   [ngModelOptions]=" {standalone: true}" class="form-control2">
                                   <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
                                     <option [selected]="f.value == car['responsavel']" [value]="f.value"
@@ -1776,10 +1779,10 @@
                                 {{car[col.field] | date: 'yyyy-MM-dd'}}
                               </ng-template>
                               <ng-template let-col let-car="rowData" pTemplate="editor">
-                                <p-calendar [disabled]="!modoedicao  ||  car['id'] != null"
+                                <p-calendar [disabled]="  car['estado'] == 'A' || car['estado'] == 'C' || step6CONCLUIDO"
                                   [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd"
                                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
-                                  yearRange="2000:2050" appendTo="body" [(ngModel)]="car['data_PREVISTA']"
+                                  yearRange="2000:2050" appendTo="body" [(ngModel)]="car['data_PREVISTA']"  (ngModelChange)="verificadatas(car)"
                                   [ngModelOptions]="{standalone: true}"></p-calendar>
                               </ng-template>
                             </p-column>
@@ -1976,8 +1979,9 @@
                               {{getResponsavel(car[col.field]) }}
                             </ng-template>
                             <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                              <select (change)="alterarEmail2(index,$event,'tabelapreventiva')"
-                                [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
+                              <select
+                                (change)="alterarEmail2(index,$event,'tabelapreventiva');verificaResponsavel(car,$event)"
+                                [ngClass]="(car['estado'] == 'A' || car['estado'] == 'C' || step7CONCLUIDO)? 'disabled' : ''" [(ngModel)]="car['responsavel']"
                                 [ngModelOptions]=" {standalone: true}" class="form-control2">
                                 <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
                                   <option [value]="f.value" *ngFor="let f of i.itens"
@@ -1999,10 +2003,10 @@
                               {{car[col.field] | date: 'yyyy-MM-dd'}}
                             </ng-template>
                             <ng-template let-col let-car="rowData" pTemplate="editor">
-                              <p-calendar [disabled]="!modoedicao ||  car['id'] != null"
+                              <p-calendar [disabled]="!modoedicao ||  car['estado'] == 'A' || car['estado'] == 'C' || step7CONCLUIDO"
                                 [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
                                 [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
-                                [(ngModel)]="car['data_PREVISTA']" appendTo="body"
+                                [(ngModel)]="car['data_PREVISTA']" appendTo="body"  (ngModelChange)="verificadatas(car)"
                                 [ngModelOptions]="{standalone: true}"></p-calendar>
                             </ng-template>
                           </p-column>
@@ -2775,4 +2779,59 @@
         (click)="display_ref_cliente = false">Fechar</button>
     </p-footer>
   </form>
+</p-dialog>
+
+
+<p-dialog header="Justificação Alteração de Data Objetivo" [responsive]="true" [positionTop]="0" (onHide)="onHide()"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayJustificacaoDATAFIM" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_DATA_FIM()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_DATA_FIM"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoDATAFIM = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+
+<p-dialog header="Justificação Alteração do Responsável" [responsive]="true" [positionTop]="0"
+  (onHide)="onHideJustificacaoRESPONSAVEL()" [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayJustificacaoRESPONSAVEL"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_RESPONSAVEL()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_RESPONSAVEL"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoRESPONSAVEL = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>
