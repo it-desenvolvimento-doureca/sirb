@@ -39,6 +39,8 @@ export class PaginatarefaComponent implements OnInit {
   encaminhado;
   data_encaminhado;
   prazo_conclusao;
+  data_conclusao;
+  utz_concluiu;
   prioridade;
   estado;
   cliente;
@@ -293,6 +295,8 @@ export class PaginatarefaComponent implements OnInit {
         this.encaminhado = resp[x][4];
         this.data_encaminhado = (resp[x][5] != null) ? this.formatDate(resp[x][5]) + " " + new Date(resp[x][5]).toLocaleTimeString() : null;
         this.prazo_conclusao = (resp[x][6] != null) ? this.formatDate(resp[x][6]) + " " + new Date(resp[x][6]).toLocaleTimeString() : null;
+        this.data_conclusao = (resp[x][12] != null) ? this.formatDate(resp[x][12]) + " " + new Date(resp[x][12]).toLocaleTimeString() : null;
+        this.utz_concluiu = resp[x][13];
         this.prioridade = resp[x][7];
         this.estado = estados;
         this.campo_estado = resp[x][8];
@@ -1420,7 +1424,7 @@ else {
     if (type == "pdf" || type == 'txt') {
       if (ficheiro == null) {
         if (id_FICHEIRO != null && type == "pdf") {
-          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/'+caminho+'/ID/' + id_FICHEIRO + '/pdf');
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/' + caminho + '/ID/' + id_FICHEIRO + '/pdf');
         } else {
 
           if (this.modulo == 5 && this.sub_modulo != 'D' && this.sub_modulo != 'F') {
@@ -1436,7 +1440,7 @@ else {
         var blobUrl = URL.createObjectURL(blob);*/
 
         if (id_FICHEIRO != null && type == "pdf") {
-          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/'+caminho+'/ID/' + id_FICHEIRO + '/pdf');
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/' + caminho + '/ID/' + id_FICHEIRO + '/pdf');
 
         } else {
           this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);

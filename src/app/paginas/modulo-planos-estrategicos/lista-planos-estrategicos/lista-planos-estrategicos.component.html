@@ -78,6 +78,7 @@
                   </p-column>
                   <p-column [style]="{'width':'27px'}" field="data_registo" header="Data Criação">
                   </p-column>
+                  <p-column [style]="{'width':'27px'}" field="data_conclusao" header="Data Conclusão"></p-column>
                   <p-column [style]="{'width':'30px'}" field="objetivo" header="Objetivo">
                   </p-column>
                   <p-column [style]="{'width':'25px'}" field="utilizador" header="Responsável do Plano">
@@ -101,6 +102,7 @@
                           <th class="tg-wfll" style="width: 65px;">Seguir</th>
                           <th class="tg-wfll" style="width: 100px;">Data Objetivo Ação</th>
                           <th class="tg-wfll" style="width: 100px;">Data Criação</th>
+                          <th class="tg-wfll" style="width: 100px;">Data Conclusão</th>
                           <th class="tg-wfll" style="width: 200px;">Responsável da Ação</th>
                           <th class="tg-wfll">Ação</th>
                           <th class="tg-wfll">Descrição</th>
@@ -120,6 +122,7 @@
                             <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
                               [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.data_registo}}</td>
+                            <td class="tg-0pky" style="min-width: 120px;">{{col.data_conclusao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                             <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>

@@ -163,6 +163,10 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   displayJustificacaoRESPONSAVEL: boolean;
   disabled_save: boolean;
   caminho2: string;
+  id_tarefa_input: any;
+  displayTarefa: boolean;
+  titulo_plano: string;
+  modoedicao_plano: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -672,7 +676,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         , descricao: response[x][11]
         , investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]),
         EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
-        , id_PLANO_LINHA: response[x][25]
+        , id_PLANO_LINHA: response[x][25], id_TAREFA: response[x][17],data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
       });
     } else {
       var filho = [];
@@ -684,7 +688,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
           , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
-          , id_PLANO_LINHA: response[x][25], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
+          , id_PLANO_LINHA: response[x][25], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]), id_TAREFA: response[x][17]
         }];
       }
       this.tabelaplanos.push({
@@ -2391,6 +2395,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.ambito = this.ambito_atual;
     this.origem = null;
     this.objetivo = null;
+    this.modoedicao_plano = true;
+    this.titulo_plano = "Adicionar de Planos de Ação";
     this.displayAddPlano = true;
     this.displayAddPlano_show = true;
   }
@@ -2454,7 +2460,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-        , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]),
+        , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17]
       });
     } else {
       this.dados.push({
@@ -2470,7 +2476,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]),
+          , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17]
         }]
       });
     }
@@ -2526,8 +2532,11 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.displayAssociarPlano = false;
   }
 
+  abrirplanodbclick(event) {
+    this.abrirplano(0, event.data.id, false);
+  }
 
-  abrirplano(index, id) {
+  abrirplano(index, id, editar) {
     this.tabelaaccoes = [];
 
     this.PAMOVCABService.getById(id).subscribe(
@@ -2565,6 +2574,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
 
           this.carregarlinhasAcoes(id);
+          if (editar) {
+            this.titulo_plano = "Editar de Planos de Ação";
+            this.modoedicao_plano = true;
+          } else {
+            this.titulo_plano = "Planos de Ação";
+            this.modoedicao_plano = false;
+          }
           this.displayAddPlano = true;
           this.displayAddPlano_show = true;
         }
@@ -2731,5 +2747,13 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     } else {
       this.router.navigate([this.caminho2 + '/view'], { queryParams: { id: id, redirect: this.caminho + "/viewkvk\id=" + this.id_PLANO } });
     }
+  }
+
+  verTarefa(id_TAREFA) { 
+    if (id_TAREFA != null) {
+      this.id_tarefa_input = id_TAREFA;
+      this.displayTarefa = true;
+    }
+
   }
 }

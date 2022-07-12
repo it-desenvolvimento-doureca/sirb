@@ -290,14 +290,18 @@ function drawBarValues() {
   ctx.fillStyle = '#666666'
   ctx.font = "10px Helvetica Neue, Helvetica, Arial, sans-serif";
   ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
+  ctx.textBaseline = 'center';
 
   this.data.datasets.forEach(function (dataset) {
     for (var i = 0; i < dataset.data.length; i++) {
       if (dataset.hidden === true && dataset._meta[Object.keys(dataset._meta)[0]].hidden !== false) { continue; }
-      var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+      var bar = dataset._meta[Object.keys(dataset._meta)[0]].data[i];
+      var model = bar._model;
+      var barWidth = bar._model.x - bar._model.base;
+      var centerX = bar._model.base + barWidth / 2;
       if (dataset.data[i] !== null && dataset.label != 'Linha de Tendência') {
-        ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' %', model.x + 2, model.y + 2);
+        //ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' %', model.x + 2, model.y + 2);
+        if (dataset.data[i] > 0) ctx.fillText(formatMoney(dataset.data[i], 2, ",", ".") + ' %', centerX, bar._model.y + 4);
       }
     }
   });

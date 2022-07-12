@@ -116,6 +116,20 @@
                           style="background: #efefefba;" [(ngModel)]="data_encaminhado"
                           [ngModelOptions]="{standalone: true}">
                       </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4"
+                        *ngIf="data_conclusao != null">
+                        <label>Data Conclusão:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="data_conclusao"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4"
+                        *ngIf="data_conclusao != null">
+                        <label>Utilizador Concluíu:</label>
+                        <input required="true" [disabled]="true" type="text" class="form-control2"
+                          style="background: #efefefba;" [(ngModel)]="utz_concluiu"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
                         <label>Cliente:</label>
                         <input required="true" [disabled]="true" type="text" class="form-control2"

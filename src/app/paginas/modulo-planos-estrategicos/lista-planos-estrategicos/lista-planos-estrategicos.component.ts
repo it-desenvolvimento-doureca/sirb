@@ -175,12 +175,14 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
         , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29]
         , data_registo: (response[x][30] == null) ? "" : this.formatDate(response[x][30]), id_TAREFA: response[x][17]
+        , data_conclusao: (response[x][33] == null) ? "" : this.formatDate(response[x][33])
       });
     } else {
       this.dados.find(item => item.id == response[x][19]).planos.push({
         id: response[x][0], cor: cor, cor_letra: cor_letra,
         data_registo: (response[x][1] == null) ? "" : this.formatDate(response[x][1]),
         data_objetivo: (response[x][2] == null) ? "" : this.formatDate(response[x][2]),
+        data_conclusao: (response[x][34] == null) ? "" : this.formatDate(response[x][34]),
         /*linha: response[x][0].id_LINHA, designacao: response[x][0].design_REFERENCIA, referencia: response[x][0].referencia, departamento_origem: response[x][2],*/
         descricao: response[x][6],
         ambito: response[x][15]/*this.getAmbito(response[x][3])*/, origem: response[x][4],
@@ -193,7 +195,8 @@ export class ListaPlanosEstrategicosComponent implements OnInit {
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
           , conclusao: response[x][24], objetivo: response[x][27], seguir_LINHA: response[x][28], id_PLANO_LINHA: response[x][29],
           data_registo: (response[x][30] == null) ? "" : this.formatDate(response[x][30]), id_TAREFA: response[x][17]
-          , investimentos: response[x][32],
+          , investimentos: response[x][32]
+          , data_conclusao: (response[x][33] == null) ? "" : this.formatDate(response[x][33])
         }]
       });
     }
