@@ -676,7 +676,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         , descricao: response[x][11]
         , investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]),
         EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
-        , id_PLANO_LINHA: response[x][25], id_TAREFA: response[x][17],data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
+        , id_PLANO_LINHA: response[x][25], id_TAREFA: response[x][17], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
       });
     } else {
       var filho = [];
@@ -909,9 +909,10 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   }
 
 
-  gravalinhasPLANOACOES(id, estado, cria_tarefas, updateplano) {
+  gravalinhasPLANOACOES(id, estado, cria_tarefas_, updateplano) {
     if (this.tabelaaccoes.length > 0) {
       for (var x in this.tabelaaccoes) {
+        var cria_tarefas = cria_tarefas_;
         var accoes = new PA_MOV_LINHA;
         var atualizou_datas = false;
         if (this.tabelaaccoes[x].id_PLANO_LINHA != null) {
@@ -979,6 +980,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           cria_tarefas = false;
           if (this.tabelaaccoes[x].id_TAREFA == null && estado != 'E') cria_tarefas = true;
         }
+
         var email_p = "";
 
         if (novo && estado != 'E') {
@@ -1583,8 +1585,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
       logs.descricao = "Adicionada nova Tarefa";
       this.criaLogs(logs);
       var email_para = email_p;
-      /* this.enviarEvento(response.data_INICIO, response.id_TAREFA, "Ao Criar Tarefa", email_para, referencia, id
-         , this.data_CRIA, nome_accao, descricao);*/
+      this.enviarEvento(response.data_INICIO, response.id_TAREFA, "Ao Criar Tarefa", email_para, referencia, id
+        , this.data_CRIA, nome_accao, descricao);
 
     }, error => {
       console.log(error);
@@ -2749,7 +2751,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
   }
 
-  verTarefa(id_TAREFA) { 
+  verTarefa(id_TAREFA) {
     if (id_TAREFA != null) {
       this.id_tarefa_input = id_TAREFA;
       this.displayTarefa = true;
