@@ -98,6 +98,12 @@ export class MANMOVMANUTENCAOCABService {
       .map(this.extractData)
   }
 
+  MAN_GET_ANALISE_PREVENTIVAS(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_ANALISE_PREVENTIVAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
   MAN_GET_MANUTENCOES_MELHORIA(ID): Observable<MAN_MOV_MANUTENCAO_CAB[]> {
     const url = webUrl.host + '/rest/sirb/MAN_GET_MANUTENCOES_MELHORIA/' + ID;
     return this.http

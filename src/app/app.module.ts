@@ -428,6 +428,7 @@ import { FormManutencaoComponent } from './paginas/modulo-manutencao/form-manute
 import { PainelControloViewComponent } from './paginas/modulo-manutencao/painel-controlo-view/painel-controlo-view.component';
 import { LocalizacoesAlfrescoComponent } from './paginas/modulo-documentacao/parametros/localizacoes-alfresco/localizacoes-alfresco.component';
 import { DOCGESTAOPASTASService } from './servicos/doc-gestao-pastas.service';
+import { MapaPreventivasComponent } from './paginas/modulo-manutencao/mapa-preventivas/mapa-preventivas.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1030,7 +1031,8 @@ const routes: Routes = [
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
-  { path: 'painel_controlo_manutencao', component: PainelControloViewComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
+  { path: 'painel_controlo_manutencao', component: PainelControloViewComponent, canActivate: [LoginService], data: { breadcrumb: "Painel Controlo" } },
+  { path: 'mapa_preventivas', component: MapaPreventivasComponent, canActivate: [LoginService], data: { breadcrumb: "Mapa Preventivas" } },
   {
     path: 'lista_pedidos', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido de Manutenção" },
     children: [
@@ -1320,7 +1322,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     TipoDocumentoComponent,
     FormManutencaoComponent,
     PainelControloViewComponent,
-    LocalizacoesAlfrescoComponent
+    LocalizacoesAlfrescoComponent,
+    MapaPreventivasComponent
   ],
   imports: [
     BrowserModule,

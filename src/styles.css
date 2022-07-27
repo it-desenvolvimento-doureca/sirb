@@ -33,3 +33,45 @@
     padding: 0 !important;
     background: none !important;
 }
+
+
+.cor_red {
+    display: block;
+    float: left;
+    min-width: 34px;
+    text-align: center;
+    background: red;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-bottom: 2px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid red;
+}
+
+.cor_green {
+    display: block;
+    float: left;
+    min-width: 34px;
+    text-align: center;
+    background: green;
+    border-radius: 16px;
+    margin-left: 3px;
+    margin-bottom: 2px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid green;
+
+}
+
+.cor_red[title]:not([title=""]) {
+    background: #ffeb3b;
+    border: 1px solid red;
+}
+
+.cor_green[title]:not([title=""]) {
+    background: #ffeb3b;
+    border: 1px solid green;
+}

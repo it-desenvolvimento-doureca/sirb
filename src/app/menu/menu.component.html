@@ -853,7 +853,7 @@
                     <div class="panel-heading"
                         [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
                     || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true) || isLinkActive('/painel_controlo_manutencao',true)
-                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_preventivas',true) || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
+                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_preventivas',true)|| isLinkActive('/mapa_preventivas',true)  || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
                                 <span class="fa fa-wrench" style="margin-right: 12px;">
@@ -938,6 +938,13 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <li id="node11594" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/mapa_preventivas']">Mapa Preventivas</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <li id="node116210" data-toggle="collapse" data-target="#parametrosmanutencao"
                                             class="collapsed"
                                             [ngClass]="{ 'active': isLinkActive('/equipasmanutencao',true) || isLinkActive('/ambitosmanutencao',true)   || isLinkActive('/edificios',true)
@@ -972,7 +979,7 @@
                                             <li id="node1167101" [routerLinkActive]="['active']"
                                                 [routerLink]="['/ambitosmanutencao']">
                                                 <a>Âmbitos Manutenção</a>
-                                            </li>                                          
+                                            </li>
 
                                         </ul>
                                     </td>
@@ -1564,9 +1571,9 @@
                                                 <a>Postos</a>
                                             </li>
                                             <li id="node11623" [routerLinkActive]="['active']"
-                                            [routerLink]="['/gestao_pastas']">
-                                            <a>Gestão Pastas</a>
-                                        </li>
+                                                [routerLink]="['/gestao_pastas']">
+                                                <a>Gestão Pastas</a>
+                                            </li>
                                         </ul>
                                     </td>
                                 </tr>
