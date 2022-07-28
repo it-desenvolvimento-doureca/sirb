@@ -28,235 +28,397 @@
                   </div>
 
 
-                  <div style="padding: 1px 5px 1px 10px; overflow-y: auto;" class="form-group col-md-12">
+                  <div style="padding: 1px 5px 1px 0; overflow-y: auto;" class="form-group col-md-12 tabeladiv">
                     <table class="tg">
-                      <tr>
-                        <th class="tg-wflh">Equipamentos</th>
-                        <th class="tg-wflh">Week 1</th>
-                        <th class="tg-wflh">Week 2</th>
-                        <th class="tg-wflh">Week 3</th>
-                        <th class="tg-wflh">Week 4</th>
-                        <th class="tg-wflh">Week 5</th>
-                        <th class="tg-wflh">Week 6</th>
-                        <th class="tg-wflh">Week 7</th>
-                        <th class="tg-wflh">Week 8</th>
-                        <th class="tg-wflh">Week 9</th>
-                        <th class="tg-wflh">Week 10</th>
-                        <th class="tg-wflh">Week 11</th>
-                        <th class="tg-wflh">Week 12</th>
-                        <th class="tg-wflh">Week 13</th>
-                        <th class="tg-wflh">Week 14</th>
-                        <th class="tg-wflh">Week 15</th>
-                        <th class="tg-wflh">Week 16</th>
-                        <th class="tg-wflh">Week 17</th>
-                        <th class="tg-wflh">Week 18</th>
-                        <th class="tg-wflh">Week 19</th>
-                        <th class="tg-wflh">Week 20</th>
-                        <th class="tg-wflh">Week 21</th>
-                        <th class="tg-wflh">Week 22</th>
-                        <th class="tg-wflh">Week 23</th>
-                        <th class="tg-wflh">Week 24</th>
-                        <th class="tg-wflh">Week 25</th>
-                        <th class="tg-wflh">Week 26</th>
-                        <th class="tg-wflh">Week 27</th>
-                        <th class="tg-wflh">Week 28</th>
-                        <th class="tg-wflh">Week 29</th>
-                        <th class="tg-wflh">Week 30</th>
-                        <th class="tg-wflh">Week 31</th>
-                        <th class="tg-wflh">Week 32</th>
-                        <th class="tg-wflh">Week 33</th>
-                        <th class="tg-wflh">Week 34</th>
-                        <th class="tg-wflh">Week 35</th>
-                        <th class="tg-wflh">Week 36</th>
-                        <th class="tg-wflh">Week 37</th>
-                        <th class="tg-wflh">Week 38</th>
-                        <th class="tg-wflh">Week 39</th>
-                        <th class="tg-wflh">Week 40</th>
-                        <th class="tg-wflh">Week 41</th>
-                        <th class="tg-wflh">Week 42</th>
-                        <th class="tg-wflh">Week 43</th>
-                        <th class="tg-wflh">Week 44</th>
-                        <th class="tg-wflh">Week 45</th>
-                        <th class="tg-wflh">Week 46</th>
-                        <th class="tg-wflh">Week 47</th>
-                        <th class="tg-wflh">Week 48</th>
-                        <th class="tg-wflh">Week 49</th>
-                        <th class="tg-wflh">Week 50</th>
-                        <th class="tg-wflh">Week 51</th>
-                        <th class="tg-wflh">Week 52</th>
-                        <th class="tg-wflh">Week 53</th>
-                      </tr>
-                      <tr *ngFor="let col of dados">
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <b>{{col.equipamento}}</b>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week1"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week2"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week3"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week4"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week5"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week6"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week7"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week8"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week9"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week10"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week11"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week12"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week13"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week14"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week15"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week16"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week17"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week18"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week19"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week20"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week21"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week22"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week23"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week24"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week25"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week26"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week27"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week28"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week29"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week30"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week31"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week32"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week33"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week34"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week35"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week36"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week37"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week38"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week39"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week40"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week41"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week42"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week43"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week44"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week45"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week46"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week47"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week48"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week49"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week50"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week51"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week52"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                        <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
-                          <div *ngFor="let val of col.week53"><div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}"> {{val.valor}}</div></div>
-                        </td>
-                      </tr>
-                      <tr *ngIf="dados.length == 0 && loading == false">
-                        <td class="tg-0pky" style="margin-left: 300px;" colspan="54">{{mensagemtabela}}</td>
-                      </tr>
-                      <tr *ngIf="loading">
-                        <td class="tg-0pky" style="margin-left: 300px;" colspan="54">A Carregar..</td>
-                      </tr>
-
+                      <thead>
+                        <tr>
+                          <th class="tg-wflh">Equipamentos</th>
+                          <th class="tg-wflh">Week 1</th>
+                          <th class="tg-wflh">Week 2</th>
+                          <th class="tg-wflh">Week 3</th>
+                          <th class="tg-wflh">Week 4</th>
+                          <th class="tg-wflh">Week 5</th>
+                          <th class="tg-wflh">Week 6</th>
+                          <th class="tg-wflh">Week 7</th>
+                          <th class="tg-wflh">Week 8</th>
+                          <th class="tg-wflh">Week 9</th>
+                          <th class="tg-wflh">Week 10</th>
+                          <th class="tg-wflh">Week 11</th>
+                          <th class="tg-wflh">Week 12</th>
+                          <th class="tg-wflh">Week 13</th>
+                          <th class="tg-wflh">Week 14</th>
+                          <th class="tg-wflh">Week 15</th>
+                          <th class="tg-wflh">Week 16</th>
+                          <th class="tg-wflh">Week 17</th>
+                          <th class="tg-wflh">Week 18</th>
+                          <th class="tg-wflh">Week 19</th>
+                          <th class="tg-wflh">Week 20</th>
+                          <th class="tg-wflh">Week 21</th>
+                          <th class="tg-wflh">Week 22</th>
+                          <th class="tg-wflh">Week 23</th>
+                          <th class="tg-wflh">Week 24</th>
+                          <th class="tg-wflh">Week 25</th>
+                          <th class="tg-wflh">Week 26</th>
+                          <th class="tg-wflh">Week 27</th>
+                          <th class="tg-wflh">Week 28</th>
+                          <th class="tg-wflh">Week 29</th>
+                          <th class="tg-wflh">Week 30</th>
+                          <th class="tg-wflh">Week 31</th>
+                          <th class="tg-wflh">Week 32</th>
+                          <th class="tg-wflh">Week 33</th>
+                          <th class="tg-wflh">Week 34</th>
+                          <th class="tg-wflh">Week 35</th>
+                          <th class="tg-wflh">Week 36</th>
+                          <th class="tg-wflh">Week 37</th>
+                          <th class="tg-wflh">Week 38</th>
+                          <th class="tg-wflh">Week 39</th>
+                          <th class="tg-wflh">Week 40</th>
+                          <th class="tg-wflh">Week 41</th>
+                          <th class="tg-wflh">Week 42</th>
+                          <th class="tg-wflh">Week 43</th>
+                          <th class="tg-wflh">Week 44</th>
+                          <th class="tg-wflh">Week 45</th>
+                          <th class="tg-wflh">Week 46</th>
+                          <th class="tg-wflh">Week 47</th>
+                          <th class="tg-wflh">Week 48</th>
+                          <th class="tg-wflh">Week 49</th>
+                          <th class="tg-wflh">Week 50</th>
+                          <th class="tg-wflh">Week 51</th>
+                          <th class="tg-wflh">Week 52</th>
+                          <th class="tg-wflh">Week 53</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let col of dados">
+                          <th class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <b>{{col.equipamento}}</b>
+                          </th>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week1">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week2">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week3">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week4">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week5">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week6">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week7">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week8">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week9">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week10">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week11">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week12">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week13">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week14">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week15">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week16">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week17">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week18">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week19">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week20">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week21">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week22">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week23">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week24">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week25">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week26">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week27">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week28">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week29">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week30">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week31">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week32">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week33">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week34">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week35">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week36">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week37">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week38">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week39">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week40">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week41">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week42">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week43">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week44">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week45">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week46">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week47">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week48">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week49">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week50">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week51">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week52">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                          <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
+                            <div *ngFor="let val of col.week53">
+                              <div title="{{mouseEnter(val.id,val.estado, val.semana)}}" class="cor_{{val.class}}">
+                                {{val.valor}}</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="dados.length == 0 && loading == false">
+                          <td class="tg-0pky" style="margin-left: 300px;" colspan="54">{{mensagemtabela}}</td>
+                        </tr>
+                        <tr *ngIf="loading">
+                          <td class="tg-0pky" style="margin-left: 300px;" colspan="54">A Carregar..</td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
 

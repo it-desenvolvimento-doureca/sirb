@@ -147,3 +147,46 @@ table input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     border-right: 2px solid black !important
 }
 
+/*****/
+.tabeladiv {
+    max-width: 100vw;
+    max-height: 50vh;
+    overflow: scroll;
+    position: relative;
+}
+
+.tabeladiv table {
+    position: relative;
+    border-collapse: collapse;
+}
+
+.tabeladiv table td,
+th {
+    padding: 0.25em;
+}
+
+.tabeladiv table thead th {
+    position: -webkit-sticky;
+    /* for Safari */
+    position: sticky;
+    top: 0;
+    background: #000;
+    color: #FFF;
+}
+
+.tabeladiv table thead th:first-child {
+    left: 0;
+    z-index: 1;
+}
+
+.tabeladiv table tbody th {
+    position: -webkit-sticky;
+    /* for Safari */
+    position: sticky;
+    left: 0;
+    background: #FFF;
+    border-right: 1px solid #CCC;
+}
+
+
+/***/
