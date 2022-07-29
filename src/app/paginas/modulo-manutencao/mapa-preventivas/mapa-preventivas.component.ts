@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
+import { MANDICPISOSService } from 'app/servicos/man-dic-pisos.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
+import { MANMOVMANUTENCAOEQUIPAMENTOSService } from 'app/servicos/man-mov-manutencao-equipamentos.service';
 
 @Component({
   selector: 'app-mapa-preventivas',
@@ -16,7 +18,7 @@ export class MapaPreventivasComponent implements OnInit {
   dados: any[];
   loading: boolean;
   anos = [];
-  manutencoes = [];
+  //manutencoes = [];
   displayManutencao: boolean;
   ID_PEDIDO_INPUT: any;
   CLASSIFICACAO: any;
@@ -24,9 +26,14 @@ export class MapaPreventivasComponent implements OnInit {
   ID_EQUIPAMENTO_INPUT: any;
   drop_ambitos_manutencao: any[];
   AMBITO_MANUTENCAO: any;
+  ver_atrasos = false;
+  drop_equipamentos: any[];
+  drop_localizacoes: any[];
+  equipamento;
+  localizacao;
 
-  constructor(private globalVar: AppGlobals, private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private elementRef: ElementRef
-    , private MANDICAMBITOSService: MANDICAMBITOSService) { }
+  constructor(private globalVar: AppGlobals, private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private elementRef: ElementRef, private MANDICPISOSService: MANDICPISOSService,
+    private MANDICAMBITOSService: MANDICAMBITOSService, private MANMOVMANUTENCAOEQUIPAMENTOSService: MANMOVMANUTENCAOEQUIPAMENTOSService) { }
 
   ngOnInit() {
     this.globalVar.setapagar(false);
@@ -47,6 +54,8 @@ export class MapaPreventivasComponent implements OnInit {
     }
 
     this.listar_ambitos_manutencao();
+    this.listar_equipamentos();
+    this.listar_localizacao();
 
     this.ano = new Date().getUTCFullYear();
     this.carregaAnalise();
@@ -74,10 +83,55 @@ export class MapaPreventivasComponent implements OnInit {
       error => console.log(error));
   }
 
+
+  listar_localizacao() {
+    this.drop_localizacoes = [];
+    this.drop_localizacoes.push({
+      value: null, label: 'Selecionar Localização'
+    })
+    this.MANDICPISOSService.getALLLOCALLIZACOES().subscribe(
+      response => {
+        for (var x in response) {
+          this.drop_localizacoes.push({
+            value: response[x][2] + response[x][0], label: response[x][1]
+          });
+        }
+        this.drop_localizacoes = this.drop_localizacoes.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  listar_equipamentos() {
+
+
+    this.drop_equipamentos = [];
+    this.MANMOVMANUTENCAOEQUIPAMENTOSService.getAll2().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        this.drop_equipamentos.push({ label: 'Sel. Equipamento', value: null });
+
+        for (var x in response) {
+          this.drop_equipamentos.push({
+            value: response[x][0],
+            label: response[x][1],
+            localizacao: response[x][3],
+            referencia: response[x][5],
+            ativo: response[x][6]
+          });
+
+        }
+        this.drop_equipamentos = this.drop_equipamentos.slice();
+
+      },
+      error => console.log(error));
+
+
+  }
+
   carregaAnalise() {
-    var dados = [{ ANO: this.ano, UNIDADE: null, AMBITO: this.AMBITO_MANUTENCAO }];
+    var dados = [{ ANO: this.ano, UNIDADE: this.localizacao, AMBITO: this.AMBITO_MANUTENCAO, EQUIPAMENTO: this.equipamento }];
     this.dados = [];
-    this.manutencoes = [];
     this.loading = true;
     this.MANMOVMANUTENCAOCABService.MAN_GET_ANALISE_PREVENTIVAS(dados).subscribe(
       response => {
@@ -167,24 +221,28 @@ export class MapaPreventivasComponent implements OnInit {
     for (var x in array) {
       var array2 = array[x].split('::');
       if (array2.length > 1) {
-        v_return.push({ id: array2[2], estado: array2[0], class: array2[0], valor: ((array2[2] == 'P') ? array2[1] : array2[2]), semana: semana })
 
-        if (array2[2] != 'P') {
-          this.manutencoes.push({ id: array2[2], estado: array2[0], semana: semana })
+        if (array2[2] != 'P' && array2[0] == 'green' && array2[3] != array2[4]) {
+          if (this.ver_atrasos) v_return.push({ id: array2[2], estado: array2[0], class: array2[0], valor: ((array2[2] == 'P') ? array2[1] : array2[2]), semana: semana, title: this.getTitle(array2[2], array2[0], array2[3], array2[4]) })
+        } else {
+          v_return.push({ id: array2[2], estado: array2[0], class: array2[0], valor: ((array2[2] == 'P') ? array2[1] : array2[2]), semana: semana, title: this.getTitle(array2[2], array2[0], array2[3], array2[4]) })
         }
+        /*if (array2[2] != 'P') {
+          this.manutencoes.push({ id: array2[2], estado: array2[0], semana: semana })
+        }*/
       }
     }
     return v_return;
   }
 
-  mouseEnter(id, estado, semana) {
-    var array = this.manutencoes.find(item => item.id == id && item.semana != semana);
+  getTitle(id, estado, semana_conclui, semana_prevista) {
 
-    if (id != 'P' && array) {
+
+    if (id != 'P' && semana_conclui != 0) {
       if (estado == 'red') {
-        return "Manutenção Concluída na Semana " + array.semana + ".";
+        return "Manutenção Concluída na Semana " + semana_conclui + ".";
       } else {
-        return "Manutenção Prevista para a Semana " + array.semana + ".";
+        return "Manutenção Prevista para a Semana " + semana_prevista + ".";
       }
 
     }
@@ -215,5 +273,13 @@ export class MapaPreventivasComponent implements OnInit {
 
   onHideEquipamentos() {
     this.ID_EQUIPAMENTO_INPUT = null;
+  }
+
+  limpar() {
+    this.AMBITO_MANUTENCAO = null;
+    this.localizacao = null;
+    this.equipamento = null;
+    this.ver_atrasos = false;
+    this.carregaAnalise();
   }
 }

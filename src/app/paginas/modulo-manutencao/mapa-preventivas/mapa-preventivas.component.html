@@ -15,10 +15,11 @@
                 <div style="display: inline-block; width: 100%;">
 
                   <div style="padding: 1px 5px 1px 0;" class="form-group col-md-12">
-                    <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4 ">
+                    <div style="padding: 1px 5px 1px 10px; width: 7%;" class="form-group col-md-2 ">
                       <label>Ano:</label><br>
-                      <p-dropdown [options]="anos" class="droplinha" [style]="{'width':'185px','height':'25px'}"
-                        [(ngModel)]="ano" [ngModelOptions]="{standalone: true}">
+                      <p-dropdown [options]="anos" class="droplinha"
+                        [style]="{'width':'100%','min-width': '90px','height':'25px'}" [(ngModel)]="ano"
+                        [ngModelOptions]="{standalone: true}">
                       </p-dropdown>
                     </div>
 
@@ -28,11 +29,32 @@
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="AMBITO_MANUTENCAO"
                         [ngModelOptions]="{standalone: true}"></p-dropdown>
                     </div>
-
-                    <div class="table-row-column col-md-3" style="height: 64px;">
-                      <button type="button" (click)="carregaAnalise()" class="btn btn-success " [disabled]="loading"
-                        style="margin: 19px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                      <label>Localização</label>
+                      <p-dropdown [options]="drop_localizacoes"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="localizacao"
+                        [ngModelOptions]="{standalone: true}"></p-dropdown>
                     </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                      <label>Equipamento</label>
+                      <p-dropdown [options]="drop_equipamentos"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="equipamento"
+                        [ngModelOptions]="{standalone: true}"></p-dropdown>
+                    </div>
+                    <div class="table-row-column col-md-3"
+                      style="padding-left: 0; width: 17%; padding-top: 26px; min-width: 253px;">
+                      <p-checkbox [(ngModel)]="ver_atrasos" [ngModelOptions]="{standalone: true}"
+                        label="Ver Atrasos na Data de Conclusão" binary="true">
+                      </p-checkbox>
+                    </div>
+
+                    <div class="table-row-column col-md-12" style="text-align: right;">
+                      <button type="button" (click)="carregaAnalise()" class="btn btn-success " [disabled]="loading"
+                        style="margin: -2px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                      <button type="button" (click)="limpar()" class="btn btn-danger " [disabled]="loading"
+                        style="margin: -2px 0 0 15px; height: 27px; padding: 0px 10px 0 10px;">Limpar</button>
+                    </div>
+
                   </div>
 
 
@@ -106,372 +128,319 @@
                           </th>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week1">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week2">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week3">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week4">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week5">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week6">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week7">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week8">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week9">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week10">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week11">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week12">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week13">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week14">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week15">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week16">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week17">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week18">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week19">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week20">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week21">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week22">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week23">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week24">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week25">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week26">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week27">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week28">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week29">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week30">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week31">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week32">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week33">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week34">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week35">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week36">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week37">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week38">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week39">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week40">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week41">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week42">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week43">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week44">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week45">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week46">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week47">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week48">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week49">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week50">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week51">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week52">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week53">
-                              <div (click)="verManutencao(val.id)" title="{{mouseEnter(val.id,val.estado, val.semana)}}"
-                                class="cor_{{val.class}}">
+                              <div (click)="verManutencao(val.id)" title="{{val.title}}" class="cor_{{val.class}}">
                                 {{val.valor}}</div>
                             </div>
                           </td>
