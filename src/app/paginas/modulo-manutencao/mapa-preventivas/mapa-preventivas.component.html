@@ -17,14 +17,22 @@
                   <div style="padding: 1px 5px 1px 0;" class="form-group col-md-12">
                     <div style="padding: 1px 5px 1px 10px; width: 200px;" class="form-group col-md-4 ">
                       <label>Ano:</label><br>
-                      <p-dropdown (onChange)="alteraAno($event)" [options]="anos" class="droplinha"
-                        [style]="{'width':'185px','height':'25px'}" [(ngModel)]="ano"
-                        [ngModelOptions]="{standalone: true}" [required]="true">
+                      <p-dropdown [options]="anos" class="droplinha" [style]="{'width':'185px','height':'25px'}"
+                        [(ngModel)]="ano" [ngModelOptions]="{standalone: true}">
                       </p-dropdown>
                     </div>
 
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                      <label>Âmbito Manutenção</label>
+                      <p-dropdown [options]="drop_ambitos_manutencao"
+                        [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="AMBITO_MANUTENCAO"
+                        [ngModelOptions]="{standalone: true}"></p-dropdown>
+                    </div>
 
-
+                    <div class="table-row-column col-md-3" style="height: 64px;">
+                      <button type="button" (click)="carregaAnalise()" class="btn btn-success " [disabled]="loading"
+                        style="margin: 19px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                    </div>
                   </div>
 
 
@@ -92,7 +100,9 @@
                         <tr *ngFor="let col of dados">
                           <th class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <b style="cursor: pointer;"
-                              (click)="verEquipamento(col.id_equipamento)">{{col.equipamento}}</b>
+                              (click)="verEquipamento(col.id_equipamento)">{{col.equipamento}}</b><br>
+                            <span
+                              style="font-size: 10px; font-size: 9px; display: block; margin-top: -7px;">({{col.localizacao}})</span>
                           </th>
                           <td class="tg-0pky" style="min-width: 120px; max-width: none; background-color: #D9D9D9;">
                             <div *ngFor="let val of col.week1">

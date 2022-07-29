@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
+import { MANDICAMBITOSService } from 'app/servicos/man-dic-ambitos.service';
 import { MANMOVMANUTENCAOCABService } from 'app/servicos/man-mov-manutencao-cab.service';
 
 @Component({
@@ -21,8 +22,11 @@ export class MapaPreventivasComponent implements OnInit {
   CLASSIFICACAO: any;
   displayEquipamento: boolean;
   ID_EQUIPAMENTO_INPUT: any;
+  drop_ambitos_manutencao: any[];
+  AMBITO_MANUTENCAO: any;
 
-  constructor(private globalVar: AppGlobals, private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private elementRef: ElementRef) { }
+  constructor(private globalVar: AppGlobals, private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private elementRef: ElementRef
+    , private MANDICAMBITOSService: MANDICAMBITOSService) { }
 
   ngOnInit() {
     this.globalVar.setapagar(false);
@@ -42,14 +46,36 @@ export class MapaPreventivasComponent implements OnInit {
       this.anos.push({ value: x, label: x })
     }
 
+    this.listar_ambitos_manutencao();
 
     this.ano = new Date().getUTCFullYear();
     this.carregaAnalise();
   }
 
 
+  listar_ambitos_manutencao() {
+
+    this.drop_ambitos_manutencao = [];
+    this.drop_ambitos_manutencao.push({ label: 'Sel. Âmbito', value: null });
+    this.MANDICAMBITOSService.getAll().subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        for (var x in response) {
+
+          this.drop_ambitos_manutencao.push({
+            value: response[x].ID,
+            label: response[x].NOME
+          });
+
+        }
+
+        this.drop_ambitos_manutencao = this.drop_ambitos_manutencao.slice();
+      },
+      error => console.log(error));
+  }
+
   carregaAnalise() {
-    var dados = [{ ANO: this.ano, UNIDADE: null }];
+    var dados = [{ ANO: this.ano, UNIDADE: null, AMBITO: this.AMBITO_MANUTENCAO }];
     this.dados = [];
     this.manutencoes = [];
     this.loading = true;
@@ -64,6 +90,7 @@ export class MapaPreventivasComponent implements OnInit {
           this.dados.push({
             equipamento: response[x][0],
             id_equipamento: response[x][54],
+            localizacao: response[x][55],
             week1: this.transforma_dados(response[x][1], 1),
             week2: this.transforma_dados(response[x][2], 2),
             week3: this.transforma_dados(response[x][3], 3),
