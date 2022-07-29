@@ -126,6 +126,7 @@ export class ListaacoesComponent implements OnInit {
               referencia: response[x][22],
               item: response[x][23],
               causa: response[x][24],
+              conclusao: response[x][26],
               data_realizado: response[x][25],
             });
           }

@@ -87,7 +87,15 @@
               </p-column>
               <p-column [style]="{'width':'60px'}" field="origem" header="Origem" [filter]="true" [sortable]="true">
               </p-column>
-
+              <p-column [style]="{'width':'21px','padding-left': '0','padding-right': '0'}" field="conclusao"
+                header="% Conclusão" styleClass="coluna_conclusao" [filter]="true" [sortable]="true">
+                <ng-template let-car="rowData" pTemplate="body">
+                  <span>
+                    {{car['conclusao'] | number: '1.2-2'}} %
+                  </span>
+                  <!--p-progressBar [showValue]="false" [value]="car['conclusao']"></p-progressBar-->
+                </ng-template>
+              </p-column>
               <p-column [style]="{'width':'30px'}" field="estado" header="Estado" [filter]="true" [sortable]="true">
                 <ng-template pTemplate="filter" let-col>
                   <p-multiSelect [options]="estados" [(ngModel)]="estado_filtro" [style]="{'width':'100%'}"

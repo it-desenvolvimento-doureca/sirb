@@ -675,7 +675,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'alertasePrioridades', component: AlertaseprioridadesComponent, canActivate: [LoginService], data: { breadcrumb: "Lista de Ações" }
+    path: 'alertasePrioridades', component: AlertaseprioridadesComponent, canActivate: [LoginService], data: { breadcrumb: "Alertas e Prioridades" }
   },
   {
     path: 'planosacao', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Plano de Ações" },

@@ -134,7 +134,7 @@ export class EdificiosComponent implements OnInit {
           }
           this.departs.push({
             id: response[x].ID, dados: response[x], descricao: response[x].DESCRICAO,
-            unidade: unidade
+            unidade: unidade, id_unidade: response[x].UNIDADE
           });
         }
         this.departs = this.departs.slice();
@@ -181,7 +181,7 @@ export class EdificiosComponent implements OnInit {
     this.dados = event.data.dados;
     this.id_depart_selected = event.data.id;
     this.id = event.data.id;
-    this.unidade = event.data.unidade;
+    this.unidade = event.data.id_unidade;
     this.descricao = event.data.descricao;
     this.novo = false;
     this.dialognovo = true;
