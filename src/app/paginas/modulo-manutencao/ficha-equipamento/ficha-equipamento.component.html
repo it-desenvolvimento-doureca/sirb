@@ -1,10 +1,11 @@
-<app-controlos (apagarbt)="apagar()" (duplicarbt)="duplicar()"></app-controlos>
+<app-controlos *ngIf="ID_EQUIPAMENTO_INPUT == null" (apagarbt)="apagar()" (duplicarbt)="duplicar()"></app-controlos>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div class="card-header" *ngIf="ID_EQUIPAMENTO_INPUT == null" style="height: 49px; padding-top: 22px;"
+            data-background-color="red">
             <h4 style="position: absolute;" class="title">Equipamentos</h4>
 
           </div>

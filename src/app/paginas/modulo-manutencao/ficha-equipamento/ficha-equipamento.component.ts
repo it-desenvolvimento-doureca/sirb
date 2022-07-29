@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
@@ -86,6 +86,7 @@ export class FichaEquipamentoComponent implements OnInit {
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('waitingDialog') waitingDialog: ElementRef;
   @ViewChild('waitingDialogclose') waitingDialogclose: ElementRef;
+  @Input() ID_EQUIPAMENTO_INPUT: number;
   id_selected: number;
   descricaoeng: string;
   descricaopt: string;
@@ -206,7 +207,7 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
     this.apagarficheiros = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11591apagarficheiros");
-
+    if (this.ID_EQUIPAMENTO_INPUT != null) urlarray = ['equipamentos_manutencao', 'view']
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
 
@@ -219,6 +220,9 @@ export class FichaEquipamentoComponent implements OnInit {
 
 
     }
+
+
+    if (this.ID_EQUIPAMENTO_INPUT != null) id = this.ID_EQUIPAMENTO_INPUT;
 
     if (urlarray[1] != null) {
       if (urlarray[1].match("editar")) {

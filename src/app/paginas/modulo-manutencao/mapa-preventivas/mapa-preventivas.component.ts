@@ -16,6 +16,11 @@ export class MapaPreventivasComponent implements OnInit {
   loading: boolean;
   anos = [];
   manutencoes = [];
+  displayManutencao: boolean;
+  ID_PEDIDO_INPUT: any;
+  CLASSIFICACAO: any;
+  displayEquipamento: boolean;
+  ID_EQUIPAMENTO_INPUT: any;
 
   constructor(private globalVar: AppGlobals, private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private elementRef: ElementRef) { }
 
@@ -58,6 +63,7 @@ export class MapaPreventivasComponent implements OnInit {
         for (var x in response) {
           this.dados.push({
             equipamento: response[x][0],
+            id_equipamento: response[x][54],
             week1: this.transforma_dados(response[x][1], 1),
             week2: this.transforma_dados(response[x][2], 2),
             week3: this.transforma_dados(response[x][3], 3),
@@ -149,7 +155,7 @@ export class MapaPreventivasComponent implements OnInit {
 
     if (id != 'P' && array) {
       if (estado == 'red') {
-        return "Manutenção Conluída na Semana " + array.semana + ".";
+        return "Manutenção Concluída na Semana " + array.semana + ".";
       } else {
         return "Manutenção Prevista para a Semana " + array.semana + ".";
       }
@@ -160,5 +166,27 @@ export class MapaPreventivasComponent implements OnInit {
 
   alteraAno(event) {
     this.carregaAnalise()
+  }
+
+  verManutencao(id) {
+    if (id != 'P') {
+      this.ID_PEDIDO_INPUT = id;
+      this.CLASSIFICACAO = 'P';
+      this.displayManutencao = true;
+    }
+  }
+
+  onHide() {
+    this.ID_PEDIDO_INPUT = null;
+    this.CLASSIFICACAO = null;
+  }
+
+  verEquipamento(id) {
+    this.ID_EQUIPAMENTO_INPUT = id;
+    this.displayEquipamento = true;
+  }
+
+  onHideEquipamentos() {
+    this.ID_EQUIPAMENTO_INPUT = null;
   }
 }

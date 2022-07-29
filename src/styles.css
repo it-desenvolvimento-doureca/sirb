@@ -39,6 +39,7 @@
     display: block;
     float: left;
     min-width: 34px;
+    height: 22px;
     text-align: center;
     background: red;
     border-radius: 10px;
@@ -54,6 +55,7 @@
     display: block;
     float: left;
     min-width: 34px;
+    height: 22px;
     text-align: center;
     background: green;
     border-radius: 16px;
@@ -67,11 +69,25 @@
 }
 
 .cor_red[title]:not([title=""]) {
-    background: #ffeb3b;
+    background: #fff92e;
     border: 1px solid red;
+    color: black;
 }
 
 .cor_green[title]:not([title=""]) {
-    background: #ffeb3b;
+    background: #fff92e;
     border: 1px solid green;
+    color: black;
+}
+
+.cor_red_t {
+    background: #fff92e;
+    border: 1px solid red;
+    color: black;
+}
+
+.cor_green_t {
+    background: #fff92e;
+    border: 1px solid green;
+    color: black;
 }
