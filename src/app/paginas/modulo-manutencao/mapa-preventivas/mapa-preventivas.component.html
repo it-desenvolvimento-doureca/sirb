@@ -25,19 +25,19 @@
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
                       <label>Âmbito Manutenção</label>
-                      <p-dropdown [options]="drop_ambitos_manutencao"
+                      <p-dropdown [options]="drop_ambitos_manutencao" [filter]="true"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="AMBITO_MANUTENCAO"
                         [ngModelOptions]="{standalone: true}"></p-dropdown>
                     </div>
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
                       <label>Localização</label>
-                      <p-dropdown [options]="drop_localizacoes"
+                      <p-dropdown [options]="drop_localizacoes" [filter]="true"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="localizacao"
                         [ngModelOptions]="{standalone: true}"></p-dropdown>
                     </div>
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
                       <label>Equipamento</label>
-                      <p-dropdown [options]="drop_equipamentos"
+                      <p-dropdown [options]="drop_equipamentos" [filter]="true"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="equipamento"
                         [ngModelOptions]="{standalone: true}"></p-dropdown>
                     </div>
