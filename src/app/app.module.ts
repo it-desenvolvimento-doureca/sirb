@@ -429,6 +429,7 @@ import { PainelControloViewComponent } from './paginas/modulo-manutencao/painel-
 import { LocalizacoesAlfrescoComponent } from './paginas/modulo-documentacao/parametros/localizacoes-alfresco/localizacoes-alfresco.component';
 import { DOCGESTAOPASTASService } from './servicos/doc-gestao-pastas.service';
 import { MapaPreventivasComponent } from './paginas/modulo-manutencao/mapa-preventivas/mapa-preventivas.component';
+import { REUREUNIOESPLANOSACCOESService } from './servicos/reu-reunioes-planos-accoes.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1586,6 +1587,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DOCDICTIPOSDOCUMENTOService,
     DOCDICPOSTOSService,
     DOCGESTAOPASTASService,
+    REUREUNIOESPLANOSACCOESService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

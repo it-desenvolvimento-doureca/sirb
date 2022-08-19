@@ -1316,7 +1316,7 @@ export class DerrogacoesFormComponent implements OnInit {
 
   //atualiza ou cria tarefa
   criarTarefas(id, modulo) {
-    var link = webUrl.host + '/#/tarefas/view?id=';
+    var link = webUrl.host + '/#/derrogacoes/view?id=';
     this.GTMOVTAREFASService.getAtualizaTarefaDerrogacoes(id, modulo, link).subscribe(
       response => {
 

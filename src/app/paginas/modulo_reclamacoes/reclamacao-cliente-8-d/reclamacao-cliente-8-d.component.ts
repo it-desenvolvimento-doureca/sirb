@@ -4491,7 +4491,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
   //atualiza ou cria tarefa
   criarTarefas(id, modulo) {
-    var link = webUrl.host + '/#/tarefas/view?id=';
+    var link = webUrl.host + '/#/reclamacoesclientes/view?id=';
     this.GTMOVTAREFASService.getAtualizaTarefaReclamacao(id, modulo, link).subscribe(
       response => {
 

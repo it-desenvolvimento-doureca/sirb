@@ -16,6 +16,13 @@ import { ConfirmationService, FileUpload } from 'primeng/primeng';
 import { REU_REUNIOES_PARTICIPANTES } from 'app/entidades/REU_REUNIOES_PARTICIPANTES';
 import { REU_REUNIOES_FICHEIROS } from 'app/entidades/REU_REUNIOES_FICHEIROS';
 import * as FileSaver from 'file-saver';
+import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
+import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
+import { REUREUNIOESPLANOSACCOESService } from 'app/servicos/reu-reunioes-planos-accoes.service';
+import { REU_REUNIOES_PLANOS_ACCOES } from 'app/entidades/REU_REUNIOES_PLANOS_ACCOES';
+import { GT_LOGS } from 'app/entidades/GT_LOGS';
+import { GT_MOV_TAREFAS } from 'app/entidades/GT_MOV_TAREFAS';
+import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 
 @Component({
   selector: 'app-reunioes-form',
@@ -79,9 +86,23 @@ export class ReunioesFormComponent implements OnInit {
   data_REUNIAO;
   hora_REUNIAO;
   responsavel: any;
-
+  classstep = "step1";
+  tabelaaccoes_concluidas = [];
+  tabelaaccoes = [];
+  drop_accoes: any[];
+  drop_utilizadores_acoes: any;
+  drop_utilizadores2: any[];
+  id_selected: number;
+  descricaoeng: string;
+  descricaopt: string;
+  descricaofr: string;
+  displayAddAccao: boolean;
+  acessoadicionarACCAO = false;
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private renderer: Renderer,
+    private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService,
+    private REUREUNIOESPLANOSACCOESService: REUREUNIOESPLANOSACCOESService,
+    private GTMOVTAREFASService: GTMOVTAREFASService,
     private route: ActivatedRoute, private location: Location, private REUAMBITOSREUNIOESPARTICIPANTESService: REUAMBITOSREUNIOESPARTICIPANTESService,
     private GERGRUPOService: GERGRUPOService, private REUAMBITOSREUNIOESService: REUAMBITOSREUNIOESService, private REUREUNIOESService: REUREUNIOESService,
     private REUREUNIOESPARTICIPANTESService: REUREUNIOESPARTICIPANTESService, private REUREUNIOESFICHEIROSService: REUREUNIOESFICHEIROSService,
@@ -103,7 +124,7 @@ export class ReunioesFormComponent implements OnInit {
     var urlarray = url.split("/");
 
 
-
+    this.acessoadicionarACCAO = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node16211dicionarACCAO");
 
     if (urlarray[1].match("editar") || urlarray[1].match("view")) {
       this.novo = false;
@@ -149,7 +170,9 @@ export class ReunioesFormComponent implements OnInit {
         this.btcriar = true;
       }
     }
-
+    this.carregaaccoes();
+    this.carregaGruposAccoes();
+    this.carregaUtilizadores_acoes();
     if (!this.novo) { this.carregaDados(true, id); }
     this.carregaGrupos();
     this.carregaAmbitos();
@@ -221,6 +244,7 @@ export class ReunioesFormComponent implements OnInit {
 
           this.carregatabelaParticipantes(id);
           this.carregatabelaFiles(id);
+          this.carregatabelasaccoes(id);
         }
 
       }, error => { console.log(error); })
@@ -290,6 +314,8 @@ export class ReunioesFormComponent implements OnInit {
         res => {
           this.gravarTabelaFicheiros(res.id_REUNIAO);
           this.gravarTabelaParticipantes(res.id_REUNIAO);
+          this.gravarTabelaAccoes(res.id_REUNIAO);
+
 
           var email_para = [];
           for (var x in this.tabelaParticipantes) {
@@ -324,6 +350,7 @@ export class ReunioesFormComponent implements OnInit {
         res => {
 
           this.gravarTabelaParticipantes(id);
+          this.gravarTabelaAccoes(id);
           //this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
         },
         error => { console.log(error); this.simular(this.inputerro); /*this.displayLoading = false;*/ });
@@ -355,22 +382,22 @@ export class ReunioesFormComponent implements OnInit {
           this.gravarTabelaParticipantes2(equipa, count, this.tabelaParticipantes.length, id);
         } else if (count == this.tabelaParticipantes.length) {
           if (this.novo) {
-            this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
-            this.simular(this.inputnotifi);
+            // this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
+            // this.simular(this.inputnotifi);
           } else {
-            this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
-            this.simular(this.inputnotifi);
+            // this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
+            // this.simular(this.inputnotifi);
           }
         }
       }
 
     } else {
       if (this.novo) {
-        this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
-        this.simular(this.inputnotifi);
+        // this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
+        // this.simular(this.inputnotifi);
       } else {
-        this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
-        this.simular(this.inputnotifi);
+        //this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
+        //this.simular(this.inputnotifi);
       }
     }
   }
@@ -380,11 +407,11 @@ export class ReunioesFormComponent implements OnInit {
       res => {
         if (count == total) {
           if (this.novo) {
-            this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
-            this.simular(this.inputnotifi);
+            //this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
+            // this.simular(this.inputnotifi);
           } else {
-            this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
-            this.simular(this.inputnotifi);
+            //this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
+            //this.simular(this.inputnotifi);
           }
         }
       },
@@ -981,4 +1008,463 @@ export class ReunioesFormComponent implements OnInit {
       this.tabelaParticipantes = [];
     }
   }
+
+  resetActive(event, step) {
+    this.classstep = step;
+  }
+
+  /****ACCOES */
+
+  adicionar_linha(tabela) {
+    if (tabela == "tabelaaccoes") {
+
+      this.tabelaaccoes.push({
+        id_REUNIAO: null,
+        obriga_EVIDENCIAS: false,
+        area: "", id: null, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null,
+        nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: null
+      });
+      this.tabelaaccoes = this.tabelaaccoes.slice();
+    }
+
+
+  }
+
+  apagar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoes") {
+      var tab = this.tabelaaccoes[index];
+      if (tab.id == null) {
+        this.tabelaaccoes = this.tabelaaccoes.slice(0, index).concat(this.tabelaaccoes.slice(index + 1));
+        //this.atualiza_ordem(tabela);
+      } else {
+
+        var accoes1 = new REU_REUNIOES_PLANOS_ACCOES;
+        accoes1 = this.tabelaaccoes[index].data;
+        this.tabelaaccoes[index].estado = 'A';
+        this.tabelaaccoes[index].nome_estado = this.geEstado('A');
+        accoes1.estado = 'A';
+        accoes1.data_ULT_MODIF = new Date();
+        accoes1.utz_ULT_MODIF = this.user;
+        this.gravarTabelaAccoes2(accoes1, 1, 2, 0, false, index, true);
+      }
+    }
+  }
+
+
+
+  finalizar_linha(tabela, index) {
+
+    if (tabela == "tabelaaccoes") {
+      var accoes = new REU_REUNIOES_PLANOS_ACCOES;
+
+      accoes = this.tabelaaccoes[index].data;
+
+      if (this.tabelaaccoes[index].data_REAL == null || this.tabelaaccoes[index].data_REAL == "") {
+        this.tabelaaccoes[index].data_REAL = new Date();
+      }
+      accoes.data_REAL = this.tabelaaccoes[index].data_REAL;
+      accoes.concluido_DATA = new Date();
+      accoes.concluido_UTZ = this.user;
+      accoes.estado = 'C';
+
+      this.tabelaaccoes[index].estado = 'C';
+      this.tabelaaccoes[index].nome_estado = this.geEstado('C');
+
+      this.gravarTabelaAccoes2(accoes, 1, 2, 0, true, index, true);
+
+    }
+  }
+
+  gravarTabelaAccoes2(accoes, count, total, id, finaliza = false, index = 0, atualizatarefa = false) {
+    this.REUREUNIOESPLANOSACCOESService.update(accoes).subscribe(
+      res => {
+        if (atualizatarefa) {
+          this.atualizaestadoTarefa(res.id_TAREFA, res.estado);
+        } else {
+          this.criarTarefas(res.id, 19);
+        }
+
+
+        if (finaliza) this.tabelaaccoes[index].concluido_UTZ = this.user;
+      },
+      error => { console.log(error); });
+  }
+
+  atualizaestadoTarefa(id, estado) {
+    if (id != null) {
+      this.GTMOVTAREFASService.getbyid(id).subscribe(response => {
+
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          var tarefa = new GT_MOV_TAREFAS;
+          tarefa = response[0]
+
+          var data_logs = [];
+
+
+          if (tarefa.estado != estado) {
+            data_logs.push({ descricao: "Alterado Estado de " + this.geEstado(tarefa.utz_ENCAMINHADO) + " para " + this.geEstado(estado) })
+          }
+
+          tarefa.estado = estado;
+          if (estado == "C") {
+            tarefa.utz_CONCLUSAO = this.user;
+            tarefa.data_CONCLUSAO = new Date();
+          } else if (estado == "A") {
+            tarefa.utz_ANULACAO = this.user;
+            tarefa.data_ANULACAO = new Date();
+          }
+
+
+          this.GTMOVTAREFASService.update(tarefa).subscribe(response => {
+            for (var x in data_logs) {
+              var logs = new GT_LOGS;
+              logs.id_TAREFA = id;
+              logs.utz_CRIA = this.user;
+              logs.data_CRIA = new Date();
+              logs.descricao = data_logs[x].descricao;
+              this.criaLogs(logs);
+              this.atualizaSUBTAREFAS(id, estado, this.user);
+            }
+
+
+          }, error => {
+            console.log(error);
+
+          });
+        }
+      }, error => {
+        console.log(error);
+        this.simular(this.inputerro);
+      });
+    }
+  }
+
+  atualizaSUBTAREFAS(id, estado, utilizador) {
+    this.GTMOVTAREFASService.getAtualizaSubtarefas(id, estado, utilizador).subscribe(response => {
+    }, error => {
+      console.log(error);
+    });
+  }
+
+
+  criaLogs(log) {
+    this.GTMOVTAREFASService.createLOGS(log).subscribe(response => {
+    }, error => {
+      console.log(error);
+
+    });
+  }
+
+  IrPara(id, responsavel) {
+
+    var id_r = null;
+    if (responsavel.toString().charAt(0) == 'u') {
+      id_r = responsavel.substr(1);
+    }
+
+    var modo = 'view';
+    if (this.modoedicao) modo = 'editar';
+    //if (this.adminuser || this.user == this.utz_CRIA || id_r == this.user) {
+    this.router.navigateByUrl('tarefas/view?id=' + id + "&redirect=reunioes/" + modo + "kvk\id=" + this.id_REUNIAO);
+    //}
+  }
+
+  //atualiza ou cria tarefa
+  criarTarefas(id, modulo) {
+    var link = webUrl.host + '/#/reunioes/view?id=';
+    this.GTMOVTAREFASService.getAtualizaTarefaReunioes(id, modulo, link).subscribe(
+      response => {
+
+      }, error => { console.log(error); });
+  }
+
+  gravarTabelaAccoes(id) {
+    if (this.tabelaaccoes && this.tabelaaccoes.length > 0) {
+
+      var count = 0;
+      for (var x in this.tabelaaccoes) {
+        count++;
+        if ((this.tabelaaccoes[x].id_REUNIAO == null || this.tabelaaccoes[x].id_REUNIAO == this.id_REUNIAO) && this.tabelaaccoes[x].responsavel != null && this.tabelaaccoes[x].responsavel != "" && this.tabelaaccoes[x].descricao != null && this.tabelaaccoes[x].descricao != "") {
+          var accoes = new REU_REUNIOES_PLANOS_ACCOES;
+          var novo = false;
+          if (this.tabelaaccoes[x].id != null) {
+            accoes = this.tabelaaccoes[x].data;
+          } else {
+            novo = true;
+            accoes.data_CRIA = new Date();
+            accoes.utz_CRIA = this.user;
+          }
+
+          accoes.id = this.tabelaaccoes[x].id;
+          accoes.id_REUNIAO = id;
+          accoes.id_ACCAO = this.tabelaaccoes[x].id_ACCOES;
+          accoes.tipo = "A";
+          accoes.observacoes = this.tabelaaccoes[x].observacoes;
+          accoes.estado = "P";
+          accoes.obriga_EVIDENCIAS = this.tabelaaccoes[x].obriga_EVIDENCIAS;
+
+
+          //var data = this.tabelaaccoesimediatas[x].data_REAL;
+          //accoes.data_REAL = (data!=null && data != "" )? new Date(data) : null;
+          accoes.data_PREVISTA = new Date(this.tabelaaccoes[x].data_PREVISTA);
+
+          var id_resp = this.tabelaaccoes[x].responsavel;
+          var tipo = "u";
+          if (this.tabelaaccoes[x].responsavel.charAt(0) == 'u' || this.tabelaaccoes[x].responsavel.charAt(0) == 'g') {
+            tipo = this.tabelaaccoes[x].responsavel.charAt(0);
+            id_resp = this.tabelaaccoes[x].responsavel.substr(1);
+          }
+
+          accoes.responsavel = id_resp;
+          accoes.tipo_RESPONSAVEL = tipo;
+
+
+          accoes.data_ULT_MODIF = new Date();
+          accoes.utz_ULT_MODIF = this.user;
+
+          if (novo) {
+            this.gravarTabelaAccoes2(accoes, count, this.tabelaaccoes.length, id);
+          }
+
+        }
+      }
+    } else {
+
+    }
+
+    if (this.novo) {
+      this.router.navigate(['reunioes/editar'], { queryParams: { id: id } });
+      this.simular(this.inputnotifi);
+    } else {
+      this.router.navigate(['reunioes/view'], { queryParams: { id: id } });
+      this.simular(this.inputgravou);
+    }
+  }
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+  carregatabelasaccoes(id) {
+
+    this.tabelaaccoes = [];
+
+    this.REUREUNIOESPLANOSACCOESService.getbyidambito(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        if (count > 0) {
+          for (var x in response) {
+            var tipo = response[x].tipo_RESPONSAVEL;
+            var data_real = null;
+
+            var id2 = null;
+
+            id2 = response[x].id;
+
+            if (response[x].data_REAL != null) {
+              data_real = new Date(response[x].data_REAL);
+            }
+
+            var estados = response[x].estado
+
+            var accao = null;
+            if (this.drop_accoes.find(item => item.value == response[x].id_ACCAO)) {
+              accao = this.drop_accoes.find(item => item.value == response[x].id_ACCAO).label
+            }
+            if (response[x].tipo == "A") {
+              if (/*response[x].id_REUNIAO == this.id_REUNIAO ||*/ (estados == 'P' || estados == 'L' || estados == 'E')) {
+                this.tabelaaccoes.push({
+                  id_REUNIAO: response[x].id_REUNIAO,
+                  obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
+                  data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
+                  id: id2, data_REAL: data_real, data_PREVISTA: ((response[x].data_PREVISTA == null) ? null : new Date(response[x].data_PREVISTA)),
+                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
+                });
+              } else {
+                this.tabelaaccoes_concluidas.push({
+                  id_REUNIAO: response[x].id_REUNIAO,
+                  obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
+                  data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
+                  id: id2, data_REAL: data_real, data_PREVISTA: ((response[x].data_PREVISTA == null) ? null : new Date(response[x].data_PREVISTA)),
+                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
+                });
+              }
+
+
+            }
+
+          }
+
+          this.tabelaaccoes = this.tabelaaccoes.slice();
+          this.tabelaaccoes_concluidas = this.tabelaaccoes_concluidas.slice();
+        }
+
+      }, error => {
+        console.log(error);
+      });
+  }
+
+
+  nomeACCAO(event) {
+    var id = event.value;
+    var data = this.drop_accoes.find(item => item.value == id);
+    var nome = "---";
+
+    if (data) {
+      nome = data.label;
+    }
+    return nome;
+  }
+
+  carregaaccoes() {
+    this.drop_accoes = [];
+    this.RCDICACCOESRECLAMACAOService.getAll_TIPO("RE").subscribe(
+      response => {
+        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+
+        for (var x in response) {
+          this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
+        }
+
+        this.drop_accoes = this.drop_accoes.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  carregaGruposAccoes() {
+    this.GERGRUPOService.getAll().subscribe(
+      response => {
+        var grupo = [];
+        this.tabelagrupos = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].descricao, value: "g" + response[x].id });
+          this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
+        }
+        this.drop_utilizadores_acoes.push({ label: "Grupos", itens: grupo });
+
+        this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
+
+
+      },
+      error => { console.log(error); });
+  }
+
+
+  carregaUtilizadores_acoes() {
+    this.drop_utilizadores_acoes = [];
+    this.drop_utilizadores2 = [];
+    this.GERUTILIZADORESService.getAll().subscribe(
+      response => {
+        this.drop_utilizadores2.push({ label: "Selecionar Utilizador", value: "" });
+        var grupo = [];
+        for (var x in response) {
+          grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
+          this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+        }
+        this.drop_utilizadores_acoes.push({ label: "Utilizadores", itens: grupo });
+
+        this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
+        this.drop_utilizadores2 = this.drop_utilizadores2.slice();
+
+      },
+      error => { console.log(error); });
+  }
+
+  alterarEmail2(index, event, tabela) {
+    if (event.target.value.toString().includes("u")) {
+      var id = event.target.value.toString().replace("u", "");
+      if (tabela == "tabelaaccoes") {
+        this.tabelaaccoes[index].area = this.drop_utilizadores2.find(item => item.value == id).area;
+      }
+    } else {
+      if (tabela == "tabelaaccoes") {
+        this.tabelaaccoes[index].area = "";
+      }
+    }
+  }
+
+  /* ADICIONAR ACÇÕES*/
+  //abre popup para adicionar acções
+  showDialogToAdd() {
+    //this.novo = true;
+    this.id_selected = 0;
+    this.descricaoeng = "";
+    this.descricaopt = "";
+    this.descricaofr = "";
+    this.displayAddAccao = true;
+  }
+  //gravar unidade de ACÇÕES
+  gravardados() {
+    var ACCOES_RECLAMACAO = new GT_DIC_TAREFAS;
+    ACCOES_RECLAMACAO.descricao_ENG = this.descricaoeng;
+    ACCOES_RECLAMACAO.descricao_PT = this.descricaopt;
+    ACCOES_RECLAMACAO.descricao_FR = this.descricaofr;
+    ACCOES_RECLAMACAO.utz_ULT_MODIF = this.user;
+    ACCOES_RECLAMACAO.tipo_TAREFA = "RE";
+    ACCOES_RECLAMACAO.data_ULT_MODIF = new Date();
+
+    ACCOES_RECLAMACAO.utz_CRIA = this.user;
+    ACCOES_RECLAMACAO.data_CRIA = new Date();
+    this.RCDICACCOESRECLAMACAOService.create(ACCOES_RECLAMACAO).subscribe(response => {
+      this.carregaaccoes();
+      this.displayAddAccao = false;
+      this.simular(this.inputgravou);
+    },
+      error => { console.log(error); this.simular(this.inputerro); });
+
+  }
+
+  //devolve node responsavel
+  getResponsavelaccoes(id) {
+    if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
+    if (id != null && id.toString().includes("u")) {
+      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Utilizadores").itens;
+      utz = utz2.find(item => item.value == id);
+    } else if (id != null && id.toString().includes("g")) {
+      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Grupos").itens;
+      utz = utz2.find(item => item.value == id);
+    }
+    var nome = "---";
+    if (utz) {
+      nome = utz.label;
+    }
+    return nome;
+  }
+
+  /******* */
 }

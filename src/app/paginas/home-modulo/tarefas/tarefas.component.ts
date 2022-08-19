@@ -31,6 +31,7 @@ export class TarefasComponent implements OnInit {
   sow_col4 = false;
   sow_col5 = false;
   sow_col6 = false;
+  sow_col7 = false;
   total_colspan = 0;
   drop_origens = [
     { label: "Escolher", value: null },
@@ -39,7 +40,8 @@ export class TarefasComponent implements OnInit {
     { label: 'Amostras', value: 'amostras' },
     { label: 'Planos de Ação', value: 'planosacao' },
     { label: 'Planos Estratégicos', value: 'planosestrategicos' },
-    { label: 'Derrogações', value: 'derrogacoes' }
+    { label: 'Derrogações', value: 'derrogacoes' },
+    { label: 'Reuniões', value: 'reunioes' },
   ];
   origem;
 
@@ -129,6 +131,9 @@ export class TarefasComponent implements OnInit {
     } else if (this.origem == 'derrogacoes') {
       id_modulo = 5;
       sub_modulo = 'D';
+    } else if (this.origem == 'reunioes') {
+      id_modulo = 19;
+      sub_modulo = 'R';
     }
 
     this.cols = [];
@@ -199,6 +204,7 @@ export class TarefasComponent implements OnInit {
     var show4 = false;
     var show5 = false;
     var show6 = false;
+    var show7 = false;
 
     this.GTMOVTAREFASService.getAllbyidUser(this.user, data).subscribe(res => {
       for (var x in res) {
@@ -221,6 +227,10 @@ export class TarefasComponent implements OnInit {
         if (res[x][12] > 0) {
           show6 = true;
         }
+        if (res[x][27] > 0) {
+          show7 = true;
+        }
+
         this.cols.push({
           id_tarefa: res[x][0],
           tarefa: res[x][1],
@@ -242,6 +252,10 @@ export class TarefasComponent implements OnInit {
           planosestrategicos: res[x][14] + ' ( ' + res[x][15] + ' ) - ' + res[x][16],
           title6: "Tarefas não lidas: " + res[x][14] + ', Total Tarefas: ' + res[x][15] + ', Tarefas Encaminhadas: ' + res[x][16] + ', Tarefas em Atraso: ' + res[x][21],
           tarefas_atraso_planosestrategicos: res[x][21],
+
+          reunioes: res[x][26] + ' ( ' + res[x][27] + ' ) - ' + res[x][28],
+          title7: "Tarefas não lidas: " + res[x][26] + ', Total Tarefas: ' + res[x][27] + ', Tarefas Encaminhadas: ' + res[x][28] + ', Tarefas em Atraso: ' + res[x][29],
+          tarefas_atraso_reunioes: res[x][29],
         });
       }
 
@@ -251,6 +265,7 @@ export class TarefasComponent implements OnInit {
       this.sow_col4 = show4;
       this.sow_col5 = show5;
       this.sow_col6 = show6;
+      this.sow_col7 = show7;
 
       if (show1) {
         this.total_colspan++;
@@ -271,7 +286,9 @@ export class TarefasComponent implements OnInit {
       if (show6) {
         this.total_colspan++;
       }
-
+      if (show7) {
+        this.total_colspan++;
+      }
       this.cols = this.cols.slice();
 
     }, error => {

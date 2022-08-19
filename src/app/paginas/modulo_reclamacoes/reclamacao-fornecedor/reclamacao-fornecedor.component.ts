@@ -1040,7 +1040,7 @@ export class ReclamacaoFornecedorComponent implements OnInit {
 
   //atualiza ou cria tarefa
   criarTarefas(id, modulo) {
-    var link = webUrl.host + '/#/tarefas/view?id=';
+    var link = webUrl.host + '/#/reclamacoesfornecedores/view?id=';
     this.GTMOVTAREFASService.getAtualizaTarefaReclamacaoFornecedor(id, modulo, link).subscribe(
       response => {
 

@@ -31,6 +31,8 @@
                   </p-column>
                   <p-column *ngIf="sow_col6" [style]="{'padding':'0'}" header="Derrogações" colspan="1">
                   </p-column>
+                  <p-column *ngIf="sow_col7" [style]="{'padding':'0'}" header="Reuniões" colspan="1">
+                  </p-column>
                 </p-row>
               </p-headerColumnGroup>
 
@@ -82,6 +84,13 @@
                   <span class="goToTarefas_title" title="{{car['title5'] }}">{{car['derrogacoes'] }}
                     <span style="color: red;" *ngIf="car['tarefas_atraso_derrogacoes'] > 0"> -
                       {{car['tarefas_atraso_derrogacoes']}}</span></span>
+                </ng-template>
+              </p-column>
+              <p-column *ngIf="sow_col7" [sortable]="true" [filter]="true" styleclass="text-danger" field="reunioes">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                  <span class="goToTarefas_title" title="{{car['title7'] }}">{{car['reunioes'] }}
+                    <span style="color: red;" *ngIf="car['tarefas_atraso_reunioes'] > 0"> -
+                      {{car['tarefas_atraso_reunioes']}}</span></span>
                 </ng-template>
               </p-column>
             </p-dataTable>

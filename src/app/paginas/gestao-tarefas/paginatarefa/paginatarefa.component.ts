@@ -23,6 +23,8 @@ import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclama
 import { GT_DIC_TAREFAS } from 'app/entidades/GT_DIC_TAREFAS';
 import { RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES } from 'app/entidades/RC_MOV_RECLAMACAO_FORNECEDOR_PLANOS_ACCOES';
 import { RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService } from 'app/servicos/rc-mov-reclamacao-fornecedor-planos-accoes.service';
+import { REUREUNIOESPLANOSACCOESService } from 'app/servicos/reu-reunioes-planos-accoes.service';
+import { REU_REUNIOES_PLANOS_ACCOES } from 'app/entidades/REU_REUNIOES_PLANOS_ACCOES';
 @Component({
   selector: 'app-paginatarefa',
   templateUrl: './paginatarefa.component.html',
@@ -123,7 +125,13 @@ export class PaginatarefaComponent implements OnInit {
   atividades: any[];
   shodialoglinhas: any;
 
-  constructor(private RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService: RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService, private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer, private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService, private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
+  constructor(private RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService: RCMOVRECLAMACAOFORNECEDORPLANOSACCOESService,
+    private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private QUADERROGACOESPLANOSACCOESService: QUADERROGACOESPLANOSACCOESService,
+    private GTMOVFICHEIROSService: GTMOVFICHEIROSService, private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private sanitizer: DomSanitizer,
+    private UploadService: UploadService, private elementRef: ElementRef, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService,
+    private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService, private renderer: Renderer, private GTMOVTAREFASService: GTMOVTAREFASService,
+    private REUREUNIOESPLANOSACCOESService: REUREUNIOESPLANOSACCOESService,
+    private route: ActivatedRoute, private location: Location, private globalVar: AppGlobals, private router: Router) {
     if (document.getElementById("script1")) document.getElementById("script1").remove();
     var script1 = document.createElement("script");
     script1.setAttribute("id", "script1");
@@ -341,6 +349,9 @@ export class PaginatarefaComponent implements OnInit {
         } else if (resp[x][28] == 13) {
           this.origem = "Planos de Ação: " + ((resp[x][15] == null) ? "--" : resp[x][15]);
           this.caminho_origem = "#/planosacao/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
+        } else if (resp[x][28] == 19 && resp[x][29] == 'R') {
+          this.origem = "Reunião : " + ((resp[x][15] == null) ? "--" : resp[x][15]);
+          this.caminho_origem = "#/reunioes/view?id=" + ((resp[x][15] == null) ? "--" : resp[x][15]) + "&redirect=tarefas/viewkvk\id=" + id;
         }
 
         if (resp[x][33] != null) {
@@ -755,6 +766,7 @@ export class PaginatarefaComponent implements OnInit {
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'C') this.alterarEstadoPLANO(tarefa.id_CAMPO, "E");
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'F') this.alterarEstadoPLANOFORNECEDOR(tarefa.id_CAMPO, "E");
           if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 5 && tarefa.sub_MODULO == 'D') this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, "E");
+          if (alteracoes && estado_antigo == "L" && tarefa.id_MODULO == 19 && tarefa.sub_MODULO == 'R') this.alterarEstadoPLANOREUNIAO(tarefa.id_CAMPO, "E");
           if (encaminhado) {
             this.disencaminhar = true;
             this.enviarEvento(this.data_atribuicao, this.descricao, this.id_tarefa, this.getNomeUser(this.user), "Ao Encaminhar Tarefa",
@@ -1229,6 +1241,8 @@ export class PaginatarefaComponent implements OnInit {
             this.alterarEstadoPLANOFORNECEDOR(tarefa.id_CAMPO, estado);
           } else if (tarefa.id_MODULO == 5 && this.sub_modulo == 'D' && this.caminho_origem_pai == null) {
             this.alterarEstadoPLANODERROGACAO(tarefa.id_CAMPO, estado);
+          } else if (tarefa.id_MODULO == 19 && this.sub_modulo == 'R' && this.caminho_origem_pai == null) {
+            this.alterarEstadoPLANOREUNIAO(tarefa.id_CAMPO, estado);
           }
 
           for (var x in data_logs) {
@@ -1361,6 +1375,40 @@ export class PaginatarefaComponent implements OnInit {
         }
 
         this.QUADERROGACOESPLANOSACCOESService.update(accoes).subscribe(
+          res => {
+
+          },
+          error => { console.log(error); });
+      }
+    },
+      error => { console.log(error); });
+
+  }
+
+  alterarEstadoPLANOREUNIAO(id, estado) {
+
+    this.REUREUNIOESPLANOSACCOESService.getbyid(id).subscribe(res => {
+
+      var count = Object.keys(res).length;
+      if (count > 0) {
+        var accoes = new REU_REUNIOES_PLANOS_ACCOES;
+        accoes = res[0];
+        if (estado == "C") {
+          accoes.concluido_UTZ = this.user;
+          accoes.concluido_DATA = new Date();
+          accoes.data_REAL = new Date();
+          accoes.estado = estado;
+        } else if (estado == "A") {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        } else {
+          accoes.utz_ULT_MODIF = this.user;
+          accoes.data_ULT_MODIF = new Date();
+          accoes.estado = estado;
+        }
+
+        this.REUREUNIOESPLANOSACCOESService.update(accoes).subscribe(
           res => {
 
           },
