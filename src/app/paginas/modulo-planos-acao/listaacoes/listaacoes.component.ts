@@ -127,7 +127,7 @@ export class ListaacoesComponent implements OnInit {
               item: response[x][23],
               causa: response[x][24],
               conclusao: response[x][26],
-              data_realizado: response[x][25],
+              data_realizado: (response[x][25] == null) ? "" : this.formatDate(response[x][25]),
             });
           }
 
