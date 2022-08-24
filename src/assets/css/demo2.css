@@ -4950,7 +4950,8 @@ checkbox {
 }
 
 .wid100 input {
-    width: 102%;
+    /*width: 102%;*/
+    width: 200px;
 }
 
 
@@ -6034,7 +6035,7 @@ body>.ui-dropdown-panel {
 }
 
 .pgrowlmsg .ui-growl {
-    z-index: 1148 !important;
+    z-index: 2148 !important;
 }
 
 .ui-growl .ui-growl-message-success {

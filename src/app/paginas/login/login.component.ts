@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
   iniciauser(response) {
 
     localStorage.setItem('userapp', JSON.stringify({
+      email: response[0].email,
       user: response[0].login,
       nome: response[0].nome_UTILIZADOR, id: response[0].id_UTILIZADOR, pass: response[0].password,
       admin: response[0].admin, user_jasper: response[0].user_JASPER, pass_jasper: response[0].pass_JASPER
@@ -178,7 +179,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userapp', JSON.stringify({
               nome: response[0].nome_UTILIZADOR, id: response[0].id_UTILIZADOR, user: response[0].login,
               admin: response[0].admin, user_jasper: response[0].user_JASPER, pass_jasper: response[0].pass_JASPER
-              , cod_UTZ: response[0].cod_UTZ
+              , cod_UTZ: response[0].cod_UTZ, email: response[0].email,
             }));
             localStorage.setItem('time_sgiid', JSON.stringify({ data: new Date() }));
             if (localStorage.getItem('userapp') || localStorage.getItem('time_sgiid')) {

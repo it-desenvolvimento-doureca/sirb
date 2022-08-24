@@ -5,6 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { RelatoriosService } from 'app/servicos/relatorios.service';
 import * as FileSaver from 'file-saver';
+import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
+import { EMAIL } from 'app/entidades/EMAIL';
+import { EmailService } from 'app/servicos/email.service';
+import { UploadService } from 'app/servicos/upload.service';
 
 @Component({
   selector: 'app-listaacoes',
@@ -28,7 +32,17 @@ export class ListaacoesComponent implements OnInit {
   imprimirpdf = false;
 
   @ViewChild("tabeladados") tabeladados: DataTable;
+  cols: any;
+  email_para: any = [];
+  results: any[];
+  email_assunto: string;
+  email_mensagem: string;
+  dialog_enviar_email: boolean;
+  bt_disable: boolean;
   constructor(private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute, private RelatoriosService: RelatoriosService,
+    private GERUTILIZADORESService: GERUTILIZADORESService,
+    private EmailService: EmailService,
+    private UploadService: UploadService,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -75,6 +89,7 @@ export class ListaacoesComponent implements OnInit {
     this.imprimirpdf = JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node15512imprimir");
 
     this.carregarlista(this.tipo);
+    this.getutilizadores();
   }
 
   carregarlista(tipo) {
@@ -269,8 +284,142 @@ export class ListaacoesComponent implements OnInit {
         FileSaver.saveAs(res, 'LISTA DE AÇÕES - PDCA DOURECA');
         /*this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
-      }
-    );
+      }, error => {
+        this.showMessage('error', 'Erro', 'ERRO!! Falha ao gerar o Ficheiro!');
+        console.log(error);
+      });
   }
+
+  EnviarEmail() {
+    this.email_assunto = "";
+    this.email_para = [];
+    this.email_mensagem = "";
+    this.dialog_enviar_email = true;
+    this.bt_disable = false;
+  }
+
+  enviar() {
+
+    var filename = new Date().toLocaleString().replace(/\D/g, '');
+    var filenametransfer = "planos_de_acao_detalhada";
+    var formato = "pdf";
+    var email = new EMAIL;
+    var id;
+    var sub = this.route
+      .queryParams
+      .subscribe(params => {
+        id = params['id'] || 0;
+
+      });
+
+    email.nome_FICHEIRO = filename;
+    email.assunto = this.email_assunto;
+
+    email.para = this.email_para.toString();
+
+
+    email.mensagem = this.email_mensagem;
+    email.de = JSON.parse(localStorage.getItem('userapp'))["email"];
+
+    this.bt_disable = true;
+
+
+    email.nome_FICHEIRO = (formato == 'pdf') ? filename : (filename + "." + formato);
+
+    var data;
+    var dados = [];
+    if (this.tabeladados.filteredValue) {
+      dados = this.tabeladados.filteredValue;
+    } else {
+      dados = this.tabeladados._value;
+    }
+
+    data = [{ dados: JSON.stringify(dados) }];
+
+    this.RelatoriosService.downloadPDF2(formato, filename, data, filenametransfer, "planos_de_acao").subscribe(
+      (res) => {
+
+        this.EmailService.enviarEmail(email).subscribe(
+          res => {
+            this.bt_disable = false;
+            this.dialog_enviar_email = false;
+
+            this.showMessage('success', 'Sucesso', 'Email Enviado com Sucesso!');
+          }, error => {
+            this.showMessage('error', 'Erro', 'ERRO!! Email não foi Enviado!');
+            this.bt_disable = false;
+          });
+
+
+      }, error => {
+        this.bt_disable = false;
+        this.showMessage('error', 'Erro', 'ERRO!! Falha ao gerar o Ficheiro!');
+        console.log(error);
+      });
+  }
+
+
+  /** */
+  search(event) {
+    var input = (<HTMLInputElement><any>document.getElementById('autocompleteinput'));
+    this.results = this.pesquisaemail(event.query);
+    var symbol = ";";
+    if (event.query.indexOf(",") >= 0) symbol = ",";
+    if (event.query.indexOf(symbol) >= 0) {
+      for (var email of event.query.split(symbol)) {
+        //var email = (event.query.substr(0, event.query.indexOf(symbol)));
+        if (this.email_para.indexOf(email) < 0 && email.trim().length > 0 && this.validateEmail(email)) {
+          this.email_para.push(email);
+          input.value = "";
+        }
+        if (email.trim().length < 0) {
+          input.value = "";
+        }
+      }
+    }
+  }
+
+
+
+  //verifica se é email
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  //verifica se existe algum email
+  pesquisaemail(text) {
+    var result = [];
+    for (var x in this.cols) {
+      if (this.cols[x].email.includes(text)) {
+        result.push(this.cols[x].email);
+      }
+    }
+    return result;
+  }
+
+
+  getutilizadores() {
+    this.cols = [];
+    this.GERUTILIZADORESService.getAll().subscribe(
+      response => {
+        for (var x in response) {
+          if (this.cols.findIndex(item => item.email == response[x].email) == -1) {
+            this.cols.push({ email: response[x].email });
+          }
+        }
+        this.cols = this.cols.slice();
+      },
+      error => console.log(error));
+  }
+  /** */
+
+
+  showMessage(severity, summary, detail) {
+    var msgs = [];
+    msgs.push({ severity: severity, summary: summary, detail: detail });
+    this.UploadService.addMessage(msgs);
+  }
+
 
 }
