@@ -462,7 +462,8 @@
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
                             <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
-                              [options]="drop_accoes" [style]="{'width':'80%','height':'25px','background':'white'}"
+                              [panelStyle]="{'max-width':'45vw'}" [options]="drop_accoes"
+                              [style]="{'width':'80%','height':'25px','background':'white'}"
                               [(ngModel)]="car['id_ACCAO']" [ngModelOptions]="{standalone: true}"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
                               appendTo="body">
