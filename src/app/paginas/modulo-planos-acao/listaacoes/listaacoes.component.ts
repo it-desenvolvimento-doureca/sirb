@@ -9,6 +9,7 @@ import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 import { EMAIL } from 'app/entidades/EMAIL';
 import { EmailService } from 'app/servicos/email.service';
 import { UploadService } from 'app/servicos/upload.service';
+import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 
 @Component({
   selector: 'app-listaacoes',
@@ -39,10 +40,13 @@ export class ListaacoesComponent implements OnInit {
   email_mensagem: string;
   dialog_enviar_email: boolean;
   bt_disable: boolean;
+  listasubtarefasdialog = [];
+  displaylistasubtarefasdialog: boolean;
   constructor(private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute, private RelatoriosService: RelatoriosService,
     private GERUTILIZADORESService: GERUTILIZADORESService,
     private EmailService: EmailService,
     private UploadService: UploadService,
+    private GTMOVTAREFASService: GTMOVTAREFASService,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -136,6 +140,7 @@ export class ListaacoesComponent implements OnInit {
               origem: response[x][4],
               estado: this.geEstadoTarefa(response[x][18]),
               id_tarefa: response[x][17],
+              existesubtarefas: (response[x][27] > 0) ? true : false,
               linha: response[x][20],
               unidade: response[x][21],
               referencia: response[x][22],
@@ -257,6 +262,115 @@ export class ListaacoesComponent implements OnInit {
 
   IrParaTarefa(id) {
     this.router.navigateByUrl('tarefas/view?listar=true&id=' + id + "&redirect=listaacoes");
+  }
+
+
+  abrirsubtarefas(id) {
+
+    var data = [{
+      utilizador: null, tipo_utilizador: null, estado: null,
+      datacria1: null, datacria2: null, datafim1: null, datafim2: null,
+      accao: null, id: null, idsubtarefa: id
+    }];
+
+    this.listasubtarefasdialog = []
+    this.GTMOVTAREFASService.getbyFiltros(data).subscribe(resp => {
+      var ids = [];
+
+      for (var x in resp) {
+
+        var estados = this.geEstado(resp[x][8]);
+
+
+        var atribuido = "";
+        if (resp[x][16] != null) {
+          atribuido = resp[x][16];
+        } else {
+          atribuido = resp[x][3];
+        }
+
+        this.listasubtarefasdialog.push({
+          existesubtarefas: (resp[x][33] > 0) ? true : false,
+          id: resp[x][14],
+          nome_tarefa: resp[x][0],
+          utz_origem: resp[x][1],
+          email_utz_origem: (resp[x][26] == null) ? "" : resp[x][26],
+          dep_origem: (resp[x][30] == null) ? "" : resp[x][30],
+          data_atribuicao: (resp[x][2] != null) ? this.formatDate(resp[x][2]) + " " + new Date(resp[x][2]).toLocaleTimeString() : null,
+          atribuido: atribuido,
+          encaminhado: resp[x][4],
+          data_encaminhado: (resp[x][5] != null) ? this.formatDate(resp[x][5]) + " " + new Date(resp[x][5]).toLocaleTimeString() : null,
+          prazo_conclusao: (resp[x][6] != null) ? this.formatDate(resp[x][6]) + " " + new Date(resp[x][6]).toLocaleTimeString() : null,
+          prioridade: resp[x][7],
+          estado: estados,
+          campo_estado: resp[x][8],
+          cliente: resp[x][9],
+          referencia: ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]),
+          mototivoRejeicao_texto: resp[x][31],
+          justificacao_ALTERACAO_ESTADO: resp[x][32],
+          tempo_gasto: resp[x][19],
+          descricao: resp[x][18],
+          percentagem_conclusao: resp[x][17],
+          observacoes: resp[x][21],
+          utz_encaminhado: resp[x][20],
+          id_RECLAMACAO: resp[x][15],
+          obriga_EVIDENCIAS: resp[x][25],
+          tempo_gasto_old: resp[x][19],
+          descricao_old: resp[x][18],
+          percentagem_conclusao_old: resp[x][17],
+          utz_origem_id: resp[x][24],
+          atribuido_id: resp[x][23],
+          modulo: resp[x][28],
+          sub_modulo: resp[x][29],
+        })
+
+      }
+      this.listasubtarefasdialog = this.listasubtarefasdialog.slice();
+      this.displaylistasubtarefasdialog = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+  goToTarefas(id) {
+    this.router.navigate(['tarefas/view'], { queryParams: { id: id } });
   }
 
   IrParaPlano(id) {

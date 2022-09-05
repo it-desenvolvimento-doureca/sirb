@@ -111,7 +111,9 @@
                             [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
                         </td>
                         <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
-                          [style.color]="col.cor_letra_linha">{{col.data_acao}}</td>
+                          [style.color]="col.cor_letra_linha">
+                          {{col.data_acao}}
+                        </td>
                         <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>
                         <td class="tg-0pky" style="min-width: 120px;">{{col.acao}}</td>
                         <td class="tg-0pky" style="min-width: 120px;">{{col.descricao}}</td>
@@ -122,7 +124,11 @@
                             style="color: green; font-size: 20px;">check</i>
                         </td>
                         <td class="tg-0pky" style="min-width: 120px;">{{col.prioridade}}</td>
-                        <td class="tg-0pky" style="min-width: 120px;">{{col.estado}}</td>
+                        <td class="tg-0pky" style="min-width: 120px;">
+                          <span *ngIf="col.existesubtarefas " style="font-size: 10px;" title="Ver SubTarefas"
+                            (click)="abrirsubtarefas(col.id_TAREFA)" class="glyphicon glyphicon-list"></span>
+                          {{col.estado}}
+                        </td>
                       </tr>
                     </ng-container>
                   </table>
@@ -146,11 +152,57 @@
 
   <!-- Modal Body -->
   <div class="" style="width: 95vw; max-height: 81vh; overflow: auto;">
-    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input"></app-paginatarefa>
+    <app-paginatarefa class="cssapp-paginatarefa" *ngIf="id_tarefa_input != null" [id_tarefa_input]="id_tarefa_input">
+    </app-paginatarefa>
   </div>
   <!-- Modal Footer -->
   <div class="" style="text-align: -webkit-center;">
     <button type="button" class="btn btn-default" style="margin: 0;" (click)="displayTarefa = false">Fechar</button>
   </div>
 
+</p-dialog>
+
+
+<p-dialog header="SubTarefas" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh','width': '100%'}"
+  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false"
+  [(visible)]="displaylistasubtarefasdialog" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <!-- Modal Body -->
+  <div class="">
+    <p-dataTable class="tabelahometarefa2" [style]="{'min-height':'100px'}" [value]="listasubtarefasdialog"
+      dataKey="id">
+      <p-column [style]="{'width':'13%'}" field="nome" header="Nome Tarefas">
+        <ng-template let-col let-car="rowData" pTemplate="body">
+          <!--span *ngIf="car['existesubtarefas']" style="font-size: 10px; color: #37414b;"
+            (click)="abrirsubtarefas(car['id'])" class="glyphicon glyphicon-list"></span-->
+          <span (click)="goToTarefas(car['id'],null)" title="{{car['nome_tarefa'] }}">{{car['nome_tarefa']}}</span>
+          <span style="color: #ffa91f; font-size: 10px;" (click)="goToTarefas(car['id'],null)"
+            class="glyphicon glyphicon-share-alt"></span>
+          <!--a (click)="atualizaTarefa(car['id_tarefa'])">{{car['tarefa'] }}</a-->
+        </ng-template>
+      </p-column>
+      <p-column [style]="{'width':'6%'}" field="utz_origem" header="Utili. Origem"></p-column>
+      <p-column [style]="{'width':'6%'}" field="dep_origem" header="Dep. Origem"></p-column>
+      <p-column [style]="{'width':'6%'}" field="data_atribuicao" header="Data/Hora Atribuição">
+      </p-column>
+      <p-column [style]="{'width':'7%'}" field="atribuido" header="Atribuído a"></p-column>
+      <p-column [style]="{'width':'6%'}" field="encaminhado" header="Encaminhado para"></p-column>
+      <p-column [style]="{'width':'6%'}" field="data_encaminhado" header="Data/Hora Enc."></p-column>
+      <p-column [style]="{'width':'7%'}" field="prazo_conclusao" header="Prazo Conclusão"></p-column>
+      <!--p-column [style]="{'width':'4%'}" [sortable]="true" [filter]="true" field="prioridade"
+                        header="Prioridade"></p-column-->
+      <p-column [style]="{'width':'4%'}" field="estado" header="Estado">
+      </p-column>
+      <p-column [style]="{'width':'6%'}" field="data_conclusao" header="Data/Hora Conclusão"></p-column>
+      <p-column [style]="{'width':'6%'}" field="utz_concluiu" header="Utili. Concluíu"></p-column>
+    </p-dataTable>
+
+  </div>
+  <!-- Modal Footer -->
+  <div class="" style="text-align: -webkit-center;">
+    <button type="button" class="btn btn-default" (click)="displaylistasubtarefasdialog = false">Fechar</button>
+
+  </div>
 </p-dialog>

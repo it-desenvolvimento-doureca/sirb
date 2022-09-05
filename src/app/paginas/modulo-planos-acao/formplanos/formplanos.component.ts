@@ -174,6 +174,8 @@ export class FormplanosComponent implements OnInit {
 
   editar_linha: boolean = true;
   drop_utilizadoresInativos: any[];
+  listasubtarefasdialog = [];
+  displaylistasubtarefasdialog: boolean;
 
 
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService, private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService,
@@ -677,6 +679,7 @@ export class FormplanosComponent implements OnInit {
               data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO)
               , hora_ACCAO: response[x][0].hora_ACCAO, id_PLANO_CAB: response[x][0].id_PLANO_CAB, descricao: accao,
               id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
+              existesubtarefas: (response[x][4] > 0) ? true : false,
               fastresponse: response[x][0].fastresponse, encaminhado: response[x][1], prioridade: response[x][0].prioridade, estado: response[x][0].estado,
               unidade: response[x][0].unidade,
               filteredreferencias: [],
@@ -1222,6 +1225,7 @@ export class FormplanosComponent implements OnInit {
     var referencia_campo = (this.referencia == null) ? null : { value: this.referencia, label: this.referencia + ' - ' + this.design_REFERENCIA, descricao: this.design_REFERENCIA }
     this.tabelaaccoes.push({
       id_TAREFA: null,
+      existesubtarefas: false,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: "", id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: 'E', tipo_ACAO: null, item: null, unidade: this.unidade
       , referencia: this.referencia, design_REFERENCIA: this.design_REFERENCIA, filteredreferencias: [], referencia_campo: referencia_campo,
@@ -2090,6 +2094,114 @@ export class FormplanosComponent implements OnInit {
 
   IrPara(id) {
     this.router.navigateByUrl('tarefas/view?listar=true&id=' + id + "&redirect=" + this.caminho + "/viewkvk\id=" + this.id_PLANO);
+  }
+
+
+  abrirsubtarefas(id) {
+
+    var data = [{
+      utilizador: null, tipo_utilizador: null, estado: null,
+      datacria1: null, datacria2: null, datafim1: null, datafim2: null,
+      accao: null, id: null, idsubtarefa: id
+    }];
+
+    this.listasubtarefasdialog = []
+    this.GTMOVTAREFASService.getbyFiltros(data).subscribe(resp => {
+      var ids = [];
+
+      for (var x in resp) {
+
+        var estados = this.geEstado(resp[x][8]);
+
+
+        var atribuido = "";
+        if (resp[x][16] != null) {
+          atribuido = resp[x][16];
+        } else {
+          atribuido = resp[x][3];
+        }
+
+        this.listasubtarefasdialog.push({
+          existesubtarefas: (resp[x][33] > 0) ? true : false,
+          id: resp[x][14],
+          nome_tarefa: resp[x][0],
+          utz_origem: resp[x][1],
+          email_utz_origem: (resp[x][26] == null) ? "" : resp[x][26],
+          dep_origem: (resp[x][30] == null) ? "" : resp[x][30],
+          data_atribuicao: (resp[x][2] != null) ? this.formatDate(resp[x][2]) + " " + new Date(resp[x][2]).toLocaleTimeString() : null,
+          atribuido: atribuido,
+          encaminhado: resp[x][4],
+          data_encaminhado: (resp[x][5] != null) ? this.formatDate(resp[x][5]) + " " + new Date(resp[x][5]).toLocaleTimeString() : null,
+          prazo_conclusao: (resp[x][6] != null) ? this.formatDate(resp[x][6]) + " " + new Date(resp[x][6]).toLocaleTimeString() : null,
+          prioridade: resp[x][7],
+          estado: estados,
+          campo_estado: resp[x][8],
+          cliente: resp[x][9],
+          referencia: ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]),
+          mototivoRejeicao_texto: resp[x][31],
+          justificacao_ALTERACAO_ESTADO: resp[x][32],
+          tempo_gasto: resp[x][19],
+          descricao: resp[x][18],
+          percentagem_conclusao: resp[x][17],
+          observacoes: resp[x][21],
+          utz_encaminhado: resp[x][20],
+          id_RECLAMACAO: resp[x][15],
+          obriga_EVIDENCIAS: resp[x][25],
+          tempo_gasto_old: resp[x][19],
+          descricao_old: resp[x][18],
+          percentagem_conclusao_old: resp[x][17],
+          utz_origem_id: resp[x][24],
+          atribuido_id: resp[x][23],
+          modulo: resp[x][28],
+          sub_modulo: resp[x][29],
+        })
+
+      }
+      this.listasubtarefasdialog = this.listasubtarefasdialog.slice();
+      this.displaylistasubtarefasdialog = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+  goToTarefas(id) {
+    this.router.navigate(['tarefas/view'], { queryParams: { id: id } });
   }
 
   filterReflinha(event, linha) {

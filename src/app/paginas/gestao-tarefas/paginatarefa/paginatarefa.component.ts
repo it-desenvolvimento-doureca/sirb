@@ -1892,6 +1892,7 @@ else {
 
         tarefa.prioridade = 3;
         tarefa.observacoes = this.novo_observacoes;
+        tarefa.percentagem_CONCLUSAO = 0;
 
         tarefa.utz_CONCLUSAO = null;
         tarefa.data_CONCLUSAO = null;

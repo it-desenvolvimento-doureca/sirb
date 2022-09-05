@@ -167,6 +167,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   displayTarefa: boolean;
   titulo_plano: string;
   modoedicao_plano: boolean;
+  listasubtarefasdialog = [];
+  displaylistasubtarefasdialog: boolean;
   constructor(private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private UploadService: UploadService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
@@ -677,6 +679,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         , investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13]),
         EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
         , id_PLANO_LINHA: response[x][25], id_TAREFA: response[x][17], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]),
+        existesubtarefas: (response[x][27] > 0) ? true : false
       });
     } else {
       var filho = [];
@@ -689,6 +692,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           , descricao: response[x][11], investimentos: response[x][19], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
           , EFICACIA_CUMPRIMENTO_OBJETIVO: response[x][22], estadolinha: response[x][13], objetivo: response[x][23], seguir_LINHA: response[x][24]
           , id_PLANO_LINHA: response[x][25], data_registo: (response[x][26] == null) ? "" : this.formatDate(response[x][26]), id_TAREFA: response[x][17]
+          , existesubtarefas: (response[x][27] > 0) ? true : false
         }];
       }
       this.tabelaplanos.push({
@@ -1452,7 +1456,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
   adicionar_linha() {
 
     this.tabelaaccoes.push({
-      id_TAREFA: null,
+      id_TAREFA: null, existesubtarefas: false,
       id_PLANO_LINHA: null, id_ACCAO: null, responsavel: null, tipo_RESPONSAVEL: null, data_ACCAO: null, hora_ACCAO: "00:00:00", id_AMOSTRA: null, descricao: null
       , departamento: null, observacao: null, id_departamento: null, fastresponse: false, encaminhado: '', prioridade: 3, estado: '', tipo_ACAO: null, item: null, unidade: this.unidade
       , filteredreferencias: [], causa: null, justificacao_DATA_FIM: null, objetivo: null, seguir_LINHA: false, justificacao_RESPONSAVEL: null
@@ -2407,6 +2411,12 @@ export class FormPlanosEstrategicosComponent implements OnInit {
 
   }
 
+  onHideSubTarefas() {
+    if (this.displayAddPlano_show) {
+      this.displayAddPlano = true;
+    }
+  }
+
   carregarlista(tipo) {
     this.dados = [];
     this.lista_expand = [];
@@ -2462,7 +2472,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
         corlinha: corlinha, cor_letra_linha: cor_letra_linha,
         data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
         , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-        , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17]
+        , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17],
+        existesubtarefas: (response[x][25] > 0) ? true : false
       });
     } else {
       this.dados.push({
@@ -2478,7 +2489,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
           corlinha: corlinha, cor_letra_linha: cor_letra_linha,
           data_acao: response[x][8], utilizador: response[x][9], acao: response[x][10]
           , descricao: response[x][11], FastResponse: response[x][14], prioridade: response[x][12], estado: this.getestado(response[x][13])
-          , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17]
+          , data_registo: (response[x][24] == null) ? "" : this.formatDate(response[x][24]), id_TAREFA: response[x][17],
+          existesubtarefas: (response[x][25] > 0) ? true : false,
         }]
       });
     }
@@ -2625,7 +2637,8 @@ export class FormPlanosEstrategicosComponent implements OnInit {
               causa: response[x][0].causa, investimentos: response[x][0].investimentos,
               descricao_ref: (response[x][0].referencia == null) ? '' : response[x][0].referencia + ' - ' + response[x][0].design_REFERENCIA,
               departamento: departamento, observacao: response[x][0].descricao, estado_texto: this.getestado(response[x][0].estado),
-              objetivo: response[x][0].objetivo, seguir_LINHA: response[x][0].seguir_LINHA
+              objetivo: response[x][0].objetivo, seguir_LINHA: response[x][0].seguir_LINHA,
+              existesubtarefas: (response[x][4] > 0) ? true : false,
             });
 
           }
@@ -2758,4 +2771,113 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     }
 
   }
+
+  abrirsubtarefas(id) {
+
+    var data = [{
+      utilizador: null, tipo_utilizador: null, estado: null,
+      datacria1: null, datacria2: null, datafim1: null, datafim2: null,
+      accao: null, id: null, idsubtarefa: id
+    }];
+
+    this.listasubtarefasdialog = []
+    this.GTMOVTAREFASService.getbyFiltros(data).subscribe(resp => {
+      var ids = [];
+
+      for (var x in resp) {
+
+        var estados = this.geEstado(resp[x][8]);
+
+
+        var atribuido = "";
+        if (resp[x][16] != null) {
+          atribuido = resp[x][16];
+        } else {
+          atribuido = resp[x][3];
+        }
+
+        this.listasubtarefasdialog.push({
+          existesubtarefas: (resp[x][33] > 0) ? true : false,
+          id: resp[x][14],
+          nome_tarefa: resp[x][0],
+          utz_origem: resp[x][1],
+          email_utz_origem: (resp[x][26] == null) ? "" : resp[x][26],
+          dep_origem: (resp[x][30] == null) ? "" : resp[x][30],
+          data_atribuicao: (resp[x][2] != null) ? this.formatDate(resp[x][2]) + " " + new Date(resp[x][2]).toLocaleTimeString() : null,
+          atribuido: atribuido,
+          encaminhado: resp[x][4],
+          data_encaminhado: (resp[x][5] != null) ? this.formatDate(resp[x][5]) + " " + new Date(resp[x][5]).toLocaleTimeString() : null,
+          prazo_conclusao: (resp[x][6] != null) ? this.formatDate(resp[x][6]) + " " + new Date(resp[x][6]).toLocaleTimeString() : null,
+          prioridade: resp[x][7],
+          estado: estados,
+          campo_estado: resp[x][8],
+          cliente: resp[x][9],
+          referencia: ((resp[x][10] == null) ? "" : resp[x][10] + " - ") + ((resp[x][11] == null) ? "" : resp[x][11]),
+          mototivoRejeicao_texto: resp[x][31],
+          justificacao_ALTERACAO_ESTADO: resp[x][32],
+          tempo_gasto: resp[x][19],
+          descricao: resp[x][18],
+          percentagem_conclusao: resp[x][17],
+          observacoes: resp[x][21],
+          utz_encaminhado: resp[x][20],
+          id_RECLAMACAO: resp[x][15],
+          obriga_EVIDENCIAS: resp[x][25],
+          tempo_gasto_old: resp[x][19],
+          descricao_old: resp[x][18],
+          percentagem_conclusao_old: resp[x][17],
+          utz_origem_id: resp[x][24],
+          atribuido_id: resp[x][23],
+          modulo: resp[x][28],
+          sub_modulo: resp[x][29],
+        })
+
+      }
+      this.listasubtarefasdialog = this.listasubtarefasdialog.slice();
+      this.displayAddPlano = false;
+      this.displaylistasubtarefasdialog = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  geEstado(estado) {
+    var estados = "";
+    switch (estado) {
+      case 'P':
+        estados = "Pendente";
+        break;
+      case 'L':
+        estados = "Lida";
+        break;
+      case 'E':
+        estados = "Em Curso";
+        break;
+      case 'C':
+        estados = "Desenvolvida/ Realizada";
+        break;
+      case 'A':
+        estados = "Cancelada";
+        break;
+      case 'R':
+        estados = "Rejeitada";
+        break;
+      case 'N':
+        estados = "Não Respondida";
+        break;
+      case 'F':
+        estados = "Aprovada";
+        break;
+      case 'V':
+        estados = "Controlada/ Verificada";
+        break;
+      default:
+        estados = "Pendente";
+    }
+    return estados;
+  }
+
+  goToTarefas(id) {
+    this.router.navigate(['tarefas/view'], { queryParams: { id: id } });
+  }
+
 }
