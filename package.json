@@ -36,6 +36,7 @@
     "moment-timezone": "^0.5.16",
     "ng2-charts": "^1.6.0",
     "ng2-go-top-button": "^2.0.8",
+    "ng2-image-crop": "^1.4.1",
     "ng2-mask": "^1.1.0",
     "powerbi-client": "^2.18.7",
     "primeng": "^4.1.0-rc.2",

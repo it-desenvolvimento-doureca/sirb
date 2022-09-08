@@ -430,6 +430,7 @@ import { LocalizacoesAlfrescoComponent } from './paginas/modulo-documentacao/par
 import { DOCGESTAOPASTASService } from './servicos/doc-gestao-pastas.service';
 import { MapaPreventivasComponent } from './paginas/modulo-manutencao/mapa-preventivas/mapa-preventivas.component';
 import { REUREUNIOESPLANOSACCOESService } from './servicos/reu-reunioes-planos-accoes.service';
+import { ImageCropperModule } from 'ng2-image-crop';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1364,6 +1365,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     TabViewModule,
     GrowlModule,
     BreadcrumbModule,
+    ImageCropperModule,
     AgGridModule.withComponents(
       [
         HeaderGroupComponent,

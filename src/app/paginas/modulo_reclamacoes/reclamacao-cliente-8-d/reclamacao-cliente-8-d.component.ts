@@ -41,7 +41,7 @@ import { RCMOVRECLAMACAOTIPONAODETECAOService } from 'app/servicos/rc-mov-reclam
 import { RCMOVRECLAMACAOTIPOOCORRENCIAService } from 'app/servicos/rc-mov-reclamacao-tipo-ocorrencia.service';
 import { RCMOVRECLAMACAOCLIENTESService } from 'app/servicos/rc-mov-reclamacao-clientes.service';
 import { RC_MOV_RECLAMACAO_CLIENTES } from 'app/entidades/RC_MOV_RECLAMACAO_CLIENTES';
-
+import { ImageCroppedEvent } from 'ng2-image-crop';
 
 @Component({
   selector: 'app-reclamacao-cliente-8-d',
@@ -309,7 +309,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   displayJustificacaoRESPONSAVEL: boolean;
   displayJustificacaoDATAFIM: boolean;
   justificacao_RESPONSAVEL: any;
-
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  displayAjustarImagem: boolean;
+  imagemReclamacao: any;
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService,
@@ -2648,7 +2651,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             if (accoesold.tipo_RESPONSAVEL + accoesold.responsavel != this.tabelaaccoesimediatas[x].responsavel) {
               atualizou_responsavel = true;
             }
-            
+
             /*console.log('atualizou_responsavel', atualizou_responsavel)
             console.log('ccoesold.tipo_RESPONSAVEL + accoesold.responsavel', accoesold.tipo_RESPONSAVEL + accoesold.responsavel)
             console.log('this.tabelaaccoesimediatas[x].responsavel', this.tabelaaccoesimediatas[x].responsavel)
@@ -5053,6 +5056,35 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
       },
       error => { console.log(error); });
+  }
+
+  fileChangeEvent(event: any): void {
+    var target = event.target || event.srcElement;
+
+    if (target.value.length > 0) {
+      this.displayAjustarImagem = true;
+      this.imageChangedEvent = event;
+    }
+
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  atualizaImagem() {
+    this.imagemReclamacao = this.croppedImage;
+    this.displayAjustarImagem = false;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
   }
 
 }
