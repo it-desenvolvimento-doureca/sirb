@@ -930,8 +930,9 @@ export class FormplanosComponent implements OnInit {
   }
 
 
-  gravalinhas(id, estado, cria_tarefas) {
+  gravalinhas(id, estado, cria_tarefasp) {
     for (var x in this.tabelaaccoes) {
+      var cria_tarefas = cria_tarefasp;
       var accoes = new PA_MOV_LINHA;
       var atualizou_datas = false;
       if (this.tabelaaccoes[x].id_PLANO_LINHA != null && this.tabelaaccoes[x].estado != 'E') {
@@ -999,7 +1000,9 @@ export class FormplanosComponent implements OnInit {
         accoes.data_CRIA = new Date();
         accoes.utz_CRIA = this.user;
       } else {
-        if (this.tabelaaccoes[x].id_TAREFA == null && estado != 'E') cria_tarefas = true;
+        if (this.tabelaaccoes[x].id_TAREFA == null && estado != 'E') {
+          cria_tarefas = true;
+        }
       }
       accoes.data_MODIF = new Date();
       accoes.utz_MODIF = this.user;
