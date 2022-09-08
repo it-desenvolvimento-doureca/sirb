@@ -312,7 +312,9 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
   displayAjustarImagem: boolean;
-  imagemReclamacao: any;
+  imagemReclamacao: any = null;
+  imagemReclamacaoName: any;
+  croppedImageName: any;
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService,
@@ -5062,6 +5064,8 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     var target = event.target || event.srcElement;
 
     if (target.value.length > 0) {
+      const files = target.files as FileList;
+      this.croppedImageName = files[0].name;
       this.displayAjustarImagem = true;
       this.imageChangedEvent = event;
     }
@@ -5069,11 +5073,13 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   imageCropped(event: ImageCroppedEvent) {
+    //console.log(event)
     this.croppedImage = event.base64;
   }
 
   atualizaImagem() {
     this.imagemReclamacao = this.croppedImage;
+    this.imagemReclamacaoName = this.croppedImageName;
     this.displayAjustarImagem = false;
   }
 

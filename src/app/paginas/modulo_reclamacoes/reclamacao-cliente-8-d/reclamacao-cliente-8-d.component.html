@@ -166,6 +166,21 @@
                         class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
                         ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                     </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
+                      <div class="file-upload">
+                        <button class="file-upload-btn" type="button" (click)="file.click()">Adicionar Imagem
+                          Reclamação</button>
+                        <input class="file-upload-input" #file type='file' (change)="fileChangeEvent($event)"
+                          accept="image/*" />
+                        <!---div class="image-upload-wrap">
+
+                        </div-->
+                        <div class="file-upload-content" *ngIf="imagemReclamacao != null"
+                          style="border: 2px dotted gray;">
+                          <img class="file-upload-image" style="width: 245px;" [src]="imagemReclamacao" />
+                        </div>
+                      </div>
+                    </div>
                     <!--div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
                       <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
 
@@ -916,7 +931,8 @@
                             <p-toggleButton [disabled]="!modoedicao || step2CONCLUIDO"
                               [ngModelOptions]="{standalone: true}" [(ngModel)]="problema_REPETIDO" onLabel="Sim"
                               offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times" [style]="{'width':'55px'}"
-                              (onChange)="atualizacombo()"></p-toggleButton>
+                              (onChange)="atualizacombo()">
+                            </p-toggleButton>
                           </div>
                           <div style="padding: 1px 5px 1px 10px;" class="form-group col-lg-3">
                             <label>Nº Reclamação:</label>
@@ -944,7 +960,8 @@
                             <p-toggleButton [disabled]="!modoedicao || step2CONCLUIDO"
                               [ngModelOptions]="{standalone: true}" [(ngModel)]="ref_IGUAIS" onLabel="Sim"
                               offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times"
-                              [style]="{'width':'55px','display': '-webkit-inline-box'}"></p-toggleButton>
+                              [style]="{'width':'55px','display': '-webkit-inline-box'}">
+                            </p-toggleButton>
                           </div>
 
                           <p-dataTable [style]="{'width':'100%','padding':'1px 0px 1px 10px'}"
@@ -1027,7 +1044,8 @@
                             <p-toggleButton [disabled]="!modoedicao || step2CONCLUIDO"
                               [ngModelOptions]="{standalone: true}" [(ngModel)]="existem_OUTROS_CLIENTES" onLabel="Sim"
                               offLabel="Não" onIcon="pi; pi-check" offIcon="pi pi-times"
-                              [style]="{'width':'55px','display': '-webkit-inline-box'}"></p-toggleButton>
+                              [style]="{'width':'55px','display': '-webkit-inline-box'}">
+                            </p-toggleButton>
                           </div>
 
                           <p-dataTable [style]="{'width':'100%','padding':'1px 0px 1px 10px'}"
@@ -1809,7 +1827,8 @@
                                   [style]="{'height':'25px','width':'90%'}" dateFormat="yy-mm-dd"
                                   placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
                                   yearRange="2000:2050" [(ngModel)]="car['data_REAL']" appendTo="body"
-                                  [ngModelOptions]="{standalone: true}"></p-calendar>
+                                  [ngModelOptions]="{standalone: true}">
+                                </p-calendar>
                               </ng-template>
                             </p-column>
 
@@ -2864,8 +2883,9 @@
       <div style="padding: 1px 5px 1px 10px; min-height: 60vh; width: 80vw;" class="form-group col-md-12 col-lg-12">
 
         <image-cropper style="max-height: 50vh;" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-          [aspectRatio]="4 / 3" [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)"
-          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+          [containWithinAspectRatio]="true" [aspectRatio]="4 / 3" [resizeToWidth]="500" format="png" 
+          (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()">
         </image-cropper>
 
       </div>
