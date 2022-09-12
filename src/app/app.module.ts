@@ -431,6 +431,8 @@ import { DOCGESTAOPASTASService } from './servicos/doc-gestao-pastas.service';
 import { MapaPreventivasComponent } from './paginas/modulo-manutencao/mapa-preventivas/mapa-preventivas.component';
 import { REUREUNIOESPLANOSACCOESService } from './servicos/reu-reunioes-planos-accoes.service';
 import { ImageCropperModule } from 'ng2-image-crop';
+import { AlertasDescargaComponent } from './paginas/modulo-producao/parametros/alertas-descarga/alertas-descarga.component';
+import { PRDICALERTASDESCARGAService } from './servicos/pr-dic-alertas-descarga.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -581,6 +583,7 @@ const routes: Routes = [
   { path: 'sectores_agregadores', component: SectoresAgregadoresComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores Agregadores" } },
   { path: 'validacoes_bastidores', component: ValidacoesBastidoresComponent, canActivate: [LoginService], data: { breadcrumb: "Validações Bastidores" } },
 
+  { path: 'tipos_alerta_descarga', component: AlertasDescargaComponent, canActivate: [LoginService], data: { breadcrumb: "Tipos Alerta de Descarga" } },
   { path: 'sectores_absentismo', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
   { path: 'sectores_absentismo_financeira', component: SectoresAbsentismoComponent, canActivate: [LoginService], data: { breadcrumb: "Sectores/Absentismo" } },
   { path: 'analise_clientes', component: AnaliseClientesComponent, canActivate: [LoginService], data: { breadcrumb: "Análise Clientes" } },
@@ -1325,7 +1328,8 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     FormManutencaoComponent,
     PainelControloViewComponent,
     LocalizacoesAlfrescoComponent,
-    MapaPreventivasComponent
+    MapaPreventivasComponent,
+    AlertasDescargaComponent
   ],
   imports: [
     BrowserModule,
@@ -1590,6 +1594,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DOCDICPOSTOSService,
     DOCGESTAOPASTASService,
     REUREUNIOESPLANOSACCOESService,
+    PRDICALERTASDESCARGAService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

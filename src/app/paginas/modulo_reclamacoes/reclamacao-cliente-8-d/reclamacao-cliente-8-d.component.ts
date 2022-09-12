@@ -41,7 +41,7 @@ import { RCMOVRECLAMACAOTIPONAODETECAOService } from 'app/servicos/rc-mov-reclam
 import { RCMOVRECLAMACAOTIPOOCORRENCIAService } from 'app/servicos/rc-mov-reclamacao-tipo-ocorrencia.service';
 import { RCMOVRECLAMACAOCLIENTESService } from 'app/servicos/rc-mov-reclamacao-clientes.service';
 import { RC_MOV_RECLAMACAO_CLIENTES } from 'app/entidades/RC_MOV_RECLAMACAO_CLIENTES';
-import { ImageCroppedEvent } from 'ng2-image-crop';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ng2-image-crop';
 
 @Component({
   selector: 'app-reclamacao-cliente-8-d',
@@ -315,6 +315,10 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   imagemReclamacao: any = null;
   imagemReclamacaoName: any;
   croppedImageName: any;
+  operarios_ENVOLVIDOS = [];
+
+  @ViewChild('ImageCropper') transform: ImageCropperComponent;
+  croppedIsReady: boolean;
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService,
@@ -816,6 +820,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
             this.reclamacao_REPETIDA_ACEITE = response[x].reclamacao_REPETIDA_ACEITE;
             this.ref_IGUAIS = response[x].ref_IGUAIS;
             this.existem_OUTROS_CLIENTES = response[x].existem_OUTROS_CLIENTES;
+
+            this.imagemReclamacaoName = response[x].ficheiro_PRODUCAO_NOME;
+
+            if (response[x].operarios_ENVOLVIDOS != null) this.operarios_ENVOLVIDOS = response[x].operarios_ENVOLVIDOS.split(',');
+
+            if (response[x].ficheiro_PRODUCAO_1 != null) this.imagemReclamacao = response[x].ficheiro_PRODUCAO_1 + response[x].ficheiro_PRODUCAO_2;
 
             this.accoes_EVITAR = response[x].accoes_EVITAR;
 
@@ -2163,6 +2173,15 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     reclamacao.causas_PROBLEMA_IDIOMA_CLIENTE = this.causas_PROBLEMA_IDIOMA_CLIENTE;
     reclamacao.analise_CAUSAS_PROBLEMA = this.analise_CAUSAS_PROBLEMA;
     reclamacao.analise_CAUSAS_PROBLEMA_IDIOMA_CLIENTE = this.analise_CAUSAS_PROBLEMA_IDIOMA_CLIENTE;
+
+    reclamacao.ficheiro_PRODUCAO_NOME = this.imagemReclamacaoName;
+
+    if (this.imagemReclamacao != null) {
+      reclamacao.ficheiro_PRODUCAO_1 = this.imagemReclamacao.substr(this.imagemReclamacao, this.imagemReclamacao.length / 2);
+      reclamacao.ficheiro_PRODUCAO_2 = this.imagemReclamacao.substr(this.imagemReclamacao.length / 2, this.imagemReclamacao.length);
+    }
+
+    if (this.operarios_ENVOLVIDOS.length > 0) reclamacao.operarios_ENVOLVIDOS = this.operarios_ENVOLVIDOS.toString();
 
     if (this.novo) {
 
@@ -5061,6 +5080,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   fileChangeEvent(event: any): void {
+    this.croppedIsReady = false;
     var target = event.target || event.srcElement;
 
     if (target.value.length > 0) {
@@ -5088,9 +5108,29 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
   cropperReady() {
     // cropper ready
+    this.croppedIsReady = true;
   }
   loadImageFailed() {
     // show message
   }
+
+  flipHorizontal() {
+    this.transform.flipHorizontal();
+  }
+
+  flipVertical() {
+    this.transform.flipVertical();
+  }
+
+
+  rotateLeft() {
+    this.transform.rotateLeft();
+  }
+
+  rotateRight() {
+    this.transform.rotateRight();
+  }
+
+
 
 }

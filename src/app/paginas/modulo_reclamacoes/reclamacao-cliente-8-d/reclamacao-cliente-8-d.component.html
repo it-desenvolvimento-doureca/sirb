@@ -166,26 +166,6 @@
                         class="ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
                         ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" placeholder="hh:mm">
                     </div>
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-4">
-                      <div class="file-upload">
-                        <button class="file-upload-btn" type="button" (click)="file.click()">Adicionar Imagem
-                          Reclamação</button>
-                        <input class="file-upload-input" #file type='file' (change)="fileChangeEvent($event)"
-                          accept="image/*" />
-                        <!---div class="image-upload-wrap">
-
-                        </div-->
-                        <div class="file-upload-content" *ngIf="imagemReclamacao != null"
-                          style="border: 2px dotted gray;">
-                          <img class="file-upload-image" style="width: 245px;" [src]="imagemReclamacao" />
-                        </div>
-                      </div>
-                    </div>
-                    <!--div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
-                      <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
-
-                      <img [src]="imagemReclamacao" />
-                    </div-->
 
                     <!--<h2 class="text-divider col-md-12">
                       <span>Dados do Cliente</span>
@@ -377,7 +357,7 @@
 
 
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-2">
+                    <div style="padding: 1px 5px 1px 10px; height: 54px;" class="form-group col-md-6 col-lg-2">
                       <label>Nº de Envios Garantidos:</label>
                       <input [disabled]="!modoedicao" type="number" class="form-control2"
                         [(ngModel)]="numero_ENVIOS_GARANTIDOS" [ngModelOptions]="{standalone: true}">
@@ -396,11 +376,41 @@
                       </div>
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-12">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                       <label>Observações / Comentários:</label>
-                      <input [disabled]="!modoedicao" type="text" class="form-control2"
-                        [(ngModel)]="observacoes_RECLAMACAO" [ngModelOptions]="{standalone: true}">
+                      <textarea [disabled]="!modoedicao || step2CONCLUIDO" pInputTextarea
+                        [(ngModel)]="observacoes_RECLAMACAO" class="form-control2" [ngModelOptions]="{standalone: true}"
+                        style="height: 85px; width: 100%;"></textarea>
                     </div>
+
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                      <div class="file-upload">
+                        <label>Imagem para visualização da Produção:</label>
+                        <button [disabled]="!modoedicao" class="file-upload-btn" type="button"
+                          (click)="file.click()">{{(imagemReclamacao == null)? "Upload Imagem" :imagemReclamacaoName
+                          }}</button>
+                        <input [disabled]="!modoedicao" class="file-upload-input" #file type='file'
+                          [required]="imagemReclamacao == null" (change)="fileChangeEvent($event)" accept="image/*" />
+                        <!---div class="image-upload-wrap">
+
+                        </div-->
+                        <div class="file-upload-content" *ngIf="imagemReclamacao != null"
+                          style="border: 2px dotted gray;">
+                          <img class="file-upload-image" style="width: 245px;" [src]="imagemReclamacao" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="padding: 1px 5px 1px 10px; min-width: 125px;" class="form-group col-md-2 col-lg-2">
+                      <label>Operários envolvidos:</label>
+                      <input [disabled]="!modoedicao" type="number" class="form-control2" [(ngModel)]="qtd_RECUSADA"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <!--div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
+                      <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
+
+                      <img [src]="imagemReclamacao" />
+                    </div-->
 
                   </div>
                 </p-panel>
@@ -2882,15 +2892,35 @@
     <div class="">
       <div style="padding: 1px 5px 1px 10px; min-height: 60vh; width: 80vw;" class="form-group col-md-12 col-lg-12">
 
-        <image-cropper style="max-height: 50vh;" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-          [containWithinAspectRatio]="true" [aspectRatio]="4 / 3" [resizeToWidth]="500" format="png" 
-          (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-          (loadImageFailed)="loadImageFailed()">
+        <image-cropper #ImageCropper style="max-height: 50vh;" [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true" [containWithinAspectRatio]="true" [aspectRatio]="16 / 9" [resizeToWidth]="500"
+          format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
         </image-cropper>
-
+        <div *ngIf="!croppedIsReady" class="row text-center p-2 m-2">
+          <span>A Carregar Imagem...</span>
+        </div>
+        <!--div *ngIf="croppedIsReady" class="row text-center p-2 m-2">
+          <div class="col-md-3">
+            <button type="button" (click)="rotateLeft()" class="mr-2 btn btn-dark"><i class="fa fa-repeat"
+                aria-hidden="true"></i></button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" (click)="rotateRight()" class="mr-2 btn btn-dark"><i class="fa fa-undo"
+                aria-hidden="true"></i></button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" (click)="flipHorizontal()" class="mr-2 btn btn-dark"><i class="fa fa-arrows-h"
+                aria-hidden="true"></i></button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" (click)="flipVertical()" class="mr-2 btn btn-dark"><i class="fa fa-arrows-v"
+                aria-hidden="true"></i></button>
+          </div>
+        </div-->
       </div>
-
     </div>
+    ´
     <!-- Modal Footer -->
     <div class="" style="text-align: -webkit-center;">
       <button type="button" class="btn btn-default" (click)="displayAjustarImagem = false">Fechar</button>

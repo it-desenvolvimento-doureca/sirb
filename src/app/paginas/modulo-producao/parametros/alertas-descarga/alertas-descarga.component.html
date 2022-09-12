@@ -1,0 +1,53 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Tipos de Alerta Descarga</h4>
+          </div>
+          <div class="card-content">
+            <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single"
+              (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+              <p-column [style]="{'width':'90px'}" field="descricao" header="Descrição" [filter]="true"
+                [sortable]="true"></p-column>
+              <p-footer>
+                <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
+                  style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
+                  <i class="material-icons">add</i> Adicionar
+                </a>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog appendTo="body" header="Tipos de Alerta Descarga" [(visible)]="dialogambito" [responsive]="true"
+  [positionTop]="40" [style]="{'max-height':'99vh','width':'80%','z-index':'2000'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [modal]="true" styleClass="dialog_index">
+  <div class="form-group col-md-12 col-lg-12">
+    <form role="form" ngNativeValidate (ngSubmit)="gravar()">
+      <!-- Modal Body -->
+      <div class="modal-body" style="display: -webkit-box;">
+        <div class="col-md-12">
+          <div class="form-group col-md-12">
+            <label for="descricao">Descrição</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="descricao" [(ngModel)]="descricao"
+              [ngModelOptions]="{standalone: true}" required autocomplete="off" />
+          </div>
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <div style="text-align: -webkit-center;" class="col-md-12">
+        <button type="button" class="btn btn-default" (click)="dialogambito = false">Fechar</button>
+        <button type=" button" (click)="apagardeparts()" [hidden]="novo  || !acesso_apagar" class="btn btn-danger"
+          data-dismiss="modal">Remover</button>
+        <button type="submit" class="btn btn-success " [hidden]="!acesso_editar">Gravar</button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

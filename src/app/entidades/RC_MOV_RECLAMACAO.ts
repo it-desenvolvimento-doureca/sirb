@@ -163,4 +163,9 @@ export class RC_MOV_RECLAMACAO {
 	analise_CAUSAS_PROBLEMA_IDIOMA_CLIENTE: string;
 	existem_OUTROS_CLIENTES: boolean;
 
+	ficheiro_PRODUCAO_NOME: string;
+	ficheiro_PRODUCAO_1: string;
+	ficheiro_PRODUCAO_2: string;
+	operarios_ENVOLVIDOS: string;
+
 }
