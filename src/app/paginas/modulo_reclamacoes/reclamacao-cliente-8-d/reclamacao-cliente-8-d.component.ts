@@ -42,6 +42,7 @@ import { RCMOVRECLAMACAOTIPOOCORRENCIAService } from 'app/servicos/rc-mov-reclam
 import { RCMOVRECLAMACAOCLIENTESService } from 'app/servicos/rc-mov-reclamacao-clientes.service';
 import { RC_MOV_RECLAMACAO_CLIENTES } from 'app/entidades/RC_MOV_RECLAMACAO_CLIENTES';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ng2-image-crop';
+import { RegistoProducao } from 'app/servicos/registoproducao.service';
 
 @Component({
   selector: 'app-reclamacao-cliente-8-d',
@@ -319,10 +320,12 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
   @ViewChild('ImageCropper') transform: ImageCropperComponent;
   croppedIsReady: boolean;
+  operarios: any;
 
   constructor(private RCMOVRECLAMACAOTIPOOCORRENCIAService: RCMOVRECLAMACAOTIPOOCORRENCIAService, private RCMOVRECLAMACAOTIPONAODETECAOService: RCMOVRECLAMACAOTIPONAODETECAOService, private RCMOVRECLAMACAOENCOMENDASService: RCMOVRECLAMACAOENCOMENDASService, private elementRef: ElementRef, private GTMOVTAREFASService: GTMOVTAREFASService, private confirmationService: ConfirmationService, private RCMOVRECLAMACAOSTOCKService: RCMOVRECLAMACAOSTOCKService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private GERGRUPOService: GERGRUPOService, private GERUTILIZADORESService: GERUTILIZADORESService, private RCDICFICHEIROSANALISEService: RCDICFICHEIROSANALISEService, private RCMOVRECLAMACAOENVIOSGARANTIDOSService: RCMOVRECLAMACAOENVIOSGARANTIDOSService, private RCMOVRECLAMACAOPLANOACCOESCORRETIVASService: RCMOVRECLAMACAOPLANOACCOESCORRETIVASService, private RCMOVRECLAMACAOARTIGOSIMILARESService: RCMOVRECLAMACAOARTIGOSIMILARESService, private RCMOVRECLAMACAOEQUIPAService: RCMOVRECLAMACAOEQUIPAService
     , private RCMOVRECLAMACAOFICHEIROSService: RCMOVRECLAMACAOFICHEIROSService, private RCDICTEMPORESPOSTAService: RCDICTEMPORESPOSTAService,
     private RCMOVRECLAMACAOCLIENTESService: RCMOVRECLAMACAOCLIENTESService,
+    private RegistoProducao: RegistoProducao,
     private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private RCDICTIPODEFEITOService: RCDICTIPODEFEITOService, private RCDICTIPORECLAMACAOService: RCDICTIPORECLAMACAOService, private RCDICREJEICAOService: RCDICREJEICAOService, private RCDICGRAUIMPORTANCIAService: RCDICGRAUIMPORTANCIAService, private renderer: Renderer, private RCMOVRECLAMACAOService: RCMOVRECLAMACAOService, private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer, private UploadService: UploadService, private globalVar: AppGlobals, private router: Router) { }
 
   ngOnInit() {
@@ -556,6 +559,19 @@ export class ReclamacaoCliente8DComponent implements OnInit {
 
   }
 
+  carregaUtilizadoresSILVER() {
+    //carrega utilizadores
+    this.operarios = [];
+    this.RegistoProducao.getUser().subscribe(
+      response => {
+        this.operarios.push({ label: "Seleccione Utilizador", value: null })
+        for (var x in response) {
+          this.operarios.push({ label: response[x].RESCOD + " - " + response[x].RESDES, value: response[x].RESCOD });
+        }
+        this.operarios = this.operarios.slice();
+      },
+      error => console.log(error));
+  }
 
 
   carregaUtilizadores(inicia, id) {
