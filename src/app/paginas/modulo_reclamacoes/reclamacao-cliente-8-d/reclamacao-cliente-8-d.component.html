@@ -403,8 +403,12 @@
 
                     <div style="padding: 1px 5px 1px 10px; min-width: 125px;" class="form-group col-md-2 col-lg-2">
                       <label>Operários envolvidos:</label>
-                      <input [disabled]="!modoedicao" type="number" class="form-control2" [(ngModel)]="qtd_RECUSADA"
-                        [ngModelOptions]="{standalone: true}">
+
+                      <p-multiSelect [options]="operarios" [(ngModel)]="operarios_ENVOLVIDOS" optionLabel="nome"
+                        styleClass="Doc" [ngModelOptions]="{standalone: true}" optionValue="id"
+                        [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Sem dados"
+                        placeholder="Selecionar Sector" [disabled]="!modoedicao" style="width: 100%;">
+                      </p-multiSelect>
                     </div>
                     <!--div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-3">
                       <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
