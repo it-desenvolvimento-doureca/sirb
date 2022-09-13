@@ -41,8 +41,8 @@ import { RCMOVRECLAMACAOTIPONAODETECAOService } from 'app/servicos/rc-mov-reclam
 import { RCMOVRECLAMACAOTIPOOCORRENCIAService } from 'app/servicos/rc-mov-reclamacao-tipo-ocorrencia.service';
 import { RCMOVRECLAMACAOCLIENTESService } from 'app/servicos/rc-mov-reclamacao-clientes.service';
 import { RC_MOV_RECLAMACAO_CLIENTES } from 'app/entidades/RC_MOV_RECLAMACAO_CLIENTES';
-import { ImageCroppedEvent, ImageCropperComponent } from 'ng2-image-crop';
 import { RegistoProducao } from 'app/servicos/registoproducao.service';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-reclamacao-cliente-8-d',
@@ -5131,20 +5131,20 @@ export class ReclamacaoCliente8DComponent implements OnInit {
   }
 
   flipHorizontal() {
-    this.transform.flipHorizontal();
+    //this.transform.flipHorizontal();
   }
 
   flipVertical() {
-    this.transform.flipVertical();
+    //this.transform.flipVertical();
   }
 
 
   rotateLeft() {
-    this.transform.rotateLeft();
+    //this.transform.rotateLeft();
   }
 
   rotateRight() {
-    this.transform.rotateRight();
+   // this.transform.rotateRight();
   }
 
 
