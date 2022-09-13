@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<p-dialog appendTo="body" header="Tipos de Alerta Descarga" [(visible)]="dialogambito" [responsive]="true"
+<p-dialog appendTo="body" header="Tipos de Alerta Descarga" [(visible)]="dialogtipoAlertaDescarga" [responsive]="true"
   [positionTop]="40" [style]="{'max-height':'99vh','width':'80%','z-index':'2000'}" [dismissableMask]="true"
   appendTo="body" [closeOnEscape]="true" [draggable]="false" [modal]="true" styleClass="dialog_index">
   <div class="form-group col-md-12 col-lg-12">
@@ -43,7 +43,7 @@
       </div>
       <!-- Modal Footer -->
       <div style="text-align: -webkit-center;" class="col-md-12">
-        <button type="button" class="btn btn-default" (click)="dialogambito = false">Fechar</button>
+        <button type="button" class="btn btn-default" (click)="dialogtipoAlertaDescarga = false">Fechar</button>
         <button type=" button" (click)="apagardeparts()" [hidden]="novo  || !acesso_apagar" class="btn btn-danger"
           data-dismiss="modal">Remover</button>
         <button type="submit" class="btn btn-success " [hidden]="!acesso_editar">Gravar</button>

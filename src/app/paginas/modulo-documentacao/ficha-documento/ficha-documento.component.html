@@ -160,7 +160,7 @@
 
                       <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-12 col-lg-12">
                         <p-fileUpload styleClass="uploadFile" customUpload="true" (onSelect)="uploadHandler($event)"
-                          accept=".pdf,image/*" chooseLabel="Escolher Ficheiro" (onRemove)="onRemove()"
+                          accept=".pdf,image/*,.mp4" chooseLabel="Escolher Ficheiro" (onRemove)="onRemove()"
                           [showUploadButton]="false" [showCancelButton]="false" maxFileSize="800000000">
                           <ng-template pTemplate="content">
                             <i *ngIf="ficheiro == null && !editar"
@@ -169,14 +169,14 @@
                             <p *ngIf="ficheiro == null && !editar" class="content-message">
                               Solte o ficheiro aqui ou clique em "Escolher Ficheiro"</p>
                             <p *ngIf="ficheiro == null && !editar" class="content-message" style="font-weight: bold;">
-                              Apenas PDF e IMG!</p>
+                              Apenas MP4,PDF ou IMG!</p>
                             <i *ngIf="editar && !inserirEditado "
                               style="text-align: center;font-size: 50px;display: flow-root;"
                               class="pi pi-cloud-upload"></i>
                             <p *ngIf="editar && !inserirEditado" class="content-message">
                               Caso pretenda, atualize aqui o seu ficheiro</p>
                             <p *ngIf="editar && !inserirEditado" class="content-message" style="font-weight: bold;">
-                              Apenas PDF e IMG!</p>
+                              Apenas MP4,PDF ou IMG!</p>
                           </ng-template>
                         </p-fileUpload>
 
@@ -208,6 +208,9 @@
                         height="450px" id="iframe-pdf"></iframe>
                       <img *ngIf="tipo_FICHEIRO == 'img' && iframeURL != null" [src]="iframeURL"
                         style="max-height: 450px; max-width: 100%;">
+                      <video *ngIf="tipo_FICHEIRO == 'video' && iframeURL != null" [src]="iframeURL" id="player"
+                        style="max-height: 450px; width: 100%;" autoplay="" controls="">Video
+                        format or MIME type is not supported</video>
                     </div>
                   </div>
                 </div>

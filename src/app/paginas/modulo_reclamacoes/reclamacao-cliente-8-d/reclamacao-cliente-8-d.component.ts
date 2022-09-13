@@ -554,7 +554,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         console.log(error);
       });
 
-
+    this.carregaUtilizadoresSILVER();
     // drop_cliente = [{ label: "Doureca", value: 1 }];
 
   }

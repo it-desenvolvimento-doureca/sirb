@@ -380,10 +380,10 @@
                       <label>Observações / Comentários:</label>
                       <textarea [disabled]="!modoedicao || step2CONCLUIDO" pInputTextarea
                         [(ngModel)]="observacoes_RECLAMACAO" class="form-control2" [ngModelOptions]="{standalone: true}"
-                        style="height: 85px; width: 100%;"></textarea>
+                        style="height: 90px; width: 100%;"></textarea>
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-6 col-lg-6">
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                       <div class="file-upload">
                         <label>Imagem para visualização da Produção:</label>
                         <button [disabled]="!modoedicao" class="file-upload-btn" type="button"
@@ -401,7 +401,7 @@
                       </div>
                     </div>
 
-                    <div style="padding: 1px 5px 1px 10px; min-width: 125px;" class="form-group col-md-2 col-lg-2">
+                    <div style="padding: 1px 5px 1px 10px; min-width: 125px;" class="form-group col-md-4 col-lg-4">
                       <label>Operários envolvidos:</label>
 
                       <p-multiSelect [options]="operarios" [(ngModel)]="operarios_ENVOLVIDOS" optionLabel="nome"
