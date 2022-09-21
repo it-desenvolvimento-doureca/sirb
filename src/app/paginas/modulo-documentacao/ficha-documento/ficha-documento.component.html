@@ -54,11 +54,11 @@
 
                       <label>Sector:</label>
                       <div style="display: flex;">
-
-                        <p-multiSelect [options]=" drop_sectores" [(ngModel)]="selectedSector" optionLabel="nome"
+                        <!-- [required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"-->
+                        <p-multiSelect [options]="drop_sectores" [(ngModel)]="selectedSector" optionLabel="nome"
                           styleClass="Doc" [ngModelOptions]="{standalone: true}" optionValue="id"
                           [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Sectores"
-                          [required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"
+                          
                           placeholder="Selecionar Sector" [disabled]="visualizar" style="width: 100%;">
                         </p-multiSelect>
                       </div>
@@ -68,10 +68,10 @@
 
                       <label>Máquina:</label>
                       <div style="display: flex;">
+                        <!--[required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"-->
                         <p-dropdown [options]="maquinasList" [(ngModel)]="selectedMaquina" optionLabel="nome"
                           styleClass="Doc" [ngModelOptions]="{standalone: true}" optionValue="id" [filter]="true"
                           [style]="{'width':'100%', 'height':'30px'}" emptyMessage="Não Existem Máquinas"
-                          [required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"
                           placeholder="Selecionar Máquina" [disabled]="visualizar" style="width: 100%;">
                         </p-dropdown>
 
@@ -81,11 +81,11 @@
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-4 col-lg-4">
                       <label>Referência:</label>
                       <div>
+                        <!--[required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"-->
                         <p-autoComplete [(ngModel)]="referencia_campo" [suggestions]="referenciasList"
                           [style]="{'width': '100%', 'height': '29px'}" forceSelection="true" styleClass="autoch"
                           (onUnselect)="filteronUnselect($event)" (onSelect)="filterSelect($event)"
                           emptyMessage="Sem Resultados..." [ngModelOptions]="{standalone: true}" [disabled]="visualizar"
-                          [required]="selectedReferencia == null && (selectedMaquina == null || selectedMaquina == '') && (selectedSector == null || selectedSector.length == 0)"
                           (completeMethod)="filterRef($event)" field="label" placeholder="Pesquisar..." [minLength]="1">
                         </p-autoComplete>
 

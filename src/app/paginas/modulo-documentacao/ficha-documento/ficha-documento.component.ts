@@ -259,7 +259,7 @@ export class FichaDocumentoComponent implements OnInit {
     this.ABDICCOMPONENTEService.getMaquinas().subscribe(
       response => {
         this.drop_artigos = [];
-        this.maquinasList.push({ value: '', label: 'Selecionar Máquina' });
+        this.maquinasList.push({ value: null, label: 'Selecionar Máquina' });
         var count = Object.keys(response).length;
         if (count > 0) {
 
