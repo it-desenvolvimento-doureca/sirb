@@ -186,7 +186,6 @@ export class LocalizacoesAlfrescoComponent implements OnInit {
       message: 'Tem a certeza que pretende apagar?',
       header: 'Apagar Confirmação',
       icon: 'fa fa-trash',
-      key: 'conf001',
       accept: () => {
         /* var depart = new DOC_GESTAO_PASTAS;
          depart = this.dados;
