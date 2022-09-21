@@ -157,6 +157,8 @@ export class FichaDocumentoComponent implements OnInit {
         this.caminhoOriginal = response[0].CAMINHO;
         if (response[0].REFERENCIA != null) this.referencia_campo = { value: response[0].REFERENCIA, label: response[0].REFERENCIA + " - " + response[0].DESC_REFERENCIA, DESIGN: response[0].DESC_REFERENCIA };
         //this.tipoOriginal = response[0].TIPO_DOCUMENTO;
+        this.selectedReferencia = response[0].REFERENCIA;
+        this.selectedReferenciadescricao = response[0].DESC_REFERENCIA;
         this.tipo_FICHEIRO = response[0].TIPO_FICHEIRO;
         this.id_CAMINHO = response[0].ID_CAMINHO;
         this.ficheiroOriginal = response[0].NOME_FICHEIRO;
@@ -224,8 +226,7 @@ export class FichaDocumentoComponent implements OnInit {
 
             value: response[x].ID,
             label: response[x].NOME,
-
-
+            predefinido: response[x].DOCUMENTO_PREDEFINIDO
           });
         }
         this.tiposList = this.tiposList.slice();
@@ -433,8 +434,12 @@ export class FichaDocumentoComponent implements OnInit {
             this.upd(bodyFormData, documento, true, false, caminho);
           } else {
 
-            this.btgravar = false;
-            this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
+            if (this.tiposList.find(item => item.value == this.selectedTipo).predefinido == true) {
+              this.btgravar = false;
+              this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
+            } else {
+              this.upd(bodyFormData, documento, true, false, caminho);
+            }
 
           }
         }
@@ -455,8 +460,12 @@ export class FichaDocumentoComponent implements OnInit {
           if (response[0] == 0) {
             this.upd(bodyFormData, documento, novoficheiro, novocaminho, caminho);
           } else {
-            this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
-            this.btgravar = false;
+            if (this.tiposList.find(item => item.value == this.selectedTipo).predefinido == true) {
+              this.btgravar = false;
+              this.showMessage('warn', 'Aviso', 'Já existe um documento predefinido para sector/máquina/referência selecionado!');
+            } else {
+              this.upd(bodyFormData, documento, novoficheiro, novocaminho, caminho);
+            }
           }
         }
       });
@@ -492,6 +501,9 @@ export class FichaDocumentoComponent implements OnInit {
           }
 
           this.atualizaDOCUMENTO(documento);
+        }, error => {
+          this.showMessage('error', 'Erro', 'ERRO!! Registo não foi Gravado!');
+          this.btgravar = false;
         });
       } else {
         this.atualizaDOCUMENTO(documento);
