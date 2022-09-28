@@ -85,8 +85,8 @@
                         [required]="true" [ngModelOptions]="{standalone: true}"
                         style="margin-top: 0; width: 75%; float: left; border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
                       <div class="input-group-prepend">
-                        <button [disabled]="ofnum == '' || ofnum == null || !modoedicao" title="Validar"
-                          type="button" (click)="verificaOFNUM()"
+                        <button [disabled]="ofnum == '' || ofnum == null || !modoedicao" title="Validar" type="button"
+                          (click)="verificaOFNUM()"
                           [ngClass]="{'btn-success': errovalida == '','btn-danger': errovalida != ''}"
                           class="btn  btn-sm" id="plus-btn"
                           style="float: left; width: 16%; margin: 0;padding: 1px;height: 25px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
@@ -104,9 +104,8 @@
                         [style]="{'width':'100%','height':'25px'}" [(ngModel)]="referencia" lazy="true"
                         [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao">
                       </p-dropdown>-->
-                      <input *ngIf="unidade == 2 || unidade != 1" [disabled]="true" type="text"
-                        [required]="true" class="form-control2" [(ngModel)]="ref_descricao"
-                        [ngModelOptions]="{standalone: true}">
+                      <input *ngIf="unidade == 2 || unidade != 1" [disabled]="true" type="text" [required]="true"
+                        class="form-control2" [(ngModel)]="ref_descricao" [ngModelOptions]="{standalone: true}">
                       <p-autoComplete *ngIf="unidade == 1 " [(ngModel)]="referencia_campo"
                         [suggestions]="filteredreferencias" class="autocompleseguranca"
                         [style]="{'width': '100%', 'height': '25px'}" forceSelection="true"
@@ -138,8 +137,8 @@
                       <div *ngIf="unidade == 1" style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 ">
                         <label>Tipologia de Ensaio:</label><br>
                         <p-dropdown [options]="drop_tipologia" [style]="{'width':'100%','height':'25px'}"
-                          [(ngModel)]="id_TIPOLOGIA_ENSAIO" [ngModelOptions]="{standalone: true}" [disabled]="!modoedicao"
-                          [required]="true">
+                          [(ngModel)]="id_TIPOLOGIA_ENSAIO" [ngModelOptions]="{standalone: true}"
+                          [disabled]="!modoedicao" [required]="true">
                         </p-dropdown>
                       </div>
 
@@ -180,7 +179,8 @@
                             <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
                               [options]="drop_accoes" [style]="{'width':'80%','height':'25px','background':'white'}"
                               [(ngModel)]="car['id_ACCAO']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao " appendTo="body" [required]="true">
+                              [disabled]="!modoedicao || car['estado'] == 'A' || car['estado'] == 'C' ||  car['id_AMOSTRA_ACCAO'] != null"
+                              appendTo="body" [required]="true">
                             </p-dropdown>
                             <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao"
                               title="Adicionar" (click)="showDialogToAdd()">
@@ -195,7 +195,8 @@
                           </ng-template>
                           <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
                             <select [(ngModel)]="car['responsavel']" [ngModelOptions]=" {standalone: true}"
-                              class="form-control2">
+                              [ngClass]="(car['estado'] == 'A' || car['estado'] == 'C' || !modoedicao)? 'disabled' : ''"
+                              (change)="verificaResponsavel(car,$event)" class="form-control2">
                               <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores">
                                 <option [selected]="f.value == car['responsavel']" [value]="f.value"
                                   *ngFor="let f of i.itens">{{f.label}}</option>
@@ -208,10 +209,11 @@
                             {{car[col.field] | date: 'yyyy-MM-dd'}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">
-                            <p-calendar [disabled]="!modoedicao " [style]="{'height':'25px','width':'100%'}"
-                              dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd" [monthNavigator]="true"
-                              [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
-                              [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}"></p-calendar>
+                            <p-calendar [disabled]="!modoedicao || car['estado'] == 'A' || car['estado'] == 'C'"
+                              [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
+                              [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
+                              (ngModelChange)="verificadatas(car)" [(ngModel)]="car['data_ACCAO']"
+                              [ngModelOptions]="{standalone: true}"></p-calendar>
                           </ng-template>
                         </p-column>
 
@@ -220,16 +222,26 @@
                             {{car[col.field]}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">
-                            <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px;"
-                              [(ngModel)]="car['hora_ACCAO']" [ngModelOptions]="{standalone: true}" type="time" min
+                            <input [disabled]="!modoedicao || car['estado'] == 'A' || car['estado'] == 'C'"
+                              style="padding: 5px 4px;height: 25px;" [(ngModel)]="car['hora_ACCAO']"
+                              [ngModelOptions]="{standalone: true}" type="time" min
                               class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
-                              ng-reflect-ng-class="ui-inputtext ui-widget ui-stat" required="true" placeholder="hh:mm">
+                              (ngModelChange)="verificadatas(car)" ng-reflect-ng-class="ui-inputtext ui-widget ui-stat"
+                              required="true" placeholder="hh:mm">
+                          </ng-template>
+                        </p-column>
+                        <p-column [editable]="false" field="estado_texto" header="ESTADO">
+                          <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
+                            <span *ngIf="car['id_TAREFA']==null" class="ui-cell-data">{{car['estado_texto']}}</span>
+                            <a *ngIf="car['id_TAREFA']!=null" (click)="IrPara(car['id_TAREFA'],car['responsavel'])"
+                              class="ui-cell-data">{{car['estado_texto']}}</a>
                           </ng-template>
                         </p-column>
                         <p-column>
                           <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
-                            <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao" title="Apagar"
-                              (click)="apagar_linha( index)">
+                            <button type="button" class="btn btn-danger btn-xs"
+                              [disabled]="!modoedicao || car['estado'] == 'A' || car['estado'] == 'C'" title="Apagar"
+                              (click)="apagar_linha(index)">
                               <span class="glyphicon glyphicon-trash"></span>
                             </button>
                           </ng-template>
@@ -328,4 +340,59 @@
 
     </div>
   </form>
+</p-dialog>
+
+
+<p-dialog header="Justificação Alteração de Data Objetivo" [responsive]="true" [positionTop]="0" (onHide)="onHide()"
+  [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayJustificacaoDATAFIM" [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_DATA_FIM()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_DATA_FIM"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoDATAFIM = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
+</p-dialog>
+
+
+<p-dialog header="Justificação Alteração do Responsável" [responsive]="true" [positionTop]="0"
+  (onHide)="onHideJustificacaoRESPONSAVEL()" [style]="{'max-height':'99vh','width': '100%'}" [dismissableMask]="true"
+  appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayJustificacaoRESPONSAVEL"
+  [modal]="true">
+
+  <!-- Modal Header -->
+
+  <form role="form" ngNativeValidate (ngSubmit)="atualizarlinhajustificacao_RESPONSAVEL()">
+    <!-- Modal Body -->
+    <div class="">
+      <div style="padding: 1px 5px 1px 10px; min-height: 50vh;" class="form-group col-md-12 col-lg-12">
+        <label>Justificação:</label>
+        <textarea required="true" rows="6" pInputTextarea [(ngModel)]="justificacao_RESPONSAVEL"
+          class="form-control2 enabled" [ngModelOptions]="{standalone: true}"
+          style="height: auto; width: 500px;"></textarea>
+      </div>
+
+    </div>
+    <!-- Modal Footer -->
+    <div class="" style="text-align: -webkit-center;">
+      <button type="button" class="btn btn-default" (click)="displayJustificacaoRESPONSAVEL = false">Fechar</button>
+      <button type="submit" class="btn btn-success ">Gravar</button>
+    </div>
+  </form>
+
 </p-dialog>

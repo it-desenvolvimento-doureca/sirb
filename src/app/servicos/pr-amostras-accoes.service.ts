@@ -34,6 +34,14 @@ export class PRAMOSTRASACCOESService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getById2(ip): Observable<PR_AMOSTRAS_ACCOES[]> {
+    const url = webUrl.host + '/rest/sirb/getPR_AMOSTRAS_ACCOESbyid2/' + ip;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   delete(id) {
     return this.http
       .delete(webUrl.host + '/rest/sirb/deletePR_AMOSTRAS_ACCOES/' + id + '')

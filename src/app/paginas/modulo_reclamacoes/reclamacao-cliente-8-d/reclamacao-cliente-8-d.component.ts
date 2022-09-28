@@ -5040,7 +5040,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         this.selected_row = null;
         this.justificacao_DATA_FIM = null;
 
-        if (row.id != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
+        if (row.id != null && event.target.value != '' && event.target.value != null && row.justificacao_RESPONSAVEL == null) {
           accoes = row.data;
           if (accoes.responsavel != row.responsavel) {
             atualizou_reponsavel = true;

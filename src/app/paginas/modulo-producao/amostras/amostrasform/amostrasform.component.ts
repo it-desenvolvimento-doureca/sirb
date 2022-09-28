@@ -80,7 +80,12 @@ export class AmostrasformComponent implements OnInit {
   displayvalidacao: boolean;
   filteredreferencias: any[];
   referencia_campo: any;
-
+  selected_row: any;
+  justificacao_DATA_FIM: any;
+  displayJustificacaoRESPONSAVEL: boolean;
+  displayJustificacaoDATAFIM: boolean;
+  justificacao_RESPONSAVEL: any;
+  yearTimeout: any;
 
   constructor(private UploadService: UploadService, private GTMOVTAREFASService: GTMOVTAREFASService, private RHSECTORESService: RHSECTORESService, private GERUTILIZADORESService: GERUTILIZADORESService, private ABDICCOMPONENTEService: ABDICCOMPONENTEService, private PRAMOSTRASACCOESService: PRAMOSTRASACCOESService, private PRAMOSTRASCABService: PRAMOSTRASCABService, private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService, private ABDICLINHAService: ABDICLINHAService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService
     , private route: ActivatedRoute, private renderer: Renderer, private globalVar: AppGlobals, private router: Router, private PRDICTIPOLOGIAENSAIOService: PRDICTIPOLOGIAENSAIOService) { }
@@ -346,7 +351,7 @@ export class AmostrasformComponent implements OnInit {
   }
 
   carregarlinhas(id) {
-    this.PRAMOSTRASACCOESService.getById(id).subscribe(
+    this.PRAMOSTRASACCOESService.getById2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
 
@@ -354,13 +359,16 @@ export class AmostrasformComponent implements OnInit {
           for (var x in response) {
 
             var accao = null;
-            if (this.drop_accoes.find(item => item.value == response[x].id_ACCAO)) {
-              accao = this.drop_accoes.find(item => item.value == response[x].id_ACCAO).label
+            if (this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO)) {
+              accao = this.drop_accoes.find(item => item.value == response[x][0].id_ACCAO).label
             }
             this.tabelaaccoes.push({
-              id_AMOSTRA_ACCAO: response[x].id_AMOSTRA_ACCAO, id_ACCAO: response[x].id_ACCAO, responsavel: response[x].tipo_RESPONSAVEL + response[x].responsavel,
-              tipo_RESPONSAVEL: response[x].tipo_RESPONSAVEL, data_ACCAO: (response[x].data_ACCAO == null) ? "" : this.formatDate(response[x].data_ACCAO)
-              , hora_ACCAO: response[x].hora_ACCAO, id_AMOSTRA: response[x].id_AMOSTRA, descricao: accao
+              data: response[x][0],
+              justificacao_RESPONSAVEL: null, justificacao_DATA_FIM: null,
+              id_AMOSTRA_ACCAO: response[x][0].id_AMOSTRA_ACCAO, id_ACCAO: response[x][0].id_ACCAO, responsavel: response[x][0].tipo_RESPONSAVEL + response[x][0].responsavel,
+              tipo_RESPONSAVEL: response[x][0].tipo_RESPONSAVEL, data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO)
+              , hora_ACCAO: response[x][0].hora_ACCAO, id_AMOSTRA: response[x][0].id_AMOSTRA, descricao: accao,
+              id_TAREFA: response[x][2], estado: response[x][1], estado_texto: this.geEstado(response[x][1])
             });
 
           }
@@ -480,6 +488,16 @@ export class AmostrasformComponent implements OnInit {
   gravalinhas(id) {
     for (var x in this.tabelaaccoes) {
       var accoes = new PR_AMOSTRAS_ACCOES;
+      var accoesold = new PR_AMOSTRAS_ACCOES;
+      var novo = false;
+
+      if (this.tabelaaccoes[x].id_AMOSTRA_ACCAO != null) {
+        accoes = this.tabelaaccoes[x].data;
+        accoesold = JSON.parse(JSON.stringify(accoes));
+      } else {
+        novo = true;
+      }
+
       accoes.id_AMOSTRA = id;
 
 
@@ -506,7 +524,38 @@ export class AmostrasformComponent implements OnInit {
         if (utz) email_p = utz.email;
       }
 
+
+
+
+      var atualizou_datas = false;
+
+      if (new Date(this.formatDate(accoesold.data_ACCAO) + ' ' + accoesold.hora_ACCAO).getTime() != new Date(this.formatDate(this.tabelaaccoes[x].data_ACCAO) + ' ' + this.tabelaaccoes[x].hora_ACCAO).getTime()) {
+        atualizou_datas = true;
+      }
+
+      var id_resp_old = null;
+      var atualizou_responsavel = false;
+
+      id_resp_old = accoesold.responsavel;
+      if (accoesold.tipo_RESPONSAVEL + accoesold.responsavel != this.tabelaaccoes[x].responsavel) {
+        atualizou_responsavel = true;
+      }
+
+      /*console.log('atualizou_responsavel', atualizou_responsavel)
+      console.log('ccoesold.tipo_RESPONSAVEL + accoesold.responsavel', accoesold.tipo_RESPONSAVEL + accoesold.responsavel)
+      console.log('this.tabelaaccoesimediatas[x].responsavel', this.tabelaaccoesimediatas[x].responsavel)
+      console.log('atualizou_datas', atualizou_datas)
+      console.log('this.formatDate2(accoesold.data_PREVISTA)', this.formatDate2(accoesold.data_PREVISTA))
+      console.log('this.formatDate2(this.tabelaaccoesimediatas[x].data_PREVISTA)', this.formatDate2(this.tabelaaccoesimediatas[x].data_PREVISTA))*/
+
+      if (!novo) {
+        this.alterardadosTarefa(atualizou_datas, atualizou_responsavel, accoesold.id_AMOSTRA_ACCAO, id_resp, accoesold.tipo_RESPONSAVEL + accoesold.responsavel,
+          this.tabelaaccoes[x].descricao,
+          this.tabelaaccoes[x].data_ACCAO, this.tabelaaccoes[x].hora_ACCAO, this.tabelaaccoes[x].justificacao_DATA_FIM,
+          this.tabelaaccoes[x].justificacao_RESPONSAVEL);
+      }
       if (accoes.id_AMOSTRA != null && accoes.responsavel != null) this.savelinhas(accoes, novo, this.tabelaaccoes[x].descricao, email_p, id);
+
     }
 
     if (this.novo) {
@@ -845,4 +894,189 @@ export class AmostrasformComponent implements OnInit {
     this.descricao = event.descricao;
   }
 
+  //devolve email responsavel
+  getEmailResponsavel(id) {
+    if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
+    if (id != null && id.toString().includes("u")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Utilizadores").itens;
+      utz = utz2.find(item => item.value == id);
+    } else if (id != null && id.toString().includes("g")) {
+      var utz2 = this.drop_utilizadores.find(item => item.label == "Grupos").itens;
+      utz = utz2.find(item => item.value == id);
+    }
+    var email = null;
+    if (utz) {
+      email = utz.email;
+    }
+    return email;
+  }
+
+
+  alterardadosTarefa(atualizou_datas, atualizou_responsavel, id, responsavel, responsavel_anterior, nome_accao, data_ACCAO, hora_ACCAO, justificacao_DATA_FIM, justificacao_RESPONSAVEL) {
+
+
+    var email_p = this.getEmailResponsavel(responsavel);
+
+    if (atualizou_datas) {
+
+      var tarefa = new GT_MOV_TAREFAS;
+      tarefa.id_MODULO = 10;
+      tarefa.sub_MODULO = "A";
+      tarefa.id_CAMPO = id;
+      tarefa.data_ULT_MODIF = new Date();
+      tarefa.utz_ULT_MODIF = this.user;
+      tarefa.data_FIM = new Date(this.formatDate(data_ACCAO) + ' ' + hora_ACCAO);;
+      tarefa.justificacao_DATA_FIM = justificacao_DATA_FIM;
+      var logs = new GT_LOGS;
+      logs.utz_CRIA = this.user;
+      logs.data_CRIA = new Date();
+      logs.descricao = "Alterou Prazo Conclusão";
+      logs.justificacao = justificacao_DATA_FIM;
+      var email_para = email_p;
+      this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, data_ACCAO, "Ao Alterar Data Objetivo", id);
+    }
+
+    if (atualizou_responsavel) {
+      var tarefa = new GT_MOV_TAREFAS;
+      tarefa.id_MODULO = 10;
+      tarefa.sub_MODULO = "A";
+      tarefa.id_CAMPO = id;
+      tarefa.utz_ID = responsavel;
+      tarefa.data_ULT_MODIF = new Date();
+      tarefa.utz_ULT_MODIF = this.user;
+      tarefa.justificacao_RESPONSAVEL = justificacao_RESPONSAVEL;
+
+      var logs = new GT_LOGS;
+      logs.utz_CRIA = this.user;
+      logs.data_CRIA = new Date();
+      logs.justificacao = justificacao_RESPONSAVEL;
+      var nome1 = this.getResponsavel(responsavel_anterior);
+      var nome2 = this.getResponsavel(responsavel);
+      var email_para = email_p;
+
+      logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
+      this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, data_ACCAO, "Ao Alterar Responsável", id);
+    }
+  }
+
+  atualizaTarefa(tarefa, logs, enviarEvento, email_para, nome_accao, data_prevista, MOMENTO, id) {
+
+    this.GTMOVTAREFASService.atualizaTAREFA(tarefa).subscribe(response => {
+      logs.id_TAREFA = response[0][0];
+      this.criaLogs(logs);
+      if (enviarEvento) {
+        //Ao Alterar Responsável
+        //Ao Alterar Data Objetivo
+        this.enviarEvento(response[0][1], response[0][0], MOMENTO, email_para, this.referencia + ' - ' + this.descricao, id /*response.id_CAMPO*/
+          , this.data_LANCAMENTO, nome_accao);
+
+      }
+    }, error => {
+      console.log(error);
+      this.simular(this.inputerro);
+    });
+  }
+
+  verificadatas(row) {
+    console.log(row)
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
+
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new PR_AMOSTRAS_ACCOES;
+        var atualizou_datas = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
+        if (row.id_AMOSTRA_ACCAO != null && row.id_TAREFA != null && row.justificacao_DATA_FIM == null) {
+          accoes = row.data;
+
+          if (new Date(this.formatDate(accoes.data_ACCAO) + ' ' + accoes.hora_ACCAO).getTime() != new Date(this.formatDate(row.data_ACCAO) + ' ' + row.hora_ACCAO).getTime()) {
+            atualizou_datas = true;
+          }
+        }
+        if (atualizou_datas) {
+          this.selected_row = row;
+          this.displayJustificacaoDATAFIM = true;
+        }
+
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
+  }
+
+
+  verificaResponsavel(row, event) {
+    if (row.estado != 'E') {
+      if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+      }
+
+      this.yearTimeout = setTimeout(() => {
+        var accoes = new PR_AMOSTRAS_ACCOES;
+        var atualizou_responsavel = false;
+        this.selected_row = null;
+        this.justificacao_DATA_FIM = null;
+
+        if (row.id_AMOSTRA_ACCAO != null && event.target.value != '' && event.target.value != null && row.justificacao_RESPONSAVEL == null) {
+          accoes = row.data;
+          if (accoes.responsavel != row.responsavel) {
+            atualizou_responsavel = true;
+          }
+        }
+        if (atualizou_responsavel) {
+          this.selected_row = row;
+          this.yearTimeout = setTimeout(() => {
+            this.displayJustificacaoRESPONSAVEL = true;
+          }, 100);
+
+        }
+
+        // console.log('atualizou_datas ', atualizou_datas)
+      }, 1000);
+    }
+
+  }
+
+  onHide() {
+    if (this.justificacao_DATA_FIM == null && this.selected_row != null) {
+      var accoes = new PR_AMOSTRAS_ACCOES;
+      accoes = this.selected_row.data;
+      this.selected_row.data_ACCAO = this.formatDate(accoes.data_ACCAO);
+      this.selected_row.hora_ACCAO = accoes.hora_ACCAO;
+    }
+  }
+
+  onHideJustificacaoRESPONSAVEL() {
+    if (this.justificacao_RESPONSAVEL == null && this.selected_row != null) {
+      var accoes = new PR_AMOSTRAS_ACCOES;
+      accoes = this.selected_row.data;
+      this.selected_row.responsavel = accoes.responsavel;
+    }
+  }
+
+  atualizarlinhajustificacao_DATA_FIM() {
+    this.selected_row.justificacao_DATA_FIM = this.justificacao_DATA_FIM;
+    this.displayJustificacaoDATAFIM = false;
+  }
+
+
+  atualizarlinhajustificacao_RESPONSAVEL() {
+    this.selected_row.justificacao_RESPONSAVEL = this.justificacao_RESPONSAVEL;
+    this.displayJustificacaoRESPONSAVEL = false;
+  }
+
+
+
+  IrPara(id, responsavel) {
+
+    var id_r = null;
+    if (responsavel.toString().charAt(0) == 'u') {
+      id_r = responsavel.substr(1);
+    }
+    if (this.adminuser || this.user == this.utilizador || id_r == this.user) {
+      this.router.navigateByUrl('tarefas/view?id=' + id + "&redirect=producao/amostras/viewkvk\id=" + this.id_AMOSTRA);
+    }
+  }
 }
