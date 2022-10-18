@@ -227,11 +227,13 @@
                                     <!-- {{car[col.field] }}º-->
                                   </ng-template>
                                 </p-column>
-                                <p-column [editable]="true" field="descricao" [style]="{'width':'380px'}"
-                                  header="PLANO AÇÃO">
+                                <p-column [editable]="modoedicao " field="descricao" [style]="{'width':'380px'}"
+                                  header="AÇÃO">
 
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{car['descricao'] }}
+                                    <select class="obrigatorio" style="position: relative; height: 0px; width: 0px;"
+                                      [required]="car['id_ACCOES'] == null "></select>
                                   </ng-template>
                                   <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
                                     <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
@@ -249,22 +251,61 @@
                                   </ng-template>
 
                                 </p-column>
-                                <p-column [editable]="true" field="responsavel" header="RESPONSÁVEL">
+                                <p-column [editable]="false" field="tipo_ACAO" header="TIPO DE AÇÃO"
+                                  [style]="{'width':'108px'}">
+                                  <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <p-dropdown [filter]="true" [options]="tipos_acao"
+                                      [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
+                                      [(ngModel)]="car['tipo_ACAO']" [ngModelOptions]="{standalone: true}"
+                                      [disabled]="!modoedicao  ||  car['id'] != null" appendTo="body">
+                                    </p-dropdown>
+                                  </ng-template>
+                                </p-column>
+
+                                <p-column [editable]="false" field="item" header="ITEM" [style]="{'width':'102px'}">
+                                  <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <input [disabled]="!modoedicao  ||  car['id'] != null"
+                                      style="padding: 5px 4px;height: 25px; text-align: center;"
+                                      [(ngModel)]="car['item']" [ngModelOptions]="{standalone: true}" type="text"
+                                      maxlength="15"
+                                      class="inputn ng-tns-c9-3 ui-inputtext ui-widget ui-state-default ui-corner-all"
+                                      title="Ex. Código da ação definida pelo relatório de auditoria."
+                                      ng-reflect-ng-class=" ui-inputtext ui-widget ui-stat">
+                                  </ng-template>
+                                </p-column>
+
+                                <p-column [editable]="modoedicao " field="responsavel" header="RESPONSÁVEL">
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{getResponsavelaccoes(car[col.field]) }}
+                                    <select class="obrigatorio" style="position: relative; height: 0px; width: 0px;"
+                                      [required]="car['responsavel'] == null "></select>
                                   </ng-template>
                                   <ng-template let-index="rowIndex" let-col let-car="rowData" pTemplate="editor">
-                                    <select (change)="alterarEmail2(index,$event,'tabelaaccoes')"
+                                    <p-dropdown [filter]="true" [options]="drop_utilizadores_acoes"
+                                      [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
+                                      [(ngModel)]="car['responsavel']" appendTo="body"
+                                      (onChange)="alterarEmail2(index,$event,'tabelaaccoes')"
+                                      placeholder="Selecionar Utilizador" [disabled]="car['id'] != null"
+                                      [ngModelOptions]=" {standalone: true}">
+                                      <ng-template let-car pTemplate="item">
+                                        <span>
+                                          <b>{{car.type}} - </b>
+                                          {{car.label}}
+                                        </span>
+                                      </ng-template>
+                                    </p-dropdown>
+                                    <!--select class="selectpicker" (change)="alterarEmail2(index,$event,'tabelaaccoes')"
                                       [ngClass]="car['id'] != null? 'disabled' : ''" [(ngModel)]="car['responsavel']"
                                       [ngModelOptions]=" {standalone: true}" class="form-control2">
                                       <optgroup [label]="i.label" *ngFor="let i of drop_utilizadores_acoes">
                                         <option [selected]="f.value == car['responsavel']" [value]="f.value"
                                           *ngFor="let f of i.itens">{{f.label}}</option>
                                       </optgroup>
-                                    </select>
+                                    </select-->
                                   </ng-template>
                                 </p-column>
-                                <p-column [editable]="true" field="area" [style]="{'width':'85px'}" header="ÁREA">
+                                <p-column [editable]="modoedicao " field="area" [style]="{'width':'85px'}"
+                                  header="ÁREA">
                                   <ng-template let-col let-car="rowData" pTemplate="editor">
                                     <input [disabled]="!modoedicao ||  car['id'] != null" [(ngModel)]="car['area']"
                                       [ngModelOptions]="{standalone: true}"
@@ -293,7 +334,7 @@
                                     </p-calendar>
                                   </ng-template-->
                                 </p-column>
-                                <p-column [editable]="true" field="data_REAL" header="DATA REAL">
+                                <p-column [editable]="modoedicao " field="data_REAL" header="DATA REAL">
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{car[col.field] | date: 'yyyy-MM-dd'}}
                                   </ng-template>
@@ -308,6 +349,15 @@
                                   </ng-template>
                                 </p-column>
 
+                                <p-column [editable]="modoedicao " field="observacoes" header="OBSERVAÇÕES">
+                                  <ng-template let-col let-car="rowData" pTemplate="editor">
+                                    <input [disabled]="!modoedicao ||  car['id'] != null"
+                                      [(ngModel)]="car['observacoes']" [ngModelOptions]="{standalone: true}"
+                                      class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
+                                      type="text">
+                                  </ng-template>
+                                </p-column>
+
                                 <p-column [editable]="false" field="nome_estado" header="ESTADO">
                                   <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                                     <span *ngIf="car['id_TAREFA']==null"
@@ -318,14 +368,7 @@
                                   </ng-template>
                                 </p-column>
 
-                                <p-column [editable]="true" field="observacoes" header="OBSERVAÇÕES">
-                                  <ng-template let-col let-car="rowData" pTemplate="editor">
-                                    <input [disabled]="!modoedicao ||  car['id'] != null"
-                                      [(ngModel)]="car['observacoes']" [ngModelOptions]="{standalone: true}"
-                                      class="ui-inputtext ui-widget ui-state-default ui-corner-all ng-dirty ng-valid ng-touched"
-                                      type="text">
-                                  </ng-template>
-                                </p-column>
+
 
                                 <p-column>
                                   <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
@@ -376,11 +419,25 @@
                                   </ng-template>
                                 </p-column>
                                 <p-column [editable]="false" field="descricao" [style]="{'width':'380px'}"
-                                  header="PLANO AÇÃO">
+                                  header="AÇÃO">
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{car['descricao'] }}
                                   </ng-template>
                                 </p-column>
+                                <p-column [editable]="false" field="tipo_ACAO" header="TIPO DE AÇÃO"
+                                  [style]="{'width':'108px'}">
+                                  <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <p-dropdown [filter]="true" [options]="tipos_acao"
+                                      [style]="{'width':'100%','height':'25px','background':'white','border': 'none'}"
+                                      [(ngModel)]="car['tipo_ACAO']" [ngModelOptions]="{standalone: true}"
+                                      [disabled]="true" appendTo="body">
+                                    </p-dropdown>
+                                  </ng-template>
+                                </p-column>
+
+                                <p-column [editable]="false" field="item" header="ITEM" [style]="{'width':'102px'}">
+                                </p-column>
+
                                 <p-column [editable]="false" field="responsavel" header="RESPONSÁVEL">
                                   <ng-template let-col let-car="rowData" pTemplate="body">
                                     {{getResponsavelaccoes(car[col.field]) }}
@@ -398,7 +455,8 @@
                                     {{car[col.field] | date: 'yyyy-MM-dd'}}
                                   </ng-template>
                                 </p-column>
-
+                                <p-column [editable]="false" field="observacoes" header="OBSERVAÇÕES">
+                                </p-column>
                                 <p-column [editable]="false" field="nome_estado" header="ESTADO">
                                   <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                                     <span *ngIf="car['id_TAREFA']==null"
@@ -409,8 +467,7 @@
                                   </ng-template>
                                 </p-column>
 
-                                <p-column [editable]="false" field="observacoes" header="OBSERVAÇÕES">
-                                </p-column>
+
 
                                 <p-column>
                                   <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">

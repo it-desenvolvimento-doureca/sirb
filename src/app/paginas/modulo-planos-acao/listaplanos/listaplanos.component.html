@@ -111,7 +111,12 @@
                             [ngClass]="(col.seguir_LINHA)? 'fa-star':'fa-star-o'"></a>
                         </td>
                         <td class="tg-0pky" style="min-width: 120px;" [style.background]="col.corlinha"
-                          [style.color]="col.cor_letra_linha">
+                          [style.color]="col.cor_letra_linha"
+                          pTooltip="<b>{{col.data_ACCAO_ORIGINAL}}</b><br> <b> Justificação : </b>{{col.justificacao}} "
+                          [escape]="false" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                          [tooltipDisabled]="col.justificacao == null">
+                          <span *ngIf="col.justificacao != null" class="fa fa-exclamation-triangle"
+                            style="color: #ffd43b; margin-right: 5px;  font-size: 9px !important;"></span>
                           {{col.data_acao}}
                         </td>
                         <td class="tg-0pky" style="min-width: 120px;">{{col.utilizador}}</td>

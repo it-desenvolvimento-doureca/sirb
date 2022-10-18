@@ -19,4 +19,6 @@ export class REU_REUNIOES_PLANOS_ACCOES {
 	id_TAREFA: number;
 	obriga_EVIDENCIAS: boolean;
 	area: string;
+	tipo_ACAO: number;
+	item: string;
 }

@@ -556,7 +556,7 @@ export class ManutencoesPreventivasComponent implements OnInit {
           }
           this.componentes({ value: this.EQUIPAMENTO }, this.COMPONENTE, true);
           this.getEquipamentos({ value: this.LOCALIZACAO }, this.EQUIPAMENTO);
-          //this.carregatabelaFiles(id);
+          this.carregatabelaFiles(id);
           this.getAcoes(id);
           this.vernotas(false);
           this.getOperarios(id);

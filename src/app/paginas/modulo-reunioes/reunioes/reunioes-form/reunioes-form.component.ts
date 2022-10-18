@@ -23,6 +23,7 @@ import { REU_REUNIOES_PLANOS_ACCOES } from 'app/entidades/REU_REUNIOES_PLANOS_AC
 import { GT_LOGS } from 'app/entidades/GT_LOGS';
 import { GT_MOV_TAREFAS } from 'app/entidades/GT_MOV_TAREFAS';
 import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
+import { GTDICTIPOACAOService } from 'app/servicos/gt-dic-tipo-acao.service';
 
 @Component({
   selector: 'app-reunioes-form',
@@ -98,11 +99,13 @@ export class ReunioesFormComponent implements OnInit {
   descricaofr: string;
   displayAddAccao: boolean;
   acessoadicionarACCAO = false;
+  tipos_acao: any[];
   constructor(private elementRef: ElementRef, private confirmationService: ConfirmationService, private GERUTILIZADORESService: GERUTILIZADORESService,
     private renderer: Renderer,
     private RCDICACCOESRECLAMACAOService: RCDICACCOESRECLAMACAOService,
     private REUREUNIOESPLANOSACCOESService: REUREUNIOESPLANOSACCOESService,
     private GTMOVTAREFASService: GTMOVTAREFASService,
+    private GTDICTIPOACAOService: GTDICTIPOACAOService,
     private route: ActivatedRoute, private location: Location, private REUAMBITOSREUNIOESPARTICIPANTESService: REUAMBITOSREUNIOESPARTICIPANTESService,
     private GERGRUPOService: GERGRUPOService, private REUAMBITOSREUNIOESService: REUAMBITOSREUNIOESService, private REUREUNIOESService: REUREUNIOESService,
     private REUREUNIOESPARTICIPANTESService: REUREUNIOESPARTICIPANTESService, private REUREUNIOESFICHEIROSService: REUREUNIOESFICHEIROSService,
@@ -170,8 +173,9 @@ export class ReunioesFormComponent implements OnInit {
         this.btcriar = true;
       }
     }
+
+    this.listar_tipos_accao();
     this.carregaaccoes();
-    this.carregaGruposAccoes();
     this.carregaUtilizadores_acoes();
     if (!this.novo) { this.carregaDados(true, id); }
     this.carregaGrupos();
@@ -181,7 +185,7 @@ export class ReunioesFormComponent implements OnInit {
 
   carregaDados(inicia, id) {
     this.drop_Participantes = [];
-    this.GERUTILIZADORESService.getAll().subscribe(
+    this.GERUTILIZADORESService.getAllOrder().subscribe(
       response => {
         this.drop_Participantes.push({ label: "Selecionar Utilizador", value: "" });
         for (var x in response) {
@@ -206,6 +210,21 @@ export class ReunioesFormComponent implements OnInit {
         this.ambitos = this.ambitos.slice();
       },
       error => { console.log(error); });
+  }
+
+
+  //listar tipos accao
+  listar_tipos_accao() {
+    this.tipos_acao = [];
+    this.GTDICTIPOACAOService.getAll().subscribe(
+      response => {
+        this.tipos_acao.push({ value: "", label: "---" })
+        for (var x in response) {
+          this.tipos_acao.push({ value: response[x].id_TIPO_ACAO, label: response[x].descricao });
+        }
+        this.tipos_acao = this.tipos_acao.slice();
+      },
+      error => console.log(error));
   }
 
 
@@ -1022,7 +1041,7 @@ export class ReunioesFormComponent implements OnInit {
         id_REUNIAO: null,
         obriga_EVIDENCIAS: false,
         area: "", id: null, concluido_UTZ: null, descricao: "", id_ACCOES: null, observacoes: "", estado: "P", id_TAREFA: null,
-        nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: null
+        nome_estado: "Pendente", responsavel: null, data_REAL: "", data_PREVISTA: null, item: null, tipo_ACAO: null
       });
       this.tabelaaccoes = this.tabelaaccoes.slice();
     }
@@ -1204,6 +1223,8 @@ export class ReunioesFormComponent implements OnInit {
           accoes.observacoes = this.tabelaaccoes[x].observacoes;
           accoes.estado = "P";
           accoes.obriga_EVIDENCIAS = this.tabelaaccoes[x].obriga_EVIDENCIAS;
+          accoes.item = this.tabelaaccoes[x].item;
+          accoes.tipo_ACAO = this.tabelaaccoes[x].tipo_ACAO;
 
 
           //var data = this.tabelaaccoesimediatas[x].data_REAL;
@@ -1312,7 +1333,8 @@ export class ReunioesFormComponent implements OnInit {
                   obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                   data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
                   id: id2, data_REAL: data_real, data_PREVISTA: ((response[x].data_PREVISTA == null) ? null : new Date(response[x].data_PREVISTA)),
-                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
+                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area,
+                  item: response[x].item, tipo_ACAO: response[x].tipo_ACAO
                 });
               } else {
                 this.tabelaaccoes_concluidas.push({
@@ -1320,7 +1342,8 @@ export class ReunioesFormComponent implements OnInit {
                   obriga_EVIDENCIAS: response[x].obriga_EVIDENCIAS,
                   data: response[x], concluido_UTZ: response[x].concluido_UTZ, id_ACCOES: response[x].id_ACCAO, observacoes: response[x].observacoes, id_TAREFA: response[x].id_TAREFA, estado: estados, nome_estado: this.geEstado(estados),
                   id: id2, data_REAL: data_real, data_PREVISTA: ((response[x].data_PREVISTA == null) ? null : new Date(response[x].data_PREVISTA)),
-                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area
+                  responsavel: tipo + response[x].responsavel, descricao: accao, area: response[x].area,
+                  item: response[x].item, tipo_ACAO: response[x].tipo_ACAO
                 });
               }
 
@@ -1352,9 +1375,10 @@ export class ReunioesFormComponent implements OnInit {
 
   carregaaccoes() {
     this.drop_accoes = [];
-    this.RCDICACCOESRECLAMACAOService.getAll_TIPO("RE").subscribe(
+    //this.RCDICACCOESRECLAMACAOService.getAll_TIPO("T").subscribe(
+    this.RCDICACCOESRECLAMACAOService.getAll().subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: null });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
@@ -1374,8 +1398,9 @@ export class ReunioesFormComponent implements OnInit {
         for (var x in response) {
           grupo.push({ label: response[x].descricao, value: "g" + response[x].id });
           this.tabelagrupos.push({ label: response[x].descricao, value: response[x].id })
+          this.drop_utilizadores_acoes.push({ label: response[x].descricao, value: "g" + response[x].id, type: "Grupo" });
         }
-        this.drop_utilizadores_acoes.push({ label: "Grupos", itens: grupo });
+        //this.drop_utilizadores_acoes.push({ label: "Grupos", itens: grupo });
 
         this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
 
@@ -1388,26 +1413,32 @@ export class ReunioesFormComponent implements OnInit {
   carregaUtilizadores_acoes() {
     this.drop_utilizadores_acoes = [];
     this.drop_utilizadores2 = [];
-    this.GERUTILIZADORESService.getAll().subscribe(
+    this.GERUTILIZADORESService.getAllOrder().subscribe(
       response => {
         this.drop_utilizadores2.push({ label: "Selecionar Utilizador", value: "" });
         var grupo = [];
         for (var x in response) {
           grupo.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR });
           this.drop_utilizadores2.push({ label: response[x].nome_UTILIZADOR, value: response[x].id_UTILIZADOR, email: response[x].email, area: response[x].area, telefone: response[x].telefone });
+          this.drop_utilizadores_acoes.push({ label: response[x].nome_UTILIZADOR, value: "u" + response[x].id_UTILIZADOR, type: "Utilizador" });
         }
-        this.drop_utilizadores_acoes.push({ label: "Utilizadores", itens: grupo });
+        // this.drop_utilizadores_acoes.push({ label: "Utilizadores", itens: grupo });
 
         this.drop_utilizadores_acoes = this.drop_utilizadores_acoes.slice();
         this.drop_utilizadores2 = this.drop_utilizadores2.slice();
 
+        this.carregaGruposAccoes();
       },
-      error => { console.log(error); });
+      error => {
+        console.log(error);
+        this.carregaGruposAccoes();
+      });
   }
 
   alterarEmail2(index, event, tabela) {
-    if (event.target.value.toString().includes("u")) {
-      var id = event.target.value.toString().replace("u", "");
+    console.log(index, event, tabela)
+    if (event.value.toString().includes("u")) {
+      var id = event.value.toString().replace("u", "");
       if (tabela == "tabelaaccoes") {
         this.tabelaaccoes[index].area = this.drop_utilizadores2.find(item => item.value == id).area;
       }
@@ -1453,10 +1484,12 @@ export class ReunioesFormComponent implements OnInit {
   getResponsavelaccoes(id) {
     if (id != null) var utz = this.drop_utilizadores2.find(item => item.value == id);
     if (id != null && id.toString().includes("u")) {
-      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Utilizadores").itens;
+      //var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Utilizadores").itens;
+      var utz2 = this.drop_utilizadores_acoes;
       utz = utz2.find(item => item.value == id);
     } else if (id != null && id.toString().includes("g")) {
-      var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Grupos").itens;
+      //var utz2 = this.drop_utilizadores_acoes.find(item => item.label == "Grupos").itens;
+      var utz2 = this.drop_utilizadores_acoes;
       utz = utz2.find(item => item.value == id);
     }
     var nome = "---";

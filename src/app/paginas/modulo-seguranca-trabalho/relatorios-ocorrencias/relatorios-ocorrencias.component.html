@@ -692,6 +692,16 @@
                                   style="width: 100%; float: left;" />
                               </ng-template>
                             </p-column>
+                            <p-column [editable]="true" field="testemunho" header="Testemunho">
+                              <ng-template let-col let-car="rowData" pTemplate="body">
+                                {{car[col.field] }}
+                              </ng-template>
+                              <ng-template let-col let-car="rowData" pTemplate="editor">
+                                <input [disabled]="!modoedicao" type="text" class="form-control2"
+                                  [(ngModel)]="car['testemunho']" [ngModelOptions]="{standalone: true}" appendTo="body"
+                                  style="width: 100%; float: left;" />
+                              </ng-template>
+                            </p-column>
                             <p-column [style]="{'width':'50px'}">
                               <ng-template let-index="rowIndex" pTemplate="body">
                                 <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao"
@@ -711,6 +721,59 @@
 
                         </div>
 
+                        <div style="padding: 1px 5px 1px 0px;" class="form-group col-md-12 ">
+
+                          <label style="margin-right: 11px;     padding-left: 10px; font-weight: 600;"> 4. Entrevista a responsável/colegas de secção:</label>
+                          <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaEntrevistaResponsavel"
+                            styleClass="ExcelTable2007">
+                            <p-column [style]="{'height':'25px'}" [editable]="true" field="nome" header="Nome Completo">
+                              <ng-template let-col let-car="rowData" pTemplate="body">
+                                {{car[col.field] }}
+                              </ng-template>
+                              <ng-template let-col let-car="rowData" pTemplate="editor">
+                                <input [disabled]="!modoedicao" type="text" class="form-control2"
+                                  [(ngModel)]="car['nome']" [ngModelOptions]="{standalone: true}" appendTo="body"
+                                  style="width: 100%; float: left;" />
+                              </ng-template>
+                            </p-column>
+                            <p-column [editable]="true" field="funcao" header="Função">
+                              <ng-template let-col let-car="rowData" pTemplate="body">
+                                {{car[col.field] }}
+                              </ng-template>
+                              <ng-template let-col let-car="rowData" pTemplate="editor">
+                                <input [disabled]="!modoedicao" type="text" class="form-control2"
+                                  [(ngModel)]="car['funcao']" [ngModelOptions]="{standalone: true}" appendTo="body"
+                                  style="width: 100%; float: left;" />
+                              </ng-template>
+                            </p-column>
+                            <p-column [editable]="true" field="observacoes" header="Observações">
+                              <ng-template let-col let-car="rowData" pTemplate="body">
+                                {{car[col.field] }}
+                              </ng-template>
+                              <ng-template let-col let-car="rowData" pTemplate="editor">
+                                <input [disabled]="!modoedicao" type="text" class="form-control2"
+                                  [(ngModel)]="car['observacoes']" [ngModelOptions]="{standalone: true}" appendTo="body"
+                                  style="width: 100%; float: left;" />
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'50px'}">
+                              <ng-template let-index="rowIndex" pTemplate="body">
+                                <button type="button" class="btn btn-danger btn-xs" [disabled]="!modoedicao"
+                                  title="Apagar" (click)="apagar_linha('tabelaEntrevistaResponsavel', index)">
+                                  <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                              </ng-template>
+                            </p-column>
+                            <p-footer [style]="{'text-align':'center'}">
+                              <a (click)="adicionar_linha('tabelaEntrevistaResponsavel')" [class.disabled]="!modoedicao"
+                                style="color: black; cursor:pointer; margin-left:10px;height: 9px; margin-top: -12px;"
+                                title="Adicionar nova linha">
+                                <i class="material-icons">add</i> Adicionar
+                              </a>
+                            </p-footer>
+                          </p-dataTable>
+
+                        </div>
 
                       </div>
                     </div>

@@ -387,8 +387,15 @@
                       <div class="file-upload">
                         <label>Imagem para visualização da Produção:</label>
                         <button [disabled]="!modoedicao" class="file-upload-btn" type="button"
-                          (click)="file.click()">{{(imagemReclamacao == null)? "Upload Imagem" :imagemReclamacaoName
+                          style=" width: calc(100% - 55px);" (click)="file.click()">{{(imagemReclamacao == null)?
+                          "Upload Imagem" :imagemReclamacaoName
                           }}</button>
+                        <button [disabled]="imagemReclamacao == null" type="button" class="file-upload-btn"
+                          title="Ver Ficheiro"
+                          style="background: gray; padding: 3px 0px 3px 9px; width: 50px; z-index: 1000; position: relative;"
+                          (click)="showDialog('img', null,imagemReclamacaoName,null,imagemReclamacao)">
+                          <i class="glyphicon glyphicon-zoom-in"></i>
+                        </button>
                         <input [disabled]="!modoedicao" class="file-upload-input" #file type='file'
                           [required]="imagemReclamacao == null" (change)="fileChangeEvent($event)" accept="image/*" />
                         <!---div class="image-upload-wrap">
@@ -2895,9 +2902,9 @@
     <!-- Modal Body -->
     <div class="">
       <div style="padding: 1px 5px 1px 10px; min-height: 60vh; width: 80vw;" class="form-group col-md-12 col-lg-12">
-
+<!--[resizeToWidth]="700"-->
         <image-cropper #ImageCropper style="max-height: 50vh;" [imageChangedEvent]="imageChangedEvent"
-          [maintainAspectRatio]="true" [containWithinAspectRatio]="true" [aspectRatio]="16 / 9" [resizeToWidth]="500"
+          [maintainAspectRatio]="true" [containWithinAspectRatio]="true" [aspectRatio]="16 / 9" 
           format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
           (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
         </image-cropper>

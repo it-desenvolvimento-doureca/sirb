@@ -306,12 +306,12 @@
                             <p-column [style]="{'width':'105px'}" [editable]="false" field="descricao" header="">
                               <ng-template let-car="rowData" let-index="rowIndex" pTemplate="body">
                                 <button type="button" class="btn btn-default btn-xs" title="Ver Ficheiro"
-                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro)">
+                                  (click)="showDialog(car.type, car.src,car.name,car.datatype,car.ficheiro,car.id_FICHEIRO)">
                                   <i class="glyphicon glyphicon-zoom-in"></i>
                                 </button>
                                 <a class="btn btn-primary btn-xs" title="Download"
-                                  (click)="download(car.name,car.src,car.datatype,car.ficheiro)" target="_blank"
-                                  style="padding: 3px 0px 3px 12px; margin: 0;">
+                                  (click)="download(car.name,car.src,car.datatype,car.ficheiro,car.id_FICHEIRO)"
+                                  target="_blank" style="padding: 3px 0px 3px 12px; margin: 0;">
                                   <i class="glyphicon glyphicon-download"></i>
                                 </a>
                                 <button style="padding: 3px 0px 3px 12px; margin: 3px 0 3px 0;" type="button"
@@ -330,7 +330,8 @@
                     <div class="col-md-12" style="padding-right: 5px; padding-left: 10px;">
                       <p-dataTable [style]="{'width':'100%'}" [editable]="modoedicao" [value]="tabelaaccoes"
                         (onRowSelect)="onRowSelect($event)" styleClass="ExcelTable2007" id="tabelaplanos"
-                        [(selection)]="linhasSelecionadas" expandableRows="true" [expandedRows]="tabelaaccoes">
+                        (onSort)="onSort($event)" sortMode="multiple" #table [(selection)]="linhasSelecionadas"
+                        expandableRows="true" [expandedRows]="tabelaaccoes">
 
                         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
                         <p-column [editable]="false" field="seguir_LINHA" header="Seguir" [style]="{'width':'52px'}">
@@ -388,22 +389,30 @@
                         </ng-template>
 
 
-                        <p-column [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO"
-                          [style]="{'width':'100px'}">
+                        <p-column [sortable]="true" [editable]="false" field="data_ACCAO" header="DATA OBJETIVO AÇÃO"
+                          [style]="{'width':'105px'}">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             <!-- {{car[col.field] | date: 'yyyy-MM-dd'}}
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor">-->
+                            <span *ngIf="car.justificacao != null" class="fa fa-exclamation-triangle"
+                              style="color: #ffd43b; margin-right: 5px; font-size: 9px !important; margin-left: 2px;"></span>
                             <p-calendar [maxDate]="data_OBJETIVO_DATA" (ngModelChange)="verificadatas(car)"
                               [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && (estado != 'E' &&  car['estado']!= 'P'  &&  car['estado']!= null))"
-                              [style]="{'height':'25px','width':'100%'}" dateFormat="yy-mm-dd" placeholder="yyyy-mm-dd"
-                              [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" appendTo="body"
-                              [(ngModel)]="car['data_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true">
+                              [style]="{'height':'25px','width':'calc(100% - 23px)'}" dateFormat="yy-mm-dd"
+                              placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true"
+                              yearRange="2000:2050" appendTo="body" [(ngModel)]="car['data_ACCAO']"
+                              [ngModelOptions]="{standalone: true}" [required]="true"
+                              pTooltip="<b>{{car.data_ACCAO_ORIGINAL}}</b><br> <b> Justificação : </b>{{car.justificacao}} "
+                              [tooltipDisabled]="car.justificacao == null" [escape]="false"
+                              tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                              [tooltipDisabled]="car.justificacao">
                             </p-calendar>
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="false" field="hora_ACCAO" header="HORA AÇÃO" [style]="{'width':'75px'}">
+                        <p-column [sortable]="true" [editable]="false" field="hora_ACCAO" header="HORA AÇÃO"
+                          [style]="{'width':'75px'}">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             <!--  {{car[col.field]}}
                           </ng-template>
@@ -433,7 +442,7 @@
                           </ng-template>
                         </p-column>-->
 
-                        <p-column [editable]="false" field="responsavel" header="RESPONSÁVEL AÇÃO"
+                        <p-column [sortable]="true" [editable]="false" field="responsavel" header="RESPONSÁVEL AÇÃO"
                           [style]="{'width':'140px'}">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             <!--{{getResponsavel(car[col.field]) }}
@@ -449,23 +458,26 @@
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="false" field="encaminhado" header="ENCAMINHADO PARA"
+                        <p-column [sortable]="true" [editable]="false" field="encaminhado" header="ENCAMINHADO PARA"
                           [style]="{'width':'110px'}">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             {{car[col.field]}}
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="true" field="descricao" [style]="{'width':'245px'}" header="ACÇÃO">
+                        <p-column [sortable]="true" [editable]="true" field="descricao" [style]="{'width':'245px'}"
+                          header="AÇÃO">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             {{car[col.field]}}
+                            <select class="obrigatorio" style="position: relative; height: 0px; width: 0px;"
+                              [required]="car['id_ACCAO'] == null "></select>
                           </ng-template>
                           <ng-template let-col let-car="rowData" pTemplate="editor" let-index="rowIndex">
                             <p-dropdown [filter]="true" (onChange)="car['descricao'] = nomeACCAO($event)"
                               [panelStyle]="{'max-width':'45vw'}" [options]="drop_accoes"
                               [style]="{'width':'80%','height':'25px','background':'white'}"
-                              [(ngModel)]="car['id_ACCAO']" [ngModelOptions]="{standalone: true}"
-                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E')"
+                              [(ngModel)]="car['id_ACCAO']" [ngModelOptions]="{standalone: true}" [required]="true"
+                              [disabled]="!modoedicao || (car['id_PLANO_LINHA'] != null && estado != 'E' && car['id_ACCAO'] != null)"
                               appendTo="body">
                             </p-dropdown>
                             <button type="button" class="btn btn-success btn-xs" [disabled]="!modoedicao"
@@ -489,7 +501,8 @@
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="false" field="item" header="ITEM" [style]="{'width':'102px'}">
+                        <p-column [sortable]="true" [editable]="false" field="item" header="ITEM"
+                          [style]="{'width':'102px'}">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             <input [disabled]="!modoedicao" style="padding: 5px 4px;height: 25px; text-align: center;"
                               [(ngModel)]="car['item']" [ngModelOptions]="{standalone: true}" type="text" maxlength="15"
@@ -499,7 +512,7 @@
                           </ng-template>
                         </p-column>
 
-                        <p-column [editable]="true" field="observacao" header="DESCRIÇÃO">
+                        <p-column [sortable]="true" [editable]="true" field="observacao" header="DESCRIÇÃO">
                           <ng-template let-col let-car="rowData" pTemplate="body">
                             {{car[col.field]}}
                           </ng-template>
@@ -544,7 +557,8 @@
                         </p-column-->
 
 
-                        <p-column field="estado_texto" header="ESTADO AÇÃO" [style]="{'width':'104px'}">
+                        <p-column [sortable]="true" field="estado_texto" header="ESTADO AÇÃO"
+                          [style]="{'width':'104px'}">
                           <ng-template let-col let-car="rowData" let-index="rowIndex" pTemplate="body">
                             <span *ngIf="car['existesubtarefas']" style="font-size: 10px;" title="Ver SubTarefas"
                               (click)="abrirsubtarefas(car['id_TAREFA'])" class="glyphicon glyphicon-list"></span>

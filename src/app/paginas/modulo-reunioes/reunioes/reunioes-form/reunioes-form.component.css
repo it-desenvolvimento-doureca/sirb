@@ -83,3 +83,7 @@
     color: #fff;
     transition: background 0.20s linear !important;
 }
+
+.disabled {
+    pointer-events: none;
+}

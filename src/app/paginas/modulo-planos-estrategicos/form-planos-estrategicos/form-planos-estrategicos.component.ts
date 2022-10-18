@@ -453,7 +453,7 @@ export class FormPlanosEstrategicosComponent implements OnInit {
     this.drop_accoes = [];
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("PA").subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: null });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });

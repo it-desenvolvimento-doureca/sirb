@@ -37,4 +37,10 @@ export class PA_MOV_LINHA {
     utz_MODIF: number;
     origem: string;
 
+    ordenacao: number;
+
+    data_ACCAO_ORIGINAL: Date;
+    hora_ACCAO_ORIGINAL: string;
+    justificacao: string;
+
 }

@@ -434,6 +434,7 @@ import { REUREUNIOESPLANOSACCOESService } from './servicos/reu-reunioes-planos-a
 import { AlertasDescargaComponent } from './paginas/modulo-producao/parametros/alertas-descarga/alertas-descarga.component';
 import { PRDICALERTASDESCARGAService } from './servicos/pr-dic-alertas-descarga.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { ATENTREVISTASRESPONSAVELService } from './servicos/at-entrevistas-responsavel.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -1596,6 +1597,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     DOCGESTAOPASTASService,
     REUREUNIOESPLANOSACCOESService,
     PRDICALERTASDESCARGAService,
+    ATENTREVISTASRESPONSAVELService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

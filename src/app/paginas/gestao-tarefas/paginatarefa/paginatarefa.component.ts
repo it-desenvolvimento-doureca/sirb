@@ -252,7 +252,7 @@ export class PaginatarefaComponent implements OnInit {
     this.drop_accoes = [];
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("A").subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: '' });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: '' });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });

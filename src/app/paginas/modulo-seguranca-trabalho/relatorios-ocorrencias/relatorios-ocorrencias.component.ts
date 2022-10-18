@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AT_OCORRENCIAS, AT_TESTEMUNHAS, AT_ENTREVISTAS, AT_ACCOES } from 'app/entidades/AT';
+import { AT_OCORRENCIAS, AT_TESTEMUNHAS, AT_ENTREVISTAS, AT_ACCOES, AT_ENTREVISTAS_RESPONSAVEL } from 'app/entidades/AT';
 import { ATOCORRENCIASService } from 'app/servicos/at-ocorrencias.service';
 import { ATTESTEMUNHASService } from 'app/servicos/at-testemunhas.service';
 import { ATACCOESService } from 'app/servicos/at-accoes.service';
@@ -11,6 +11,7 @@ import { ConfirmationService } from 'primeng/primeng';
 import { RHFUNCIONARIOSService } from 'app/servicos/rh-funcionarios.service';
 import { RHDICEPIService } from 'app/servicos/rh-dic-epi.service';
 import { ATDICCAUSASACIDENTEService } from 'app/servicos/at-dic-causas-acidente.service';
+import { ATENTREVISTASRESPONSAVELService } from 'app/servicos/at-entrevistas-responsavel.service';
 
 @Component({
   selector: 'app-relatorios-ocorrencias',
@@ -21,6 +22,7 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
   classstep: any = 'step-1';
   tabelaTestemunha: any = [];
   tabelaEntrevista: any = [];
+  tabelaEntrevistaResponsavel: any = [];
   tabelaAccoes: any = [];
   modoedicao: boolean;
   novo: boolean;
@@ -124,7 +126,7 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
 
   constructor(private RHFUNCIONARIOSService: RHFUNCIONARIOSService, private location: Location, private elementRef: ElementRef, private confirmationService: ConfirmationService, private route: ActivatedRoute,
     private ATTESTEMUNHASService: ATTESTEMUNHASService, private ATACCOESService: ATACCOESService, private ATENTREVISTASService: ATENTREVISTASService,
-    private RHDICEPIService: RHDICEPIService, private ATDICCAUSASACIDENTEService: ATDICCAUSASACIDENTEService,
+    private RHDICEPIService: RHDICEPIService, private ATDICCAUSASACIDENTEService: ATDICCAUSASACIDENTEService, private ATENTREVISTASRESPONSAVELService: ATENTREVISTASRESPONSAVELService,
     private renderer: Renderer, private ATOCORRENCIASService: ATOCORRENCIASService, private globalVar: AppGlobals, private router: Router) { }
 
   ngOnInit() {
@@ -368,6 +370,7 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
 
           this.carregaTESTEMUNHAS(id);
           this.carregaENTREVISTAS(id);
+          this.carregaENTREVISTASRESPONSAVEL(id);
           this.carregaACCOES(id);
         }
 
@@ -396,9 +399,24 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
         //se existir banhos com o id
         if (count > 0) {
           for (var x in response) {
-            this.tabelaEntrevista.push({ id: response[x].id_ENTREVISTA, nome: response[x].nome, funcao: response[x].funcao });
+            this.tabelaEntrevista.push({ id: response[x].id_ENTREVISTA, nome: response[x].nome, funcao: response[x].funcao, testemunho: response[x].testemunho });
           }
           this.tabelaEntrevista = this.tabelaEntrevista.slice();
+        }
+      }, error => { console.log(error); });
+
+  }
+
+  carregaENTREVISTASRESPONSAVEL(id) {
+    this.ATENTREVISTASRESPONSAVELService.getby(id).subscribe(
+      response => {
+        var count = Object.keys(response).length;
+        //se existir banhos com o id
+        if (count > 0) {
+          for (var x in response) {
+            this.tabelaEntrevistaResponsavel.push({ id: response[x].id_ENTREVISTA, nome: response[x].nome, funcao: response[x].funcao, observacoes: response[x].observacoes });
+          }
+          this.tabelaEntrevistaResponsavel = this.tabelaEntrevistaResponsavel.slice();
         }
       }, error => { console.log(error); });
 
@@ -436,8 +454,11 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
       this.tabelaTestemunha.push({ id: null, nome: "", numero: "" });
       this.tabelaTestemunha = this.tabelaTestemunha.slice();
     } else if (tabela == "tabelaEntrevista") {
-      this.tabelaEntrevista.push({ id: null, nome: "", funcao: "" });
+      this.tabelaEntrevista.push({ id: null, nome: "", funcao: "", testemunho: "" });
       this.tabelaEntrevista = this.tabelaEntrevista.slice();
+    } else if (tabela == "tabelaEntrevistaResponsavel") {
+      this.tabelaEntrevistaResponsavel.push({ id: null, nome: "", funcao: "", observacoes: "" });
+      this.tabelaEntrevistaResponsavel = this.tabelaEntrevistaResponsavel.slice();
     } else if (tabela == "tabelaAccoes") {
       this.tabelaAccoes.push({ id: null, accao: "", responsavel: "", data_IMPLEMENTACAO: "", recurso: "" });
       this.tabelaAccoes = this.tabelaAccoes.slice();
@@ -467,6 +488,17 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
         this.ATENTREVISTASService.delete(tab.id).then(
           res => {
             this.tabelaEntrevista = this.tabelaEntrevista.slice(0, index).concat(this.tabelaEntrevista.slice(index + 1));
+          },
+          error => { console.log(error); this.simular(this.inputerro); });
+      }
+    } else if (tabela == "tabelaEntrevistaResponsavel") {
+      var tab = this.tabelaEntrevistaResponsavel[index];
+      if (tab.id == null) {
+        this.tabelaEntrevistaResponsavel = this.tabelaEntrevistaResponsavel.slice(0, index).concat(this.tabelaEntrevistaResponsavel.slice(index + 1));
+      } else {
+        this.ATENTREVISTASRESPONSAVELService.delete(tab.id).then(
+          res => {
+            this.tabelaEntrevistaResponsavel = this.tabelaEntrevistaResponsavel.slice(0, index).concat(this.tabelaEntrevistaResponsavel.slice(index + 1));
           },
           error => { console.log(error); this.simular(this.inputerro); });
       }
@@ -685,7 +717,27 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
         entrevista.id_OCORRENCIA = id;
         entrevista.nome = this.tabelaEntrevista[x].nome;
         entrevista.funcao = this.tabelaEntrevista[x].funcao;
+        entrevista.testemunho = this.tabelaEntrevista[x].testemunho;
         if (entrevista.nome != "") this.gravarENTREVISTAS_save(entrevista, 0, 0);
+      }
+
+      this.gravarENTREVISTASRESPONSAVEL(id);
+    } else {
+      this.gravarENTREVISTASRESPONSAVEL(id);
+    }
+
+  }
+
+  gravarENTREVISTASRESPONSAVEL(id) {
+    if (this.tabelaEntrevistaResponsavel.length > 0) {
+      for (var x in this.tabelaEntrevistaResponsavel) {
+        var entrevista = new AT_ENTREVISTAS_RESPONSAVEL;
+        entrevista.id_ENTREVISTA = this.tabelaEntrevistaResponsavel[x].id;
+        entrevista.id_OCORRENCIA = id;
+        entrevista.nome = this.tabelaEntrevistaResponsavel[x].nome;
+        entrevista.funcao = this.tabelaEntrevistaResponsavel[x].funcao;
+        entrevista.observacoes = this.tabelaEntrevistaResponsavel[x].observacoes;
+        if (entrevista.nome != "") this.gravarENTREVISTASRESPONSAVEL_save(entrevista, 0, 0);
       }
 
       this.gravarEPIS(id);
@@ -698,6 +750,15 @@ export class RelatoriosOcorrenciasComponent implements OnInit {
   gravarENTREVISTAS_save(entrevista, total, count) {
 
     this.ATENTREVISTASService.update(entrevista).then(
+      res => {
+
+      },
+      error => { console.log(error); });
+  }
+
+  gravarENTREVISTASRESPONSAVEL_save(entrevista, total, count) {
+
+    this.ATENTREVISTASRESPONSAVELService.update(entrevista).then(
       res => {
 
       },

@@ -148,6 +148,8 @@ export class ListaacoesComponent implements OnInit {
               causa: response[x][24],
               conclusao: response[x][26],
               data_realizado: (response[x][25] == null) ? "" : this.formatDate(response[x][25]),
+              data_ACCAO_ORIGINAL: (response[x][28] == null) ? "" : this.formatDate(response[x][28]),
+              justificacao: response[x][29]
             });
           }
 

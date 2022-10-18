@@ -12,8 +12,17 @@ export class AT_ENTREVISTAS {
     id_OCORRENCIA: number;
     nome: string;
     funcao: string;
+    testemunho: string;
 }
 
+
+export class AT_ENTREVISTAS_RESPONSAVEL {
+    id_ENTREVISTA: number;
+    id_OCORRENCIA: number;
+    nome: string;
+    funcao: string;
+    observacoes: string;
+}
 
 export class AT_TESTEMUNHAS {
     id_TESTEMUNHA: number;

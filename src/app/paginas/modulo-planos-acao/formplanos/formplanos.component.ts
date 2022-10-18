@@ -5,7 +5,7 @@ import { UploadService } from 'app/servicos/upload.service';
 import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 import { GERUTILIZADORESService } from 'app/servicos/ger-utilizadores.service';
 import { ABDICCOMPONENTEService } from 'app/servicos/ab-dic-componente.service';
-import { ConfirmationService, FileUpload } from 'primeng/primeng';
+import { ConfirmationService, DataTable, FileUpload } from 'primeng/primeng';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobals } from 'app/menu/sidebar.metadata';
 import { RCDICACCOESRECLAMACAOService } from 'app/servicos/rc-dic-accoes-reclamacao.service';
@@ -44,6 +44,7 @@ export class FormplanosComponent implements OnInit {
   @ViewChild('inputerro2') inputerro2: ElementRef;
   @ViewChild('inputerroficheiro') inputerroficheiro: ElementRef;
   @ViewChild('escondebt') escondebt: ElementRef;
+  @ViewChild('table') table: DataTable;
   user: any;
   user_nome: any;
   adminuser: any;
@@ -441,7 +442,7 @@ export class FormplanosComponent implements OnInit {
     this.drop_accoes = [];
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("PA").subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: null });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
@@ -676,7 +677,9 @@ export class FormplanosComponent implements OnInit {
             this.tabelaaccoes.push({
               dados: response[x][0],
               id_PLANO_LINHA: response[x][0].id_PLANO_LINHA, id_ACCAO: response[x][0].id_ACCAO, responsavel: response[x][0].responsavel,
-              data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO)
+              data_ACCAO: (response[x][0].data_ACCAO == null) ? "" : this.formatDate(response[x][0].data_ACCAO),
+              data_ACCAO_ORIGINAL: (response[x][0].data_ACCAO_ORIGINAL == null) ? "" : this.formatDate(response[x][0].data_ACCAO_ORIGINAL),
+              justificacao: response[x][0].justificacao
               , hora_ACCAO: response[x][0].hora_ACCAO, id_PLANO_CAB: response[x][0].id_PLANO_CAB, descricao: accao,
               id_departamento: response[x][0].departamento, id_TAREFA: response[x][2], tipo_ACAO: response[x][0].tipo_ACAO, item: response[x][0].item,
               existesubtarefas: (response[x][4] > 0) ? true : false,
@@ -790,7 +793,7 @@ export class FormplanosComponent implements OnInit {
 
   gravar(estado = 'E', cria_tarefas = false) {
     if (this.validaPLANO_ESTRATEGICO()) {
-      this.mensagem_verifica = "Não é possível seleccionar dois planos estratégico do mesmo ano!";
+      this.mensagem_verifica = "Não é possível selecionar dois planos estratégico do mesmo ano!";
       this.displayverificar = true;
       this.linhasSelecionadas = {};
     } else {
@@ -879,7 +882,7 @@ export class FormplanosComponent implements OnInit {
         var accoes = new PA_MOV_LINHA;
         var atualizou_reponsavel = false;
         this.selected_row = null;
-        this.justificacao_DATA_FIM = null;
+        this.justificacao_RESPONSAVEL = null;
 
         if (row.id_PLANO_LINHA != null && event.value != '' && event.value != null && row.justificacao_RESPONSAVEL == null) {
           accoes = row.dados;
@@ -931,14 +934,21 @@ export class FormplanosComponent implements OnInit {
 
 
   gravalinhas(id, estado, cria_tarefasp) {
+
     for (var x in this.tabelaaccoes) {
       var cria_tarefas = cria_tarefasp;
       var accoes = new PA_MOV_LINHA;
       var atualizou_datas = false;
+
+
+      var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
+      var justificacao_RESPONSAVEL = this.tabelaaccoes[x].justificacao_RESPONSAVEL;
+
       if (this.tabelaaccoes[x].id_PLANO_LINHA != null && this.tabelaaccoes[x].estado != 'E') {
         accoes = this.tabelaaccoes[x].dados;
         if (this.formatDate(accoes.data_ACCAO) != this.formatDate(this.tabelaaccoes[x].data_ACCAO) || accoes.hora_ACCAO != ((this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8))) {
           atualizou_datas = true;
+          accoes.justificacao = justificacao_DATA_FIM;
         }
       }
 
@@ -952,7 +962,7 @@ export class FormplanosComponent implements OnInit {
         }
       }
 
-
+      accoes.ordenacao = parseInt(x);
       accoes.id_PLANO_CAB = id;
 
 
@@ -963,8 +973,7 @@ export class FormplanosComponent implements OnInit {
          id_resp = this.tabelaaccoes[x].responsavel.substr(1);
        }*/
 
-      var justificacao_DATA_FIM = this.tabelaaccoes[x].justificacao_DATA_FIM;
-      var justificacao_RESPONSAVEL = this.tabelaaccoes[x].justificacao_RESPONSAVEL;
+
       accoes.id_PLANO_LINHA = this.tabelaaccoes[x].id_PLANO_LINHA;
       accoes.departamento = this.tabelaaccoes[x].id_departamento;
       accoes.descricao = this.tabelaaccoes[x].observacao;
@@ -987,6 +996,12 @@ export class FormplanosComponent implements OnInit {
       var novo = false;
       if (accoes.id_PLANO_LINHA == null) novo = true;
       var email_p = "";
+
+      if (estado == 'E') {
+        accoes.data_ACCAO_ORIGINAL = this.tabelaaccoes[x].data_ACCAO;
+        //accoes.seguir_LINHA = this.tabelaaccoes[x].seguir_LINHA;
+        accoes.hora_ACCAO_ORIGINAL = (this.tabelaaccoes[x].hora_ACCAO == null) ? null : (this.tabelaaccoes[x].hora_ACCAO + ":00").slice(0, 8);
+      }
 
       if (novo && estado != 'E') {
         accoes.estado = 'P';
@@ -1045,7 +1060,7 @@ export class FormplanosComponent implements OnInit {
         var ficheiros = new PA_MOV_FICHEIROS;
         var novo = false;
         if (this.uploadedFiles[x].id != null) {
-          ficheiros = this.uploadedFiles[x].data;
+          //ficheiros = this.uploadedFiles[x].data;
         } else {
           ficheiros.data_CRIA = this.uploadedFiles[x].data_CRIA;
           ficheiros.utz_CRIA = this.user;
@@ -1144,6 +1159,7 @@ export class FormplanosComponent implements OnInit {
           if (utz2) nome2 = utz2.label;
 
           logs.descricao = "Alterado Responsável de " + nome1 + " para " + nome2;
+          var email_para = email_p;
           this.atualizaTarefa(tarefa, logs, true, email_para, nome_accao, descricao, referencia);
         }
 
@@ -1813,7 +1829,7 @@ export class FormplanosComponent implements OnInit {
   carregatabelaFiles(id) {
     this.uploadedFiles = [];
 
-    this.PAMOVFICHEIROSService.getbyidplano(id).subscribe(
+    this.PAMOVFICHEIROSService.getbyidplano2(id).subscribe(
       response => {
         var count = Object.keys(response).length;
         if (count > 0) {
@@ -1821,18 +1837,37 @@ export class FormplanosComponent implements OnInit {
 
             var id2 = null;
             var data_at = new Date();
-            var datacria = this.formatDate(response[x][0].data_CRIA) + " " + new Date(response[x][0].data_CRIA).toLocaleTimeString();
+            var datacria = this.formatDate(response[x][0]) + " " + new Date(response[x][0]).toLocaleTimeString();
 
-            id2 = response[x][0].id;
+            //id2 = response[x][0].id;
+            if (response[x][1] != null) id2 = "f110" + response[x][1];
 
 
-            if (response[x][0].id_FICHEIRO != null) id2 = "f110" + response[x][0].id_FICHEIRO;
-            this.uploadedFiles.push({
-              data_CRIA: data_at, ficheiro: response[x][0].ficheiro_1 + response[x][0].ficheiro_2,
+            //if (response[x][0].id_FICHEIRO != null) id2 = "f110" + response[x][0].id_FICHEIRO;
+            /*this.uploadedFiles.push({
+              data_CRIA: data_at,
+              ficheiro: null,//response[x][0].ficheiro_1 + response[x][0].ficheiro_2,
               data: response[x][0], utilizador: response[x][1].nome_UTILIZADOR,
               datacria: datacria, responsavel: response[x][2],
               id: id2, name: response[x][0].nome, id_FICHEIRO: response[x][0].id_FICHEIRO,
               src: response[x][0].caminho, type: response[x][0].tipo, datatype: response[x][0].datatype, size: response[x][0].tamanho, descricao: response[x][0].descricao
+            });*/
+
+            this.uploadedFiles.push({
+              data_CRIA: data_at,
+              ficheiro: null,//response[x][0].ficheiro,
+              //data: response[x][0], 
+              utilizador: response[x][2],
+              datacria: datacria,
+              //responsavel: response[x][5],
+              id: id2,
+              name: response[x][3],
+              id_FICHEIRO: response[x][1],
+              src: response[x][4],
+              type: response[x][5],
+              datatype: response[x][6],
+              size: response[x][7],
+              descricao: response[x][8]
             });
 
 
@@ -2011,44 +2046,83 @@ export class FormplanosComponent implements OnInit {
       error => { console.log(error); });
   }
 
-  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro) {
+  showDialog(type, srcelement, nomeficheiro, datatype, ficheiro, id_FICHEIRO = null) {
     this.srcelement = "";
     if (type == "pdf" || type == 'txt') {
       if (ficheiro == null) {
+        if (id_FICHEIRO != null && type == "pdf") {
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/RC_MOV_RECLAMACAO_FICHEIROS/ID/' + id_FICHEIRO + '/pdf');
+        } else {
+          this.PAMOVFICHEIROSService.getPA_MOV_FICHEIROSbyidFICHEIRO(id_FICHEIRO).subscribe(
+            (res) => {
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0].ficheiro_1 + res[0].ficheiro_2);
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            }
+          );
+        }
 
-        this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcelement);
       } else {
         /*var blob = new Blob([ficheiro], { type: datatype });
         var blobUrl = URL.createObjectURL(blob);*/
+
+        if (id_FICHEIRO != null && type == "pdf") {
+          this.srcelement = this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(webUrl.host + '/rest/sirb/getFILE/RC_MOV_RECLAMACAO_FICHEIROS/ID/' + id_FICHEIRO + '/pdf');
+
+        } else {
+          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
+        }
+
+
+      }
+    } else {
+      if (ficheiro == null) {
+        this.PAMOVFICHEIROSService.getPA_MOV_FICHEIROSbyidFICHEIRO(id_FICHEIRO).subscribe(
+          (res) => {
+            this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(res[0].ficheiro_1 + res[0].ficheiro_2);
+          }, error => {
+            this.simular(this.inputerroficheiro);
+            console.log(error);
+          }
+        );
+      } else {
         this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
       }
     }
-    if (ficheiro == null) {
-      this.srcelement = webUrl.link + srcelement;
-    } else {
-      this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(ficheiro);
-    }
+
     if (type == "excel" || type == "word") {
-      this.download(nomeficheiro, srcelement, datatype, ficheiro)
+      this.download(nomeficheiro, srcelement, datatype, ficheiro, id_FICHEIRO)
     } else if (type == "msg") {
-      this.downloadTXT(nomeficheiro, srcelement, ficheiro)
-    }
-    else {
+      this.downloadTXT(nomeficheiro, srcelement, ficheiro, id_FICHEIRO)
+    } else {
       this.nomeficheiro = nomeficheiro;
       this.type = type;
       this.display = true;
     }
   }
 
-  download(nome, filename, datatype, ficheiro) {
+  download(nome, filename, datatype, ficheiro, id_FICHEIRO) {
     if (ficheiro == null) {
-      this.UploadService.download("report", filename, datatype).subscribe(
+      /*this.UploadService.download("report", filename, datatype).subscribe(
         (res) => {
           /*var fileURL: any = URL.createObjectURL(res);
           fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
           var myWindow = window.open(fileURL, "", "width=200,height=100");*/
-          // myWindow.close();
-          FileSaver.saveAs(res, nome);
+      // myWindow.close();
+      /* FileSaver.saveAs(res, nome);
+     }, error => {
+       this.simular(this.inputerroficheiro);
+       console.log(error);
+     }
+   );*/
+      this.PAMOVFICHEIROSService.getPA_MOV_FICHEIROSbyidFICHEIRO(id_FICHEIRO).subscribe(
+        (res) => {
+          const downloadLink = document.createElement("a");
+
+          downloadLink.href = res[0].ficheiro_1 + res[0].ficheiro_2;
+          downloadLink.download = nome;
+          downloadLink.click();
         }, error => {
           this.simular(this.inputerroficheiro);
           console.log(error);
@@ -2066,19 +2140,38 @@ export class FormplanosComponent implements OnInit {
 
 
 
-  downloadTXT(nomeficheiro, filename, ficheiro) {
+  downloadTXT(nomeficheiro, filename, ficheiro, id_FICHEIRO) {
+    this.display = true;
     if (ficheiro == null) {
-      this.UploadService.downloadTXT(filename).subscribe(
+      this.PAMOVFICHEIROSService.getPA_MOV_FICHEIROSbyidFICHEIRO(id_FICHEIRO).subscribe(
         (res) => {
-          var fileURL = URL.createObjectURL(res);
-          this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-          this.nomeficheiro = nomeficheiro;
-          this.type = 'txt';
-          this.display = true;
+          this.UploadService.downloadFileMSGBASE64(filename, res[0].ficheiro_1 + res[0].ficheiro_2).subscribe(
+            (res) => {
+              var fileURL = URL.createObjectURL(res);
+              this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+              this.nomeficheiro = nomeficheiro;
+              this.type = 'txt';
+              this.display = true;
+            }, error => {
+              this.simular(this.inputerroficheiro);
+              console.log(error);
+            });
         }, error => {
           this.simular(this.inputerroficheiro);
           console.log(error);
-        });
+        }
+      );
+      /* this.UploadService.downloadTXT(filename).subscribe(
+         (res) => {
+           var fileURL = URL.createObjectURL(res);
+           this.srcelement = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+           this.nomeficheiro = nomeficheiro;
+           this.type = 'txt';
+           this.display = true;
+         }, error => {
+           this.simular(this.inputerroficheiro);
+           console.log(error);
+         });*/
     } else {
       this.UploadService.downloadFileMSGBASE64(filename, ficheiro).subscribe(
         (res) => {
@@ -2093,6 +2186,7 @@ export class FormplanosComponent implements OnInit {
         });
     }
   }
+
 
 
   IrPara(id) {
@@ -2534,4 +2628,7 @@ export class FormplanosComponent implements OnInit {
     });
   }
 
+  onSort(event) {
+    this.tabelaaccoes = this.table._value;
+  }
 }

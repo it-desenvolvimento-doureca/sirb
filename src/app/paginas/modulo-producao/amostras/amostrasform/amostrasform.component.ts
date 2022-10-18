@@ -222,7 +222,7 @@ export class AmostrasformComponent implements OnInit {
     this.drop_accoes = [];
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("A").subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: null });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
@@ -1017,7 +1017,7 @@ export class AmostrasformComponent implements OnInit {
         var accoes = new PR_AMOSTRAS_ACCOES;
         var atualizou_responsavel = false;
         this.selected_row = null;
-        this.justificacao_DATA_FIM = null;
+        this.justificacao_RESPONSAVEL = null;
 
         if (row.id_AMOSTRA_ACCAO != null && event.target.value != '' && event.target.value != null && row.justificacao_RESPONSAVEL == null) {
           accoes = row.data;

@@ -27,6 +27,22 @@ export class PAMOVFICHEIROSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  getbyidplano2(id): Observable<PA_MOV_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_FICHEIROSbyidPLANO2/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
+  
+  getPA_MOV_FICHEIROSbyidFICHEIRO(id): Observable<PA_MOV_FICHEIROS[]> {
+    const url = webUrl.host + '/rest/sirb/getPA_MOV_FICHEIROSbyidFICHEIRO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
   getAll(): Observable<PA_MOV_FICHEIROS[]> {
     const url = webUrl.host + '/rest/sirb/getPA_MOV_FICHEIROS';

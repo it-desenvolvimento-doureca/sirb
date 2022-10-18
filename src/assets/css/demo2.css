@@ -3412,6 +3412,10 @@ textarea:not(.form-control2) {
     vertical-align: middle;
 }
 
+#tabelaplanoslistaacoes {
+    font-size: 11px;
+}
+
 #tabelaplanos .ui-selection-column {
     padding: 10px ! important;
 }
@@ -5528,6 +5532,13 @@ body .ui-panel .ui-panel-footer {
     border-width: 0px 1px 1px 0px;
     height: 17px;
     background-size: contain;
+}
+
+.ExcelTable2007 thead th.ui-state-active {
+    background-color: #b7b6b6 !important;
+    border-color: #c7c7c7 !important;
+    color: black !important;
+    font-weight: bold !important;
 }
 
 .ExcelTable2007 table TD {

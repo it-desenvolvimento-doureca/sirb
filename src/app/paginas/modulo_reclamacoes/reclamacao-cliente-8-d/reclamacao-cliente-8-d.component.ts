@@ -598,7 +598,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
     this.drop_accoes = [];
     this.RCDICACCOESRECLAMACAOService.getAll_TIPO("R").subscribe(
       response => {
-        this.drop_accoes.push({ label: "Selecionar Acção", value: null });
+        this.drop_accoes.push({ label: "Selecionar Ação", value: null });
 
         for (var x in response) {
           this.drop_accoes.push({ label: response[x].descricao_PT, value: response[x].id });
@@ -5038,7 +5038,7 @@ export class ReclamacaoCliente8DComponent implements OnInit {
         var accoes = new RC_MOV_RECLAMACAO_PLANOS_ACCOES;
         var atualizou_reponsavel = false;
         this.selected_row = null;
-        this.justificacao_DATA_FIM = null;
+        this.justificacao_RESPONSAVEL = null;
 
         if (row.id != null && event.target.value != '' && event.target.value != null && row.justificacao_RESPONSAVEL == null) {
           accoes = row.data;

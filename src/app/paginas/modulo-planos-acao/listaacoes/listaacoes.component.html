@@ -59,10 +59,16 @@
                 [sortable]="true">
               </p-column>
 
-              <p-column [style]="{'width':'27px'}" field="data_acao" header="Data Objetivo Ação" [filter]="true"
+              <p-column [style]="{'width':'31px'}" field="data_acao" header="Data Objetivo Ação" [filter]="true"
                 [sortable]="true">
                 <ng-template let-car="rowData" pTemplate="body">
-                  <div [style.background]="car['cor']" [style.color]="car['cor_letra']">
+
+                  <div [style.background]="car['cor']" [style.color]="car['cor_letra']"
+                    pTooltip="<b>{{car.data_ACCAO_ORIGINAL}}</b><br> <b> Justificação : </b>{{car.justificacao}} "
+                    [escape]="false" tooltipStyleClass="tooltip_barras" tooltipPosition="top"
+                    [tooltipDisabled]="car.justificacao == null">
+                    <span *ngIf="car.justificacao != null" class="fa fa-exclamation-triangle"
+                      style="color: #ffd43b; margin-right: 5px;  font-size: 9px !important;"></span>
                     {{car['data_acao']}}
                   </div>
                 </ng-template>
@@ -81,6 +87,9 @@
 
               <p-column [style]="{'width':'50px'}" field="tipo_acao" header="Tipo de Ação" [filter]="true"
                 [sortable]="true">
+              </p-column>
+
+              <p-column [style]="{'width':'20px'}" field="item" header="Item" [filter]="true" [sortable]="true">
               </p-column>
 
               <p-column [style]="{'width':'50px'}" field="descricao" header="Descrição" [filter]="true"
