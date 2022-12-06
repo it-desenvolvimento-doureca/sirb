@@ -1,0 +1,147 @@
+<app-controlos></app-controlos>
+<div class="main-content dashboard_css" id="main_dashboard_css">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="background: #eeeeee;">
+          <div class="card-header" style="height: 49px; padding-top: 22px;" data-background-color="red">
+            <h4 style="position: absolute;" class="title">Indicadores MTTR e MTBF</h4>
+          </div>
+          <div class="card-content">
+            <form (keydown.enter)="$event.preventDefault()" #form id="formReclama" ngNativeValidate>
+              <div class="container-fluid" style="padding: 0;">
+
+
+                <div style="display: initial;">
+                  <div class="col-md-12">
+                    <section class="panel" style="margin-bottom: 0;">
+                      <div class="panel-body">
+                        <div class="form-group col-md-1 ">
+                          <label>Ano:</label><br>
+                          <p-dropdown [options]="anos" class="droplinha"
+                            [style]="{'width':'100%','min-width': '90px','height':'25px'}" [(ngModel)]="ano"
+                            [required]="true" [ngModelOptions]="{standalone: true}">
+                          </p-dropdown>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label>Mês:</label><br>
+                          <p-dropdown [options]="meses" class="droplinha"
+                            [style]="{'width':'100%','min-width': '90px','height':'25px'}" [(ngModel)]="mes"
+                            [required]="true" [ngModelOptions]="{standalone: true}">
+                          </p-dropdown>
+                        </div>
+
+                        <div class="table-row-column col-md-3" style="text-align: right;">
+                          <br>
+                          <button type="button" (click)="carregaAnalise()" class="btn btn-success " [disabled]="loading"
+                            style="margin: -2px 0 0 0px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          <button type="button" (click)="limpar()" class="btn btn-danger " [disabled]="loading"
+                            style="margin: -2px 0 0 15px; height: 27px; padding: 0px 10px 0 10px;">Limpar</button>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+
+                <div class="row" style="display: initial;">
+                  <div class="col-md-8">
+                    <section class="panel">
+                      <header class="panel-heading" style="height: 34px;">
+                        <h4 class="widget-h" style="width: 225px; float: left;">Tabela</h4>
+                      </header>
+                      <div class="panel-body">
+                        <p-dataTable #tabeladados [value]="dados" [paginator]="true" [rows]="25"
+                          [rowsPerPageOptions]="[25,50,100,'todos']" class="  tabela_manu_dashboard"
+                          (onFilter)="atualizatotais()" (onSort)="atualizatotais()">
+                          <p-column [style]="{'width':'200px'}" field="maquina" header="MÁQUINA - DESIGNAÇÃO"
+                            [filter]="true" [sortable]="true"></p-column>
+                          <p-column field="HORAS_PRODUTIVAS_MENSAIS" header="HORAS PRODUTIVAS MENSAIS" [filter]="true"
+                            [sortable]="true">
+                          </p-column>
+                          <p-column field="NUMERO_AVARIAS" header="NUMERO DE AVARIAS" [filter]="true" [sortable]="true">
+                          </p-column>
+                          <p-column field="TEMPO_AVARIA" header="TEMPO TOTAL DE AVARIA " [filter]="true"
+                            [sortable]="true">
+                          </p-column>
+                          <p-column [style]="{'background':'rgb(32, 197, 226)'}" field="MTBF_HORAS" header="MTBF-HORAS"
+                            [filter]="true" [sortable]="true">
+                            <ng-template let-col let-car="rowData" pTemplate="header"><span>MTBF-HORAS</span>
+                            </ng-template>
+                          </p-column>
+                          <p-column [style]="{'background':'green'}" field="MTTR" header="MTTR" [filter]="true"
+                            [sortable]="true">
+                            <ng-template let-col let-car="rowData" pTemplate="header"><span>MTTR</span></ng-template>
+                          </p-column>
+                          <p-column [style]="{'background':'red'}" field="DISPONIBILIDADE" header="DISPONI. %"
+                            [filter]="true" [sortable]="true">
+                            <ng-template let-col let-car="rowData" pTemplate="header"><span>DISPONI. %</span>
+                            </ng-template>
+                          </p-column>
+                          <p-footerColumnGroup>
+                            <p-row>
+                              <p-column footer=""></p-column>
+                              <p-column [style]="{'background': corTotal1}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL1 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                              <p-column [style]="{'background': corTotal2}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL2 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                              <p-column [style]="{'background': corTotal3}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL3 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                              <p-column [style]="{'background': corTotal4}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL4 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                              <p-column [style]="{'background': corTotal5}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL5 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                              <p-column [style]="{'background': corTotal6}" footer="TOTAL" colspan="1">
+                                <ng-template let-col let-car="rowData" pTemplate="footer"><b>{{TOTAL6 | number :
+                                    '1.2-2'}}</b>
+                                </ng-template>
+                              </p-column>
+                            </p-row>
+
+                          </p-footerColumnGroup>
+
+                        </p-dataTable>
+                      </div>
+                    </section>
+                  </div>
+
+                  <div class="col-md-4">
+                    <section class="panel">
+                      <header class="panel-heading">
+                        <h4 class="widget-h">Disponibilidade</h4>
+                      </header>
+                      <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
+                        <p-chart type="pie" [data]="data_pie" [options]="options_pie" height="350"> </p-chart>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+
+
+
+              </div>
+
+
+              <div class="clearfix"> </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

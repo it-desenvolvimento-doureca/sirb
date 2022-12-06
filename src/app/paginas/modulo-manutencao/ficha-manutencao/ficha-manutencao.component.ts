@@ -25,6 +25,7 @@ import { MANMOVMANUTENCAONOTASService } from 'app/servicos/man-mov-manutencao-no
 import { MANMOVMANUTENCAOOPERARIOSService } from 'app/servicos/man-mov-manutencao-operarios.service';
 import { MAN_MOV_MANUTENCAO_ACCOES } from 'app/entidades/MAN_MOV_MANUTENCAO_ACCOES';
 import { MANMOVMANUTENCAOACCOESService } from 'app/servicos/man-mov-manutencao-accoes.service';
+import { MANDICTIPOLOGIAAVARIAService } from 'app/servicos/man-dic-tipologia-avaria.service';
 
 @Component({
   selector: 'app-ficha-manutencao',
@@ -108,6 +109,7 @@ export class FichaManutencaoComponent implements OnInit {
   DATA_HORA_PEDIDO: any;
   TIPO_RESPONSAVEL: string;
   AMBITO_MANUTENCAO: number;
+  ID_TIPOLOGIA_AVARIA: number;
   STATUS_MAQUINA: string;
   UTILIZADOR: number;
   ID_EQUIPA: number;
@@ -137,6 +139,8 @@ export class FichaManutencaoComponent implements OnInit {
   operarios: any[];
   acoes: any[];
   btnotas = true;
+  disEditarConcluidas: boolean;
+  tipologias_avarias: any[];
   constructor(private route: ActivatedRoute, private globalVar: AppGlobals, private router: Router, private confirmationService: ConfirmationService
     , private renderer: Renderer, private location: Location, private sanitizer: DomSanitizer,
     private MANMOVMANUTENCAOCABService: MANMOVMANUTENCAOCABService, private GERUTILIZADORESService: GERUTILIZADORESService,
@@ -151,6 +155,7 @@ export class FichaManutencaoComponent implements OnInit {
     private MANMOVMANUTENCAONOTASService: MANMOVMANUTENCAONOTASService,
     private MANMOVMANUTENCAOOPERARIOSService: MANMOVMANUTENCAOOPERARIOSService,
     private MANMOVMANUTENCAOACCOESService: MANMOVMANUTENCAOACCOESService,
+    private MANDICTIPOLOGIAAVARIAService: MANDICTIPOLOGIAAVARIAService,
     private UploadService: UploadService) { }
 
   ngOnInit() {
@@ -209,6 +214,7 @@ export class FichaManutencaoComponent implements OnInit {
         if (this.ID_PEDIDO_INPUT != null) id = this.ID_PEDIDO_INPUT;
 
         this.disEditar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582editar");
+        this.disEditarConcluidas = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582editarConcluidas");
         this.disCriar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582criar");
         this.disApagar = !JSON.parse(localStorage.getItem('acessos')).find(item => item.node == "node11582apagar");
         //this.disPlanear
@@ -274,12 +280,29 @@ export class FichaManutencaoComponent implements OnInit {
       this.DATA_HORA_PEDIDO = this.data_CRIA;
     }
     this.getacessoresponsavel(id);
-
+    this.carregaTipologiaAvaria();
     /* if (!this.novo) {
        this.inicia(id);
      }*/
   }
 
+
+  //listar os dados na tabela
+  carregaTipologiaAvaria() {
+    this.tipologias_avarias = [];
+    this.MANDICTIPOLOGIAAVARIAService.getAll().subscribe(
+      response => {
+        this.tipologias_avarias.push({ label: "Selecionar Tipologia", value: "" });
+        for (var x in response) {
+
+          this.tipologias_avarias.push({
+            value: response[x].ID, dados: response[x], label: response[x].DESCRICAO
+          });
+        }
+        this.tipologias_avarias = this.tipologias_avarias.slice();
+      },
+      error => console.log(error));
+  }
 
   getacessoresponsavel(id) {
     this.GERUTILIZADORESService.getAcessoResponsavel(this.user, id).subscribe(
@@ -397,7 +420,7 @@ export class FichaManutencaoComponent implements OnInit {
             UTILIZADOR: response[x].UTILIZADOR,
             TIPO_LOCALIZACAO: response[x].TIPO_LOCALIZACAO,
             LOCALIZACAO: response[x].LOCALIZACAO,
-            AMBITO_MANUTENCAO: response[x].AMBITO_MANUTENCAO,
+            AMBITO_MANUTENCAO: response[x].AMBITO_MANUTENCAO
           });
         }
 
@@ -616,6 +639,7 @@ export class FichaManutencaoComponent implements OnInit {
 
             this.TIPO_RESPONSAVEL = response[x].TIPO_RESPONSAVEL;
             this.AMBITO_MANUTENCAO = response[x].AMBITO_MANUTENCAO;
+            this.ID_TIPOLOGIA_AVARIA = response[x].ID_TIPOLOGIA_AVARIA;
             this.STATUS_MAQUINA = response[x].STATUS_MAQUINA;
             this.UTILIZADOR = (response[x].TIPO_RESPONSAVEL == 'U') ? response[x].UTILIZADOR : null;
             this.ID_EQUIPA = (response[x].TIPO_RESPONSAVEL == 'E') ? response[x].UTILIZADOR : null;
@@ -658,13 +682,18 @@ export class FichaManutencaoComponent implements OnInit {
               this.btsubmeter = false;
               this.btcancelar = false;
             } else if (response[x].ESTADO == 'C') {
+
               this.btValidar = true;
               this.btRejeitar = true;
-              this.bteditar = false;
-              this.modoedicao = false;
               this.btplanear = false;
               this.btsubmeter = false;
               this.btcancelar = false;
+              if (this.disEditarConcluidas) {
+                this.bteditar = false;
+                this.modoedicao = false;
+              } else {
+                this.bteditar = true;
+              }
             } else if (response[x].ESTADO == 'PE') {
 
               if (this.acesso_responsavel) this.btRejeitarPedido = true;
@@ -991,6 +1020,7 @@ export class FichaManutencaoComponent implements OnInit {
     ficha_manutencao.DATA_HORA_PEDIDO = this.DATA_HORA_PEDIDO;
     ficha_manutencao.TIPO_RESPONSAVEL = this.TIPO_RESPONSAVEL;
     ficha_manutencao.AMBITO_MANUTENCAO = this.AMBITO_MANUTENCAO;
+    ficha_manutencao.ID_TIPOLOGIA_AVARIA = this.ID_TIPOLOGIA_AVARIA;
     ficha_manutencao.STATUS_MAQUINA = this.STATUS_MAQUINA;
 
     if (this.TIPO_RESPONSAVEL == 'U') {
@@ -1619,7 +1649,7 @@ export class FichaManutencaoComponent implements OnInit {
 
   gravarTabelaFicheiros2(ficheiros: MAN_MOV_PEDIDOS_DOCUMENTOS, count, total, id) {
 
-    this.MANMOVPEDIDOSDOCUMENTOSService.update(ficheiros).then(
+    this.MANMOVPEDIDOSDOCUMENTOSService.update(ficheiros).subscribe(
       res => {
         if (count == total && this.novo) {
 

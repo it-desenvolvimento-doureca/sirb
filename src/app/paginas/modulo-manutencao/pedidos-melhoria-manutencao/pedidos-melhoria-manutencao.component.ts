@@ -1705,7 +1705,7 @@ export class PedidosMelhoriaManutencaoComponent implements OnInit {
 
   gravarTabelaFicheiros2(ficheiros: MAN_MOV_PEDIDOS_DOCUMENTOS, count, total, id) {
 
-    this.MANMOVPEDIDOSDOCUMENTOSService.update(ficheiros).then(
+    this.MANMOVPEDIDOSDOCUMENTOSService.update(ficheiros).subscribe(
       res => {
         if (count == total && this.novo) {
 

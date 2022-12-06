@@ -2062,6 +2062,9 @@ export class FichaEquipamentoComponent implements OnInit {
     }
   }
 
+  onHidecriarPreventivas() {
+    this.btcriapreventiva = false;
+  }
 
   criarPreventivas() {
     this.btcriapreventiva = true;

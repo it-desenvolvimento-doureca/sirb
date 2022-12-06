@@ -435,6 +435,14 @@ import { AlertasDescargaComponent } from './paginas/modulo-producao/parametros/a
 import { PRDICALERTASDESCARGAService } from './servicos/pr-dic-alertas-descarga.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ATENTREVISTASRESPONSAVELService } from './servicos/at-entrevistas-responsavel.service';
+import { EquipamentosCriticosComponent } from './paginas/modulo-manutencao/equipamentos-criticos/equipamentos-criticos.component';
+import { Registo_controlo_manutencoesComponent } from './paginas/modulo-manutencao/registo_controlo_manutencoes/registo_controlo_manutencoes.component';
+import { IndicadoresMttrMtbfComponent } from './paginas/modulo-manutencao/indicadores-mttr-mtbf/indicadores-mttr-mtbf.component';
+import { MANDICTIPOLOGIAAVARIAService } from './servicos/man-dic-tipologia-avaria.service';
+import { TipologiaAvariaComponent } from './paginas/modulo-manutencao/parametros/tipologia-avaria/tipologia-avaria.component';
+import { ConfConsumosSilverComponent } from './paginas/parametros/conf-consumos-silver/conf-consumos-silver.component';
+import { GERCONFCONSUMOSSILVEROFService } from './servicos/ger-conf-consumos-silver-of.service';
+import { GERCONFCONSUMOSSILVERService } from './servicos/ger-conf-consumos-silver.service';
 
 const routes: Routes = [
   { path: 'dashboard', component: HomeComponent, canActivate: [LoginService] },
@@ -556,6 +564,12 @@ const routes: Routes = [
     children: [
       { path: '', component: ParametrosComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
       { path: 'editar', component: ParametrosComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
+  },
+  {
+    path: 'conf_consumos_silver', component: RouterComponent, canActivate: [LoginService], data: { breadcrumb: "Conf. Consumos Silver" },
+    children: [
+      { path: '', component: ConfConsumosSilverComponent, canActivate: [LoginService], data: { breadcrumb: "" } },
+      { path: 'editar', component: ConfConsumosSilverComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } }]
   },
   { path: 'unidades', component: UnidadesmedidaComponent, canActivate: [LoginService], data: { breadcrumb: "Unidade de Medida" } },
   { path: 'linhas', component: LinhasComponent, canActivate: [LoginService], data: { breadcrumb: "Linhas" } },
@@ -1028,13 +1042,17 @@ const routes: Routes = [
       { path: 'editar', component: FichaEquipamentoComponent, canActivate: [LoginService], data: { breadcrumb: "Editar" } },
       { path: 'novo', component: FichaEquipamentoComponent, canActivate: [LoginService], data: { breadcrumb: "Novo" } }]
   },
+  { path: 'equipamentos_criticos_manutencao', component: EquipamentosCriticosComponent, canActivate: [LoginService], data: { breadcrumb: "Listagem Equipamentos Críticos" } },
+  { path: 'registo_controlo_manutencoes', component: Registo_controlo_manutencoesComponent, canActivate: [LoginService], data: { breadcrumb: "Registo Controlo" } },
+  { path: 'indicadores_mttr_mtbf', component: IndicadoresMttrMtbfComponent, canActivate: [LoginService], data: { breadcrumb: "Indicadores MTTR e MTBF" } },
   { path: 'edificios', component: EdificiosComponent, canActivate: [LoginService], data: { breadcrumb: "Edifícios" } },
   { path: 'pisos', component: PisosComponent, canActivate: [LoginService], data: { breadcrumb: "Pisos" } },
   { path: 'divisoes', component: DivisoesComponent, canActivate: [LoginService], data: { breadcrumb: "Divisões" } },
   { path: 'niveis_criticidade', component: NiveisCriticidadeComponent, canActivate: [LoginService], data: { breadcrumb: "Níveis de Criticidade" } },
   { path: 'equipasmanutencao', component: EquipasManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Equipas Manutenção" } },
   { path: 'ambitosmanutencao', component: AmbitosManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Âmbitos Manutenção" } },
-  { path: 'gestao_pastas', component: LocalizacoesAlfrescoComponent, canActivate: [LoginService], data: { breadcrumb: "Gestão Pastas" } },
+  { path: 'ambitosmanutencao', component: AmbitosManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Tipologias de Avaria" } },
+  { path: 'tipologias_avaria', component: TipologiaAvariaComponent, canActivate: [LoginService], data: { breadcrumb: "Gestão Pastas" } },
   { path: 'ficha_manutencao', component: FichaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedido Manutenção" } },
   { path: 'pedidos_melhoria', component: PedidosMelhoriaManutencaoComponent, canActivate: [LoginService], data: { breadcrumb: "Pedidos de Melhoria / Investimento" } },
   { path: 'quadro_pedidos_pendentes', component: QuadroPedidosPendentesComponent, canActivate: [LoginService], data: { breadcrumb: "Quadro de análise de pedidos pendentes" } },
@@ -1173,6 +1191,7 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     HeaderGroupComponent,
     HistoricoManutencoesComponent,
     ParametrosComponent,
+    ConfConsumosSilverComponent,
     GestaoTarefasComponent,
     FormTarefasComponent,
     ConstrucaoBanhosComponent,
@@ -1331,7 +1350,11 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     PainelControloViewComponent,
     LocalizacoesAlfrescoComponent,
     MapaPreventivasComponent,
-    AlertasDescargaComponent
+    AlertasDescargaComponent,
+    EquipamentosCriticosComponent,
+    Registo_controlo_manutencoesComponent,
+    IndicadoresMttrMtbfComponent,
+    TipologiaAvariaComponent
   ],
   imports: [
     BrowserModule,
@@ -1598,6 +1621,9 @@ export const routing = RouterModule.forRoot(routes, { useHash: true });
     REUREUNIOESPLANOSACCOESService,
     PRDICALERTASDESCARGAService,
     ATENTREVISTASRESPONSAVELService,
+    MANDICTIPOLOGIAAVARIAService,
+    GERCONFCONSUMOSSILVERService,
+    GERCONFCONSUMOSSILVEROFService,
     [{ provide: LOCALE_ID, useValue: 'pt' }]],
   bootstrap: [AppComponent],
 

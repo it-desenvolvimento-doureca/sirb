@@ -10,6 +10,7 @@ import { EMAIL } from 'app/entidades/EMAIL';
 import { EmailService } from 'app/servicos/email.service';
 import { UploadService } from 'app/servicos/upload.service';
 import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
+import { PADICAMBITOSService } from 'app/servicos/pa-dic-ambitos.service';
 
 @Component({
   selector: 'app-listaacoes',
@@ -18,7 +19,7 @@ import { GTMOVTAREFASService } from 'app/servicos/gt-mov-tarefas.service';
 })
 export class ListaacoesComponent implements OnInit {
   dados: any[];
-
+  loadingFile = false;
   yearTimeout: any;
   @ViewChild(DataTable) dataTableComponent: DataTable;
   estados = [{ label: "Sel. Estado", value: null }, { label: "Pendente", value: "Pendente" }, { label: "Lida", value: "Lida" }, { label: "Em Curso", value: "Em Curso" }, { label: "Planeado", value: "Planeado" },
@@ -27,7 +28,7 @@ export class ListaacoesComponent implements OnInit {
   tipo: any;
   caminho: string;
   estado_filtro = [];
-
+  ambito_filtro = [];
   FastResponse = false;
   acoes_em_ATRASO = false;
   imprimirpdf = false;
@@ -42,11 +43,14 @@ export class ListaacoesComponent implements OnInit {
   bt_disable: boolean;
   listasubtarefasdialog = [];
   displaylistasubtarefasdialog: boolean;
+  dataini = null;
+  datafim = null;
+  ambitos: any[];
   constructor(private PAMOVCABService: PAMOVCABService, private route: ActivatedRoute, private RelatoriosService: RelatoriosService,
     private GERUTILIZADORESService: GERUTILIZADORESService,
     private EmailService: EmailService,
     private UploadService: UploadService,
-    private GTMOVTAREFASService: GTMOVTAREFASService,
+    private GTMOVTAREFASService: GTMOVTAREFASService, private PADICAMBITOSService: PADICAMBITOSService,
     private renderer: Renderer, private router: Router, private globalVar: AppGlobals) { }
 
   ngOnInit() {
@@ -94,12 +98,27 @@ export class ListaacoesComponent implements OnInit {
 
     this.carregarlista(this.tipo);
     this.getutilizadores();
+    this.listar_ambitos();
+  }
+
+  //listar ambitos
+  listar_ambitos() {
+    this.ambitos = [];
+    this.PADICAMBITOSService.getAll().subscribe(
+      response => {
+        this.ambitos.push({ value: "", label: "Sel. Âmbito" })
+        for (var x in response) {
+          this.ambitos.push({ value: response[x].descricao, label: response[x].descricao });
+        }
+        this.ambitos = this.ambitos.slice();
+      },
+      error => console.log(error));
   }
 
   carregarlista(tipo) {
     this.dados = [];
     //acoes_em_ATRASO
-    var filtros = [{ FASTRESPONSE: this.FastResponse, EM_ATRASO: this.acoes_em_ATRASO }];
+    var filtros = [{ FASTRESPONSE: this.FastResponse, EM_ATRASO: this.acoes_em_ATRASO, DATA_INI: (this.dataini != null) ? this.formatDate(this.dataini) : null, DATA_FIM: (this.datafim != null) ? this.formatDate(this.datafim) : null }];
     this.PAMOVCABService.getPA_MOV_CABbyTIPOaccoes(tipo, filtros).subscribe(
       response => {
         var count = Object.keys(response).length;
@@ -380,7 +399,7 @@ export class ListaacoesComponent implements OnInit {
   }
 
   imprimir(formato, filenametransfer) {
-
+    this.loadingFile = true;
     var filename = new Date().toLocaleString().replace(/\D/g, '');
     //var filenametransfer = "planos_de_acao";
 
@@ -397,10 +416,12 @@ export class ListaacoesComponent implements OnInit {
 
     this.RelatoriosService.downloadPDF2(formato, filename, data, filenametransfer, "planos_de_acao").subscribe(
       (res) => {
+        this.loadingFile = false;
         FileSaver.saveAs(res, 'LISTA DE AÇÕES - PDCA DOURECA');
         /*this.fileURL = URL.createObjectURL(res);
         this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.fileURL);*/
       }, error => {
+        this.loadingFile = false;
         this.showMessage('error', 'Erro', 'ERRO!! Falha ao gerar o Ficheiro!');
         console.log(error);
       });

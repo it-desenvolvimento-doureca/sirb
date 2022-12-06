@@ -6,11 +6,16 @@
         <div class="card">
           <div class="card-header" data-background-color="red">
             <h4 class="title">Planos de Ação</h4>
-            <a style="cursor: pointer; position: absolute;right: 68px; top: -11px; color: black;"
+            <a style="cursor: pointer; position: absolute;right: 68px; top: -10px; color: black;"
+              title="Exportar Lista Normal (Excel)" (click)="imprimir('xlsx','planos_de_acaoExcel')"
+              *ngIf="imprimirpdf">
+              <i style="font-size: 20px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </a>
+            <a style="cursor: pointer; position: absolute;right: 102px; top: -11px; color: black;"
               title="Exportar Lista Normal" (click)="imprimir('pdf','planos_de_acao')" *ngIf="imprimirpdf">
               <i class="material-icons">print</i>
             </a>
-            <a style="cursor: pointer; position: absolute;right: 112px; top: -11px; color: #009688;"
+            <a style="cursor: pointer; position: absolute;right: 140px; top: -11px; color: #009688;"
               title="Exportar Lista Detalhada" (click)="imprimir('pdf','planos_de_acao_detalhada')" *ngIf="imprimirpdf">
               <i class="material-icons">print</i>
             </a>
@@ -18,23 +23,41 @@
               title="Enviar Lista Detalhada" (click)="EnviarEmail()">
               <i class="material-icons">email</i>
             </a>
+
+            <a style=" position: absolute;right: 185px; top: -9px; color: black; " *ngIf="loadingFile">
+              <span>A Transferir...</span>
+            </a>
           </div>
           <div class="card-content">
             <div
-              style="padding: 1px 5px 1px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 15px;"
+              style="padding: 1px 5px 5px 0px; border-top: 1px dashed grey; border-bottom: 1px dashed grey; margin-bottom: 10px;"
               class="form-group col-md-12 col-lg-12">
               <form #form id="formReclama" (ngSubmit)="atualizar()" ngNativeValidate>
+                <div class=" col-md-5" style="padding: 0; width: 34%;">
+                  <label>Data Objetivo Ação Entre:</label><br>
+                  <p-calendar [style]="{'height':'25px','width':'125px','margin-right': '30px'}" dateFormat="yy-mm-dd"
+                    placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                    [(ngModel)]="dataini" [ngModelOptions]="{standalone: true}" [showIcon]="true">
+                  </p-calendar>
+                  e
+                  <p-calendar [style]="{'height':'25px','width':'125px','margin-left': '3px'}" dateFormat="yy-mm-dd"
+                    placeholder="yyyy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050"
+                    [(ngModel)]="datafim" [ngModelOptions]="{standalone: true}" [showIcon]="true">
+                  </p-calendar>
+                </div>
                 <div class="table-row-column col-md-2" style="padding-left: 16px;">
+                  <br>
                   <p-checkbox [(ngModel)]="FastResponse" [ngModelOptions]="{standalone: true}" label="FastResponse"
                     binary="true">
                   </p-checkbox>
                 </div>
                 <div class="table-row-column col-md-2" style="padding-left: 16px;">
+                  <br>
                   <p-checkbox [(ngModel)]="acoes_em_ATRASO" [ngModelOptions]="{standalone: true}"
                     label="Ações em atraso" binary="true">
                   </p-checkbox>
                 </div>
-                <div class="table-row-column col-md-2">
+                <div class="table-row-column col-md-2"><br>
                   <button type="submit" class="btn btn-success "
                     style="margin: -5px 0 0 39px; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
                 </div>
@@ -97,6 +120,11 @@
               </p-column>
 
               <p-column [style]="{'width':'30px'}" field="ambito" header="Âmbito" [filter]="true" [sortable]="true">
+                <ng-template pTemplate="filter" let-col>
+                  <p-multiSelect [options]="ambitos" [(ngModel)]="ambito_filtro" [style]="{'width':'100%'}"
+                    (onChange)="filtrar($event.value,col.field,true,'in')" styleClass="ui-column-filter">
+                  </p-multiSelect>
+                </ng-template>
               </p-column>
               <p-column [style]="{'width':'60px'}" field="origem" header="Origem" [filter]="true" [sortable]="true">
               </p-column>

@@ -853,7 +853,8 @@
                     <div class="panel-heading"
                         [class.active]="isLinkActive('/planosacaomanutencao',false) || isLinkActive('/planosestrategicosmanutencao',false) || isLinkActive('/ambitosmanutencao',true)  || isLinkActive('/equipasmanutencao',true) || isLinkActive('/edificios',true)
                     || isLinkActive('/pisos',true) || isLinkActive('/divisoes',true) || isLinkActive('/niveis_criticidade',true) || isLinkActive('/ficha_manutencao',true) || isLinkActive('/quadro_pedidos_pendentes',true) || isLinkActive('/painel_controlo_manutencao',true)
-                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_preventivas',true)|| isLinkActive('/mapa_preventivas',true)  || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) || isLinkActive('/lista_pedidos_melhoria',true) ">
+                    || isLinkActive('/equipamentos_manutencao',true) || isLinkActive('/lista_preventivas',true)|| isLinkActive('/mapa_preventivas',true)  || isLinkActive('/lista_pedidos',true) || isLinkActive('/pedidos_melhoria',true) 
+                    || isLinkActive('/lista_pedidos_melhoria',true) || isLinkActive('/equipamentos_criticos_manutencao',true) || isLinkActive('/registo_controlo_manutencoes',true) || isLinkActive('/indicadores_mttr_mtbf',true) ">
                         <h4 class="panel-title">
                             <a id="node156" data-toggle="collapse" data-parent="#accordion" href="#collapseManutencao">
                                 <span class="fa fa-wrench" style="margin-right: 12px;">
@@ -909,6 +910,14 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <li id="node11595" data-toggle="collapse" [routerLinkActive]="['active']">
+                                            <a [routerLink]="['/equipamentos_criticos_manutencao']">Listagem
+                                                Equipamentos Críticos</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <li id="node11592" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/quadro_pedidos_pendentes']">Quadro Pedidos
                                                 Pendentes</a>
@@ -941,6 +950,30 @@
                                         <li id="node11594" data-toggle="collapse" [routerLinkActive]="['active']">
                                             <a [routerLink]="['/mapa_preventivas']">Mapa Preventivas</a>
                                         </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node116220" data-toggle="collapse" data-target="#analisesmanutencao"
+                                            class="collapsed"
+                                            [ngClass]="{ 'active': isLinkActive('/registo_controlo_manutencoes',true) || isLinkActive('/indicadores_mttr_mtbf',true)  }">
+
+                                            <a>Análises
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                        <ul class="sub-menu collapse" id="analisesmanutencao">
+                                            <li id="node1162201" [routerLinkActive]="['active']"
+                                                [routerLink]="['/registo_controlo_manutencoes']">
+                                                <a>Registo Controlo</a>
+                                            </li>
+                                            <li id="node1162202" [routerLinkActive]="['active']"
+                                                [routerLink]="['/indicadores_mttr_mtbf']">
+                                                <a>Indicadores MTTR e MTBF</a>
+                                            </li>
+
+
+                                        </ul>
                                     </td>
                                 </tr>
                                 <tr>
@@ -979,6 +1012,10 @@
                                             <li id="node1167101" [routerLinkActive]="['active']"
                                                 [routerLink]="['/ambitosmanutencao']">
                                                 <a>Âmbitos Manutenção</a>
+                                            </li>
+                                            <li id="node1167102" [routerLinkActive]="['active']"
+                                                [routerLink]="['/tipologias_avaria']">
+                                                <a>Tipologias de Avaria</a>
                                             </li>
 
                                         </ul>
@@ -1592,7 +1629,7 @@
                 <!-- MENU CONFIGURAÇÕES -->
                 <div class="panel panel-default">
                     <div class="panel-heading"
-                        [ngClass]="{ 'active': isLinkActive('/utilizadores',true) || isLinkActive('/config',true) || isLinkActive('/parametros',true) || isLinkActive('/eventos',true)
+                        [ngClass]="{ 'active': isLinkActive('/utilizadores',true) || isLinkActive('/config',true) || isLinkActive('/parametros',true) || isLinkActive('/conf_consumos_silver',true) || isLinkActive('/eventos',true)
                     || isLinkActive('/grupos',true) || isLinkActive('/seccoes',true) || isLinkActive('/departamentos',true) || isLinkActive('/locais',true) || isLinkActive('/feriados',true) }">
                         <h4 class="panel-title">
                             <a id="node1" data-toggle="collapse" data-parent="#accordion" href="#collapseConf">
@@ -1622,6 +1659,14 @@
                                     <td>
                                         <li id="node12" [routerLinkActive]="['active']" [routerLink]="['/parametros']">
                                             <a>Parâmetros Aplicação</a>
+                                        </li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li id="node20" [routerLinkActive]="['active']"
+                                            [routerLink]="['/conf_consumos_silver']">
+                                            <a>Conf. Consumos Silver</a>
                                         </li>
                                     </td>
                                 </tr>

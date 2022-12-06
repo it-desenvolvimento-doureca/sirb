@@ -1086,8 +1086,8 @@
 </p-dialog>
 
 <p-dialog header="Aviso" [responsive]="true" [positionTop]="0" [style]="{'max-height':'99vh'}" [width]="500"
-  [dismissableMask]="true" appendTo="body" [closeOnEscape]="true" [draggable]="false" [(visible)]="displayverificar"
-  [modal]="true" styleClass="dialog_index2">
+  (onHide)="onHidecriarPreventivas()" [dismissableMask]="true" appendTo="body" [closeOnEscape]="true"
+  [draggable]="false" [(visible)]="displayverificar" [modal]="true" styleClass="dialog_index2">
   <form role="form">
     <!-- Modal Body -->
     <div style="padding: 0px 50px 0px 50px">

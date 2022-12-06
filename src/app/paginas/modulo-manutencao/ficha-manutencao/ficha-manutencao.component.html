@@ -85,7 +85,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" *ngIf="ID_PEDIDO_INPUT == null" style="height: 49px; padding-top: 22px;" data-background-color="red">
+          <div class="card-header" *ngIf="ID_PEDIDO_INPUT == null" style="height: 49px; padding-top: 22px;"
+            data-background-color="red">
             <h4 style="position: absolute;" class="title">Pedido de Manutenção</h4>
 
           </div>
@@ -194,9 +195,17 @@
                         </p-radioButton>
                       </div>
                     </div>
+                    <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
+                      <label>Tipologia da Avaria:</label>
+                      <p-dropdown [options]="tipologias_avarias" [required]="!novo"
+                        [ngClass]="(ID_TIPOLOGIA_AVARIA == null && !novo)? 'class_required' :''"
+                        [style]="{'width':'100%','height':'25px','background':'white'}"
+                        [(ngModel)]="ID_TIPOLOGIA_AVARIA" [ngModelOptions]="{standalone: true}"
+                        [disabled]="!modoedicao"></p-dropdown>
+                    </div>
 
                     <div style="padding: 1px 5px 1px 10px;" class="form-group col-md-3 col-lg-3">
-                      <label>Âmbito Manutenção</label>
+                      <label>Âmbito Manutenção:</label>
                       <p-dropdown [options]="drop_ambitos_manutencao" [required]="true"
                         [ngClass]="(AMBITO_MANUTENCAO == null)? 'class_required' :''"
                         [style]="{'width':'100%','height':'25px','background':'white'}" [(ngModel)]="AMBITO_MANUTENCAO"

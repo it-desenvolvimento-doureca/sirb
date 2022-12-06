@@ -1,0 +1,116 @@
+<app-controlos></app-controlos>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="red">
+            <h4 class="title">Conf. Consumos Silver</h4>
+            <p class="category"></p>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content" style="padding-top: 0; border-bottom: none;">
+                  <form role="form" ngNativeValidate (ngSubmit)="gravardados()">
+                    <div class="card cardnav" style="    margin-top: 0;display: block;">
+
+                      <div class="card-content table-responsive">
+
+
+                        <div>
+
+                          <!-- Modal Body -->
+                          <div class="col-md-12 " style="padding: 6px">
+                            <h5
+                              style="margin: 0; font-weight: 450; background: lightgray; padding: 3px 0 0 8px; color: black;">
+                              Manutenções
+                            </h5>
+                            <hr style="margin: 0px 0 7px 0; border:2; border-top: 2px solid #d5d3d3;" />
+                            <div class="modal-body col-md-12" style="overflow-y: auto;">
+                              <div class="col-md-6">
+                                <div class="form-group col-md-6" style="padding-left: 10px;">
+                                  <label for="nmlinha1">Código Secção</label>
+                                  <input type="text" class="form-control2" id="nmlinha1" [(ngModel)]="seccao_MANUTENCAO"
+                                    [disabled]="!modoedicao" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Introduza o Código da Secção" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label for="nmlinha2">Código Sub-Secção</label>
+                                  <input type="text" class="form-control2" id="nmlinha2" [disabled]="!modoedicao"
+                                    [(ngModel)]="subseccao_MANUTENCAO" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Introduza o Códido da Sub-Secção" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label for="nmlinha3">Referência Composto</label>
+                                  <input type="text" class="form-control2" id="nmlinha3" [disabled]="!modoedicao"
+                                    [(ngModel)]="ref_COMPOSTO_MANUTENCAO" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Introduza a Referência Composto" />
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <p-dataTable [style]="{'width':'100%'}" [value]="ofs_MANUTECAO"
+                                  styleClass="tabelaPostos">
+                                  <p-column field="data_ini" header="DATA ÍNICIO">
+                                    <ng-template pTemplate="body" let-col2 let-row2="rowData ">
+                                      <p-calendar [style]="{'width': '85%','float': 'left'}"
+                                        (onInput)="verificadatas(row2[col2.field])" [disabled]="!modoedicao"
+                                        (onSelect)="verificadatas(row2[col2.field],row2['pos'])" dateFormat="yy-mm-dd"
+                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2060"
+                                        [(ngModel)]="row2['data']" [ngModelOptions]="{standalone: true}"
+                                        [showIcon]="true"></p-calendar>
+                                    </ng-template>
+                                  </p-column>
+                                  <p-column field="of_NUM" header="Número OF">
+                                    <ng-template let-col let-car="rowData" pTemplate="body">
+                                      <input type="text" class="form-control22" [(ngModel)]="car['of_NUM']"
+                                        [disabled]="!modoedicao" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Número OF" appendTo="body"
+                                        style="height: 32px; width: 100%; padding: 0 0 0 9px;" />
+                                    </ng-template>
+                                  </p-column>
+                                  <p-column [style]="{'width':'5%'}" styleClass="col-button">
+                                    <ng-template let-linhaof="rowData" let-index="rowIndex" pTemplate="body">
+                                      <button type="button" class="ui-button-danger" pButton [disabled]="!modoedicao"
+                                        (click)="eliminar(linhaof,index)" icon="fa-trash"></button>
+                                    </ng-template>
+                                  </p-column>
+                                  <p-footer>
+                                    <a (click)="adicionar_linha()" [class.disabled]="!modoedicao"
+                                      style="color: black; cursor:pointer; margin-left:10px;"
+                                      title="Adicionar nova linha">
+                                      <i class="material-icons">add</i> Adicionar
+                                    </a>
+                                  </p-footer>
+                                </p-dataTable>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-12" style="text-align: center;">
+                      <button [hidden]="!modoedicao" (click)="backview()" type="reset"
+                        class="btn btn-default">Cancelar</button>
+                      <button [hidden]="!modoedicao" id="gravar" type="submit" class="btn btn-success ">Gravar</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-danger btn-block" #inputgravou [hidden]="true"
+    onclick="demo.showNotification('top','right','Alterado com Sucesso!',2)"></button>
+
+  <button class="btn btn-danger btn-block" #inputerro [hidden]="true"
+    onclick="demo.showNotification('top','right','ERRO!! Registo não foi Alterado!',4)"></button>

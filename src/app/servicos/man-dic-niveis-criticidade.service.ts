@@ -34,6 +34,13 @@ export class MANDICNIVEISCRITICIDADEService {
       .catch(this.handleError);
   }
 
+  getbyIDDEPARTAMENTO(id): Observable<MAN_DIC_NIVEIS_CRITICIDADE[]> {
+    const url = webUrl.host + '/rest/sirb/getMAN_DIC_NIVEIS_CRITICIDADEbyIDDEPARTAMENTO/' + id;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
 
 
   getbyID(id): Observable<MAN_DIC_NIVEIS_CRITICIDADE[]> {

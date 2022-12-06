@@ -5,13 +5,13 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="red">
-            <h4 class="title">Âmbitos de Manutenção</h4>
+            <h4 class="title">Tipologias de Avaria</h4>
           </div>
           <div class="card-content">
             <p-dataTable [style]="{'width':'100%'}" [value]="departs" selectionMode="single" #dt
               (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
-              <p-column field="nome" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
-              </p-column> 
+              <p-column field="descricao" header="Nome" [filter]="true" [sortable]="true" filterMatchMode="equals">
+              </p-column>
               <p-footer>
                 <a [class.disabled]="!acesso_criar" (click)="showDialogToAdd()"
                   style="color: black; cursor:pointer; margin-left:10px;" title="Adicionar nova linha">
@@ -31,38 +31,24 @@
 
 
 <!-- Modal dados-->
-<p-dialog header="Âmbito Manutenção" [responsive]="true" [positionTop]="0" styleClass="dialognot"
-  [style]="{'max-height':'99vh','width':'100vw','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
+<p-dialog header="Tipologias de Avaria" [responsive]="true" [positionTop]="0" styleClass="dialognot"
+  [style]="{'max-height':'99vh','width':'58vw','overflow': 'auto'}" [dismissableMask]="true" appendTo="body"
   [closeOnEscape]="true" [draggable]="false" [(visible)]="dialognovo" [modal]="true">
 
   <form id="formReclama" role="form" ngNativeValidate (ngSubmit)="gravar()" style="width:98vw;">
     <!-- Modal Body -->
     <div class="modal-body">
       <div class="col-md-12" style="padding: 0;  margin-bottom: 15px;">
-        <div class="col-md-6" style="padding: 0;">
+        <div class="col-md-12" style="padding: 0;">
           <div class="form-group col-md-12">
-            <label for="nome">Nome</label>
-            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="nome"
+            <label for="nome">Descrição</label>
+            <input type="text" [disabled]="!acesso_editar" class="form-control2" id="nome" [(ngModel)]="descricao"
               [ngModelOptions]="{standalone: true}" required autocomplete="off" />
           </div>
         </div>
 
       </div>
 
-
-      <div class="col-md-12">
-        <b>Responsáveis</b> <br>
-        <p-pickList *ngIf="dialognovo" [class.disabled]="!modoedicao" (onMoveToTarget)="onMoveToTarget($event)"
-          (onMoveToSource)="onMoveToSource($event)" [source]="sourceUtilizadores" [showTargetControls]="false"
-          [showSourceControls]="false" [target]="targetUtilizadores" sourceHeader="Utilizadores"
-          targetHeader="Utilizadores do Âmbito" [responsive]="true" filterBy="nome" dragdrop="true" filterBy="nome"
-          sourceFilterPlaceholder="Pesquisar pelo Utilizador" targetFilterPlaceholder="Pesquisar pelo Utilizador"
-          [sourceStyle]="{'height':'200px'}" [targetStyle]="{'height':'200px'}">
-          <ng-template let-car pTemplate="item">
-            {{car.nome}}
-          </ng-template>
-        </p-pickList>
-      </div>
       <div class="col-md-12">
         <button style="float: right; margin-right: 17px;" type="button" class="btn btn-default"
           (click)="dialognovo = false">Fechar</button>

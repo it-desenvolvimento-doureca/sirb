@@ -112,6 +112,40 @@ export class MANMOVMANUTENCAOCABService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+
+  MAN_GET_MTBF_MTTR(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_MTBF_MTTR', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
+
+  MAN_GET_CAUSAS_AVARIAS(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_CAUSAS_AVARIAS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
+
+  MAN_GET_INDICADORES(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_INDICADORES', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
+  MAN_GET_ANALISE_MANUTENCAO(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_ANALISE_MANUTENCAO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
+
+  MAN_GET_EQUIPA_MANUTENCAO(data: any) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_EQUIPA_MANUTENCAO', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;

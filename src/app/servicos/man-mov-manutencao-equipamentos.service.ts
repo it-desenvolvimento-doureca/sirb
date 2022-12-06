@@ -84,6 +84,13 @@ export class MANMOVMANUTENCAOEQUIPAMENTOSService {
       .catch((error: any) => Observable.throw('Server error'));
   }
 
+  MAN_GET_EQUIPAMENTOS_CRITICOS(data) {
+    return this.http
+      .post(webUrl.host + '/rest/sirb/MAN_GET_EQUIPAMENTOS_CRITICOS', JSON.stringify(data), { headers: this.headers })
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body;

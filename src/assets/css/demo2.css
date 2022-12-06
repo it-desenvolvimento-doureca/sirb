@@ -1625,8 +1625,13 @@ body .ui-datatable .ui-datatable-data tr.ui-row-editing.ui-datatable-odd, body .
     background: #c7c7c7;
 }
 
-.gestao .ui-datatable .ui-datatable-thead>tr>th, body .ui-datatable .ui-datatable-tfoot>tr>td {
+.gestao .ui-datatable .ui-datatable-thead>tr>th, body .ui-datatable .ui-datatable-tfoot>tr>td:not(.tabela_manu_dashboard td) {
     background-color: #b2b2b2 !important;
+}
+
+.tabela_manu_dashboard .ui-rowgroup-header-name {
+    width: 100%;
+
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
@@ -6029,6 +6034,10 @@ body>.ui-dropdown-panel {
     background: #3668f47d !important;
     font-weight: 600 !important;
     color: #292929 !important;
+}
+
+.tabela_manu_dashboard table {
+    font-size: 10px;
 }
 
 .tabela_planos_acao_dashboard tr tr th {

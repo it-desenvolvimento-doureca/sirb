@@ -29,4 +29,5 @@ export class MAN_MOV_MANUTENCAO_CAB {
     STATUS_MAQUINA: string;
     ORDEM: number;
     ID_ORIGEM: number;
+    ID_TIPOLOGIA_AVARIA: number;
 }

@@ -48,9 +48,8 @@ export class MANMOVPEDIDOSDOCUMENTOSService {
   update(data: MAN_MOV_PEDIDOS_DOCUMENTOS) {
     return this.http
       .put(webUrl.host + '/rest/sirb/updateMAN_MOV_PEDIDOS_DOCUMENTOS', JSON.stringify(data), { headers: this.headers })
-      .toPromise()
-      .then(res => res.json().data)
-      .catch(this.handleError);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw('Server error'));
   }
 
 

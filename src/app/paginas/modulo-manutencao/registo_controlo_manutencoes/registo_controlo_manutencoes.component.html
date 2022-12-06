@@ -1,0 +1,702 @@
+<!--div class="col-md-12  hidden-xs">
+  <div class="card-header" data-background-color="orange">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" style="background:black">
+          <li [hidden]="!btvoltar">
+            <a (click)=" backClicked()">
+              <i class="material-icons">arrow_back</i>Voltar
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div-->
+<div class="main-content dashboard_css"
+  style="display: inline;padding: 0; display: block; height: calc(100% - 166px); background: none;"
+  id="main_dashboard_css">
+  <div class="container-fluid" style="height: 100%;">
+    <div class="row" style="height: 100%;">
+      <div class="col-md-12" style="height: 100%;">
+        <div class="card" style="height: 100%; background: none; margin-top: 1px;">
+
+          <div class="card-content" style="height: 100%; padding: 0;">
+            <p-tabView orientation="bottom" [activeIndex]="index" (onChange)="handleChange($event)">
+              <p-tabPanel header="Corretivas">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: initial;">
+                    <div class="col-md-12">
+                      <section class="panel">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 200px; float: left;">Manutenções Corretivas</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaCorretivas()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="anoCorretiva" [ngModelOptions]="{standalone: true}" [required]="true"
+                              appendTo="body">
+                            </p-dropdown>
+                          </div>
+                        </header>
+                        <div class="panel-body">
+                          <p-dataTable #tabeladados_corretiva [value]="dados_corretivas" [paginator]="true" [rows]="25"
+                            [rowsPerPageOptions]="[25,50,100,'todos']" rowGroupMode="subheader" groupField='trimestre'
+                            [sortableRowGroup]="false" class="tabela_planos_acao_dashboard tabela_manu_dashboard">
+                            <ng-template pTemplate="rowgroupheader" let-rowData>
+                              <table>
+                                <tr>
+                                  <td style="width: 661px; text-align: center !important;">{{rowData['trimestre']}}º
+                                    Trimestre</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important; text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalCorretivas(rowData['trimestre'],1) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalCorretivas(rowData['trimestre'],2) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalCorretivas(rowData['trimestre'],3) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 60px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalCorretivas(rowData['trimestre'],4) | number : '1.2-2'}}</td>
+                                  <td style="width: 150px;"></td>
+                                </tr>
+                              </table>
+                            </ng-template>
+                            <p-column [style]="{'width':'51px'}" field="data_registo" header="DATA" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="maquina" header="MÁQUINA - DESIGNAÇÃO"
+                              [filter]="true"></p-column>
+                            <p-column [style]="{'width':'50px'}" field="seccao" header="SECÇÃO" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="tipo_avaria" header="TIPO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="descricao" header="DESCRIÇÃO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="TRABALHO_REALIZADO" header="TRABALHO REALIZADO"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="MATERIAL_UTILIZADO"
+                              header="MATERIAL UTILIZADO/REF." [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_MIN" header="TEMPO INTERV MIN"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_HORAS" header="TEMPO INTERV HORAS"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor1']">
+                                  {{car['TEMPO_INTERV_HORAS']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_PARAGEM_MIN" header="TEMPO PARAGEM MIN"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor2']">
+                                  {{car['TEMPO_PARAGEM_MIN']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="CUSTO_MATERIAL" header="CUSTO MATERIAL"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="COLABORADORES" header="COLABORADORES"
+                              [filter]="true">
+                            </p-column>
+                          </p-dataTable>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Melhorias">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: initial;">
+                    <div class="col-md-12">
+                      <section class="panel">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 200px; float: left;">Manutenções Melhorias</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaMelhorias()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="anoMelhoria" [ngModelOptions]="{standalone: true}" [required]="true"
+                              appendTo="body">
+                            </p-dropdown>
+                          </div>
+                        </header>
+                        <div class="panel-body">
+                          <p-dataTable #tabeladados_melhoria [value]="dados_melhorias" [paginator]="true" [rows]="25"
+                            [rowsPerPageOptions]="[25,50,100,'todos']" rowGroupMode="subheader" groupField='trimestre'
+                            [sortableRowGroup]="false" class="tabela_planos_acao_dashboard tabela_manu_dashboard">
+
+                            <ng-template pTemplate="rowgroupheader" let-rowData>
+                              <table>
+                                <tr>
+                                  <td style="width: 661px; text-align: center !important;">{{rowData['trimestre']}}º
+                                    Trimestre</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important; text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalMelhorias(rowData['trimestre'],1) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalMelhorias(rowData['trimestre'],2) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalMelhorias(rowData['trimestre'],3) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 60px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalMelhorias(rowData['trimestre'],4) | number : '1.2-2'}}</td>
+                                  <td style="width: 150px;"></td>
+                                </tr>
+                              </table>
+                            </ng-template>
+
+                            <p-column [style]="{'width':'51px'}" field="data_registo" header="DATA" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="maquina" header="MÁQUINA - DESIGNAÇÃO"
+                              [filter]="true"></p-column>
+                            <p-column [style]="{'width':'50px'}" field="seccao" header="SECÇÃO" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="tipo_avaria" header="TIPO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="descricao" header="DESCRIÇÃO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="TRABALHO_REALIZADO" header="TRABALHO REALIZADO"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="MATERIAL_UTILIZADO"
+                              header="MATERIAL UTILIZADO/REF." [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_MIN" header="TEMPO INTERV MIN"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_HORAS" header="TEMPO INTERV HORAS"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor1']">
+                                  {{car['TEMPO_INTERV_HORAS']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_PARAGEM_MIN" header="TEMPO PARAGEM MIN"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor2']">
+                                  {{car['TEMPO_PARAGEM_MIN']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="CUSTO_MATERIAL" header="CUSTO MATERIAL"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="COLABORADORES" header="COLABORADORES"
+                              [filter]="true">
+                            </p-column>
+                          </p-dataTable>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Preventivas">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: initial;">
+                    <div class="col-md-12">
+                      <section class="panel">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 225px; float: left;">Manutenções Preventivas</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaPreventivas()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="anoPreventiva" [ngModelOptions]="{standalone: true}" [required]="true"
+                              appendTo="body">
+                            </p-dropdown>
+                          </div>
+                        </header>
+                        <div class="panel-body">
+                          <p-dataTable #tabeladados_preventiva [value]="dados_preventivas" [paginator]="true"
+                            [rows]="25" [rowsPerPageOptions]="[25,50,100,'todos']" rowGroupMode="subheader"
+                            groupField='trimestre' [sortableRowGroup]="false"
+                            class="tabela_planos_acao_dashboard tabela_manu_dashboard">
+
+                            <ng-template pTemplate="rowgroupheader" let-rowData>
+                              <table>
+                                <tr>
+                                  <td style="width: 661px; text-align: center !important;">{{rowData['trimestre']}}º
+                                    Trimestre</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important; text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalPreventivas(rowData['trimestre'],1) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalPreventivas(rowData['trimestre'],2) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 40px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalPreventivas(rowData['trimestre'],3) | number : '1.2-2'}}</td>
+                                  <td
+                                    style="width: 60px; text-align: center !important;  text-overflow: ellipsis; overflow: hidden;">
+                                    {{getTotalPreventivas(rowData['trimestre'],4) | number : '1.2-2'}}</td>
+                                  <td style="width: 150px;"></td>
+                                </tr>
+                              </table>
+                            </ng-template>
+
+                            <p-column [style]="{'width':'51px'}" field="data_registo" header="DATA" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="maquina" header="MÁQUINA - DESIGNAÇÃO"
+                              [filter]="true"></p-column>
+                            <p-column [style]="{'width':'50px'}" field="seccao" header="SECÇÃO" [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="tipo_avaria" header="TIPO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="descricao" header="DESCRIÇÃO DE AVARIA"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="TRABALHO_REALIZADO" header="TRABALHO REALIZADO"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'100px'}" field="MATERIAL_UTILIZADO"
+                              header="MATERIAL UTILIZADO/REF." [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_MIN" header="TEMPO INTERV MIN"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_INTERV_HORAS" header="TEMPO INTERV HORAS"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor1']">
+                                  {{car['TEMPO_INTERV_HORAS']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'40px'}" field="TEMPO_PARAGEM_MIN" header="TEMPO PARAGEM MIN"
+                              [filter]="true">
+                              <ng-template let-car="rowData" pTemplate="body">
+                                <div [style.background]="car['cor2']">
+                                  {{car['TEMPO_PARAGEM_MIN']}}
+                                </div>
+                              </ng-template>
+                            </p-column>
+                            <p-column [style]="{'width':'60px'}" field="CUSTO_MATERIAL" header="CUSTO MATERIAL"
+                              [filter]="true">
+                            </p-column>
+                            <p-column [style]="{'width':'150px'}" field="COLABORADORES" header="COLABORADORES"
+                              [filter]="true">
+                            </p-column>
+                          </p-dataTable>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Equipa Manu. Form.">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="row" style="margin: 0;">
+                      <div class="col-sm-6">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> Número de ações corretivas + melhorias declaradas</h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
+                            <p-chart type="pie" [data]="data_pie2" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-sm-6">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> Número de ações preventivas declaradas </h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 350px;">
+                            <p-chart type="pie" [data]="data_pie1" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Indicadores Corretivas">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="col-sm-12">
+                      <section class="panel" style="margin-bottom: 0px;">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 300px; float: left;"> Indicadores Corretivas</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaIndicadoresCorretivas()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="anoIndicadoresCorretivas" [ngModelOptions]="{standalone: true}"
+                              [required]="true" appendTo="body">
+                            </p-dropdown>
+                          </div>
+                          <div style="float: right;" class="form-group col-md-3 col-lg-3">
+
+                            <p-dropdown [options]="drop_equipamentos" [filter]="true"
+                              [style]="{'width':'100%','height':'25px','background':'white'}"
+                              [(ngModel)]="equipamentoCorretivas" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                          </div>
+
+                        </header>
+                        <div class="panel-body tableFixHead">
+                          <table class="table  table-bordered table-striped table-hover tg" id="tg1">
+                            <thead>
+                              <tr>
+                                <th class="tg-0pky" rowspan="2" style="width: 500px;">DESIGNAÇÃO MÁQUINAS</th>
+                                <th class="tg-wfll" colspan="12">TEMPO DE MANUTENÇÃO POR MÊS EM HORAS</th>
+                                <th class="tg-wfll" rowspan="2">TOTAL ANUAL</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 1º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 2º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 3º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 4º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                              </tr>
+                              <tr>
+                                <th class="tg-gy6f">JAN</th>
+                                <th class="tg-gy6f">FEV</th>
+                                <th class="tg-gy6f">ABRI</th>
+                                <th class="tg-gy6f">MAR</th>
+                                <th class="tg-gy6f">MAI</th>
+                                <th class="tg-gy6f">JUN</th>
+                                <th class="tg-gy6f">JUL</th>
+                                <th class="tg-gy6f">AGO</th>
+                                <th class="tg-gy6f">SET</th>
+                                <th class="tg-gy6f">OUT</th>
+                                <th class="tg-gy6f">NOV</th>
+                                <th class="tg-gy6f">DEZ</th>
+                              </tr>
+
+                            </thead>
+                            <tr *ngFor="let col of indicadores_corretivas">
+                              <td class="tg-0pky">{{col.maquina}} </td>
+                              <td class="tg-0pky">{{col.jan}}</td>
+                              <td class="tg-0pky">{{col.fev}}</td>
+                              <td class="tg-0pky">{{col.mar}}</td>
+                              <td class="tg-0pky">{{col.abri}}</td>
+                              <td class="tg-0pky">{{col.mai}}</td>
+                              <td class="tg-0pky">{{col.jun}}</td>
+                              <td class="tg-0pky">{{col.jul}}</td>
+                              <td class="tg-0pky">{{col.ago}}</td>
+                              <td class="tg-0pky">{{col.set}}</td>
+                              <td class="tg-0pky">{{col.out}}</td>
+                              <td class="tg-0pky">{{col.nov}}</td>
+                              <td class="tg-0pky">{{col.dez}}</td>
+                              <td class="tg-0pky">{{col.total_anual}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre1}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao1}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre2}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao2}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre3}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao3}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre4}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao4}}</td>
+
+                            </tr>
+                            <tr *ngIf="indicadores_corretivas.length == 0">
+                              <td colspan="22" style="text-align: center;">Sem Dados</td>
+                            </tr>
+                            <tfoot *ngIf="indicadores_corretivas.length > 0">
+                              <tr>
+                                <th class="tg-0pky">TOTAIS MENSAIS/ANUAIS</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_1 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_2 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_3 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_4 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_5 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_6 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_7 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_8 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_9 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_10 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_11 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_12 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_MENSAL_CORRETIVAS_TOTAL | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_TRIMESTRE_CORRETIVAS_1 | number : '1.2-4'}}</th>
+                                <th>{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_1 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_TRIMESTRE_CORRETIVAS_2 | number : '1.2-2'}}</th>
+                                <th>{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_2 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_TRIMESTRE_CORRETIVAS_3 | number : '1.2-4'}}</th>
+                                <th>{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_3 | number : '1.2-4'}}</th>
+                                <th>{{TOTAL_TRIMESTRE_CORRETIVAS_4 | number : '1.2-2'}}</th>
+                                <th>{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_4 | number : '1.2-4'}}</th>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">TOTAL TRIMESTRE</td>
+                                <td colspan="3" style="text-align: center;">{{TOTAL_TRIMESTRE_CORRETIVAS_1 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{TOTAL_TRIMESTRE_CORRETIVAS_2 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{TOTAL_TRIMESTRE_CORRETIVAS_3 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{TOTAL_TRIMESTRE_CORRETIVAS_4 | number :
+                                  '1.2-2'}}</td>
+                                <td style="text-align: center;">{{TOTAL_MENSAL_CORRETIVAS_TOTAL | number : '1.2-2'}}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">% 1º TRIMESTRE</td>
+                                <td colspan="3" style="text-align: center;">{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_1 |
+                                  number : '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_2 |
+                                  number : '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_3 |
+                                  number : '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PERCENTAGEM_TRIMESTRE_CORRETIVAS_4 |
+                                  number : '1.2-2'}}</td>
+                                <td style="text-align: center;"></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">TOTAL HORAS MAQUINAS 1º TRIMESTRO</td>
+                                <td colspan="3" style="text-align: center;">{{PRODUCAO_TRIMESTRE_CORRETIVAS_1 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PRODUCAO_TRIMESTRE_CORRETIVAS_2 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PRODUCAO_TRIMESTRE_CORRETIVAS_3 | number :
+                                  '1.2-2'}}</td>
+                                <td colspan="3" style="text-align: center;">{{PRODUCAO_TRIMESTRE_CORRETIVAS_4 | number :
+                                  '1.2-2'}}</td>
+                                <td style="text-align: center;"></td>
+                              </tr>
+
+                            </tfoot>
+                          </table>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Indicadores Preventivas">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="col-sm-12">
+                      <section class="panel" style="margin-bottom: 0px;">
+                        <header class="panel-heading" style="height: 34px;">
+                          <h4 class="widget-h" style="width: 300px; float: left;"> Indicadores Preventivas</h4>
+                          <div class="table-row-column col-md-1" style="float: right;">
+                            <button type="button" (click)="carregaIndicadoresPreventivas()" class="btn btn-success"
+                              style="margin: 0; height: 27px; padding: 0px 10px 0 10px;">Aplicar</button>
+                          </div>
+                          <div class="table-row-column col-md-2" style="float: right;">
+                            <p-dropdown [filter]="true" [options]="anos" [style]="{'width':'50%','height': '25px'}"
+                              [(ngModel)]="anoIndicadoresPreventivas" [ngModelOptions]="{standalone: true}"
+                              [required]="true" appendTo="body">
+                            </p-dropdown>
+                          </div>
+                          <div style="float: right;" class="form-group col-md-3 col-lg-3">
+
+                            <p-dropdown [options]="drop_equipamentos" [filter]="true"
+                              [style]="{'width':'100%','height':'25px','background':'white'}"
+                              [(ngModel)]="equipamentoPreventivas" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                          </div>
+
+                        </header>
+                        <div class="panel-body tableFixHead">
+                          <table class="table  table-bordered table-striped table-hover tg" id="tg1">
+                            <thead>
+                              <tr>
+                                <th class="tg-0pky" rowspan="2" style="width: 500px;">DESIGNAÇÃO MÁQUINAS</th>
+                                <th class="tg-wfll" colspan="12">TEMPO DE MANUTENÇÃO POR MÊS EM HORAS</th>
+                                <th class="tg-wfll" rowspan="2">TOTAL ANUAL</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 1º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 2º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 3º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                                <th class="tg-wfll" rowspan="2">TEMPOS PRODUÇÃO 4º TRIMESTRE</th>
+                                <th class="tg-wfll" rowspan="2">TEMPO MANUTENÇÃO % (>10%)</th>
+                              </tr>
+                              <tr>
+                                <th class="tg-gy6f">JAN</th>
+                                <th class="tg-gy6f">FEV</th>
+                                <th class="tg-gy6f">ABRI</th>
+                                <th class="tg-gy6f">MAR</th>
+                                <th class="tg-gy6f">MAI</th>
+                                <th class="tg-gy6f">JUN</th>
+                                <th class="tg-gy6f">JUL</th>
+                                <th class="tg-gy6f">AGO</th>
+                                <th class="tg-gy6f">SET</th>
+                                <th class="tg-gy6f">OUT</th>
+                                <th class="tg-gy6f">NOV</th>
+                                <th class="tg-gy6f">DEZ</th>
+                              </tr>
+
+                            </thead>
+                            <tr *ngFor="let col of indicadores_preventivas">
+                              <td class="tg-0pky">{{col.maquina}} </td>
+                              <td class="tg-0pky">{{col.jan}}</td>
+                              <td class="tg-0pky">{{col.fev}}</td>
+                              <td class="tg-0pky">{{col.mar}}</td>
+                              <td class="tg-0pky">{{col.abri}}</td>
+                              <td class="tg-0pky">{{col.mai}}</td>
+                              <td class="tg-0pky">{{col.jun}}</td>
+                              <td class="tg-0pky">{{col.jul}}</td>
+                              <td class="tg-0pky">{{col.ago}}</td>
+                              <td class="tg-0pky">{{col.set}}</td>
+                              <td class="tg-0pky">{{col.out}}</td>
+                              <td class="tg-0pky">{{col.nov}}</td>
+                              <td class="tg-0pky">{{col.dez}}</td>
+                              <td class="tg-0pky">{{col.total_anual}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre1}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao1}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre2}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao2}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre3}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao3}}</td>
+                              <td class="tg-0pky">{{col.tempo_trimestre4}}</td>
+                              <td class="tg-0pky">{{col.tempo_manutencao4}}</td>
+
+                            </tr>
+                            <tr *ngIf="indicadores_preventivas.length == 0">
+                              <td colspan="22" style="text-align: center;">Sem Dados</td>
+                            </tr>
+                            <tfoot *ngIf="indicadores_preventivas.length > 0">
+                              <tr>
+                                <th class="tg-0pky">TOTAIS MENSAIS/ANUAIS</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                                <th>0</th>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">TOTAL TRIMESTRE</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">% 1º TRIMESTRE</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center; font-weight: 600;">TOTAL HORAS MAQUINAS 1º TRIMESTRO</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td colspan="3" style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                              </tr>
+
+                            </tfoot>
+                          </table>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+              <p-tabPanel header="Causas Corretivas">
+                <section style=" display: inline-block;  width: 100%;">
+                  <div class="row" style="display: inline-block; width: 100%; margin-left: 0; margin-top: 15px;">
+                    <div class="row" style="margin: 0;">
+                      <div class="col-sm-3">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> TIPOLOGIA DA AVARIA 1º TRIMESTRE </h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 200px;">
+                            <p-chart type="pie" [data]="data_pie3" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-sm-3">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> TIPOLOGIA DA AVARIA 2º TRIMESTRE </h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 200px;">
+                            <p-chart type="pie" [data]="data_pie4" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-sm-3">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> TIPOLOGIA DA AVARIA 3º TRIMESTRE </h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 200px;">
+                            <p-chart type="pie" [data]="data_pie5" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-sm-3">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> TIPOLOGIA DA AVARIA 4º TRIMESTRE </h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 200px;">
+                            <p-chart type="pie" [data]="data_pie6" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-sm-3">
+                        <section class="panel">
+                          <header class="panel-heading">
+                            <h4 class="widget-h"> ANUAL {{ano}}</h4>
+                          </header>
+                          <div class="panel-body analiseplanosestrategicos" style="height: 200px;">
+                            <p-chart type="pie" [data]="data_pie7" [options]="options_pie" height="350"> </p-chart>
+                          </div>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </p-tabPanel>
+            </p-tabView>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
